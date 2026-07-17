@@ -109,9 +109,11 @@ def to_manifest(items: list[dict]) -> list[dict]:
         t = it.get("type") or "html"
         has_p, thumb = preview_info(it)
         badges: list[str] = []
-        if it.get("shared"):
+        is_public = bool(it.get("public"))
+        is_shared = bool(it.get("shared"))
+        if is_shared:
             badges.append("share")
-        if it.get("public"):
+        if is_public:
             badges.append("public")
         out.append(
             {
@@ -127,6 +129,9 @@ def to_manifest(items: list[dict]) -> list[dict]:
                 "thumb": thumb,
                 "desc": it.get("description") or "",
                 "slug": it["slug"],
+                # access facets for landing filter
+                "vis": "public" if is_public else "internal",
+                "shared": is_shared,
             }
         )
     return out
@@ -316,6 +321,7 @@ body::before{{
 .badge{{font-family:var(--mono);font-size:.56rem;font-weight:600;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em}}
 .badge.share{{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent)}}
 .badge.public{{background:var(--green-dim);color:var(--green);border:1px solid var(--green)}}
+.badge.internal{{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue)}}
 .badge.latest{{background:var(--green-dim);color:var(--green);border:1px solid var(--green)}}
 .badge.draft{{background:var(--orange-dim);color:var(--orange);border:1px solid var(--orange)}}
 
@@ -370,6 +376,15 @@ footer a:hover{{color:var(--blue)}}
   </div>
   <div class="toolbar-right">
     <div class="ctrl-group">
+      <span class="ctrl-label">Accès</span>
+      <div class="segs">
+        <button type="button" class="seg" data-k="access" data-v="all">Tous</button>
+        <button type="button" class="seg" data-k="access" data-v="internal">Interne</button>
+        <button type="button" class="seg" data-k="access" data-v="shared">Partagé</button>
+        <button type="button" class="seg" data-k="access" data-v="public">Public</button>
+      </div>
+    </div>
+    <div class="ctrl-group">
       <span class="ctrl-label">Grouper</span>
       <div class="segs">
         <button type="button" class="seg" data-k="group" data-v="starred">★ Favoris</button>
@@ -417,17 +432,19 @@ const DATA = {data_json};
 
 // ── State ─────────────────────────────────────────────────────────
 const LS = {{
-  theme: 'silex-forge-theme',
-  group: 'silex-forge-group',
-  sort:  'silex-forge-sort',
-  view:  'silex-forge-view',
-  stars: 'silex-forge-stars',
+  theme:  'silex-forge-theme',
+  group:  'silex-forge-group',
+  sort:   'silex-forge-sort',
+  view:   'silex-forge-view',
+  access: 'silex-forge-access',
+  stars:  'silex-forge-stars',
 }};
 const S = {{
-  theme: localStorage.getItem(LS.theme) || 'light',
-  group: localStorage.getItem(LS.group) || 'cat',
-  sort:  localStorage.getItem(LS.sort)  || 'date-desc',
-  view:  localStorage.getItem(LS.view)  || 'card',
+  theme:  localStorage.getItem(LS.theme)  || 'light',
+  group:  localStorage.getItem(LS.group)  || 'cat',
+  sort:   localStorage.getItem(LS.sort)   || 'date-desc',
+  view:   localStorage.getItem(LS.view)   || 'card',
+  access: localStorage.getItem(LS.access) || 'all',
   q: '',
 }};
 const stars = new Set(JSON.parse(localStorage.getItem(LS.stars) || '[]'));
@@ -459,6 +476,14 @@ function fmtDate(iso) {{
 
 function badges(list) {{
   return (list || []).map(b => `<span class="badge ${{escHtml(b)}}">${{escHtml(b)}}</span>`).join('');
+}}
+
+function accessBadges(d) {{
+  const tags = [];
+  if ((d.vis || 'internal') === 'public' || (d.b || []).includes('public')) tags.push('public');
+  else tags.push('internal');
+  if (d.shared || (d.b || []).includes('share')) tags.push('share');
+  return badges(tags);
 }}
 
 function thumbSrc(d) {{
@@ -495,7 +520,7 @@ function mkCard(d, showCat) {{
     <button type="button" class="star-btn${{starred?' on':''}}" title="${{starred?'Retirer des favoris':'Ajouter aux favoris'}}" aria-label="${{starred?'Retirer des favoris':'Ajouter aux favoris'}}">${{starred?'★':'☆'}}</button>
     ${{thumbBlock}}
     <div class="card-body">
-      ${{d.b && d.b.length ? `<div class="badges">${{badges(d.b)}}</div>` : ''}}
+      <div class="badges">${{accessBadges(d)}}</div>
       <div class="card-title">${{escHtml(d.t)}}</div>
       ${{desc}}
       <div class="card-meta">${{catSpan}}<span>${{fmtDate(d.d)}}</span>${{size}}</div>
@@ -522,7 +547,7 @@ function mkRow(d, showCat) {{
     <button type="button" class="star-btn${{starred?' on':''}}" title="${{starred?'Retirer des favoris':'Ajouter aux favoris'}}" aria-label="${{starred?'Retirer des favoris':'Ajouter aux favoris'}}">${{starred?'★':'☆'}}</button>
     <span class="li-dot ${{escHtml(d.c)}}"></span>
     <span class="li-title">${{escHtml(d.t)}}</span>
-    ${{d.b && d.b.length ? `<span class="badges">${{badges(d.b)}}</span>` : ''}}
+    <span class="badges">${{accessBadges(d)}}</span>
     ${{showCat ? `<span class="li-cat">${{escHtml(d.cl)}}</span>` : ''}}
     <span class="li-file">${{escHtml(d.f)}}</span>
     <span class="li-date">${{fmtDate(d.d)}}</span>
@@ -553,16 +578,25 @@ function mkSection(label, color, items, showCat) {{
   return sec;
 }}
 
+function matchesAccess(d) {{
+  if (S.access === 'all') return true;
+  if (S.access === 'internal') return (d.vis || 'internal') === 'internal';
+  if (S.access === 'public') return (d.vis || 'internal') === 'public' || (d.b || []).includes('public');
+  if (S.access === 'shared') return !!d.shared || (d.b || []).includes('share');
+  return true;
+}}
+
 function render() {{
   const q = S.q.toLowerCase().trim();
-  let items = q
-    ? DATA.filter(d =>
+  let items = DATA.filter(matchesAccess);
+  if (q) {{
+    items = items.filter(d =>
         (d.t || '').toLowerCase().includes(q) ||
         (d.f || '').toLowerCase().includes(q) ||
         (d.cl || '').toLowerCase().includes(q) ||
         (d.desc || '').toLowerCase().includes(q) ||
-        (d.slug || '').toLowerCase().includes(q))
-    : [...DATA];
+        (d.slug || '').toLowerCase().includes(q));
+  }}
 
   items.sort((a, b) => {{
     if (S.sort === 'date-desc') return (b.d||'').localeCompare(a.d||'') || (a.t||'').localeCompare(b.t||'');
@@ -643,7 +677,7 @@ document.querySelectorAll('.seg').forEach(btn => {{
 document.getElementById('search').addEventListener('input', e => {{ S.q = e.target.value; render(); }});
 
 applyTheme(S.theme);
-['group','sort','view'].forEach(k => {{
+['group','sort','view','access'].forEach(k => {{
   document.querySelectorAll(`[data-k="${{k}}"]`).forEach(b => b.classList.toggle('on', b.dataset.v === S[k]));
 }});
 render();

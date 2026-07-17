@@ -25,7 +25,11 @@ publish --share                     │
 - **Clé** = segment de path haute entropie (`token_urlsafe(18)`)
 - **Non listée** : `list_on_index` reste sur la carte *interne* ; le share n’ajoute pas de carte
 - **Shortlink** : best-effort via `shlink` → `s.gosilex.com/f-<slug>`
-- **Barre Partager** : injectée dans le HTML ; copie short URL ou share URL
+- **Barre partage** (injectée sur `/a/<slug>/`) :
+  - **Interne** — copie `https://forge.gosilex.com/a/<slug>/` (Access, pas de shlink)
+  - **Externe** — `POST /api/share` → `/s/<slug>/<key>/` (+ shortlink shlink si secret Pages)
+  - **Public** badge + **Révoquer** quand un share externe est actif
+  - Toast « copié » à chaque copie réussie
 
 ## Équivalence `?k=` (Roxabi 1page)
 
@@ -54,11 +58,12 @@ publish.sh --unshare mon-deck
 
 ## Mint au clic (v3 — 2026-07-17)
 
-1. Barre **Partager** sur `/a/<slug>/` → `POST /api/share` `{ slug }`
-2. API (Pages Function) écrit la clé en **KV** `SHARES`
-3. URL renvoyée : `/s/<slug>/<key>/` — **Function** valide KV puis sert `/a/<slug>/` via ASSETS
-4. Clipboard automatique
-5. **⇧+clic** = `rotate: true` (nouvelle clé, ancien lien mort)
+1. Barre **Externe** sur `/a/<slug>/` → `POST /api/share` `{ slug }` (interne = copie path Access sans API)
+2. **Révoquer** → `DELETE /api/share` `{ slug }` (invalide la clé KV immédiatement)
+3. API (Pages Function) écrit la clé en **KV** `SHARES`
+4. URL renvoyée : `/s/<slug>/<key>/` — **Function** valide KV puis sert `/a/<slug>/` via ASSETS
+5. Clipboard + toast
+6. **⇧+Externe** = `rotate: true` (nouvelle clé, ancien lien mort)
 
 Prérequis : être connecté via **Cloudflare Access** (JWT sur la requête).
 

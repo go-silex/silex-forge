@@ -9,6 +9,21 @@ interface Env {
   ASSETS: Fetcher
 }
 
+function timingSafeEqualStr(a: string, b: string): boolean {
+  const enc = new TextEncoder()
+  const ab = enc.encode(a)
+  const bb = enc.encode(b)
+  if (ab.byteLength !== bb.byteLength) {
+    let diff = ab.byteLength ^ bb.byteLength
+    const n = Math.max(ab.byteLength, bb.byteLength)
+    for (let i = 0; i < n; i++) diff |= (ab[i] ?? 0) ^ (bb[i] ?? 0)
+    return false
+  }
+  let out = 0
+  for (let i = 0; i < ab.byteLength; i++) out |= ab[i] ^ bb[i]
+  return out === 0
+}
+
 export const onRequest: PagesFunction<Env> = async (context) => {
   const url = new URL(context.request.url)
   const parts = url.pathname.replace(/^\/s\/?/, "").split("/").filter(Boolean)
@@ -33,7 +48,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   }
 
   const stored = await context.env.SHARES.get(`share:${slug}`)
-  if (!stored || stored !== key) {
+  if (!stored || !key || !timingSafeEqualStr(stored, key)) {
     return plain404()
   }
 

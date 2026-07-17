@@ -15,9 +15,9 @@
   if (!slug || location.pathname.indexOf("/a/") !== 0) return;
 
   var state = {
-    active: Boolean(cfg.shareUrl),
-    shareUrl: cfg.shareUrl || "",
-    shortUrl: cfg.shortUrl || "",
+    active: false,
+    shareUrl: "",
+    shortUrl: "",
   };
 
   /* ── styles ───────────────────────────────────────────── */
@@ -171,13 +171,16 @@
   function refreshState() {
     return apiShare("GET")
       .then(function (data) {
+        // GET returns { active } only — never a key
         state.active = !!data.active;
-        state.shareUrl = data.shareUrl || "";
-        if (data.shareUrl) cfg.shareUrl = data.shareUrl;
+        if (!state.active) {
+          state.shareUrl = "";
+          state.shortUrl = "";
+        }
         renderState();
       })
       .catch(function () {
-        /* offline / unauthorized — keep cfg defaults */
+        /* offline / unauthorized — assume inactive */
         renderState();
       });
   }

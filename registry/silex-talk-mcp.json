@@ -6,5 +6,6 @@
   "visibility": "internal",
   "date": "2026-07-15",
   "path": "/a/silex-talk-mcp/",
-  "list_on_index": true
+  "list_on_index": true,
+  "shared": false
 }

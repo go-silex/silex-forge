@@ -61,7 +61,8 @@ def load_items() -> list[dict]:
         data.setdefault("description", "")
         data.setdefault("date", "")
         data["path"] = data.get("path") or f"/a/{data['slug']}/"
-        data["shared"] = bool(data.get("share_key") or data.get("share_url"))
+        # Snapshot only — never persist share keys in registry; live badge = GET /api/share
+        data["shared"] = bool(data.get("shared"))
         # /p/ purged — only /a/ (Access) + /s/ (share key)
         items.append(data)
     items.sort(key=lambda x: x.get("date") or "", reverse=True)

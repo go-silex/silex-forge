@@ -6,15 +6,13 @@
     "cat": "deck",
     "cl": "Deck",
     "c": "blue",
-    "b": [
-      "share"
-    ],
+    "b": [],
     "kb": 1694,
     "p": true,
     "thumb": "/a/github-claude-ops/og.jpg",
     "desc": "Formation fondateurs — organisation GitHub, variables, branches, CI/CD, plugins Claude, worktrees.",
     "slug": "github-claude-ops",
-    "shared": true
+    "shared": false
   },
   {
     "f": "/a/silex-talk-mcp/",
@@ -38,14 +36,12 @@
     "cat": "deck",
     "cl": "Deck",
     "c": "blue",
-    "b": [
-      "share"
-    ],
+    "b": [],
     "kb": 94,
     "p": true,
     "thumb": "/a/passation-2026-07/og.jpg",
     "desc": "Deck passation juillet 2026 : CD, plateforme A/B, qualité SaaS, mémoire, MCP/plugins.",
     "slug": "passation-2026-07",
-    "shared": true
+    "shared": false
   }
 ]

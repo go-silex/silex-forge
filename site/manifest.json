@@ -10,8 +10,8 @@
       "share"
     ],
     "kb": 1694,
-    "p": false,
-    "thumb": "",
+    "p": true,
+    "thumb": "/a/github-claude-ops/og.png",
     "desc": "Formation fondateurs — organisation GitHub, variables, branches, CI/CD, plugins Claude, worktrees.",
     "slug": "github-claude-ops",
     "shared": true
@@ -24,9 +24,9 @@
     "cl": "Talk",
     "c": "purple",
     "b": [],
-    "kb": 830,
-    "p": false,
-    "thumb": "",
+    "kb": 831,
+    "p": true,
+    "thumb": "/a/silex-talk-mcp/og.png",
     "desc": "Deck Silex — MCP, plugins Claude, et le second cerveau d'équipe. HTML autonome, plein écran 16:9.",
     "slug": "silex-talk-mcp",
     "shared": false
@@ -41,9 +41,9 @@
     "b": [
       "share"
     ],
-    "kb": 93,
-    "p": false,
-    "thumb": "",
+    "kb": 94,
+    "p": true,
+    "thumb": "/a/passation-2026-07/og.png",
     "desc": "Deck passation juillet 2026 : CD, plateforme A/B, qualité SaaS, mémoire, MCP/plugins.",
     "slug": "passation-2026-07",
     "shared": true

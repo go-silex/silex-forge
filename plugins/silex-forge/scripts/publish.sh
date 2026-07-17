@@ -97,15 +97,34 @@ gen_index() {
     || die "gen-index.py a échoué"
 }
 
+# Playwright thumbs → site/a/<slug>/og.png (best-effort; no Chromium = skip)
+gen_og_images() {
+  local slug="${1-}"
+  local args=()
+  [ -n "$slug" ] && args+=(--slug "$slug")
+  if command -v uv >/dev/null 2>&1; then
+    (cd "$WORK/repo" && uv run --with playwright python plugins/silex-forge/scripts/gen-og-images.py "${args[@]}") \
+      && ok "og thumbs" || warn "gen-og-images skip/failed (publish continues)"
+  else
+    (cd "$WORK/repo" && python3 plugins/silex-forge/scripts/gen-og-images.py "${args[@]}") \
+      && ok "og thumbs" || warn "gen-og-images skip/failed (publish continues)"
+  fi
+}
+
 # OG inject on internal index.html
 inject_og_for_slug() {
   local slug="$1" title="$2" desc="$3" path_url="$4"
   local html="$WORK/repo/site/a/${slug}/index.html"
   [ -f "$html" ] || return 0
+  local img_args=()
+  if [ -f "$WORK/repo/site/a/${slug}/og.png" ]; then
+    img_args=(--image "https://${PUBLIC_HOST}/a/${slug}/og.png")
+  fi
   python3 "$(SCRIPTS)/inject-og.py" "$html" \
     --title "$title" \
     --description "${desc:-$title}" \
     --url "https://${PUBLIC_HOST}${path_url}" \
+    "${img_args[@]}" \
     || die "inject-og failed"
   python3 "$(SCRIPTS)/verify-og.py" --file "$html" --expect-title "$title" \
     || die "verify-og (local) failed"
@@ -339,6 +358,7 @@ cmd_share_only() {
 
 cmd_rebuild_index() {
   clone_repo
+  gen_og_images   # all slugs, stale only
   gen_index
   if commit_push "chore(forge): rebuild index"; then
     ok "index regénéré"
@@ -381,7 +401,8 @@ cmd_publish() {
   export PUBLIC_HOST="$PUBLIC_HOST" SHARE_KEY="" SHARE_PATH="" SHORT_URL=""
   write_registry_json
 
-  # OG + share bar (always)
+  # Thumbs (Playwright) then meta OG + share bar
+  gen_og_images "$slug"
   inject_og_for_slug "$slug" "$title" "$desc" "$path_url"
   python3 "$(SCRIPTS)/inject-share-bar.py" "$dest/index.html" --slug "$slug" || true
 

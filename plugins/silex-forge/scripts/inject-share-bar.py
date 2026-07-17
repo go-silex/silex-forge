@@ -39,12 +39,11 @@ def strip_old(html: str) -> str:
 
 
 def inject(html: str, slug: str, share_url: str = "", short_url: str = "") -> str:
+    """Inject share bar. Never embed share keys/URLs — mint via authenticated API."""
     html = strip_old(html)
+    # slug only — shareUrl/shortUrl must not be baked into static /a/ HTML
+    _ = (share_url, short_url)  # accepted for CLI compat, intentionally ignored
     cfg: dict = {"slug": slug}
-    if share_url:
-        cfg["shareUrl"] = share_url
-    if short_url:
-        cfg["shortUrl"] = short_url
     bar_src = Path(__file__).with_name("share-bar.js").read_text(encoding="utf-8")
     snippet = (
         f"\n{MARKER_START}\n"

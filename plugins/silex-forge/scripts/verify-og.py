@@ -41,7 +41,7 @@ def fetch(url: str) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--file", help="local HTML path")
-    ap.add_argument("--url", help="live URL (pages.dev preferred — no Access)")
+    ap.add_argument("--url", help="live URL (prefer local --file; pages.dev is blocked for team content)")
     ap.add_argument("--expect-title", default="")
     args = ap.parse_args()
     if not args.file and not args.url:

@@ -14,12 +14,24 @@ Seul le préfixe **`/s/*`** (liens share à clé) est en Bypass Access.
 
 > **`/p/` purgé** — plus de path « public sans clé ». Utiliser **Externe** / `--share` → `/s/…`.
 
-Apps Zero Trust (créées 2026-07-17) :
+Apps Zero Trust (créées 2026-07-17, pages.dev 2026-07-17) :
 
 | App | Domain | Policy |
 |---|---|---|
 | **Silex Forge** | `forge.gosilex.com` | Allow `@gosilex.com` + `mickael@bouly.io` |
 | **Silex Forge · share public** | `forge.gosilex.com/s` | Bypass everyone |
+| **Silex Forge · pages.dev** | `silex-forge-6mm.pages.dev` | Allow team (même policy) |
+
+### Invariant hostnames
+
+Access sur le **custom domain seul ne suffit pas**. Le projet Pages expose aussi `*.pages.dev` avec les **mêmes ASSETS**.
+
+| Host | Contenu équipe (`/`, `/a/*`) | Share `/s/*` |
+|---|---|---|
+| `forge.gosilex.com` | Access Allow | Bypass + clé KV |
+| `silex-forge-6mm.pages.dev` | Access **+** middleware 403 (defense-in-depth) | Function KV only |
+
+**Ne jamais** utiliser pages.dev comme sonde OG « sans Access ». Vérifier en local (`verify-og.py --file`).
 
 ## Setup Zero Trust (une fois)
 
@@ -89,6 +101,14 @@ Au minimum un IdP configuré dans Zero Trust :
 # Sans cookie Access → doit rediriger vers login CF
 curl -sI "https://forge.gosilex.com/" | head -5
 curl -sI "https://forge.gosilex.com/a/github-claude-ops/" | head -5
+
+# pages.dev ne doit PAS servir le catalogue /a en clair (403 middleware et/ou Access)
+curl -sI "https://silex-forge-6mm.pages.dev/" | head -5
+curl -sI "https://silex-forge-6mm.pages.dev/a/github-claude-ops/" | head -5
+
+# Fake team headers morts
+curl -s "https://silex-forge-6mm.pages.dev/api/share?slug=x" \
+  -H "X-Forge-Share-Secret: 123456789"
 
 # Share (clé connue) → 200 sans cookie
 curl -sI "https://forge.gosilex.com/s/<slug>/<key>/" | head -5

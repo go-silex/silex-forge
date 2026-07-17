@@ -125,3 +125,5 @@ Deps : `google-chrome`|`chromium`, `ffmpeg`, `jq`.
 3. Ne **pas** lister les share keys dans le catalogue
 4. Publish = git only ; CF token uniquement GH Actions / BW ops
 5. Après gros publish : vérifier Access (302 sans cookie) et share (200 sans cookie sur `/s/.../key/`)
+6. **pages.dev** doit aussi être sous Access (+ middleware 403) — ne jamais sonder `*.pages.dev` comme origin ouverte
+7. Secrets share = **KV only** — jamais `share_key` dans registry/HTML ; `/api/share` = JWT Access vérifié ou `FORGE_SHARE_SECRET`

@@ -152,22 +152,50 @@ hub_index_update() {
   fi
 }
 
-# Live verify after deploy (pages.dev, no Access)
+# Local OG verify only — pages.dev is blocked (Access + middleware); do not probe open twin.
 verify_og_live() {
   local slug="$1" title="$2"
-  local pages_host="${PAGES_DEV_HOST:-silex-forge-6mm.pages.dev}"
-  local url="https://${pages_host}/a/${slug}/"
-  info "verify-og live (wait deploy) $url"
-  local i
-  for i in 1 2 3 4 5 6 7 8 9 10; do
-    if python3 "$(SCRIPTS)/verify-og.py" --url "$url" --expect-title "$title" 2>/dev/null; then
-      ok "verify-og live OK"
-      return 0
-    fi
-    sleep 6
-  done
-  warn "verify-og live timeout — check CI deploy"
+  local html="$WORK/repo/site/a/${slug}/index.html"
+  if [ -f "$html" ] && python3 "$(SCRIPTS)/verify-og.py" --file "$html" --expect-title "$title" 2>/dev/null; then
+    ok "verify-og local OK"
+    return 0
+  fi
+  warn "verify-og local skip/fail — check site/a/${slug}/index.html"
   return 0
+}
+
+# KV share helpers (SSOT = KV; never git secrets). Needs CF global key or token with KV edit.
+kv_auth_ok() {
+  { [ -n "${CLOUDFLARE_API_TOKEN:-}" ] || { [ -n "${CLOUDFLARE_API_KEY:-}" ] && [ -n "${CLOUDFLARE_EMAIL:-}" ]; }; }
+}
+
+kv_curl() {
+  # usage: kv_curl METHOD path [curl body args...]
+  local method="$1" path="$2"
+  shift 2
+  local acct="${CLOUDFLARE_ACCOUNT_ID:-YOUR_CLOUDFLARE_ACCOUNT_ID}"
+  local ns="${FORGE_SHARES_KV_ID:-YOUR_KV_NAMESPACE_ID}"
+  local url="https://api.cloudflare.com/client/v4/accounts/${acct}/storage/kv/namespaces/${ns}${path}"
+  if [ -n "${CLOUDFLARE_API_TOKEN:-}" ]; then
+    curl -sS -X "$method" "$url" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" "$@"
+  else
+    curl -sS -X "$method" "$url" \
+      -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" "$@"
+  fi
+}
+
+kv_put_share() {
+  local slug="$1" key="$2"
+  kv_auth_ok || return 1
+  kv_curl PUT "/values/share:${slug}" -H "Content-Type: text/plain" --data "$key" \
+    | python3 -c 'import sys,json; d=json.load(sys.stdin); sys.exit(0 if d.get("success") else 1)'
+}
+
+kv_delete_share() {
+  local slug="$1"
+  kv_auth_ok || return 1
+  kv_curl DELETE "/values/share:${slug}" \
+    | python3 -c 'import sys,json; d=json.load(sys.stdin); sys.exit(0 if d.get("success") else 1)'
 }
 
 mint_key() {
@@ -176,7 +204,7 @@ mint_key() {
 }
 
 write_registry_json() {
-  # env: SLUG TITLE TYPE DESC DAY PATH SHARE_KEY SHARE_PATH LIST_ON_INDEX SHORT_URL
+  # env: SLUG TITLE TYPE DESC DAY PATH LIST_ON_INDEX SHARED (bool snapshot, no secrets)
   python3 - <<'PY'
 import json, os
 data = {
@@ -188,13 +216,9 @@ data = {
   "path": os.environ["PATHU"],
   "list_on_index": os.environ.get("LIST_ON_INDEX", "true").lower() == "true",
   "visibility": "internal",
+  "shared": os.environ.get("SHARED", "false").lower() == "true",
 }
-if os.environ.get("SHARE_KEY"):
-  data["share_key"] = os.environ["SHARE_KEY"]
-  data["share_path"] = os.environ["SHARE_PATH"]
-  data["share_url"] = f"https://{os.environ['PUBLIC_HOST']}{os.environ['SHARE_PATH']}"
-  if os.environ.get("SHORT_URL"):
-    data["short_url"] = os.environ["SHORT_URL"]
+# Never write share_key / share_url / share_path into git
 path = os.environ["OUT"]
 open(path, "w", encoding="utf-8").write(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
 print("registry", path)
@@ -241,8 +265,7 @@ resolve_source() {
 }
 
 create_share_from_internal() {
-  # Mint key in registry + inject bar. Runtime key SSOT = KV (bouton Partager / API).
-  # CLI seeds registry for hub notes; browser mint updates KV.
+  # Mint capability into KV only. Never write keys to registry/HTML.
   local slug="$1"
   local key share_path share_url short_url src
   key=$(mint_key)
@@ -251,6 +274,12 @@ create_share_from_internal() {
   src="$WORK/repo/site/a/${slug}"
   [ -d "$src" ] || die "artefact interne absent: /a/${slug}/ — publie d'abord"
 
+  if kv_put_share "$slug" "$key"; then
+    info "KV share:${slug} seed OK"
+  else
+    die "KV seed failed — set CLOUDFLARE_API_TOKEN or CLOUDFLARE_EMAIL+CLOUDFLARE_API_KEY (share key never goes to git)"
+  fi
+
   short_url=""
   if su=$(maybe_shortlink "$share_url" "$slug"); then
     short_url="$su"
@@ -258,41 +287,26 @@ create_share_from_internal() {
 
   local reg="$WORK/repo/registry/${slug}.json"
   [ -f "$reg" ] || die "registry manquant pour $slug"
-  SHARE_KEY="$key" SHARE_PATH="$share_path" SHORT_URL="$short_url" PUBLIC_HOST="$PUBLIC_HOST" \
   python3 - "$reg" <<'PY'
-import json, os, sys
+import json, sys
 path = sys.argv[1]
 d = json.load(open(path, encoding="utf-8"))
-d["share_key"] = os.environ["SHARE_KEY"]
-d["share_path"] = os.environ["SHARE_PATH"]
-d["share_url"] = f"https://{os.environ['PUBLIC_HOST']}{os.environ['SHARE_PATH']}"
-d["share_url_query"] = f"https://{os.environ['PUBLIC_HOST']}/s/{d['slug']}/?k={os.environ['SHARE_KEY']}"
-if os.environ.get("SHORT_URL"):
-  d["short_url"] = os.environ["SHORT_URL"]
+for k in ("share_key", "share_path", "share_url", "share_url_query", "short_url"):
+  d.pop(k, None)
+d["shared"] = True
 d.setdefault("list_on_index", True)
 json.dump(d, open(path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 open(path, "a", encoding="utf-8").write("\n")
-print(d["share_url"])
 PY
 
-  python3 "$(SCRIPTS)/inject-share-bar.py" \
-    "$src/index.html" \
-    --slug "$slug" \
-    --share-url "$share_url" \
-    ${short_url:+--short-url "$short_url"} || true
+  # Re-inject bar without secrets
+  python3 "$(SCRIPTS)/inject-share-bar.py" "$src/index.html" --slug "$slug" || true
 
-  # seed KV if credentials available (best effort)
-  if [ -n "${CLOUDFLARE_API_KEY:-}" ] && [ -n "${CLOUDFLARE_EMAIL:-}" ]; then
-    local ns="${FORGE_SHARES_KV_ID:-YOUR_KV_NAMESPACE_ID}"
-    local acct="${CLOUDFLARE_ACCOUNT_ID:-YOUR_CLOUDFLARE_ACCOUNT_ID}"
-    curl -sS -X PUT \
-      "https://api.cloudflare.com/client/v4/accounts/${acct}/storage/kv/namespaces/${ns}/values/share:${slug}" \
-      -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" \
-      -H "Content-Type: text/plain" --data "$key" >/dev/null \
-      && info "KV share:${slug} seed OK" || warn "KV seed failed"
+  if [ -n "$short_url" ]; then
+    echo "$short_url"
+  else
+    echo "$share_url"
   fi
-
-  echo "$share_url"
 }
 
 cmd_list() {
@@ -305,11 +319,9 @@ cmd_list() {
       python3 -c "
 import json
 d=json.load(open('$f'))
-share='share' if d.get('share_key') else '     '
+share='share' if d.get('shared') else '     '
 listed='catalog' if d.get('list_on_index', True) else 'hidden '
 print(f\"  {listed:7} {share:5}  {d.get('path','?'):28}  {d.get('title','')}\")
-if d.get('share_url'):
-  print(f\"           share → {d['share_url']}\")
 "
     done
   )
@@ -336,15 +348,26 @@ cmd_unshare() {
   rm -rf "$WORK/repo/site/s/$slug"
   local reg="$WORK/repo/registry/${slug}.json"
   [ -f "$reg" ] || die "inconnu: $slug"
+  if kv_delete_share "$slug"; then
+    info "KV share:${slug} deleted"
+  else
+    warn "KV delete failed — set CF credentials; runtime share may still be active"
+  fi
   python3 - "$reg" <<'PY'
 import json, sys
 p=sys.argv[1]
 d=json.load(open(p, encoding="utf-8"))
-for k in ("share_key","share_path","share_url","short_url"):
+for k in ("share_key","share_path","share_url","share_url_query","short_url"):
   d.pop(k, None)
+d["shared"] = False
 json.dump(d, open(p,"w",encoding="utf-8"), ensure_ascii=False, indent=2)
 open(p,"a",encoding="utf-8").write("\n")
 PY
+  # strip any baked shareUrl from HTML
+  local html="$WORK/repo/site/a/${slug}/index.html"
+  if [ -f "$html" ]; then
+    python3 "$(SCRIPTS)/inject-share-bar.py" "$html" --slug "$slug" || true
+  fi
   gen_index
   if commit_push "chore(forge): unshare $slug"; then
     ok "share révoqué pour $slug"
@@ -408,7 +431,7 @@ cmd_publish() {
   # registry base
   export SLUG="$slug" TITLE="$title" TYP="$typ" DESC="$desc" DAY="$(date -u +%Y-%m-%d)"
   export PATHU="$path_url" LIST_ON_INDEX="true" OUT="$WORK/repo/registry/${slug}.json"
-  export PUBLIC_HOST="$PUBLIC_HOST" SHARE_KEY="" SHARE_PATH="" SHORT_URL=""
+  export PUBLIC_HOST="$PUBLIC_HOST" SHARED="false"
   write_registry_json
 
   # Thumbs (Playwright) then meta OG + share bar

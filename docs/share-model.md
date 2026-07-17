@@ -7,8 +7,10 @@
 | `/p/<slug>/` sans clé | Enumération + surface publique large |
 | Toggle « public » sans secret | N’importe qui qui devine le slug lit le doc |
 | `?k=` pur static HTML | La clé dans le JS/HTML = **pas** une vraie porte |
+| Clé dans registry git / `__FORGE_SHARE__` | Secret durable hors KV — **interdit** |
 
-**Canon :** `/a/` (Access) + `/s/<slug>/<key>/` (Bypass + KV).
+**Canon :** `/a/` (Access) + `/s/<slug>/<key>/` (Bypass + KV).  
+**SSOT clé** = KV uniquement. Registry = snapshot `shared: bool` sans secret.
 
 ## Modèle retenu (intermédiaire)
 
@@ -58,6 +60,7 @@ publish.sh --unshare mon-deck
 |---|---|---|
 | Silex Forge | `forge.gosilex.com` | Allow `@gosilex.com` + mickael@bouly.io |
 | Silex Forge · share public | `forge.gosilex.com/s` | **Bypass** everyone |
+| Silex Forge · pages.dev | `silex-forge-6mm.pages.dev` | Allow team (+ middleware 403 sur non-`/s`) |
 
 ## Mint au clic (v3 — 2026-07-17)
 
@@ -68,17 +71,22 @@ publish.sh --unshare mon-deck
 5. Clipboard + toast
 6. **⇧+Externe** = `rotate: true` (nouvelle clé, ancien lien mort)
 
-Prérequis : être connecté via **Cloudflare Access** (JWT sur la requête).
+Prérequis : JWT **Cloudflare Access vérifié** (JWKS + `aud` + `exp`) sur `/api/share`.  
+Bypass ops : header `X-Forge-Share-Secret` **égal** à `FORGE_SHARE_SECRET` (secret Pages / BW `silex-forge/FORGE_SHARE_SECRET`) — **jamais** un simple `length > N`.
+
+- `GET /api/share` → `{ slug, active }` **uniquement** (pas de clé en clair)
+- `POST /api/share` → `{ shareUrl, shortUrl?, … }` une fois (origin canonique `https://forge.gosilex.com`)
+- URLs share **jamais** injectées dans le HTML `/a/`
 
 ## Landing = share live (KV)
 
-Le catalogue embarque un snapshot registry (`shared` / badge share), puis au load (équipe Access) :
+Le catalogue embarque un snapshot registry (`shared` boolean), puis au load (équipe Access) :
 
 - `GET /api/share?slug=…` pour **chaque** artefact
 - met à jour badge **share**, compteur « avec share », filtre **Partagé**
 - re-sync au `focus` / `visibilitychange` (ex. après révoquer une slide puis revenir sur `/`)
 
-Source de vérité share **runtime** = KV. Le registry reste utile pour le CLI / hub, pas pour l’UI live.
+Source de vérité share **runtime** = KV. Le registry ne stocke **pas** `share_key`.
 
 ## `?k=` vs path key
 

@@ -8,6 +8,13 @@ pages_build_output_dir = "site"
 binding = "SHARES"
 id = "YOUR_KV_NAMESPACE_ID"
 
-# Env (Pages project secrets — not committed):
-#   SHLINK_API_KEY  secret  — ~/.config/silex/shlink-api-key
-#   SHLINK_BASE     plain   — https://s.gosilex.com
+# Access JWT verification (public ids — not secrets)
+[vars]
+CF_ACCESS_TEAM_DOMAIN = "REDACTED"
+# forge.gosilex.com AUD + silex-forge-6mm.pages.dev AUD
+CF_ACCESS_AUD = "REDACTED"
+
+# Secrets (Pages project — not committed):
+#   SHLINK_API_KEY       — ~/.config/silex/shlink-api-key
+#   SHLINK_BASE          — https://s.gosilex.com (or plain var)
+#   FORGE_SHARE_SECRET   — CLI/ops only; constant-time compare in /api/share

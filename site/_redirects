@@ -5,3 +5,8 @@
 /silex-talk-mcp /a/silex-talk-mcp/ 301
 /silex-talk-mcp/ /a/silex-talk-mcp/ 301
 /silex-talk-mcp/* /a/silex-talk-mcp/:splat 301
+
+# Alias path demandé (style hub roxabi) → artefact /a/
+/metalyde/visuals/roadmap-performance-blocks /a/metalyde-roadmap-performance-blocks/ 302
+/metalyde/visuals/roadmap-performance-blocks/ /a/metalyde-roadmap-performance-blocks/ 302
+/metalyde/visuals/roadmap-performance-blocks.html /a/metalyde-roadmap-performance-blocks/ 302

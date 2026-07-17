@@ -67,3 +67,13 @@ Nouveau : repo + `/a/` + catalogue généré.
 |---|---|
 | `/silex-talk-mcp/` | `/a/silex-talk-mcp/` (301 via `_redirects`) |
 | — | `/a/github-claude-ops/` |
+
+## Secrets Pages (Functions)
+
+| Var | Type | Rôle |
+|---|---|---|
+| `SHLINK_API_KEY` | secret | API Shlink `s.gosilex.com` — shortlinks au share |
+| `SHLINK_BASE` | plain | `https://s.gosilex.com` |
+| KV `SHARES` | binding | clés share (`share:<slug>`) |
+
+Source ops : `~/.config/silex/shlink-api-key`

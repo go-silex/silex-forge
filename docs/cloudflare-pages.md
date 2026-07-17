@@ -6,42 +6,55 @@
 |---|---|
 | Projet Pages | `silex-forge` |
 | Compte | Tool@gosilex.com (Gosilex) |
-| Source | **Git integration** `go-silex/silex-forge` branche `main` |
-| Build command | *(vide)* |
-| Build output directory | **`site`** |
-| Domaine custom | `forge.gosilex.com` |
-| Production branch | `main` |
+| Mode | **Direct Upload** + **GitHub Action** (deploy `site/`) |
+| Domaine custom | `forge.gosilex.com` → CNAME `silex-forge-6mm.pages.dev` (proxied) |
+| Production | branch `main` côté wrangler |
 
-⚠️ **Git integration, pas Direct Upload.**  
-`wrangler pages project create` crée du Direct Upload (irréversible) — **ne pas l’utiliser** pour ce projet. Brancher le repo depuis le dashboard Pages « Connect to Git ».
+### Pourquoi pas Git Integration ici
 
-## Pourquoi git (comme silex-demos)
+`silex-demos` est en **Git Integration** (idéal).  
+Ce projet a été recréé en **Direct Upload** (API `pages/projects`) — le mode est **irréversible**.  
+On compense avec :
 
-- Un seul arbre servi → toutes les pubs coexistent
-- `git push` = deploy (pas de token CF sur les postes)
-- Concurrence = non-fast-forward (pas d’écrasement silencieux)
+1. **Git = source de vérité** (`site/` + `registry/` dans le repo)
+2. **`.github/workflows/deploy-pages.yml`** → `wrangler pages deploy site` sur push `main` (paths `site/**`)
+3. Token CF **uniquement** dans secrets GH org/repo — **pas** sur les postes
 
-## Création (checklist)
+Secrets GH requis (org `go-silex` ou repo) :
 
-1. Créer le repo GitHub `go-silex/silex-forge` (privé) — fait via `gh`
-2. Dashboard CF → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
-3. Autoriser org `go-silex`, sélectionner `silex-forge`
-4. Build settings :
-   - Framework preset : None
-   - Build command : *(empty)*
-   - Build output directory : `site`
-5. Save and Deploy
-6. Custom domains → `forge.gosilex.com` (CNAME vers `silex-forge.pages.dev`)
-7. Configurer Access : [`cloudflare-access.md`](./cloudflare-access.md)
+| Secret | Valeur |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Token avec *Pages Edit* + *Account read* |
+| `CLOUDFLARE_ACCOUNT_ID` | `YOUR_CLOUDFLARE_ACCOUNT_ID` |
+
+## Checklist ops (fait / à faire)
+
+- [x] Repo `go-silex/silex-forge`
+- [x] Projet Pages `silex-forge` + premier deploy
+- [x] Domaine `forge.gosilex.com`
+- [ ] Secrets GH `CLOUDFLARE_*` pour le workflow auto
+- [ ] Cloudflare Access — [`cloudflare-access.md`](./cloudflare-access.md)
+
+## Publish flow (équipe)
+
+```bash
+# 1) publish.sh → commit + push site/ + registry/
+plugins/silex-forge/scripts/publish.sh mon-slug ./file.html --title "…"
+# 2) GH Action déploie site/ → forge.gosilex.com
+```
+
+Fallback manuel (ops avec CF credentials) :
+
+```bash
+npx wrangler pages deploy site --project-name=silex-forge --branch=main
+```
 
 ## Migration depuis `~/.roxabi/silex-forge`
 
-Ancien chemin = **Direct Upload** + dossier local (projet CF parfois disparu / hors inventaire).  
-Nouveau = ce repo. Les artefacts seedés :
+Ancien : Direct Upload local ad-hoc.  
+Nouveau : repo + `/a/` + catalogue généré.
 
-- `/a/silex-talk-mcp/` (ex `/silex-talk-mcp/`, redirect 301)
-- `/a/github-claude-ops/`
-
-## path_includes (optionnel)
-
-Dans les settings build, si dispo : ne builder que si `site/**` change — les commits purement `plugins/` ne redéploient pas.
+| Ancien | Nouveau |
+|---|---|
+| `/silex-talk-mcp/` | `/a/silex-talk-mcp/` (301 via `_redirects`) |
+| — | `/a/github-claude-ops/` |

@@ -6,7 +6,7 @@
 |---|---|
 | **Audience** | Équipe Silex (Access) + liens `/p/` optionnellement publics |
 | **≠** | `demo.gosilex.com` (funnel client) · `share.gosilex.com` (produit ACL long terme) |
-| **Deploy** | Cloudflare Pages **git-connected** · output `site/` · `git push` = live |
+| **Deploy** | Cloudflare Pages · `site/` · push git → **GitHub Action** wrangler (Direct Upload) |
 | **Plugin** | `silex-forge` (skill `forge-publish`) |
 
 ## Pourquoi ce repo

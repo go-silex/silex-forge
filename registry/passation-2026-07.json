@@ -1,12 +1,15 @@
 {
   "slug": "passation-2026-07",
   "title": "Passation fondateurs — audits & schéma directeur",
-  "description": "Deck passation juillet 2026 : CD, plateforme (chemins A/B), qualité SaaS, mémoire, MCP/plugins. Executive summary audits GOSILEX.",
+  "description": "Deck passation juillet 2026 : CD, plateforme A/B, qualité SaaS, mémoire, MCP/plugins.",
   "type": "deck",
   "date": "2026-07-11",
   "path": "/a/passation-2026-07/",
   "list_on_index": true,
   "visibility": "internal",
-  "hub_source": "silex-hub/06_MEETINGS/0_Founders/Weekly/2026-07-passation-deck/",
-  "knowledge": "passation-2026-07-11.md (intentions) · docs/presentations/executive-summary-audits-2026-07.html"
+  "hub_source": "silex-hub/06_MEETINGS/0_Founders/Weekly/2026-07-passation-deck/ (pointeur FORGE.md — HTML SSOT = ce repo)",
+  "knowledge": "site/a/passation-2026-07/passation-2026-07-11.md",
+  "share_key": "cOO4WEhcqtte_F3bb7-swQjz",
+  "share_path": "/s/passation-2026-07/cOO4WEhcqtte_F3bb7-swQjz/",
+  "share_url": "https://forge.gosilex.com/s/passation-2026-07/cOO4WEhcqtte_F3bb7-swQjz/"
 }

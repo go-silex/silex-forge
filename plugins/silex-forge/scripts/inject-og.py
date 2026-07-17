@@ -50,12 +50,21 @@ def build_block(
     url: str,
     site_name: str = "Silex Forge",
     noindex: bool = True,
+    image: str = "",
 ) -> str:
     t = html.escape(title)
     d = html.escape(description or title)
     u = html.escape(url)
     sn = html.escape(site_name)
     robots = "noindex, nofollow, noarchive" if noindex else "index, follow"
+    img_block = ""
+    if image:
+        i = html.escape(image)
+        img_block = f"""
+  <meta property="og:image" content="{i}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="{i}">"""
     return f"""{BLOCK_START}
   <meta name="description" content="{d}">
   <meta name="robots" content="{robots}">
@@ -63,7 +72,7 @@ def build_block(
   <meta property="og:site_name" content="{sn}">
   <meta property="og:title" content="{t}">
   <meta property="og:description" content="{d}">
-  <meta property="og:url" content="{u}">
+  <meta property="og:url" content="{u}">{img_block}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{t}">
   <meta name="twitter:description" content="{d}">
@@ -77,11 +86,16 @@ def inject(
     description: str,
     url: str,
     noindex: bool = True,
+    image: str = "",
 ) -> str:
     content = strip_old_block(content)
     content = ensure_title(content, title)
     block = build_block(
-        title=title, description=description, url=url, noindex=noindex
+        title=title,
+        description=description,
+        url=url,
+        noindex=noindex,
+        image=image,
     )
     if re.search(r"<head[^>]*>", content, re.I):
         return re.sub(
@@ -100,6 +114,7 @@ def main() -> int:
     ap.add_argument("--title", required=True)
     ap.add_argument("--description", default="")
     ap.add_argument("--url", required=True)
+    ap.add_argument("--image", default="", help="Absolute og:image URL (optional)")
     ap.add_argument("--indexable", action="store_true", help="allow index (default: noindex)")
     args = ap.parse_args()
     p = Path(args.html_file)
@@ -109,6 +124,7 @@ def main() -> int:
         description=args.description or args.title,
         url=args.url,
         noindex=not args.indexable,
+        image=args.image,
     )
     p.write_text(out, encoding="utf-8")
     print(f"og injected → {p}")

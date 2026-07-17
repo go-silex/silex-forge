@@ -107,6 +107,17 @@ Install :
 - `docs/cloudflare-pages.md` — deploy Pages + secrets
 - `docs/share-model.md` — détail share / clé / shortlink
 
+## Miniatures OG (landing)
+
+```bash
+# local (uv + chromium cache)
+uv run --with playwright python plugins/silex-forge/scripts/gen-og-images.py
+uv run --with playwright python plugins/silex-forge/scripts/gen-og-images.py --slug mon-slug --force
+```
+
+Écrit `site/a/<slug>/og.png` (1200×630). Branché dans `publish.sh` (best-effort) + `--rebuild-index`.  
+`gen-index.py` affiche la thumb si le PNG existe.
+
 ## Règles agent
 
 1. Ne **jamais** déployer forge sur Vercel

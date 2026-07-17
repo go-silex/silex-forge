@@ -61,7 +61,8 @@ App séparée (ou path policy) :
 | Domain | `forge.gosilex.com` path `/s` |
 | Policy | **Bypass** everyone |
 
-**Ops :** si une ancienne policy `public-p-prefix` (Bypass `/p/`) existe encore → **supprimer**.
+**Ops (2026-07-17) :** pas de policy Bypass `/p/` sur le compte — apps actives =  
+`Silex Forge` (Allow team) + `Silex Forge · share public` (`/s` Bypass). Rien à purger côté Access.
 
 ### 4. Identity provider
 

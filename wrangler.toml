@@ -7,3 +7,7 @@ pages_build_output_dir = "site"
 [[kv_namespaces]]
 binding = "SHARES"
 id = "758e41aec6964f2b9ef590c296ff7e20"
+
+# Env (Pages project secrets — not committed):
+#   SHLINK_API_KEY  secret  — ~/.config/silex/shlink-api-key
+#   SHLINK_BASE     plain   — https://s.gosilex.com

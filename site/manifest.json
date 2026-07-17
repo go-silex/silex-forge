@@ -15,6 +15,21 @@
     "shared": false
   },
   {
+    "f": "/a/metalyde-roadmap-performance-blocks/",
+    "t": "Metalyde × Silex — Roadmap Performance",
+    "d": "2026-07-17",
+    "cat": "diagram",
+    "cl": "Diagramme",
+    "c": "amber",
+    "b": [],
+    "kb": 97,
+    "p": true,
+    "thumb": "/a/metalyde-roadmap-performance-blocks/og.jpg",
+    "desc": "Roadmap Performance Metalyde — blocs métier (visual)",
+    "slug": "metalyde-roadmap-performance-blocks",
+    "shared": false
+  },
+  {
     "f": "/a/silex-talk-mcp/",
     "t": "MCP, plugins & second cerveau",
     "d": "2026-07-15",

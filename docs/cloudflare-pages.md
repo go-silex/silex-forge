@@ -20,12 +20,21 @@ On compense avec :
 2. **`.github/workflows/deploy-pages.yml`** → `wrangler pages deploy site` sur push `main` (paths `site/**`)
 3. Token CF **uniquement** dans secrets GH org/repo — **pas** sur les postes
 
-Secrets GH requis (org `go-silex` ou repo) :
+Secrets GH (repo `go-silex/silex-forge`) — **déjà posés** :
 
-| Secret | Valeur |
+| Secret | Source |
 |---|---|
-| `CLOUDFLARE_API_TOKEN` | Token avec *Pages Edit* + *Account read* |
+| `CLOUDFLARE_API_TOKEN` | Token CF `silex-forge-pages-deploy` (Pages Write + Read, Account Settings Read, scope compte GOSILEX) |
 | `CLOUDFLARE_ACCOUNT_ID` | `YOUR_CLOUDFLARE_ACCOUNT_ID` |
+
+Vaultwarden (agent vault) : note **`cloudflare/silex-forge-pages-deploy`** (notes = token ; field `CLOUDFLARE_ACCOUNT_ID`).
+
+```bash
+source ~/projects/security/vaultwarden/scripts/agent-bw-login.sh
+export CLOUDFLARE_API_TOKEN="$(bw get notes cloudflare/silex-forge-pages-deploy | tr -d '[:space:]')"
+export CLOUDFLARE_ACCOUNT_ID=YOUR_CLOUDFLARE_ACCOUNT_ID
+npx wrangler pages deploy site --project-name=silex-forge --branch=main
+```
 
 ## Checklist ops (fait / à faire)
 

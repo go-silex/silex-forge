@@ -97,13 +97,14 @@ gen_index() {
     || die "gen-index.py a échoué"
 }
 
-# Playwright thumbs → site/a/<slug>/og.png (best-effort; no Chromium = skip)
+# Playwright + Pillow → site/a/<slug>/og.jpg (JPEG q80, best-effort)
 gen_og_images() {
   local slug="${1-}"
   local args=()
   [ -n "$slug" ] && args+=(--slug "$slug")
   if command -v uv >/dev/null 2>&1; then
-    (cd "$WORK/repo" && uv run --with playwright python plugins/silex-forge/scripts/gen-og-images.py "${args[@]}") \
+    (cd "$WORK/repo" && uv run --with playwright --with pillow \
+      python plugins/silex-forge/scripts/gen-og-images.py "${args[@]}") \
       && ok "og thumbs" || warn "gen-og-images skip/failed (publish continues)"
   else
     (cd "$WORK/repo" && python3 plugins/silex-forge/scripts/gen-og-images.py "${args[@]}") \
@@ -117,8 +118,14 @@ inject_og_for_slug() {
   local html="$WORK/repo/site/a/${slug}/index.html"
   [ -f "$html" ] || return 0
   local img_args=()
-  if [ -f "$WORK/repo/site/a/${slug}/og.png" ]; then
-    img_args=(--image "https://${PUBLIC_HOST}/a/${slug}/og.png")
+  local og_img=""
+  if [ -f "$WORK/repo/site/a/${slug}/og.jpg" ]; then
+    og_img="https://${PUBLIC_HOST}/a/${slug}/og.jpg"
+  elif [ -f "$WORK/repo/site/a/${slug}/og.png" ]; then
+    og_img="https://${PUBLIC_HOST}/a/${slug}/og.png"
+  fi
+  if [ -n "$og_img" ]; then
+    img_args=(--image "$og_img")
   fi
   python3 "$(SCRIPTS)/inject-og.py" "$html" \
     --title "$title" \

@@ -180,7 +180,6 @@ body::before{
 .badges{display:flex;gap:3px;flex-shrink:0;flex-wrap:wrap}
 .badge{font-family:var(--mono);font-size:.56rem;font-weight:600;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em}
 .badge.share{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent)}
-.badge.public{background:var(--green-dim);color:var(--green);border:1px solid var(--green)}
 .badge.internal{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue)}
 .badge.latest{background:var(--green-dim);color:var(--green);border:1px solid var(--green)}
 .badge.draft{background:var(--orange-dim);color:var(--orange);border:1px solid var(--orange)}
@@ -242,7 +241,6 @@ footer a:hover{color:var(--blue)}
         <button type="button" class="seg" data-k="access" data-v="all">Tous</button>
         <button type="button" class="seg" data-k="access" data-v="internal">Interne</button>
         <button type="button" class="seg" data-k="access" data-v="shared">Partagé</button>
-        <button type="button" class="seg" data-k="access" data-v="public">Public</button>
       </div>
     </div>
     <div class="ctrl-group">
@@ -289,7 +287,7 @@ footer a:hover{color:var(--blue)}
 
 <script>
 // ── Data (embedded at build time from registry/*.json) ────────────
-const DATA = [{"f":"/a/github-claude-ops/","t":"GitHub, secrets & Claude","d":"2026-07-17","cat":"deck","cl":"Deck","c":"blue","b":["share"],"kb":1694,"p":false,"thumb":"","desc":"Formation fondateurs — organisation GitHub, variables, branches, CI/CD, plugins Claude, worktrees.","slug":"github-claude-ops","vis":"internal","shared":true},{"f":"/a/silex-talk-mcp/","t":"MCP, plugins & second cerveau","d":"2026-07-15","cat":"talk","cl":"Talk","c":"purple","b":[],"kb":830,"p":false,"thumb":"","desc":"Deck Silex — MCP, plugins Claude, et le second cerveau d'équipe. HTML autonome, plein écran 16:9.","slug":"silex-talk-mcp","vis":"internal","shared":false},{"f":"/a/passation-2026-07/","t":"Passation fondateurs — audits & schéma directeur","d":"2026-07-11","cat":"deck","cl":"Deck","c":"blue","b":["share"],"kb":93,"p":false,"thumb":"","desc":"Deck passation juillet 2026 : CD, plateforme A/B, qualité SaaS, mémoire, MCP/plugins.","slug":"passation-2026-07","vis":"internal","shared":true}];
+const DATA = [{"f":"/a/github-claude-ops/","t":"GitHub, secrets & Claude","d":"2026-07-17","cat":"deck","cl":"Deck","c":"blue","b":["share"],"kb":1694,"p":false,"thumb":"","desc":"Formation fondateurs — organisation GitHub, variables, branches, CI/CD, plugins Claude, worktrees.","slug":"github-claude-ops","shared":true},{"f":"/a/silex-talk-mcp/","t":"MCP, plugins & second cerveau","d":"2026-07-15","cat":"talk","cl":"Talk","c":"purple","b":[],"kb":830,"p":false,"thumb":"","desc":"Deck Silex — MCP, plugins Claude, et le second cerveau d'équipe. HTML autonome, plein écran 16:9.","slug":"silex-talk-mcp","shared":false},{"f":"/a/passation-2026-07/","t":"Passation fondateurs — audits & schéma directeur","d":"2026-07-11","cat":"deck","cl":"Deck","c":"blue","b":["share"],"kb":93,"p":false,"thumb":"","desc":"Deck passation juillet 2026 : CD, plateforme A/B, qualité SaaS, mémoire, MCP/plugins.","slug":"passation-2026-07","shared":true}];
 
 // ── State ─────────────────────────────────────────────────────────
 const LS = {
@@ -348,9 +346,8 @@ function setShared(d, active) {
 
 function accessBadges(d) {
   const tags = [];
-  if ((d.vis || 'internal') === 'public' || (d.b || []).includes('public')) tags.push('public');
-  else tags.push('internal');
-  // share badge = live KV status (refreshed via /api/share), not registry snapshot alone
+  // internal always (catalogue is Access-only); share = live KV /s/ link
+  tags.push('internal');
   if (d.shared) tags.push('share');
   return badges(tags);
 }
@@ -449,8 +446,8 @@ function mkSection(label, color, items, showCat) {
 
 function matchesAccess(d) {
   if (S.access === 'all') return true;
-  if (S.access === 'internal') return (d.vis || 'internal') === 'internal';
-  if (S.access === 'public') return (d.vis || 'internal') === 'public' || (d.b || []).includes('public');
+  // Interne = pas de lien /s/ actif ; Partagé = share KV live
+  if (S.access === 'internal') return !d.shared;
   if (S.access === 'shared') return !!d.shared;
   return true;
 }

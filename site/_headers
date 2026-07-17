@@ -18,7 +18,7 @@
   Cache-Control: no-store
 /a/*
   Cache-Control: no-store
-/p/*
+/s/*
   Cache-Control: no-store
 
 # Assets

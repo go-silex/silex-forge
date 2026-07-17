@@ -14,7 +14,6 @@
     "thumb": "",
     "desc": "Formation fondateurs — organisation GitHub, variables, branches, CI/CD, plugins Claude, worktrees.",
     "slug": "github-claude-ops",
-    "vis": "internal",
     "shared": true
   },
   {
@@ -30,7 +29,6 @@
     "thumb": "",
     "desc": "Deck Silex — MCP, plugins Claude, et le second cerveau d'équipe. HTML autonome, plein écran 16:9.",
     "slug": "silex-talk-mcp",
-    "vis": "internal",
     "shared": false
   },
   {
@@ -48,7 +46,6 @@
     "thumb": "",
     "desc": "Deck passation juillet 2026 : CD, plateforme A/B, qualité SaaS, mémoire, MCP/plugins.",
     "slug": "passation-2026-07",
-    "vis": "internal",
     "shared": true
   }
 ]

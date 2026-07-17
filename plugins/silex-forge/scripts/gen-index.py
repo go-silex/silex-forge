@@ -4,8 +4,8 @@
 Landing interactive façon roxabi-forge :
   search · group (★ / type / date / none) · sort · cards|list · favorites · theme
 
-Les artefacts « public » ont une badge Share. Le catalogue reste derrière
-Cloudflare Access (racine = interne).
+Share = badge live (KV /s/). Le catalogue reste derrière Cloudflare Access.
+Pas de path /p/ (purgé).
 """
 from __future__ import annotations
 
@@ -62,9 +62,7 @@ def load_items() -> list[dict]:
         data.setdefault("date", "")
         data["path"] = data.get("path") or f"/a/{data['slug']}/"
         data["shared"] = bool(data.get("share_key") or data.get("share_url"))
-        data["public"] = data.get("visibility") == "public" or str(data.get("path", "")).startswith(
-            "/p/"
-        )
+        # /p/ purged — only /a/ (Access) + /s/ (share key)
         items.append(data)
     items.sort(key=lambda x: x.get("date") or "", reverse=True)
     return items
@@ -109,12 +107,9 @@ def to_manifest(items: list[dict]) -> list[dict]:
         t = it.get("type") or "html"
         has_p, thumb = preview_info(it)
         badges: list[str] = []
-        is_public = bool(it.get("public"))
         is_shared = bool(it.get("shared"))
         if is_shared:
             badges.append("share")
-        if is_public:
-            badges.append("public")
         out.append(
             {
                 "f": it["path"],
@@ -129,8 +124,6 @@ def to_manifest(items: list[dict]) -> list[dict]:
                 "thumb": thumb,
                 "desc": it.get("description") or "",
                 "slug": it["slug"],
-                # access facets for landing filter
-                "vis": "public" if is_public else "internal",
                 "shared": is_shared,
             }
         )
@@ -324,7 +317,6 @@ body::before{{
 .badges{{display:flex;gap:3px;flex-shrink:0;flex-wrap:wrap}}
 .badge{{font-family:var(--mono);font-size:.56rem;font-weight:600;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em}}
 .badge.share{{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent)}}
-.badge.public{{background:var(--green-dim);color:var(--green);border:1px solid var(--green)}}
 .badge.internal{{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue)}}
 .badge.latest{{background:var(--green-dim);color:var(--green);border:1px solid var(--green)}}
 .badge.draft{{background:var(--orange-dim);color:var(--orange);border:1px solid var(--orange)}}
@@ -386,7 +378,6 @@ footer a:hover{{color:var(--blue)}}
         <button type="button" class="seg" data-k="access" data-v="all">Tous</button>
         <button type="button" class="seg" data-k="access" data-v="internal">Interne</button>
         <button type="button" class="seg" data-k="access" data-v="shared">Partagé</button>
-        <button type="button" class="seg" data-k="access" data-v="public">Public</button>
       </div>
     </div>
     <div class="ctrl-group">
@@ -492,9 +483,8 @@ function setShared(d, active) {{
 
 function accessBadges(d) {{
   const tags = [];
-  if ((d.vis || 'internal') === 'public' || (d.b || []).includes('public')) tags.push('public');
-  else tags.push('internal');
-  // share badge = live KV status (refreshed via /api/share), not registry snapshot alone
+  // internal always (catalogue is Access-only); share = live KV /s/ link
+  tags.push('internal');
   if (d.shared) tags.push('share');
   return badges(tags);
 }}
@@ -593,8 +583,8 @@ function mkSection(label, color, items, showCat) {{
 
 function matchesAccess(d) {{
   if (S.access === 'all') return true;
-  if (S.access === 'internal') return (d.vis || 'internal') === 'internal';
-  if (S.access === 'public') return (d.vis || 'internal') === 'public' || (d.b || []).includes('public');
+  // Interne = pas de lien /s/ actif ; Partagé = share KV live
+  if (S.access === 'internal') return !d.shared;
   if (S.access === 'shared') return !!d.shared;
   return true;
 }}

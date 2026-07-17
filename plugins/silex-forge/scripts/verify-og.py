@@ -17,14 +17,18 @@ REQUIRED = [
 ]
 
 
-def check_html(html: str, label: str) -> list[str]:
+def check_html(html: str, label: str, expect_title: str = "") -> list[str]:
     errs: list[str] = []
+    import html as H
     for name, rx in REQUIRED:
         m = rx.search(html)
         if not m or not m.group(1).strip():
             errs.append(f"{label}: missing {name}")
         else:
-            print(f"  ✓ {name}: {m.group(1).strip()[:80]}")
+            val = H.unescape(m.group(1).strip())
+            print(f"  ✓ {name}: {val[:80]}")
+            if name == "title" and expect_title and expect_title not in val and H.unescape(expect_title) not in val:
+                errs.append(f"{label}: title mismatch (got {val!r})")
     return errs
 
 
@@ -48,15 +52,13 @@ def main() -> int:
     if args.file:
         print(f"verify file {args.file}")
         html = Path(args.file).read_text(encoding="utf-8")
-        errs.extend(check_html(html, "file"))
-        if args.expect_title and args.expect_title not in html:
-            errs.append(f"file: expect title contains {args.expect_title!r}")
+        errs.extend(check_html(html, "file", args.expect_title))
 
     if args.url:
         print(f"verify url {args.url}")
         try:
             html = fetch(args.url)
-            errs.extend(check_html(html, "live"))
+            errs.extend(check_html(html, "live", args.expect_title))
         except Exception as e:
             errs.append(f"live: fetch failed: {e}")
 

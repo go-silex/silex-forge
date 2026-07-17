@@ -1,0 +1,10 @@
+.DS_Store
+.claude/
+.grok/
+.cocoindex_code/
+node_modules/
+*.bak
+.env
+.env.*
+!.env.example
+.wrangler/

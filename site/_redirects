@@ -1,0 +1,7 @@
+# Pas de SPA fallback — 404.html structurel gère les chemins morts.
+# Racine = catalogue (derrière Access).
+
+# Anciens chemins live (avant /a/ prefix) → nouveaux
+/silex-talk-mcp /a/silex-talk-mcp/ 301
+/silex-talk-mcp/ /a/silex-talk-mcp/ 301
+/silex-talk-mcp/* /a/silex-talk-mcp/:splat 301

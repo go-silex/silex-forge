@@ -1,0 +1,30 @@
+# _headers — Cloudflare Pages (projet silex-forge)
+#
+# ⚠ Cache-Control : n'est PAS sur /* (héritage cumulatif Pages).
+# Voir silex-demos/site/_headers pour le piège concaténation.
+
+/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# HTML toujours frais (republier = voir tout de suite)
+/
+  Cache-Control: no-store
+/*/
+  Cache-Control: no-store
+/*.html
+  Cache-Control: no-store
+/a/*
+  Cache-Control: no-store
+/p/*
+  Cache-Control: no-store
+
+# Assets
+/*.js
+  Cache-Control: public, max-age=300
+/*.css
+  Cache-Control: public, max-age=300
+/images/*
+  Cache-Control: public, max-age=86400

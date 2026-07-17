@@ -110,16 +110,13 @@ Install :
 ## Miniatures OG (landing)
 
 ```bash
-# local — capture Playwright → JPEG compressé (Pillow q80)
-uv run --with playwright --with pillow \
-  python plugins/silex-forge/scripts/gen-og-images.py
-uv run --with playwright --with pillow \
-  python plugins/silex-forge/scripts/gen-og-images.py --slug mon-slug --force --quality 75
+# pure sh: Chrome headless + ffmpeg (pas de Python)
+plugins/silex-forge/scripts/gen-og-images.sh
+plugins/silex-forge/scripts/gen-og-images.sh --slug mon-slug --force --quality 4
 ```
 
-Écrit `site/a/<slug>/og.jpg` (1200×630, progressive JPEG).  
-Branché dans `publish.sh` + `--rebuild-index` (best-effort).  
-`gen-index.py` préfère `og.jpg` puis legacy `og.png`.
+Deps : `google-chrome`|`chromium`, `ffmpeg`, `jq`.  
+Écrit `site/a/<slug>/og.jpg` (1200×630). Branché dans `publish.sh` + `--rebuild-index`.
 
 ## Règles agent
 

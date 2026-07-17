@@ -97,18 +97,21 @@ gen_index() {
     || die "gen-index.py a échoué"
 }
 
-# Playwright + Pillow → site/a/<slug>/og.jpg (JPEG q80, best-effort)
+# Chrome headless + ffmpeg → site/a/<slug>/og.jpg (pure sh, best-effort)
 gen_og_images() {
   local slug="${1-}"
   local args=()
   [ -n "$slug" ] && args+=(--slug "$slug")
-  if command -v uv >/dev/null 2>&1; then
-    (cd "$WORK/repo" && uv run --with playwright --with pillow \
-      python plugins/silex-forge/scripts/gen-og-images.py "${args[@]}") \
+  local sh
+  sh="$(SCRIPTS)/gen-og-images.sh"
+  if [ ! -x "$sh" ]; then
+    chmod +x "$sh" 2>/dev/null || true
+  fi
+  if [ -f "$sh" ]; then
+    (cd "$WORK/repo" && bash "$sh" "${args[@]}") \
       && ok "og thumbs" || warn "gen-og-images skip/failed (publish continues)"
   else
-    (cd "$WORK/repo" && python3 plugins/silex-forge/scripts/gen-og-images.py "${args[@]}") \
-      && ok "og thumbs" || warn "gen-og-images skip/failed (publish continues)"
+    warn "gen-og-images.sh missing — skip thumbs"
   fi
 }
 

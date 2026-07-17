@@ -1,5 +1,4 @@
-# Deploy site/ → Cloudflare Pages (project silex-forge)
-# Source of truth = git. Token CF seulement dans les secrets GH (pas sur les postes).
+# Deploy site/ + functions/ → Cloudflare Pages (silex-forge)
 name: Deploy Pages
 
 on:
@@ -7,6 +6,8 @@ on:
     branches: [main]
     paths:
       - "site/**"
+      - "functions/**"
+      - "wrangler.toml"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
@@ -28,4 +29,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # functions/ + wrangler.toml bindings picked from repo root (cwd)
           command: pages deploy site --project-name=silex-forge --branch=main --commit-dirty=true

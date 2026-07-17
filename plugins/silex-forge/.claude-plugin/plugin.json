@@ -1,0 +1,8 @@
+{
+  "name": "silex-forge",
+  "version": "1.0.0",
+  "description": "Publication d'artefacts HTML sur forge.gosilex.com",
+  "author": {
+    "name": "Silex"
+  }
+}

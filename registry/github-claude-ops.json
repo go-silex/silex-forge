@@ -1,0 +1,10 @@
+{
+  "slug": "github-claude-ops",
+  "title": "GitHub, secrets & Claude",
+  "description": "Formation fondateurs — organisation GitHub, variables, branches, CI/CD, plugins Claude, worktrees.",
+  "type": "deck",
+  "visibility": "internal",
+  "date": "2026-07-17",
+  "path": "/a/github-claude-ops/",
+  "knowledge": "docs/knowledge/github-env-branches-plugins.md"
+}

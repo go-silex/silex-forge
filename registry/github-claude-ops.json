@@ -6,5 +6,9 @@
   "visibility": "internal",
   "date": "2026-07-17",
   "path": "/a/github-claude-ops/",
-  "knowledge": "docs/knowledge/github-env-branches-plugins.md"
+  "knowledge": "docs/knowledge/github-env-branches-plugins.md",
+  "list_on_index": true,
+  "share_key": "e0gRjiUJWuXLTKC8gmFW6oH6",
+  "share_path": "/s/github-claude-ops/e0gRjiUJWuXLTKC8gmFW6oH6/",
+  "share_url": "https://forge.gosilex.com/s/github-claude-ops/e0gRjiUJWuXLTKC8gmFW6oH6/"
 }

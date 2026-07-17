@@ -39,18 +39,14 @@ def load_items() -> list[dict]:
         if not data.get("slug") or not data.get("title"):
             print(f"skip {p.name}: slug/title required", file=sys.stderr)
             continue
-        vis = data.get("visibility", "internal")
-        if vis not in ("internal", "public"):
-            vis = "internal"
-        data["visibility"] = vis
+        # Catalogue: only list_on_index (default True). Share-only links stay hidden.
+        if data.get("list_on_index", True) is False:
+            continue
         data.setdefault("type", "html")
         data.setdefault("description", "")
         data.setdefault("date", "")
-        # Canonical paths
-        if vis == "public":
-            data["path"] = data.get("path") or f"/p/{data['slug']}/"
-        else:
-            data["path"] = data.get("path") or f"/a/{data['slug']}/"
+        data["path"] = data.get("path") or f"/a/{data['slug']}/"
+        data["shared"] = bool(data.get("share_key") or data.get("share_url"))
         items.append(data)
     # newest first by date string
     items.sort(key=lambda x: x.get("date") or "", reverse=True)
@@ -58,12 +54,9 @@ def load_items() -> list[dict]:
 
 
 def card(item: dict) -> str:
-    vis = item["visibility"]
-    pill_vis = (
-        '<span class="pill public">Public</span>'
-        if vis == "public"
-        else '<span class="pill muted">Interne</span>'
-    )
+    pill_vis = '<span class="pill muted">Interne · Access</span>'
+    if item.get("shared"):
+        pill_vis += ' <span class="pill public">Share actif</span>'
     tlabel = TYPE_LABEL.get(item["type"], item["type"].title())
     date_s = str(item.get("date") or "")
     date_pill = f'<span class="pill muted">{_esc(date_s)}</span>' if date_s else ""
@@ -101,8 +94,8 @@ def render(items: list[dict]) -> str:
       <p>Aucun artefact publié pour l’instant.</p>
       <p class="empty-hint">Utilise <code>forge-publish</code> pour pousser un HTML sur <code>/a/&lt;slug&gt;/</code>.</p>
     </div>"""
-    n_pub = sum(1 for i in items if i["visibility"] == "public")
-    n_int = len(items) - n_pub
+    n_shared = sum(1 for i in items if i.get("shared"))
+    n_int = len(items)
     today = date.today().isoformat()
     return f"""<!DOCTYPE html>
 <html lang="fr">
@@ -239,15 +232,15 @@ footer a:hover {{ color: var(--secondary); }}
     <h1>Forge <em>Silex</em></h1>
     <p class="lede">
       Host d’artefacts HTML d’équipe — decks, talks, guides.
-      <strong>Accès par défaut protégé</strong> (Access).
-      Les chemins <code style="font-family:var(--font-mono);font-size:.9em;background:var(--mist);padding:1px 6px">/p/…</code>
-      peuvent être publics (bypass Access).
+      <strong>Catalogue = équipe only</strong> (Access).
+      Un lien <em>Partager</em> crée une URL à clé sous
+      <code style="font-family:var(--font-mono);font-size:.9em;background:var(--mist);padding:1px 6px">/s/…/&lt;key&gt;/</code>
+      — publique, <strong>non listée</strong> ici.
     </p>
 
     <div class="stats">
-      <span><b>{len(items)}</b> artefact{"s" if len(items) != 1 else ""}</span>
-      <span><b>{n_int}</b> interne{"s" if n_int != 1 else ""}</span>
-      <span><b>{n_pub}</b> public{"s" if n_pub != 1 else ""}</span>
+      <span><b>{n_int}</b> au catalogue</span>
+      <span><b>{n_shared}</b> avec share</span>
       <span>index {today}</span>
     </div>
 

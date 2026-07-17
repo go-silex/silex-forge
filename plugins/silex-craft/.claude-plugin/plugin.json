@@ -1,0 +1,6 @@
+{
+  "name": "silex-craft",
+  "version": "1.0.0",
+  "description": "Présentations HTML Silex (silex-slides) + Rocky — hébergés avec forge.gosilex.com",
+  "author": { "name": "Silex" }
+}

@@ -1,0 +1,9 @@
+# Cloudflare Pages — silex-forge
+# Deploy: wrangler pages deploy site --project-name=silex-forge
+name = "silex-forge"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "site"
+
+[[kv_namespaces]]
+binding = "SHARES"
+id = "YOUR_KV_NAMESPACE_ID"

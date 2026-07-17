@@ -51,3 +51,13 @@ publish.sh --unshare mon-deck
 |---|---|---|
 | Silex Forge | `forge.gosilex.com` | Allow `@gosilex.com` + mickael@bouly.io |
 | Silex Forge · share public | `forge.gosilex.com/s` | **Bypass** everyone |
+
+## Mint au clic (v3 — 2026-07-17)
+
+1. Barre **Partager** sur `/a/<slug>/` → `POST /api/share` `{ slug }`
+2. API (Pages Function) écrit la clé en **KV** `SHARES`
+3. URL renvoyée : `/s/<slug>/<key>/` — **Function** valide KV puis sert `/a/<slug>/` via ASSETS
+4. Clipboard automatique
+5. **⇧+clic** = `rotate: true` (nouvelle clé, ancien lien mort)
+
+Prérequis : être connecté via **Cloudflare Access** (JWT sur la requête).

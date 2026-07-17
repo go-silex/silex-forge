@@ -268,11 +268,12 @@ body::before{{
 .card-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}}
 .card{{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;transition:border-color .15s,transform .12s,box-shadow .15s;color:inherit;position:relative}}
 .card:hover{{transform:translateY(-2px)}}
-.card-thumb{{width:100%;height:136px;overflow:hidden;background:var(--surface2);border-bottom:1px solid var(--border);position:relative;flex-shrink:0}}
+/* Full-bleed thumb: edge-to-edge card width, OG aspect ratio (1200×630) */
+.card-thumb{{width:100%;aspect-ratio:1200/630;overflow:hidden;background:var(--surface2);border-bottom:1px solid var(--border);position:relative;flex-shrink:0;margin:0;padding:0;line-height:0}}
 .card-thumb img{{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .25s ease}}
-.card:hover .card-thumb img{{transform:scale(1.03)}}
-.card-thumb.no-preview{{display:flex;align-items:center;justify-content:center}}
-.card-thumb.no-preview::before{{content:'⊞';font-size:1.55rem;color:var(--text-xdim);opacity:.32;line-height:1}}
+.card:hover .card-thumb img{{transform:scale(1.025)}}
+.card-thumb.no-preview{{display:flex;align-items:center;justify-content:center;line-height:normal;min-height:120px;aspect-ratio:1200/630}}
+.card-thumb.no-preview::before{{content:'⊞';font-size:1.75rem;color:var(--text-xdim);opacity:.32;line-height:1}}
 .card.amber .card-thumb.no-preview{{background:var(--accent-dim)}}
 .card.blue .card-thumb.no-preview{{background:var(--blue-dim)}}
 .card.green .card-thumb.no-preview{{background:var(--green-dim)}}

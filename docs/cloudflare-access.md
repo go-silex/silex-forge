@@ -9,8 +9,15 @@ Certaines pages peuvent être **publiques** via le préfixe `/p/`.
 |---|---|---|
 | `/` (catalogue) | Interne | **Protégé** |
 | `/a/<slug>/` | Interne (défaut publish) | **Protégé** |
-| `/p/<slug>/` | Public (opt-in `--public`) | **Bypass** |
-| `/images/…` | Assets | Protégé ou bypass selon policy (souvent protégé OK) |
+| `/s/<slug>/<key>/` | Share (opt-in `--share`) | **Bypass** — clé dans le path, **non listé** |
+| `/images/…` | Assets | Protégé (équipe) |
+
+Apps Zero Trust (créées 2026-07-17) :
+
+| App | Domain | Policy |
+|---|---|---|
+| **Silex Forge** | `forge.gosilex.com` | Allow `@gosilex.com` + `mickael@bouly.io` |
+| **Silex Forge · share public** | `forge.gosilex.com/s` | Bypass everyone |
 
 ## Setup Zero Trust (une fois)
 

@@ -1,19 +1,20 @@
 # silex-forge — agent context
 
+Voir **`CLAUDE.md`** (chim opérationnel complet).
+
 | | |
 |---|---|
 | **URL** | https://forge.gosilex.com |
-| **Job** | Host artefacts HTML **internes** (Access) + opt-in public `/p/` |
-| **≠** | `demo.gosilex.com` (clients) · `share.gosilex.com` (produit ACL) · Vercel |
+| **Job** | Artefacts HTML équipe + share à clé |
 | **Publish** | `plugins/silex-forge/scripts/publish.sh` |
-| **Index** | `plugins/silex-forge/scripts/gen-index.py` ← `registry/*.json` |
+| **Plugins** | `silex-forge` (publish) · `silex-craft` (slides, rocky) |
 
 ## Paths
 
-- Interne : `site/a/<slug>/`
-- Public : `site/p/<slug>/`
-- Ne jamais servir `registry/` (hors `site/`)
+- `/a/<slug>/` — interne Access, catalogue
+- `/s/<slug>/<key>/` — share public unlisted (Bypass Access)
+- `registry/` — jamais servi
 
 ## Deploy
 
-Git push `main` → CF Pages output `site`. Voir `docs/cloudflare-pages.md` + `docs/cloudflare-access.md`.
+Push `main` → GH Action Pages. Token BW : `cloudflare/silex-forge-pages-deploy`.

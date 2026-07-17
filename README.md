@@ -1,6 +1,8 @@
 # silex-forge
 
-**Host d’artefacts HTML internes** — `https://forge.gosilex.com`
+**Host d’artefacts HTML d’équipe** — `https://forge.gosilex.com`
+
+Access team + share unlisted `/s/<slug>/<key>/`. Voir `CLAUDE.md`.
 
 | | |
 |---|---|

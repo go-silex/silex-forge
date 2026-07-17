@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silex — Pitch & Vision (base 10 slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --paper:#FEFEFE; --paper-deep:#EEF2F7; --mist:#DCE7F2;
+    --sky:#6B9FD4; --sky-soft:#A8C2D8; --haze:#D4E4EF;
+    --secondary:#2e5f9d;
+    --peach:#EB7457; --peach-soft:#F2B49A; --bronze:#B8976E;
+    --ink:#031635; --ink-soft:#1a2b4b;
+    --stage-bg:#0a0f14; --slide-bg:var(--paper);
+  }
+
+  /* ===== viewport-base.css (fixed 16:9 stage) ===== */
+  html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg);}
+  .deck-viewport{position:fixed;inset:0;overflow:hidden;background:var(--stage-bg);}
+  .deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;background:var(--slide-bg);}
+  .slide{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;display:block;visibility:hidden;opacity:0;pointer-events:none;background:var(--slide-bg);}
+  .slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1;}
+  img,video{max-width:100%;max-height:100%;}
+  @media print{html,body{width:1920px;height:auto;overflow:visible;background:#fff;}
+    .deck-viewport{position:static;overflow:visible;}
+    .deck-stage{position:static;width:auto;height:auto;transform:none!important;}
+    .slide{position:relative;display:block!important;visibility:visible!important;opacity:1!important;width:1920px;height:1080px;break-after:page;page-break-after:always;}}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.2s!important;}}
+
+  /* ===== Silex Halo type ===== */
+  .display{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:150px;line-height:.92;letter-spacing:-.018em;color:var(--ink);}
+  .display-md{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:120px;line-height:.96;letter-spacing:-.015em;color:var(--ink);}
+  .display-it{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-style:italic;font-size:104px;line-height:1.05;letter-spacing:-.005em;color:var(--ink);}
+  .numeral{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:150px;line-height:.9;letter-spacing:-.02em;color:var(--ink);}
+  .headline{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:84px;line-height:1.04;letter-spacing:-.005em;color:var(--ink);}
+  .headline-sm{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:50px;line-height:1.05;color:var(--ink);}
+  .lede{font-family:'Hanken Grotesk',system-ui,sans-serif;font-weight:400;font-size:32px;line-height:1.5;color:var(--ink);}
+  .body{font-family:'Hanken Grotesk',system-ui,sans-serif;font-weight:400;font-size:25px;line-height:1.5;color:var(--ink);}
+  .body-sm{font-family:'Hanken Grotesk',system-ui,sans-serif;font-weight:400;font-size:20px;line-height:1.5;color:var(--ink);}
+  .micro{font-family:'Hanken Grotesk',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.2;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:400;font-size:22px;letter-spacing:.04em;color:var(--ink);}
+  .it{font-style:italic;}
+  .accent{color:var(--secondary);} .peach{color:var(--peach);}
+  .soft{opacity:.66;}
+
+  /* ===== Atmosphere ===== */
+  .sky-bloom{position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 55% at 68% 30%,rgba(107,159,212,.55) 0%,rgba(107,159,212,.34) 32%,rgba(212,228,239,.20) 58%,rgba(254,254,254,0) 82%);}
+  .sky-bloom.left{background:radial-gradient(58% 54% at 24% 36%,rgba(107,159,212,.50) 0%,rgba(107,159,212,.30) 32%,rgba(212,228,239,.18) 58%,rgba(254,254,254,0) 82%);}
+  .peach-bloom{position:absolute;inset:0;pointer-events:none;background:radial-gradient(40% 38% at 16% 84%,rgba(235,116,87,.20) 0%,rgba(242,180,154,.12) 40%,rgba(254,254,254,0) 74%);}
+  .peach-bloom.tr{background:radial-gradient(36% 34% at 88% 14%,rgba(235,116,87,.18) 0%,rgba(242,180,154,.10) 42%,rgba(254,254,254,0) 74%);}
+  .dawn-halo{position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 62% at 50% 120%,rgba(212,228,239,0) 0%,rgba(242,180,154,.42) 14%,rgba(184,151,110,.30) 26%,rgba(168,194,216,.42) 46%,rgba(107,159,212,.40) 64%,rgba(254,254,254,0) 84%);}
+  .grain{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.15;mix-blend-mode:soft-light;filter:url(#silexGrain);}
+
+  /* ===== Hero photo + scrim ===== */
+  .hero{position:absolute;inset:0;z-index:0;overflow:hidden;}
+  .hero img{width:100%;height:100%;object-fit:cover;}
+  .scrim-l{position:absolute;inset:0;background:linear-gradient(100deg,var(--paper) 0%,rgba(254,254,254,.92) 30%,rgba(254,254,254,.55) 52%,rgba(254,254,254,0) 78%);}
+  .scrim-b{position:absolute;inset:0;background:linear-gradient(0deg,var(--paper) 2%,rgba(254,254,254,.7) 22%,rgba(254,254,254,0) 55%);}
+
+  /* ===== layout helpers ===== */
+  .pad{position:absolute;inset:0;padding:110px 120px;display:flex;flex-direction:column;z-index:5;}
+  .hairline{height:1px;background:var(--ink);width:100%;}
+  .hairline.soft{background:rgba(3,22,53,.16);}
+  .pagenum{position:absolute;right:48px;bottom:42px;z-index:30;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.08em;color:var(--ink);opacity:.55;}
+  .eyebrow-row{display:flex;align-items:center;gap:18px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--peach);}
+  .wordmark{font-family:'Instrument Serif',serif;font-size:40px;color:var(--ink);letter-spacing:-.01em;}
+  .stone{height:46px;width:auto;opacity:.95;}
+
+  /* placeholder zone for visuals to create */
+  .ph{border:1px dashed rgba(3,22,53,.34);border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:40px;background:rgba(108,159,212,.06);}
+  .ph .micro{opacity:.7;}
+  .ph .body-sm{opacity:.6;max-width:80%;}
+
+  /* strand rows */
+  .strand{display:grid;grid-template-columns:96px 1fr;gap:28px;padding:26px 0;border-bottom:1px solid rgba(3,22,53,.16);align-items:baseline;}
+  .strand .n{font-family:'Instrument Serif',serif;font-size:48px;line-height:1;color:var(--ink);}
+  .strand .t{font-family:'Instrument Serif',serif;font-size:40px;line-height:1.05;color:var(--ink);}
+  .strand .d{font-family:'Hanken Grotesk',sans-serif;font-size:21px;line-height:1.45;color:var(--ink);opacity:.72;margin-top:6px;}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);}
+  .slide.visible .reveal{opacity:1;transform:none;}
+  .slide.visible .d1{transition-delay:.08s}.slide.visible .d2{transition-delay:.18s}
+  .slide.visible .d3{transition-delay:.28s}.slide.visible .d4{transition-delay:.38s}
+  .slide.visible .d5{transition-delay:.48s}.slide.visible .d6{transition-delay:.58s}
+
+  .vp{border-radius:20px;overflow:hidden;aspect-ratio:1;background:linear-gradient(135deg,#fff,#eaf1fc 55%,#d6e4fb);}
+  .vp img{width:100%;height:100%;object-fit:cover;}
+</style>
+</head>
+<body>
+<!-- grain filter (shared) -->
+<svg width="0" height="0" style="position:absolute"><filter id="silexGrain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter></svg>
+
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+
+  <!-- 01 — COVER -->
+  <section class="slide active">
+    <div class="hero"><img src="assets/clouds.png" alt=""></div>
+    <div class="scrim-l"></div>
+    <div class="dawn-halo"></div>
+    <div class="grain"></div>
+    <div class="pad">
+      <div class="eyebrow-row reveal d1"><span class="dot"></span><span class="micro">Agence IA-native · CAIO as a service</span></div>
+      <div style="margin:auto 0;">
+        <h1 class="display reveal d2">Votre Chief AI Officer,<br><span class="it accent">as a service.</span></h1>
+        <p class="lede reveal d3" style="margin-top:40px;max-width:900px;">La méthode 0 recrutement pour devenir AI-native en 3 mois.</p>
+      </div>
+      <div class="eyebrow-row reveal d4" style="justify-content:space-between;align-items:flex-end;">
+        <span class="wordmark">Silex</span>
+        <span class="mono">gosilex.com</span>
+      </div>
+    </div>
+    <div class="pagenum">01 / 10</div>
+  </section>
+
+  <!-- 02 — VISION / CONVICTION -->
+  <section class="slide">
+    <div class="sky-bloom"></div>
+    <div class="peach-bloom"></div>
+    <div class="grain"></div>
+    <div class="pad" style="justify-content:center;">
+      <p class="micro reveal d1" style="margin-bottom:48px;">Notre conviction</p>
+      <h2 class="display-it reveal d2" style="max-width:1400px;">« L'IA n'est pas une automatisation de plus.<br>C'est une nouvelle façon de <span class="accent">construire l'entreprise.</span> »</h2>
+      <p class="body reveal d3 soft" style="margin-top:48px;max-width:1000px;">Brancher un chatbot, automatiser trois tâches : ce n'est pas une transformation. Les vraies entreprises AI-native repensent l'organisation de fond en comble.</p>
+    </div>
+    <div class="pagenum">02 / 10</div>
+  </section>
+
+  <!-- 03 — LE PROBLÈME (visuel à créer) -->
+  <section class="slide">
+    <div class="sky-bloom left"></div>
+    <div class="grain"></div>
+    <div class="pad" style="flex-direction:row;gap:90px;align-items:center;">
+      <div style="flex:1;">
+        <p class="micro reveal d1" style="margin-bottom:34px;">Le problème</p>
+        <h2 class="headline reveal d2">L'IA cosmétique<br>ne transforme rien.</h2>
+        <p class="body reveal d3 soft" style="margin-top:36px;max-width:680px;">90 % des « projets IA » sont décoratifs : un outil greffé sur une organisation inchangée. Le vernis brille, la structure reste la même, et l'avantage s'évapore en six mois.</p>
+      </div>
+      <div class="ph reveal d4" style="flex:0 0 720px;height:680px;">
+        <span class="micro">🎨 Visuel à créer</span>
+        <span class="body-sm">Illustration painterly (style Rocky) : « vernis fin vs fondation reconstruite » — IA cosmétique opposée à une entreprise AI-native.</span>
+      </div>
+    </div>
+    <div class="pagenum">03 / 10</div>
+  </section>
+
+  <!-- 04 — L'OFFRE : CAIO -->
+  <section class="slide">
+    <div class="hero" style="left:auto;right:0;width:46%;"><img src="assets/vp-2-profiles.webp" alt="Trois profils réunis en un seul"></div>
+    <div class="scrim-l"></div>
+    <div class="sky-bloom left"></div>
+    <div class="grain"></div>
+    <div class="pad" style="width:62%;">
+      <p class="micro reveal d1">L'offre</p>
+      <h2 class="headline reveal d2" style="margin-top:28px;">Un seul partenaire.<br><span class="it accent">Trois profils.</span></h2>
+      <div style="margin-top:46px;">
+        <div class="strand reveal d3" style="grid-template-columns:1fr;"><div><div class="t">Stratège</div><div class="d">Il identifie où l'IA crée un vrai levier et le transforme en plan priorisé.</div></div></div>
+        <div class="strand reveal d4" style="grid-template-columns:1fr;"><div><div class="t">Builder</div><div class="d">Il construit, et on exécute pour vous, les mains dans le clavier.</div></div></div>
+        <div class="strand reveal d5" style="grid-template-columns:1fr;border-bottom:none;"><div><div class="t">Orchestrateur</div><div class="d">Il forme vos équipes et fait évoluer le système pour qu'il vous survive.</div></div></div>
+      </div>
+    </div>
+    <div class="pagenum">04 / 10</div>
+  </section>
+
+  <!-- 05 — CE QUE FAIT VOTRE AI OFFICER -->
+  <section class="slide">
+    <div class="sky-bloom"></div>
+    <div class="grain"></div>
+    <div class="pad">
+      <p class="micro reveal d1">Le rôle</p>
+      <h2 class="headline reveal d2" style="margin-top:24px;margin-bottom:30px;">Ce que fait votre AI Officer.</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 90px;">
+        <div class="strand reveal d3"><div class="n">01</div><div><div class="t">Stratégie</div><div class="d">On cible où l'IA crée du levier, traduit en plan clair et priorisé.</div></div></div>
+        <div class="strand reveal d3"><div class="n">02</div><div><div class="t">Roadmap</div><div class="d">Une séquence concrète de projets, sprints et jalons, enrichie en continu.</div></div></div>
+        <div class="strand reveal d4"><div class="n">03</div><div><div class="t">Transformation IA</div><div class="d">On reconstruit la façon de travailler : second cerveau, agents, boucles.</div></div></div>
+        <div class="strand reveal d4"><div class="n">04</div><div><div class="t">Outils internes</div><div class="d">Outils et automatisations sur mesure, là où le travail se passe.</div></div></div>
+        <div class="strand reveal d5" style="border-bottom:none;"><div class="n">05</div><div><div class="t">Upskilling</div><div class="d">On forme vos équipes au fur et à mesure pour que l'adoption tienne.</div></div></div>
+      </div>
+    </div>
+    <div class="pagenum">05 / 10</div>
+  </section>
+
+  <!-- 06 — LE CONVERSATIONAL ENGINE -->
+  <section class="slide">
+    <div class="sky-bloom"></div>
+    <div class="peach-bloom tr"></div>
+    <div class="grain"></div>
+    <div class="pad" style="justify-content:center;">
+      <p class="micro reveal d1">La primitive</p>
+      <h2 class="headline reveal d2" style="margin-top:24px;">Le Conversational Engine.</h2>
+      <p class="body reveal d3 soft" style="margin-top:24px;max-width:1050px;">De l'intention à l'asset, sans project management. Une conversation humaine devient un outil digital fonctionnel.</p>
+      <div class="reveal d4" style="display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;align-items:center;margin-top:80px;max-width:1500px;">
+        <div><div class="numeral" style="font-size:64px;">Conversation</div><div class="d body-sm soft" style="margin-top:10px;">L'intention, dite simplement.</div></div>
+        <div class="mono" style="text-align:center;opacity:.5;">→</div>
+        <div><div class="numeral accent" style="font-size:64px;">Engine</div><div class="d body-sm soft" style="margin-top:10px;">Le moteur Silex construit.</div></div>
+        <div class="mono" style="text-align:center;opacity:.5;">→</div>
+        <div><div class="numeral" style="font-size:64px;">Outil livré</div><div class="d body-sm soft" style="margin-top:10px;">Fonctionnel, en 48h.</div></div>
+      </div>
+      <p class="body-sm reveal d5 soft" style="margin-top:64px;">🎨 Option : remplacer ce schéma par une illustration painterly du flux (style Rocky).</p>
+    </div>
+    <div class="pagenum">06 / 10</div>
+  </section>
+
+  <!-- 07 — POURQUOI ÇA MARCHE -->
+  <section class="slide">
+    <div class="sky-bloom left"></div>
+    <div class="grain"></div>
+    <div class="pad">
+      <p class="micro reveal d1">Les bénéfices</p>
+      <h2 class="headline reveal d2" style="margin-top:24px;margin-bottom:50px;">Pourquoi ça marche.</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:54px;">
+        <div class="reveal d3"><div class="vp"><img src="assets/vp-4-fast-delivery.webp" alt="Coureur, livraison rapide"></div><div class="headline-sm" style="margin-top:24px;">Livraison ultra-rapide</div><div class="body-sm soft" style="margin-top:8px;">Un projet à la fois, livré vite.</div></div>
+        <div class="reveal d4"><div class="vp"><img src="assets/vp-5-ownership.webp" alt="Cerveau, propriété du système"></div><div class="headline-sm" style="margin-top:24px;">Le système vous appartient</div><div class="body-sm soft" style="margin-top:8px;">Pleine propriété, aucun lock-in.</div></div>
+        <div class="reveal d5"><div class="vp"><img src="assets/vp-3-fixed-rate.webp" alt="Dollar, tarif fixe"></div><div class="headline-sm" style="margin-top:24px;">Tarif mensuel fixe</div><div class="body-sm soft" style="margin-top:8px;">Clair, transparent, sans surprise.</div></div>
+      </div>
+    </div>
+    <div class="pagenum">07 / 10</div>
+  </section>
+
+  <!-- 08 — ILS NOUS FONT CONFIANCE -->
+  <section class="slide">
+    <div class="sky-bloom"></div>
+    <div class="grain"></div>
+    <div class="pad" style="justify-content:center;">
+      <p class="micro reveal d1" style="text-align:center;margin-bottom:64px;">Ils nous font confiance</p>
+      <div class="reveal d2" style="display:flex;align-items:center;justify-content:center;gap:96px;opacity:.6;margin-bottom:80px;flex-wrap:wrap;">
+        <img src="assets/logo-google-grey.png" style="height:58px;width:auto;object-fit:contain;" alt="Google">
+        <img src="assets/logo-revenu-grey.png" style="height:66px;width:auto;object-fit:contain;" alt="Revenu-IA">
+        <img src="assets/logo-sia-grey.png" style="height:42px;width:auto;object-fit:contain;" alt="Sia Partners">
+        <img src="assets/logo-antidox-grey.png" style="height:52px;width:auto;object-fit:contain;" alt="Antidox">
+      </div>
+      <div class="hairline soft reveal d3" style="max-width:1000px;margin:0 auto;"></div>
+      <div class="ph reveal d4" style="max-width:1000px;height:220px;margin:54px auto 0;">
+        <span class="micro">📸 Cas client à fournir</span>
+        <span class="body-sm">Ex. « Antidox : X heures économisées / semaine » ou « Synapsys : +Y % ». 1 à 2 chiffres réels + nom du client.</span>
+      </div>
+    </div>
+    <div class="pagenum">08 / 10</div>
+  </section>
+
+  <!-- 09 — OFFRE & PRIX -->
+  <section class="slide">
+    <div class="sky-bloom left"></div>
+    <div class="peach-bloom"></div>
+    <div class="grain"></div>
+    <div class="pad" style="flex-direction:row;gap:100px;">
+      <div style="flex:0 0 660px;display:flex;flex-direction:column;justify-content:center;">
+        <p class="micro reveal d1">Une seule offre</p>
+        <div class="reveal d2" style="margin-top:30px;">
+          <span class="mono soft" style="text-decoration:line-through;color:var(--peach);font-size:26px;">9 900 € / mois</span>
+          <div class="numeral" style="font-size:160px;margin-top:6px;">7 500 €</div>
+          <div class="lede soft">par mois · engagement 3 mois</div>
+        </div>
+        <p class="body reveal d3" style="margin-top:30px;max-width:560px;"><span class="accent">Offre limitée jusqu'en septembre.</span> Un CAIO fractionné, hébergé et sécurisé, suivi dans Spark.</p>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <p class="micro reveal d3" style="margin-bottom:20px;">Ce qui est inclus</p>
+        <div class="reveal d4">
+          <div class="strand soft" style="grid-template-columns:1fr;padding:16px 0;"><div class="body">Identification des opportunités, en continu</div></div>
+          <div class="strand soft" style="grid-template-columns:1fr;padding:16px 0;"><div class="body">1 projet mené à la fois, de bout en bout</div></div>
+          <div class="strand soft" style="grid-template-columns:1fr;padding:16px 0;"><div class="body">Modifications & mises à jour illimitées</div></div>
+          <div class="strand soft" style="grid-template-columns:1fr;padding:16px 0;"><div class="body">On exécute pour vous, pas que du conseil</div></div>
+          <div class="strand soft" style="grid-template-columns:1fr;padding:16px 0;"><div class="body">Sécurité & hébergement des données</div></div>
+          <div class="strand soft" style="grid-template-columns:1fr;padding:16px 0;"><div class="body">Formation des équipes + bi-weekly + Spark</div></div>
+          <div class="strand soft" style="grid-template-columns:1fr;padding:16px 0;border-bottom:none;"><div class="body">Communication par Slack & email</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="pagenum">09 / 10</div>
+  </section>
+
+  <!-- 10 — CLÔTURE / CTA -->
+  <section class="slide">
+    <div class="hero"><img src="assets/man_looking_at_the_horizon.png" alt=""></div>
+    <div class="scrim-l"></div>
+    <div class="dawn-halo"></div>
+    <div class="grain"></div>
+    <div class="pad">
+      <div class="eyebrow-row reveal d1"><img src="assets/silex-stone.png" class="stone" alt="Silex"><span class="wordmark">Silex</span></div>
+      <div style="margin:auto 0;">
+        <h2 class="display reveal d2">Commençons par<br><span class="it accent">une conversation.</span></h2>
+        <p class="lede reveal d3 soft" style="margin-top:36px;max-width:820px;">Un appel de 30 minutes avec un fondateur. Gratuit, sans engagement.</p>
+      </div>
+      <div class="reveal d4"><span class="mono">cal.com/silex&nbsp;&nbsp;·&nbsp;&nbsp;hello@gosilex.com</span></div>
+    </div>
+    <div class="pagenum">10 / 10</div>
+  </section>
+
+</main>
+</div>
+
+<script>
+class SilexDeck{
+  constructor(){
+    this.slides=[...document.querySelectorAll('.slide')];
+    this.i=0;this.stage=document.getElementById('deckStage');
+    this.scale();addEventListener('resize',()=>this.scale());
+    addEventListener('keydown',e=>{
+      if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();this.go(1);}
+      if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();this.go(-1);}
+      if(e.key==='Home')this.show(0); if(e.key==='End')this.show(this.slides.length-1);
+    });
+    let x0=null;addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
+    addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)this.go(dx<0?1:-1);x0=null;},{passive:true});
+    addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>40){this._t=this._t||0;const n=Date.now();if(n-this._t>700){this._t=n;this.go(e.deltaY>0?1:-1);}}},{passive:true});
+    this.show(0);
+  }
+  scale(){const f=Math.min(innerWidth/1920,innerHeight/1080);this.stage.style.transform=`translate(${(innerWidth-1920*f)/2}px,${(innerHeight-1080*f)/2}px) scale(${f})`;}
+  go(d){this.show(this.i+d);}
+  show(n){this.i=Math.max(0,Math.min(n,this.slides.length-1));this.slides.forEach((s,k)=>{s.classList.toggle('active',k===this.i);s.classList.toggle('visible',k===this.i);});}
+}
+new SilexDeck();
+</script>
+</body>
+</html>

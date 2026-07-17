@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silex Halo — aperçu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* === SILEX HALO TOKENS === */
+:root{
+  --paper:#FEFEFE; --paper-deep:#EEF2F7; --mist:#DCE7F2;
+  --sky:#6B9FD4; --sky-soft:#A8C2D8; --haze:#D4E4EF;
+  --peach:#EB7457; --peach-soft:#F2B49A; --bronze:#B8976E;
+  --secondary:#2e5f9d; --ink:#031635; --ink-soft:#1a2b4b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:#cdd6e0;overflow:hidden;}
+
+/* === FIXED 16:9 STAGE (simplified viewport-base) === */
+.viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;}
+.stage{position:relative;width:1920px;height:1080px;flex:0 0 auto;
+  transform-origin:center center;background:var(--paper);overflow:hidden;}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .5s ease;}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto;}
+
+/* === ATMOSPHERE === */
+.sky-bloom{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(58% 54% at 70% 30%,
+    rgba(107,159,212,.50) 0%, rgba(107,159,212,.30) 33%,
+    rgba(212,228,239,.18) 58%, rgba(254,254,254,0) 82%);}
+.peach-bloom{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(38% 36% at 14% 86%,
+    rgba(235,116,87,.18) 0%, rgba(242,180,154,.11) 42%, rgba(254,254,254,0) 74%);}
+.dawn-halo{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(72% 64% at 50% 120%,
+    rgba(242,180,154,.0) 0%, rgba(242,180,154,.40) 14%,
+    rgba(184,151,110,.26) 26%, rgba(168,194,216,.40) 46%,
+    rgba(107,159,212,.36) 64%, rgba(254,254,254,0) 84%);}
+
+/* === HERO PHOTO === */
+.hero-bleed{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.hero-bleed img{width:100%;height:100%;object-fit:cover;}
+.hero-scrim{position:absolute;inset:0;
+  background:linear-gradient(98deg, var(--paper) 0%, rgba(254,254,254,.94) 28%,
+    rgba(254,254,254,.55) 52%, rgba(254,254,254,0) 80%);}
+
+/* === GRAIN (signature) === */
+.grain{position:absolute;inset:0;pointer-events:none;z-index:50;
+  opacity:.16;mix-blend-mode:soft-light;filter:url(#silexGrain);}
+
+/* === TYPE === */
+.eyebrow{font-family:'Hanken Grotesk',sans-serif;font-weight:600;text-transform:uppercase;
+  letter-spacing:.24em;font-size:18px;color:var(--ink);}
+.eyebrow .dot{color:var(--peach);}
+.display{font-family:'Instrument Serif',serif;font-weight:400;color:var(--ink);
+  font-size:184px;line-height:.9;letter-spacing:-0.02em;}
+.display em{font-style:italic;}
+.lede{font-family:'Hanken Grotesk',sans-serif;font-weight:400;color:var(--ink);
+  font-size:25px;line-height:1.5;max-width:760px;}
+.lede b{color:var(--peach);font-weight:500;}
+.mono{font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.04em;color:var(--ink);}
+.pagenum{position:absolute;right:48px;bottom:40px;font-family:'JetBrains Mono',monospace;
+  font-size:13px;letter-spacing:.08em;color:var(--ink);opacity:.6;}
+.hairline{height:1px;background:var(--ink);width:100%;}
+
+/* === COVER LAYOUT === */
+.cover{padding:96px 110px;display:flex;flex-direction:column;justify-content:space-between;z-index:10;position:relative;height:100%;}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.wordmark{font-family:'Instrument Serif',serif;font-size:34px;color:var(--ink);letter-spacing:-0.01em;}
+.cover-mid{margin-top:auto;}
+.cover-mid .display{margin-top:18px;}
+.cover-foot{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-top:54px;}
+.foot-cell{border-top:1px solid var(--ink);padding-top:14px;}
+.foot-cell .k{font-family:'Hanken Grotesk',sans-serif;font-weight:600;text-transform:uppercase;
+  letter-spacing:.16em;font-size:12px;color:var(--ink);opacity:.7;}
+.foot-cell .v{font-family:'Hanken Grotesk',sans-serif;font-size:16px;color:var(--ink);margin-top:6px;}
+
+/* === CONTENT LAYOUT === */
+.content{padding:96px 110px;z-index:10;position:relative;height:100%;display:flex;flex-direction:column;}
+.content .eyebrow{margin-bottom:24px;}
+.content h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:84px;line-height:1.02;
+  letter-spacing:-0.01em;color:var(--ink);max-width:1100px;}
+.strands{margin-top:64px;display:flex;flex-direction:column;gap:0;max-width:1320px;}
+.strand{display:grid;grid-template-columns:90px 1fr;gap:28px;padding:26px 0;
+  border-bottom:1px solid rgba(3,22,53,.16);align-items:baseline;}
+.strand:first-of-type{border-top:1px solid var(--ink);}
+.strand .n{font-family:'Instrument Serif',serif;font-size:46px;color:var(--ink);line-height:1;}
+.strand .t{font-family:'Instrument Serif',serif;font-size:38px;color:var(--ink);line-height:1.05;}
+.strand .d{font-family:'Hanken Grotesk',sans-serif;font-size:18px;color:var(--ink);
+  opacity:.78;margin-top:8px;line-height:1.5;}
+.stat-row{margin-top:auto;display:flex;gap:90px;align-items:flex-end;}
+.stat .num{font-family:'Instrument Serif',serif;font-size:128px;line-height:.86;color:var(--ink);}
+.stat .num.hot{color:var(--peach);}
+.stat .lbl{font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.04em;
+  color:var(--ink);opacity:.7;margin-top:10px;}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(22px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards;}
+.slide.active .reveal{animation-play-state:running;}
+@keyframes rise{to{opacity:1;transform:none;}}
+.d1{animation-delay:.12s;}.d2{animation-delay:.26s;}.d3{animation-delay:.4s;}
+.d4{animation-delay:.54s;}.d5{animation-delay:.68s;}.d6{animation-delay:.82s;}
+@media (prefers-reduced-motion:reduce){.reveal{animation:none;opacity:1;transform:none;}}
+
+.nav-hint{position:fixed;left:20px;bottom:14px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:#5a6680;opacity:.5;z-index:99;}
+</style>
+</head>
+<body>
+
+<!-- grain filter -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="silexGrain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter>
+</svg>
+
+<div class="viewport">
+  <div class="stage" id="stage">
+
+    <!-- ===== SLIDE 1 — COVER ===== -->
+    <section class="slide active" data-slide="0">
+      <div class="hero-bleed"><img src="assets/clouds.png" alt=""></div>
+      <div class="hero-scrim"></div>
+      <div class="dawn-halo"></div>
+      <div class="sky-bloom"></div>
+      <div class="cover">
+        <div class="cover-top">
+          <div class="wordmark reveal d1">Silex</div>
+          <div class="mono reveal d1">JUIN 2026 — DECK 01</div>
+        </div>
+        <div class="cover-mid">
+          <div class="eyebrow reveal d2">Agence IA-native <span class="dot">●</span> Conversational Engine</div>
+          <h1 class="display reveal d3">De l'intention<br><em>à l'asset.</em></h1>
+        </div>
+        <div class="cover-foot">
+          <div class="foot-cell reveal d4"><div class="k">Promesse</div><div class="v">Une conversation, un outil livré en 48h</div></div>
+          <div class="foot-cell reveal d4"><div class="k">Format</div><div class="v">Outils internes web sur-mesure</div></div>
+          <div class="foot-cell reveal d5"><div class="k">Cadence</div><div class="v">Ship daily — 3 outils / client</div></div>
+          <div class="foot-cell reveal d5"><div class="k">Valeurs</div><div class="v">Automation · Poetry · Speed</div></div>
+        </div>
+      </div>
+      <div class="grain"></div>
+      <div class="pagenum">01 / 02</div>
+    </section>
+
+    <!-- ===== SLIDE 2 — CONTENT + STAT ===== -->
+    <section class="slide" data-slide="1">
+      <div class="sky-bloom"></div>
+      <div class="peach-bloom"></div>
+      <div class="content">
+        <div class="eyebrow reveal d1">Le Conversational Engine</div>
+        <h2 class="reveal d2">Pas de project management.<br>Juste l'intention, puis la livraison.</h2>
+        <div class="strands">
+          <div class="strand reveal d3"><div class="n">01</div><div><div class="t">Découverte</div><div class="d">Une réunion. On capte l'intention, pas un cahier des charges.</div></div></div>
+          <div class="strand reveal d4"><div class="n">02</div><div><div class="t">Génération</div><div class="d">Le prototype sort de la conversation — montrer, pas décrire.</div></div></div>
+          <div class="strand reveal d5"><div class="n">03</div><div><div class="t">Livraison</div><div class="d">Outil fonctionnel en 48h. Trois tours de feedback inclus.</div></div></div>
+        </div>
+        <div class="stat-row reveal d6">
+          <div class="stat"><div class="num hot">48<span style="font-size:54px">h</span></div><div class="lbl">DE L'INTENTION À L'OUTIL</div></div>
+          <div class="stat"><div class="num">3</div><div class="lbl">OUTILS PAR CLIENT</div></div>
+          <div class="stat"><div class="num">5K<span style="font-size:54px">€</span></div><div class="lbl">PAR OUTIL INTERNE</div></div>
+        </div>
+      </div>
+      <div class="grain"></div>
+      <div class="pagenum">02 / 02</div>
+    </section>
+
+  </div>
+</div>
+<div class="nav-hint">← / → · espace</div>
+
+<script>
+/* fit stage to viewport */
+function fit(){const s=document.getElementById('stage');
+  const k=Math.min(innerWidth/1920,innerHeight/1080);
+  s.style.transform='scale('+k+')';}
+addEventListener('resize',fit);fit();
+/* nav */
+let i=0;const slides=[...document.querySelectorAll('.slide')];
+function go(n){i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,x)=>s.classList.toggle('active',x===i));}
+addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(i+1);}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(i-1);}
+  if(e.key==='Home')go(0); if(e.key==='End')go(slides.length-1);});
+</script>
+</body>
+</html>

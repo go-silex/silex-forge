@@ -87,7 +87,7 @@ def preview_info(item: dict) -> tuple[bool, str]:
     """Return (has_preview, thumb_url) if an og/thumb image exists on disk."""
     slug = item["slug"]
     rel = str(item["path"]).lstrip("/").rstrip("/")
-    # Prefer compressed JPEG from gen-og-images.py; fall back to legacy PNG
+    # Prefer compressed JPEG from gen-og-images.sh; fall back to legacy PNG
     candidates = [
         (SITE / rel / "og.jpg", f"/{rel}/og.jpg"),
         (SITE / rel / "og.jpeg", f"/{rel}/og.jpeg"),

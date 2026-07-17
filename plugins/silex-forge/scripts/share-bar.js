@@ -37,12 +37,12 @@
     "[data-forge-share-bar] button.primary:hover:not(:disabled){background:#1a2b4b}" +
     "[data-forge-share-bar] button.danger{border-color:#c43c3c;color:#c43c3c}" +
     "[data-forge-share-bar] button.danger:hover:not(:disabled){background:rgba(196,60,60,.08)}" +
-    "[data-forge-share-bar] .fsb-public{display:none;align-items:center;gap:6px;" +
+    "[data-forge-share-bar] .fsb-shared{display:none;align-items:center;gap:6px;" +
     "font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;" +
     "color:#0d7a5f;background:rgba(13,122,95,.1);border:1px solid rgba(13,122,95,.35);" +
     "padding:5px 9px}" +
-    "[data-forge-share-bar] .fsb-public.on{display:inline-flex}" +
-    "[data-forge-share-bar] .fsb-public-dot{width:6px;height:6px;border-radius:50%;" +
+    "[data-forge-share-bar] .fsb-shared.on{display:inline-flex}" +
+    "[data-forge-share-bar] .fsb-shared-dot{width:6px;height:6px;border-radius:50%;" +
     "background:#0d7a5f;box-shadow:0 0 0 3px rgba(13,122,95,.2)}" +
     "[data-forge-share-bar] .fsb-hint{font-size:10.5px;opacity:.5;color:#031635;padding:0 4px}" +
     "[data-forge-toast]{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(12px);" +
@@ -77,11 +77,11 @@
   bar.setAttribute("role", "toolbar");
   bar.setAttribute("aria-label", "Partage forge");
 
-  var publicBadge = document.createElement("span");
-  publicBadge.className = "fsb-public";
-  publicBadge.innerHTML =
-    '<span class="fsb-public-dot" aria-hidden="true"></span>Public';
-  publicBadge.title = "Lien externe actif — accessible hors équipe";
+  var sharedBadge = document.createElement("span");
+  sharedBadge.className = "fsb-shared";
+  sharedBadge.innerHTML =
+    '<span class="fsb-shared-dot" aria-hidden="true"></span>Partagé';
+  sharedBadge.title = "Lien externe actif (/s/… clé) — accessible hors équipe";
 
   function mkBtn(label, cls) {
     var b = document.createElement("button");
@@ -105,7 +105,7 @@
   hint.className = "fsb-hint";
   hint.textContent = "⇧+Externe = régénérer";
 
-  bar.appendChild(publicBadge);
+  bar.appendChild(sharedBadge);
   bar.appendChild(internalBtn);
   bar.appendChild(externalBtn);
   bar.appendChild(revokeBtn);
@@ -119,7 +119,7 @@
   }
 
   function renderState() {
-    publicBadge.classList.toggle("on", state.active);
+    sharedBadge.classList.toggle("on", state.active);
     revokeBtn.hidden = !state.active;
     externalBtn.textContent = state.active ? "Copier externe" : "Externe";
   }

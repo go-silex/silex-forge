@@ -290,7 +290,7 @@ cmd_remove() {
   local slug="$1"
   validate_slug "$slug"
   clone_repo
-  rm -rf "$WORK/repo/site/a/$slug" "$WORK/repo/site/p/$slug" "$WORK/repo/site/s/$slug"
+  rm -rf "$WORK/repo/site/a/$slug" "$WORK/repo/site/s/$slug"
   rm -f "$WORK/repo/registry/${slug}.json"
   gen_index
   if commit_push "chore(forge): remove $slug"; then
@@ -353,7 +353,7 @@ cmd_publish() {
   while [ $# -gt 0 ]; do
     case "$1" in
       --share)  do_share=true; shift ;;
-      --public) die "--public retiré. Utilise --share (lien à clé, non listé)." ;;
+      --public) die "--public et /p/ purgés. Utilise --share (lien /s/<slug>/<key>/)." ;;
       --title)  title="${2-}"; shift 2 ;;
       --type)   typ="${2-}"; shift 2 ;;
       --desc)   desc="${2-}"; shift 2 ;;

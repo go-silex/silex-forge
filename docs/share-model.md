@@ -1,12 +1,14 @@
 # Modèle share — forge.gosilex.com
 
-## Pourquoi pas juste `/a` vs `/p` listés
+## Pourquoi pas un path public ouvert (`/p/` — purgé)
 
 | Approche | Problème |
 |---|---|
-| `/p/<slug>/` listé | Enumération + surface publique large |
-| Toggle « public » sans clé | N’importe qui qui devine le slug lit le doc |
+| `/p/<slug>/` sans clé | Enumération + surface publique large |
+| Toggle « public » sans secret | N’importe qui qui devine le slug lit le doc |
 | `?k=` pur static HTML | La clé dans le JS/HTML = **pas** une vraie porte |
+
+**Canon :** `/a/` (Access) + `/s/<slug>/<key>/` (Bypass + KV).
 
 ## Modèle retenu (intermédiaire)
 
@@ -28,8 +30,9 @@ publish --share                     │
 - **Barre partage** (injectée sur `/a/<slug>/`) :
   - **Interne** — copie `https://forge.gosilex.com/a/<slug>/` (Access, pas de shlink)
   - **Externe** — `POST /api/share` → `/s/<slug>/<key>/` (+ shortlink shlink si secret Pages)
-  - **Public** badge + **Révoquer** quand un share externe est actif
+  - Badge **Partagé** + **Révoquer** quand un share externe est actif
   - Toast « copié » à chaque copie réussie
+  - **`/p/` n’existe plus**
 
 ## Équivalence `?k=` (Roxabi 1page)
 

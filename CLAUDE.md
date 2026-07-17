@@ -26,9 +26,9 @@
 
 Sans cookie Access → **302** vers `gosilex.cloudflareaccess.com`.
 
-## Public vs interne (modèle v2)
+## Interne vs share (modèle v3)
 
-**On n’utilise plus** « path `/p/` listé publiquement ».
+**`/p/` purgé** — pas de path public sans clé. Uniquement `/a/` + `/s/`.
 
 ### Interne (défaut)
 
@@ -36,25 +36,23 @@ Sans cookie Access → **302** vers `gosilex.cloudflareaccess.com`.
 - Listé sur la landing (catalogue)
 - Protégé Access
 
-### Share (opt-in « Partager »)
+### Share (opt-in)
 
 - URL : `https://forge.gosilex.com/s/<slug>/<key>/`
-  - `<key>` = secret haute entropie (≈ `token_urlsafe(18)`)
-  - équivalent conceptuel de `?k=` (1page / Roxabi) — la **clé est dans le path** car Access bypass se fait par préfixe `/s/`, pas par query string
+  - `<key>` = secret haute entropie
+  - équivalent conceptuel de `?k=` (1page) — clé dans le **path** (Bypass Access sur `/s/`)
 - **Pas** listé sur la landing
 - Bypass Access → ouvre en navigation privée
-- Shortlink auto si CLI `shlink` dispo : `s.gosilex.com/f-<slug>`
+- Shortlink auto si `SHLINK_API_KEY` Pages : `s.gosilex.com/f-<slug>`
 
 ### UX share (barre sur `/a/<slug>/`)
 
 1. **Interne** → copie `/a/<slug>/` (Access équipe, **pas** de shlink) + toast
-2. **Externe** (Access) → `POST /api/share` → clé **KV** → copie shortlink ou `/s/<slug>/<key>/` + toast
-3. Share actif → badge **Public** + **Révoquer** (`DELETE /api/share`)
+2. **Externe** (Access) → `POST /api/share` → clé **KV** → copie shortlink ou `/s/…` + toast
+3. Share actif → badge **Partagé** + **Révoquer** (`DELETE /api/share`)
 4. **⇧+Externe** = régénère la clé (ancien lien mort)
-5. Lecture share : Function valide KV puis sert `/a/…` (pas de copie statique)
-6. CLI optionnel : `publish.sh --share <slug>` seed KV / registry
-
-> Shortlink auto si secret `SHLINK_API_KEY` sur le projet Pages (optionnel).
+5. Landing : sync live `GET /api/share` (filtre Interne / Partagé)
+6. CLI : `publish.sh --share` / `--unshare`
 
 ## Commandes
 
@@ -74,8 +72,8 @@ Deploy : push `main` → GitHub Action `Deploy Pages` (secrets CF dans GH + note
 ## Structure
 
 ```
-site/a/<slug>/     # interne (Access)
-site/s/<slug>/<key>/  # share (bypass, unlisted)
+site/a/<slug>/        # interne (Access)
+# /s/*                 # Function + KV (pas de copie statique sous site/s)
 registry/<slug>.json  # métadonnées (jamais servi)
 plugins/silex-forge/  # publish + index
 plugins/silex-craft/  # silex-slides, frontend-slides, rocky-animation

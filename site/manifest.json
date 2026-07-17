@@ -1,0 +1,48 @@
+[
+  {
+    "f": "/a/github-claude-ops/",
+    "t": "GitHub, secrets & Claude",
+    "d": "2026-07-17",
+    "cat": "deck",
+    "cl": "Deck",
+    "c": "blue",
+    "b": [
+      "share"
+    ],
+    "kb": 1689,
+    "p": false,
+    "thumb": "",
+    "desc": "Formation fondateurs — organisation GitHub, variables, branches, CI/CD, plugins Claude, worktrees.",
+    "slug": "github-claude-ops"
+  },
+  {
+    "f": "/a/silex-talk-mcp/",
+    "t": "MCP, plugins & second cerveau",
+    "d": "2026-07-15",
+    "cat": "talk",
+    "cl": "Talk",
+    "c": "purple",
+    "b": [],
+    "kb": 824,
+    "p": false,
+    "thumb": "",
+    "desc": "Deck Silex — MCP, plugins Claude, et le second cerveau d'équipe. HTML autonome, plein écran 16:9.",
+    "slug": "silex-talk-mcp"
+  },
+  {
+    "f": "/a/passation-2026-07/",
+    "t": "Passation fondateurs — audits & schéma directeur",
+    "d": "2026-07-11",
+    "cat": "deck",
+    "cl": "Deck",
+    "c": "blue",
+    "b": [
+      "share"
+    ],
+    "kb": 89,
+    "p": false,
+    "thumb": "",
+    "desc": "Deck passation juillet 2026 : CD, plateforme A/B, qualité SaaS, mémoire, MCP/plugins.",
+    "slug": "passation-2026-07"
+  }
+]

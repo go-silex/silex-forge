@@ -61,3 +61,14 @@ publish.sh --unshare mon-deck
 5. **⇧+clic** = `rotate: true` (nouvelle clé, ancien lien mort)
 
 Prérequis : être connecté via **Cloudflare Access** (JWT sur la requête).
+
+## `?k=` vs path key
+
+| Forme | Exemple | Statut |
+|---|---|---|
+| Path (canonique) | `/s/passation-2026-07/<key>/` | **Oui** — KV + Function |
+| Query (alias) | `/s/passation-2026-07/?k=<key>` | **Oui** — même clé KV |
+| Query sur `/a/…` | `/a/slug/?k=` | Non (Access équipe) |
+
+Ce n’est **pas** le modèle 1page (preview_key + Worker métier + Stripe).  
+C’est le même *esprit* « secret dans l’URL » pour le share, avec garde serveur KV.

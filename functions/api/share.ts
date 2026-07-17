@@ -120,9 +120,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const shareUrl = `${origin}/s/${slug}/${key}/`
   const shortUrl = await maybeShortlink(context.env, shareUrl, slug)
 
+  const shareUrlQuery = `${origin}/s/${slug}/?k=${key}`
   return json({
     slug,
     shareUrl,
+    shareUrlQuery,
     shortUrl: shortUrl || null,
     key,
     rotated: Boolean(body.rotate),

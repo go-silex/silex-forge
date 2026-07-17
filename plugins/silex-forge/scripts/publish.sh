@@ -90,9 +90,55 @@ commit_push() {
   die "push rejeté 5×"
 }
 
+SCRIPTS() { echo "$WORK/repo/plugins/silex-forge/scripts"; }
+
 gen_index() {
-  python3 "$WORK/repo/plugins/silex-forge/scripts/gen-index.py" \
+  python3 "$(SCRIPTS)/gen-index.py" \
     || die "gen-index.py a échoué"
+}
+
+# OG inject on internal index.html
+inject_og_for_slug() {
+  local slug="$1" title="$2" desc="$3" path_url="$4"
+  local html="$WORK/repo/site/a/${slug}/index.html"
+  [ -f "$html" ] || return 0
+  python3 "$(SCRIPTS)/inject-og.py" "$html" \
+    --title "$title" \
+    --description "${desc:-$title}" \
+    --url "https://${PUBLIC_HOST}${path_url}" \
+    || die "inject-og failed"
+  python3 "$(SCRIPTS)/verify-og.py" --file "$html" --expect-title "$title" \
+    || die "verify-og (local) failed"
+}
+
+# Hub memory notes (Drive vault — best effort)
+hub_index_update() {
+  local slug="${1-}"
+  local hub_args=(--registry "$WORK/repo/registry" --host "$PUBLIC_HOST")
+  [ -n "$slug" ] && hub_args+=(--slug "$slug")
+  if python3 "$(SCRIPTS)/hub-index.py" "${hub_args[@]}"; then
+    ok "hub index mis à jour"
+  else
+    warn "hub-index a échoué (HUB_ROOT manquant ?) — publish git OK quand même"
+  fi
+}
+
+# Live verify after deploy (pages.dev, no Access)
+verify_og_live() {
+  local slug="$1" title="$2"
+  local pages_host="${PAGES_DEV_HOST:-silex-forge-6mm.pages.dev}"
+  local url="https://${pages_host}/a/${slug}/"
+  info "verify-og live (wait deploy) $url"
+  local i
+  for i in 1 2 3 4 5 6 7 8 9 10; do
+    if python3 "$(SCRIPTS)/verify-og.py" --url "$url" --expect-title "$title" 2>/dev/null; then
+      ok "verify-og live OK"
+      return 0
+    fi
+    sleep 6
+  done
+  warn "verify-og live timeout — check CI deploy"
+  return 0
 }
 
 mint_key() {
@@ -166,27 +212,21 @@ resolve_source() {
 }
 
 create_share_from_internal() {
+  # Mint key in registry + inject bar. Runtime key SSOT = KV (bouton Partager / API).
+  # CLI seeds registry for hub notes; browser mint updates KV.
   local slug="$1"
-  local key share_path share_url short_url dest src
+  local key share_path share_url short_url src
   key=$(mint_key)
   share_path="/s/${slug}/${key}/"
   share_url="https://${PUBLIC_HOST}${share_path}"
   src="$WORK/repo/site/a/${slug}"
   [ -d "$src" ] || die "artefact interne absent: /a/${slug}/ — publie d'abord"
-  # drop old share trees for this slug
-  rm -rf "$WORK/repo/site/s/${slug}"
-  dest="$WORK/repo/site/s/${slug}/${key}"
-  mkdir -p "$dest"
-  cp -a "$src"/. "$dest"/
-  # strip team-only share bar from public copy? keep copy button harmless
-  date -u +%Y%m%dT%H%M%SZ > "$dest/build-id.txt"
 
   short_url=""
   if su=$(maybe_shortlink "$share_url" "$slug"); then
     short_url="$su"
   fi
 
-  # update registry
   local reg="$WORK/repo/registry/${slug}.json"
   [ -f "$reg" ] || die "registry manquant pour $slug"
   SHARE_KEY="$key" SHARE_PATH="$share_path" SHORT_URL="$short_url" PUBLIC_HOST="$PUBLIC_HOST" \
@@ -197,28 +237,31 @@ d = json.load(open(path, encoding="utf-8"))
 d["share_key"] = os.environ["SHARE_KEY"]
 d["share_path"] = os.environ["SHARE_PATH"]
 d["share_url"] = f"https://{os.environ['PUBLIC_HOST']}{os.environ['SHARE_PATH']}"
+d["share_url_query"] = f"https://{os.environ['PUBLIC_HOST']}/s/{d['slug']}/?k={os.environ['SHARE_KEY']}"
 if os.environ.get("SHORT_URL"):
   d["short_url"] = os.environ["SHORT_URL"]
-# never list share-only; keep list_on_index for the internal card
 d.setdefault("list_on_index", True)
 json.dump(d, open(path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 open(path, "a", encoding="utf-8").write("\n")
 print(d["share_url"])
 PY
 
-  # inject bar into INTERNAL copy (team can re-copy)
-  python3 "$WORK/repo/plugins/silex-forge/scripts/inject-share-bar.py" \
+  python3 "$(SCRIPTS)/inject-share-bar.py" \
     "$src/index.html" \
     --slug "$slug" \
     --share-url "$share_url" \
     ${short_url:+--short-url "$short_url"} || true
 
-  # also inject into share copy with same URLs
-  python3 "$WORK/repo/plugins/silex-forge/scripts/inject-share-bar.py" \
-    "$dest/index.html" \
-    --slug "$slug" \
-    --share-url "$share_url" \
-    ${short_url:+--short-url "$short_url"} || true
+  # seed KV if credentials available (best effort)
+  if [ -n "${CLOUDFLARE_API_KEY:-}" ] && [ -n "${CLOUDFLARE_EMAIL:-}" ]; then
+    local ns="${FORGE_SHARES_KV_ID:-758e41aec6964f2b9ef590c296ff7e20}"
+    local acct="${CLOUDFLARE_ACCOUNT_ID:-f8026cffc9463a03e1a6a76af5301861}"
+    curl -sS -X PUT \
+      "https://api.cloudflare.com/client/v4/accounts/${acct}/storage/kv/namespaces/${ns}/values/share:${slug}" \
+      -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" \
+      -H "Content-Type: text/plain" --data "$key" >/dev/null \
+      && info "KV share:${slug} seed OK" || warn "KV seed failed"
+  fi
 
   echo "$share_url"
 }
@@ -252,6 +295,8 @@ cmd_remove() {
   gen_index
   if commit_push "chore(forge): remove $slug"; then
     ok "retiré"
+    # refresh catalogue only
+    hub_index_update
   fi
 }
 
@@ -287,7 +332,8 @@ cmd_share_only() {
   if commit_push "feat(forge): share $slug"; then
     ok "share mint"
     echo "  URL:   $url"
-    echo "  (non listé sur la landing — Access bypass /s/*)"
+    echo "  (non listé — KV + Function /s/*)"
+    hub_index_update "$slug"
   fi
 }
 
@@ -296,6 +342,7 @@ cmd_rebuild_index() {
   gen_index
   if commit_push "chore(forge): rebuild index"; then
     ok "index regénéré"
+    hub_index_update
   fi
 }
 
@@ -334,6 +381,10 @@ cmd_publish() {
   export PUBLIC_HOST="$PUBLIC_HOST" SHARE_KEY="" SHARE_PATH="" SHORT_URL=""
   write_registry_json
 
+  # OG + share bar (always)
+  inject_og_for_slug "$slug" "$title" "$desc" "$path_url"
+  python3 "$(SCRIPTS)/inject-share-bar.py" "$dest/index.html" --slug "$slug" || true
+
   local share_url=""
   if $do_share; then
     share_url=$(create_share_from_internal "$slug")
@@ -345,7 +396,10 @@ cmd_publish() {
     echo "  Interne: https://${PUBLIC_HOST}${path_url}  (Access)"
     if [ -n "$share_url" ]; then
       echo "  Share:   $share_url  (public, unlisted)"
+      echo "  Query:   https://${PUBLIC_HOST}/s/${slug}/?k=…  (alias)"
     fi
+    hub_index_update "$slug"
+    verify_og_live "$slug" "$title"
   fi
 }
 

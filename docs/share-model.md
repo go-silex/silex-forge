@@ -67,6 +67,16 @@ publish.sh --unshare mon-deck
 
 Prérequis : être connecté via **Cloudflare Access** (JWT sur la requête).
 
+## Landing = share live (KV)
+
+Le catalogue embarque un snapshot registry (`shared` / badge share), puis au load (équipe Access) :
+
+- `GET /api/share?slug=…` pour **chaque** artefact
+- met à jour badge **share**, compteur « avec share », filtre **Partagé**
+- re-sync au `focus` / `visibilitychange` (ex. après révoquer une slide puis revenir sur `/`)
+
+Source de vérité share **runtime** = KV. Le registry reste utile pour le CLI / hub, pas pour l’UI live.
+
 ## `?k=` vs path key
 
 | Forme | Exemple | Statut |

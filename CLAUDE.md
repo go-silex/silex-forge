@@ -45,13 +45,14 @@ Sans cookie Access → **302** vers `gosilex.cloudflareaccess.com`.
 - Bypass Access → ouvre en navigation privée
 - Shortlink auto si CLI `shlink` dispo : `s.gosilex.com/f-<slug>`
 
-### UX share (mint au clic)
+### UX share (barre sur `/a/<slug>/`)
 
-1. Publish interne (`/a/<slug>/`) — barre **Partager** injectée
-2. Clic **Partager** (connecté Access) → `POST /api/share` → clé en **KV** → URL `/s/<slug>/<key>/` copiée
-3. **⇧+clic** = régénère la clé (ancien lien mort)
-4. Lecture share : Function valide KV puis sert le HTML de `/a/…` (pas de copie statique)
-5. CLI optionnel : `publish.sh --share <slug>` seed aussi le KV / registry
+1. **Interne** → copie `/a/<slug>/` (Access équipe, **pas** de shlink) + toast
+2. **Externe** (Access) → `POST /api/share` → clé **KV** → copie shortlink ou `/s/<slug>/<key>/` + toast
+3. Share actif → badge **Public** + **Révoquer** (`DELETE /api/share`)
+4. **⇧+Externe** = régénère la clé (ancien lien mort)
+5. Lecture share : Function valide KV puis sert `/a/…` (pas de copie statique)
+6. CLI optionnel : `publish.sh --share <slug>` seed KV / registry
 
 > Shortlink auto si secret `SHLINK_API_KEY` sur le projet Pages (optionnel).
 

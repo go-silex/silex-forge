@@ -1,6 +1,8 @@
 /**
- * GET /s/<slug>/<key>/… — share public.
- * Valide KV puis sert /a/<slug>/… via ASSETS.
+ * GET /s/<slug>/<key>/…  — share public (clé dans le path)
+ * GET /s/<slug>/?k=<key> — même secret en query (alias type 1page)
+ *
+ * Valide KV `share:<slug>` puis sert /a/<slug>/… via ASSETS.
  */
 interface Env {
   SHARES: KVNamespace
@@ -10,21 +12,29 @@ interface Env {
 export const onRequest: PagesFunction<Env> = async (context) => {
   const url = new URL(context.request.url)
   const parts = url.pathname.replace(/^\/s\/?/, "").split("/").filter(Boolean)
+  const qk = url.searchParams.get("k") || ""
 
-  if (parts.length < 2) {
-    return new Response("Not found", { status: 404, headers: { "content-type": "text/plain" } })
+  let slug = ""
+  let key = ""
+  let rest: string[] = []
+
+  if (parts.length >= 2 && !qk) {
+    // /s/slug/key/...
+    slug = parts[0]
+    key = parts[1]
+    rest = parts.slice(2)
+  } else if (parts.length >= 1 && qk) {
+    // /s/slug/?k=key  or /s/slug/assets/x?k=key
+    slug = parts[0]
+    key = qk
+    rest = parts.slice(1)
+  } else {
+    return plain404()
   }
-
-  const slug = parts[0]
-  const key = parts[1]
-  const rest = parts.slice(2)
 
   const stored = await context.env.SHARES.get(`share:${slug}`)
   if (!stored || stored !== key) {
-    return new Response("Not found", {
-      status: 404,
-      headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" },
-    })
+    return plain404()
   }
 
   let assetPath: string
@@ -40,7 +50,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const res = await context.env.ASSETS.fetch(assetUrl.toString())
 
   if (res.status === 404) {
-    return new Response("Not found", { status: 404, headers: { "cache-control": "no-store" } })
+    return plain404()
   }
 
   const headers = new Headers(res.headers)
@@ -48,4 +58,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   headers.set("x-robots-tag", "noindex, nofollow, noarchive")
   headers.set("x-forge-share", "1")
   return new Response(res.body, { status: res.status, headers })
+}
+
+function plain404(): Response {
+  return new Response("Not found", {
+    status: 404,
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  })
 }

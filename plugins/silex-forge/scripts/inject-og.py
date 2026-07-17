@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+"""Inject / refresh Open Graph + basic SEO meta in an HTML file.
+
+Idempotent: replaces previous forge-og block if present.
+Does not generate OG images (optional later).
+"""
+from __future__ import annotations
+
+import argparse
+import html
+import re
+from pathlib import Path
+
+BLOCK_START = "<!-- forge-og:start -->"
+BLOCK_END = "<!-- forge-og:end -->"
+
+
+def strip_old_block(content: str) -> str:
+    return re.sub(
+        re.escape(BLOCK_START) + r".*?" + re.escape(BLOCK_END),
+        "",
+        content,
+        flags=re.DOTALL,
+    )
+
+
+def ensure_title(content: str, title: str) -> str:
+    if re.search(r"<title>[^<]*</title>", content, re.I):
+        return re.sub(
+            r"<title>[^<]*</title>",
+            f"<title>{html.escape(title)}</title>",
+            content,
+            count=1,
+            flags=re.I,
+        )
+    # inject after <head>
+    return re.sub(
+        r"(<head[^>]*>)",
+        rf"\1\n  <title>{html.escape(title)}</title>",
+        content,
+        count=1,
+        flags=re.I,
+    )
+
+
+def build_block(
+    *,
+    title: str,
+    description: str,
+    url: str,
+    site_name: str = "Silex Forge",
+    noindex: bool = True,
+) -> str:
+    t = html.escape(title)
+    d = html.escape(description or title)
+    u = html.escape(url)
+    sn = html.escape(site_name)
+    robots = "noindex, nofollow, noarchive" if noindex else "index, follow"
+    return f"""{BLOCK_START}
+  <meta name="description" content="{d}">
+  <meta name="robots" content="{robots}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{sn}">
+  <meta property="og:title" content="{t}">
+  <meta property="og:description" content="{d}">
+  <meta property="og:url" content="{u}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{t}">
+  <meta name="twitter:description" content="{d}">
+{BLOCK_END}"""
+
+
+def inject(
+    content: str,
+    *,
+    title: str,
+    description: str,
+    url: str,
+    noindex: bool = True,
+) -> str:
+    content = strip_old_block(content)
+    content = ensure_title(content, title)
+    block = build_block(
+        title=title, description=description, url=url, noindex=noindex
+    )
+    if re.search(r"<head[^>]*>", content, re.I):
+        return re.sub(
+            r"(<head[^>]*>)",
+            rf"\1\n{block}",
+            content,
+            count=1,
+            flags=re.I,
+        )
+    return block + "\n" + content
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("html_file")
+    ap.add_argument("--title", required=True)
+    ap.add_argument("--description", default="")
+    ap.add_argument("--url", required=True)
+    ap.add_argument("--indexable", action="store_true", help="allow index (default: noindex)")
+    args = ap.parse_args()
+    p = Path(args.html_file)
+    out = inject(
+        p.read_text(encoding="utf-8"),
+        title=args.title,
+        description=args.description or args.title,
+        url=args.url,
+        noindex=not args.indexable,
+    )
+    p.write_text(out, encoding="utf-8")
+    print(f"og injected → {p}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

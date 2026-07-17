@@ -87,10 +87,14 @@ def preview_info(item: dict) -> tuple[bool, str]:
     """Return (has_preview, thumb_url) if an og/thumb image exists on disk."""
     slug = item["slug"]
     rel = str(item["path"]).lstrip("/").rstrip("/")
+    # Prefer compressed JPEG from gen-og-images.py; fall back to legacy PNG
     candidates = [
+        (SITE / rel / "og.jpg", f"/{rel}/og.jpg"),
+        (SITE / rel / "og.jpeg", f"/{rel}/og.jpeg"),
         (SITE / rel / "og.png", f"/{rel}/og.png"),
         (SITE / rel / "index.og.png", f"/{rel}/index.og.png"),
         (SITE / rel / f"{slug}.og.png", f"/{rel}/{slug}.og.png"),
+        (SITE / "images" / f"{slug}.og.jpg", f"/images/{slug}.og.jpg"),
         (SITE / "images" / f"{slug}.og.png", f"/images/{slug}.og.png"),
         (SITE / "images" / f"{slug}.png", f"/images/{slug}.png"),
     ]
@@ -492,8 +496,8 @@ function accessBadges(d) {{
 function thumbSrc(d) {{
   if (d.thumb) return d.thumb;
   const f = d.f || '';
-  if (f.endsWith('.html')) return f.slice(0, -5) + '.og.png';
-  return f.replace(/\\/?$/, '/') + 'og.png';
+  if (f.endsWith('.html')) return f.slice(0, -5) + '.og.jpg';
+  return f.replace(/\\/?$/, '/') + 'og.jpg';
 }}
 
 function groupByKey(items, fn) {{

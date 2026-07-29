@@ -15,6 +15,21 @@
     "shared": false
   },
   {
+    "f": "/a/comment-utiliser-dev-core/",
+    "t": "Comment utiliser dev-core",
+    "d": "2026-07-29",
+    "cat": "guide",
+    "cl": "Guide",
+    "c": "green",
+    "b": [],
+    "kb": 53,
+    "p": true,
+    "thumb": "/a/comment-utiliser-dev-core/og.jpg",
+    "desc": "One-pager — installer, cadrer, builder et shipper avec le plugin Roxabi dev-core (/dev, /ship, skills).",
+    "slug": "comment-utiliser-dev-core",
+    "shared": false
+  },
+  {
     "f": "/a/github-claude-ops/",
     "t": "GitHub, secrets & Claude",
     "d": "2026-07-17",

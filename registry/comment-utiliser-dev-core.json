@@ -1,0 +1,11 @@
+{
+  "slug": "comment-utiliser-dev-core",
+  "title": "Comment utiliser dev-core",
+  "description": "One-pager — installer, cadrer, builder et shipper avec le plugin Roxabi dev-core (/dev, /ship, skills).",
+  "type": "guide",
+  "date": "2026-07-29",
+  "path": "/a/comment-utiliser-dev-core/",
+  "list_on_index": true,
+  "visibility": "internal",
+  "shared": false
+}

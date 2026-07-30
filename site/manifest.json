@@ -30,6 +30,21 @@
     "shared": false
   },
   {
+    "f": "/a/cks-ecosysteme/",
+    "t": "Écosystème tools Silex — interactions",
+    "d": "2026-07-30",
+    "cat": "diagram",
+    "cl": "Diagramme",
+    "c": "amber",
+    "b": [],
+    "kb": 42,
+    "p": true,
+    "thumb": "/a/cks-ecosysteme/og.jpg",
+    "desc": "Pleine page: tous les tools, zones, piliers CKS, 10 flux d'interaction",
+    "slug": "cks-ecosysteme",
+    "shared": false
+  },
+  {
     "f": "/a/atelier-sassy/",
     "t": "Atelier IA · le récap & la suite",
     "d": "2026-07-29",

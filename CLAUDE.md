@@ -76,7 +76,7 @@ site/a/<slug>/        # interne (Access)
 # /s/*                 # Function + KV (pas de copie statique sous site/s)
 registry/<slug>.json  # métadonnées (jamais servi)
 plugins/silex-forge/  # publish + index
-plugins/silex-craft/  # silex-slides, frontend-slides, rocky-animation
+plugins/silex-craft/  # silex-slides, frontend-slides, silex-onepager
 ```
 
 ## Plugins dans ce repo
@@ -84,9 +84,9 @@ plugins/silex-craft/  # silex-slides, frontend-slides, rocky-animation
 | Plugin | Contenu | Ancien emplacement |
 |---|---|---|
 | `silex-forge` | `forge-publish` | — |
-| `silex-craft` | `silex-slides`, `frontend-slides`, `silex-onepager` (+ stub `rocky-animation`) | `go-silex/silex-plugins` |
+| `silex-craft` | `silex-slides`, `frontend-slides`, `silex-onepager` | `go-silex/silex-plugins` |
 
-**Rocky** a déménagé : skill SSOT dans **`go-silex/rocky`** → `rocky@rocky` (`rocky:rocky-animation`).
+**Rocky** : skill SSOT dans **`go-silex/rocky`** → `rocky@rocky` (`rocky:rocky-animation`) — plus dans ce repo.
 
 Install (scope **user** recommandé pour voir les skills partout) :
 

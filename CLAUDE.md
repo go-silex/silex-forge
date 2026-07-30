@@ -84,14 +84,20 @@ plugins/silex-craft/  # silex-slides, frontend-slides, rocky-animation
 | Plugin | Contenu | Ancien emplacement |
 |---|---|---|
 | `silex-forge` | `forge-publish` | — |
-| `silex-craft` | `silex-slides`, `frontend-slides`, `rocky-animation` | `go-silex/silex-plugins` |
+| `silex-craft` | `silex-slides`, `frontend-slides`, `silex-onepager` (+ stub `rocky-animation`) | `go-silex/silex-plugins` |
 
-Install :
+**Rocky** a déménagé : skill SSOT dans **`go-silex/rocky`** → `rocky@rocky` (`rocky:rocky-animation`).
+
+Install (scope **user** recommandé pour voir les skills partout) :
 
 ```
 /plugin marketplace add go-silex/silex-forge
 /plugin install silex-forge@silex-forge
 /plugin install silex-craft@silex-forge
+
+# Rocky (illustrations) — autre marketplace
+/plugin marketplace add go-silex/rocky
+/plugin install rocky@rocky
 ```
 
 ### Ce qui reste dans `silex-plugins`

@@ -1,7 +1,7 @@
 {
   "name": "silex-forge",
-  "version": "1.1.0",
-  "description": "Artefacts HTML forge.gosilex.com + craft slides/Rocky.",
+  "version": "1.2.0",
+  "description": "Artefacts HTML forge.gosilex.com + craft slides (Rocky → go-silex/rocky).",
   "owner": {
     "name": "Silex",
     "url": "https://github.com/go-silex"
@@ -15,7 +15,7 @@
     },
     {
       "name": "silex-craft",
-      "description": "silex-slides, frontend-slides, rocky-animation — génération d'artefacts brand Silex.",
+      "description": "silex-slides, frontend-slides, silex-onepager — génération d'artefacts brand Silex. Rocky → rocky@rocky.",
       "source": "./plugins/silex-craft",
       "category": "content"
     }

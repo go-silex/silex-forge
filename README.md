@@ -24,11 +24,21 @@ On industrialise sur le **même pattern que `silex-demos`** :
 Inspiration structurelle : `roxabi-forge` (skills + host d’artefacts) — sans le monstre OG/runtime M₂.  
 Cible produit plus tard : **`silex-share`**.
 
-## Installer le plugin
+## Installer les plugins
+
+Scope **user** (sinon skills invisibles hors du projet d’install) :
 
 ```text
 /plugin marketplace add go-silex/silex-forge
 /plugin install silex-forge@silex-forge
+/plugin install silex-craft@silex-forge
+```
+
+Illustrations Rocky (skill déplacée) :
+
+```text
+/plugin marketplace add go-silex/rocky
+/plugin install rocky@rocky
 ```
 
 ## Publier

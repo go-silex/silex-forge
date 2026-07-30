@@ -1,5 +1,20 @@
 [
   {
+    "f": "/a/cks-4-piliers/",
+    "t": "Connaissance d'organisation — 4 piliers",
+    "d": "2026-07-30",
+    "cat": "guide",
+    "cl": "Guide",
+    "c": "green",
+    "b": [],
+    "kb": 28,
+    "p": true,
+    "thumb": "/a/cks-4-piliers/og.jpg",
+    "desc": "Vision produit CKS : Memory · SSOT · Engine · Plugins + gate fondateurs",
+    "slug": "cks-4-piliers",
+    "shared": false
+  },
+  {
     "f": "/a/atelier-sassy/",
     "t": "Atelier IA · le récap & la suite",
     "d": "2026-07-29",

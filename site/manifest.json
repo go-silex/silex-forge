@@ -15,6 +15,21 @@
     "shared": false
   },
   {
+    "f": "/a/cks-carte/",
+    "t": "Cartographie SSOT · 4 piliers · 8 axes",
+    "d": "2026-07-30",
+    "cat": "guide",
+    "cl": "Guide",
+    "c": "green",
+    "b": [],
+    "kb": 22,
+    "p": true,
+    "thumb": "/a/cks-carte/og.jpg",
+    "desc": "Où vit chaque pilier chez Silex · maturité 8 axes · 5 actions pour monter",
+    "slug": "cks-carte",
+    "shared": false
+  },
+  {
     "f": "/a/atelier-sassy/",
     "t": "Atelier IA · le récap & la suite",
     "d": "2026-07-29",

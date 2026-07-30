@@ -142,7 +142,7 @@ Il existe un `Makefile.bak.silex-accident-*` pour rappel : pointer le Makefile R
 ### Publish (seul chemin correct)
 
 ```bash
-S=~/projects/gosilex/silex-forge/plugins/silex-forge/scripts/publish.sh
+S="${CLAUDE_PLUGIN_ROOT}/scripts/publish.sh"  # ou: plugins/silex-forge/scripts/publish.sh depuis le clone
 
 # Interne (Access, catalogue) — défaut
 "$S" {slug} /chemin/vers/onepager.html \

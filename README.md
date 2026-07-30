@@ -9,7 +9,7 @@ Access team + share unlisted `/s/<slug>/<key>/`. Voir `CLAUDE.md`.
 | **Audience** | Équipe Silex (Access) + liens share à clé (unlisted) |
 | **≠** | `demo.gosilex.com` (funnel client) · `share.gosilex.com` (produit ACL long terme) |
 | **Deploy** | Cloudflare Pages · `site/` · push git → **GitHub Action** wrangler (Direct Upload) |
-| **Plugin** | `silex-forge` (skill `forge-publish`) |
+| **Plugin** | `silex-forge` — publish + slides + onepager |
 
 ## Pourquoi ce repo
 
@@ -24,17 +24,17 @@ On industrialise sur le **même pattern que `silex-demos`** :
 Inspiration structurelle : `roxabi-forge` (skills + host d’artefacts) — sans le monstre OG/runtime M₂.  
 Cible produit plus tard : **`silex-share`**.
 
-## Installer les plugins
+## Installer le plugin
 
 Scope **user** (sinon skills invisibles hors du projet d’install) :
 
 ```text
 /plugin marketplace add go-silex/silex-forge
 /plugin install silex-forge@silex-forge
-/plugin install silex-craft@silex-forge
 ```
 
-Illustrations Rocky (skill déplacée) :
+Skills : `forge-publish` · `silex-slides` · `frontend-slides` · `silex-onepager`.  
+Illustrations Rocky (autre marketplace) :
 
 ```text
 /plugin marketplace add go-silex/rocky
@@ -66,7 +66,11 @@ Le script : clone jetable → copie sous `site/a/<slug>/` → écrit `registry/<
 ```
 .claude-plugin/marketplace.json
 plugins/silex-forge/
-  skills/forge-publish/SKILL.md
+  skills/
+    forge-publish/
+    silex-slides/
+    frontend-slides/
+    silex-onepager/
   scripts/publish.sh
   scripts/gen-index.py
 registry/<slug>.json          # métadonnées (hors site/ → jamais servi)

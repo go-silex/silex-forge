@@ -9,7 +9,7 @@ Build presentations in the **Silex Halo** design system — the Silex art direct
 
 ## What this skill reuses
 
-This skill is built on sibling skill `frontend-slides` in the **same plugin** (`silex-craft`). Resolve the engine root as:
+This skill is built on sibling skill `frontend-slides` in the **same plugin** (`silex-forge`). Resolve the engine root as:
 
 `${CLAUDE_PLUGIN_ROOT}/skills/frontend-slides/`
 
@@ -84,9 +84,12 @@ It replaces every `assets/…` reference with the image embedded as a base64 dat
 **Do NOT use Vercel** (`frontend-slides/scripts/deploy.sh`). Silex host = **forge.gosilex.com**.
 
 ```bash
-# depuis le repo go-silex/silex-forge (ou marketplace silex-forge)
-plugins/silex-forge/scripts/publish.sh mon-deck ./deck.html \
-  --title "…" --type deck --share
+# plugin installé : CLAUDE_PLUGIN_ROOT pointe sur plugins/silex-forge
+S="${CLAUDE_PLUGIN_ROOT}/scripts/publish.sh"
+# depuis clone repo :
+# S=plugins/silex-forge/scripts/publish.sh
+
+"$S" mon-deck ./deck.html --title "…" --type deck --share
 # → interne Access /a/mon-deck/  + share unlisted /s/mon-deck/<key>/
 ```
 

@@ -7,7 +7,7 @@ Voir **`CLAUDE.md`** (chim opérationnel complet).
 | **URL** | https://forge.gosilex.com |
 | **Job** | Artefacts HTML équipe + share à clé |
 | **Publish** | `plugins/silex-forge/scripts/publish.sh` |
-| **Plugins** | `silex-forge` (publish) · `silex-craft` (slides) · Rocky → `rocky@rocky` |
+| **Plugin** | `silex-forge@silex-forge` (publish + slides + onepager) · Rocky → `rocky@rocky` |
 
 ## Paths
 

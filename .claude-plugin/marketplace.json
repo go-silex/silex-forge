@@ -1,7 +1,7 @@
 {
   "name": "silex-forge",
-  "version": "1.2.1",
-  "description": "Artefacts HTML forge.gosilex.com + craft slides (silex-slides, onepager).",
+  "version": "1.3.0",
+  "description": "Host forge.gosilex.com + plugin silex-forge (publish, slides, onepager).",
   "owner": {
     "name": "Silex",
     "url": "https://github.com/go-silex"
@@ -9,15 +9,9 @@
   "plugins": [
     {
       "name": "silex-forge",
-      "description": "Publier / partager des artefacts HTML sur forge.gosilex.com (Access + share à clé).",
+      "description": "Publier sur forge.gosilex.com + générer slides / onepagers brand Silex.",
       "source": "./plugins/silex-forge",
       "category": "productivity"
-    },
-    {
-      "name": "silex-craft",
-      "description": "silex-slides, frontend-slides, silex-onepager — génération d'artefacts brand Silex.",
-      "source": "./plugins/silex-craft",
-      "category": "content"
     }
   ]
 }

@@ -75,25 +75,25 @@ Deploy : push `main` → GitHub Action `Deploy Pages` (secrets CF dans GH + note
 site/a/<slug>/        # interne (Access)
 # /s/*                 # Function + KV (pas de copie statique sous site/s)
 registry/<slug>.json  # métadonnées (jamais servi)
-plugins/silex-forge/  # publish + index
-plugins/silex-craft/  # silex-slides, frontend-slides, silex-onepager
+plugins/silex-forge/  # plugin unique : publish + slides + onepager
+  skills/forge-publish|silex-slides|frontend-slides|silex-onepager
+  scripts/publish.sh …
 ```
 
-## Plugins dans ce repo
+## Plugin dans ce repo
 
-| Plugin | Contenu | Ancien emplacement |
-|---|---|---|
-| `silex-forge` | `forge-publish` | — |
-| `silex-craft` | `silex-slides`, `frontend-slides`, `silex-onepager` | `go-silex/silex-plugins` |
+| Plugin | Contenu |
+|---|---|
+| **`silex-forge`** | `forge-publish` · `silex-slides` · `frontend-slides` · `silex-onepager` |
 
-**Rocky** : skill SSOT dans **`go-silex/rocky`** → `rocky@rocky` (`rocky:rocky-animation`) — plus dans ce repo.
+Ancien plugin `silex-craft` **fusionné** ici.  
+**Rocky** : `rocky@rocky` (`go-silex/rocky`) — hors de ce repo.
 
-Install (scope **user** recommandé pour voir les skills partout) :
+Install (scope **user**) :
 
 ```
 /plugin marketplace add go-silex/silex-forge
 /plugin install silex-forge@silex-forge
-/plugin install silex-craft@silex-forge
 
 # Rocky (illustrations) — autre marketplace
 /plugin marketplace add go-silex/rocky

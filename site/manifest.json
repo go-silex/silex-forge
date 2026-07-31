@@ -1,5 +1,20 @@
 [
   {
+    "f": "/a/elywann-stack-crm-automation/",
+    "t": "Elywann × Silex — Stack & automations",
+    "d": "2026-07-31",
+    "cat": "guide",
+    "cl": "Guide",
+    "c": "green",
+    "b": [],
+    "kb": 40,
+    "p": true,
+    "thumb": "/a/elywann-stack-crm-automation/og.jpg",
+    "desc": "Post-call discovery : cartographie outils as-is / to-be CRM+IA + catalogue automations",
+    "slug": "elywann-stack-crm-automation",
+    "shared": false
+  },
+  {
     "f": "/a/cks-4-piliers/",
     "t": "Connaissance d'organisation — 4 piliers",
     "d": "2026-07-30",
@@ -53,8 +68,8 @@
     "c": "green",
     "b": [],
     "kb": 32,
-    "p": false,
-    "thumb": "",
+    "p": true,
+    "thumb": "/a/atelier-sassy/og.jpg",
     "desc": "Récap de l'atelier IA : les 3 déclics, la méthode du prompt, les use cases, et la feuille de route.",
     "slug": "atelier-sassy",
     "shared": false

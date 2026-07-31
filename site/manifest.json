@@ -1,16 +1,16 @@
 [
   {
     "f": "/a/elywann-stack-crm-automation/",
-    "t": "Elywann × Silex — Stack & automations",
+    "t": "Elywann × Silex — 3 cartographies animées",
     "d": "2026-07-31",
     "cat": "guide",
     "cl": "Guide",
     "c": "green",
     "b": [],
-    "kb": 44,
+    "kb": 49,
     "p": true,
     "thumb": "/a/elywann-stack-crm-automation/og.jpg",
-    "desc": "Post-call discovery : cartographie as-is / to-be + automations (mise en forme v2)",
+    "desc": "As-is / CRM+Claude / Automation — boards interactifs avec use cases playables (style factory-workflow)",
     "slug": "elywann-stack-crm-automation",
     "shared": false
   },

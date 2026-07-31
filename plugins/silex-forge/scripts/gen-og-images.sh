@@ -102,7 +102,10 @@ render_one() {
   local tmp_html="$dir/.og-render-$$.html"
   local tmp_jpg="$dir/.og-tmp-$$.jpg"
 
-  # Temp HTML: strip share-bar + inject capture CSS (hide edit chrome, kill stage mat)
+  # Temp HTML: strip share-bar + inject capture CSS.
+  # Do NOT force body background:#000 — that letterboxes light guides (forge-guide /
+  # diagrams) into a black void. Decks already set --stage-bg on html/body; pinning
+  # .deck-stage to 1920×1080 fills the viewport so the mat never shows anyway.
   {
     if grep -q 'forge-share-bar' "$html" 2>/dev/null; then
       sed '/<!-- forge-share-bar -->/,/<!-- \/forge-share-bar -->/d' "$html"
@@ -111,7 +114,7 @@ render_one() {
     fi
   } | sed '/<\/head>/I i\
 <style id="forge-og-capture">\
-  html,body{margin:0!important;padding:0!important;overflow:hidden!important;background:#000!important}\
+  html,body{margin:0!important;padding:0!important;overflow:hidden!important}\
   .edit-toggle,.edit-hotzone,[data-forge-share-bar],[data-forge-toast]{display:none!important}\
   .deck-viewport{background:transparent!important;inset:0!important}\
   /* pin stage 1:1 at 1920×1080 — no letterbox scale from fit() */\

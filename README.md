@@ -7,7 +7,7 @@ Access team + share unlisted `/s/<slug>/<key>/`. Voir `CLAUDE.md`.
 | | |
 |---|---|
 | **Audience** | Équipe Silex (Access) + liens share à clé (unlisted) |
-| **≠** | `demo.gosilex.com` (funnel client) · `share.gosilex.com` (produit ACL long terme) |
+| **≠** | `demo.gosilex.com` (funnel client) · `share.gosilex.com` / `silex-share` (**archived** 2026-07-30 — jamais livré) |
 | **Deploy** | Cloudflare Pages · `site/` · push git → **GitHub Action** wrangler (Direct Upload) |
 | **Plugin** | `silex-forge` — publish + slides + onepager |
 
@@ -22,7 +22,7 @@ On industrialise sur le **même pattern que `silex-demos`** :
 - **Cloudflare Access** par défaut ; extérieur = **lien `/s/…` à clé** (pas de path `/p/` ouvert)
 
 Inspiration structurelle : `roxabi-forge` (skills + host d’artefacts) — sans le monstre OG/runtime M₂.  
-Cible produit plus tard : **`silex-share`**.
+**Host d’artefacts équipe = ce repo** (`silex-share` archivé, produit jamais livré).
 
 ## Installer le plugin
 

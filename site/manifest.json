@@ -1,5 +1,20 @@
 [
   {
+    "f": "/a/lgu-roadmap/",
+    "t": "Roadmap AI-native — Le Guide Ultime",
+    "d": "2026-08-05",
+    "cat": "guide",
+    "cl": "Guide",
+    "c": "green",
+    "b": [],
+    "kb": 143,
+    "p": false,
+    "thumb": "",
+    "desc": "Livrable final de l'audit — 20 chantiers, 5 streams. Version 1.0 du 2026-08-05.",
+    "slug": "lgu-roadmap",
+    "shared": false
+  },
+  {
     "f": "/a/ulysse-roadmap/",
     "t": "Roadmap AI-native — Ulysse",
     "d": "2026-08-05",

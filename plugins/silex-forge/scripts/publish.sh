@@ -20,14 +20,56 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-FORGE_REPO="${FORGE_REPO:-git@github.com:go-silex/silex-forge.git}"
-PUBLIC_HOST="${PUBLIC_HOST:-forge.gosilex.com}"
-SHLINK_DOMAIN="${SHLINK_DOMAIN:-s.gosilex.com}"
+LIB_DIR="$SCRIPT_DIR/lib"
+
+# Caller env wins over config file
+_ENV_FORGE_REPO="${FORGE_REPO-}"
+_ENV_PUBLIC_HOST="${PUBLIC_HOST-}"
+_ENV_SHLINK_DOMAIN="${SHLINK_DOMAIN-}"
+
+# Config: ~/.config/silex/forge.config.json → fallback forge.config.example.json
+if [ -f "$LIB_DIR/load_config.py" ] && command -v python3 >/dev/null 2>&1; then
+  # shellcheck disable=SC1090
+  eval "$(PYTHONPATH="$LIB_DIR${PYTHONPATH:+:$PYTHONPATH}" python3 -c 'from load_config import export_env; print(export_env())')"
+fi
+
+FORGE_REPO="${_ENV_FORGE_REPO:-${FORGE_REPO:-git@github.com:go-silex/silex-forge.git}}"
+PUBLIC_HOST="${_ENV_PUBLIC_HOST:-${FORGE_PUBLIC_HOST:-${PUBLIC_HOST:-forge.gosilex.com}}}"
+SHLINK_DOMAIN="${_ENV_SHLINK_DOMAIN:-${FORGE_SHLINK_DOMAIN:-${SHLINK_DOMAIN:-s.gosilex.com}}}"
+ARTIFACTS_ROOT="${FORGE_ARTIFACTS_ROOT:-}"
+INTERNAL_PREFIX="${FORGE_INTERNAL_PREFIX:-a}"
 
 die()  { echo "✗ $*" >&2; exit 1; }
 info() { echo "▸ $*"; }
 warn() { echo "  ⚠ $*" >&2; }
 ok()   { echo "✓ $*"; }
+
+require_forge_config() {
+  if [ ! -f "$LIB_DIR/load_config.py" ]; then
+    return 0
+  fi
+  if PYTHONPATH="$LIB_DIR${PYTHONPATH:+:$PYTHONPATH}" python3 -c \
+    'from load_config import doctor; import sys; sys.exit(0 if doctor()["ok"] else 1)' 2>/dev/null; then
+    return 0
+  fi
+  warn "forge config incomplete — run skill forge-setup"
+  [ -n "${ARTIFACTS_ROOT:-}" ] || die "hub/artifacts non configurés. Lance forge-setup (doctor KO)."
+}
+
+# Sync published tree into hub SSOT (never secrets) + meta.json from registry
+sync_to_hub_artifacts() {
+  local slug="$1" src_dir="$2"
+  [ -n "${ARTIFACTS_ROOT:-}" ] || { warn "ARTIFACTS_ROOT vide — skip sync hub"; return 0; }
+  [ -d "$src_dir" ] || return 0
+  local dest="${ARTIFACTS_ROOT}/${slug}"
+  mkdir -p "$dest"
+  cp -a "$src_dir"/. "$dest"/
+  local reg="$WORK/repo/registry/${slug}.json"
+  if [ -f "$reg" ]; then
+    cp -f "$reg" "$dest/meta.json"
+  fi
+  ok "hub SSOT → $dest"
+}
 
 GIT() { git -c core.hooksPath=/dev/null "$@"; }
 
@@ -38,13 +80,17 @@ trap cleanup EXIT
 usage() {
   cat <<EOF
 Usage:
-  publish.sh <slug> <path> [--share] [--title T] [--type TYPE] [--desc D]
+  publish.sh <slug> [path] [--share] [--title T] [--type TYPE] [--desc D]
   publish.sh --share <slug>       # mint/refresh share link for existing slug
   publish.sh --unshare <slug>
   publish.sh --list | --remove <slug> | --rebuild-index
 
-  Interne  : https://forge.gosilex.com/a/<slug>/     (Access, catalogue)
-  Share    : https://forge.gosilex.com/s/<slug>/<key>/  (public, unlisted)
+  path omis → lit \$ARTIFACTS_ROOT/<slug>/ (hub SSOT, via forge.config)
+
+  Interne  : https://${PUBLIC_HOST}/${INTERNAL_PREFIX}/<slug>/  (Access, catalogue)
+  Share    : https://${PUBLIC_HOST}/s/<slug>/<key>/  (public, unlisted)
+  Config   : ~/.config/silex/forge.config.json (fallback example)
+  Doctor   : scripts/forge-doctor.sh · skill forge-setup
 EOF
 }
 
@@ -400,9 +446,14 @@ cmd_rebuild_index() {
 }
 
 cmd_publish() {
-  local slug="$1" source="$2"
-  shift 2
-  local do_share=false title="" typ="html" desc=""
+  local slug="$1"
+  shift
+  local source="" do_share=false title="" typ="html" desc=""
+  # path is optional if hub artifacts/<slug>/ exists
+  if [ $# -gt 0 ] && [[ "${1-}" != --* ]]; then
+    source="$1"
+    shift
+  fi
   while [ $# -gt 0 ]; do
     case "$1" in
       --share)  do_share=true; shift ;;
@@ -415,14 +466,24 @@ cmd_publish() {
     esac
   done
   validate_slug "$slug"
+  require_forge_config
   [ -n "$title" ] || title="$slug"
+
+  if [ -z "$source" ]; then
+    if [ -n "${ARTIFACTS_ROOT:-}" ] && [ -f "${ARTIFACTS_ROOT}/${slug}/index.html" ]; then
+      source="${ARTIFACTS_ROOT}/${slug}"
+      info "source hub SSOT: $source"
+    else
+      die "path manquant et pas de ${ARTIFACTS_ROOT:-<artifacts>}/${slug}/index.html — forge-setup ?"
+    fi
+  fi
 
   clone_repo
   resolve_source "$source"
 
   local dest path_url
-  path_url="/a/${slug}/"
-  dest="$WORK/repo/site/a/${slug}"
+  path_url="/${INTERNAL_PREFIX}/${slug}/"
+  dest="$WORK/repo/site/${INTERNAL_PREFIX}/${slug}"
   mkdir -p "$dest"
   cp -a "$SRC_DIR"/. "$dest"/
   [ -f "$dest/index.html" ] || die "index.html manquant"
@@ -434,7 +495,7 @@ cmd_publish() {
   export PUBLIC_HOST="$PUBLIC_HOST" SHARED="false"
   write_registry_json
 
-  # Thumbs (Playwright) then meta OG + share bar
+  # Thumbs then meta OG + share bar
   gen_og_images "$slug"
   inject_og_for_slug "$slug" "$title" "$desc" "$path_url"
   python3 "$(SCRIPTS)/inject-share-bar.py" "$dest/index.html" --slug "$slug" || true
@@ -452,6 +513,8 @@ cmd_publish() {
       echo "  Share:   $share_url  (public, unlisted)"
       echo "  Query:   https://${PUBLIC_HOST}/s/${slug}/?k=…  (alias)"
     fi
+    # Hub SSOT: keep vault copy in sync (source of truth for team)
+    sync_to_hub_artifacts "$slug" "$dest"
     hub_index_update "$slug"
     verify_og_live "$slug" "$title"
   fi
@@ -475,11 +538,11 @@ case "${1-}" in
     if [ -n "${2-}" ] && [ -z "${3-}" ]; then
       cmd_share_only "$2"
     else
-      die "usage: --share <slug>   ou   publish.sh <slug> <path> --share"
+      die "usage: --share <slug>   ou   publish.sh <slug> [path] --share"
     fi
     ;;
   *)
-    [ -n "${2-}" ] || { usage; exit 1; }
+    [ -n "${1-}" ] || { usage; exit 1; }
     cmd_publish "$@"
     ;;
 esac

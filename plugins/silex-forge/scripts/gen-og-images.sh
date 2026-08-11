@@ -22,8 +22,16 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+LIB_DIR="$SCRIPT_DIR/lib"
 REG="$ROOT/registry"
 SITE="$ROOT/site"
+# Config-aware dirs (local forge.config → example fallback)
+if [ -f "$LIB_DIR/load_config.py" ] && command -v python3 >/dev/null 2>&1; then
+  # shellcheck disable=SC1090
+  eval "$(PYTHONPATH="$LIB_DIR${PYTHONPATH:+:$PYTHONPATH}" python3 -c 'from load_config import export_env; print(export_env())' 2>/dev/null || true)"
+  [ -n "${FORGE_SITE_DIR:-}" ] && SITE="$ROOT/${FORGE_SITE_DIR}"
+  [ -n "${FORGE_REGISTRY_DIR:-}" ] && REG="$ROOT/${FORGE_REGISTRY_DIR}"
+fi
 # Capture at deck native size (16:9) → then cover-crop to OG card ratio
 CAP_W=1920
 CAP_H=1080

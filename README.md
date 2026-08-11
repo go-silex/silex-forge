@@ -33,7 +33,7 @@ Scope **user** (sinon skills invisibles hors du projet d’install) :
 /plugin install silex-forge@silex-forge
 ```
 
-Skills : `forge-publish` · `silex-slides` · `frontend-slides` · `silex-onepager`.  
+Skills : `forge-publish` · `forge-setup` · `silex-slides` · `frontend-slides` · `silex-onepager`.  
 Illustrations Rocky (autre marketplace) :
 
 ```text
@@ -41,12 +41,37 @@ Illustrations Rocky (autre marketplace) :
 /plugin install rocky@rocky
 ```
 
+## Config machine (une fois / poste)
+
+Le path **silex-hub** diffère (Mickael / Pierre / Armand) → config **locale** :
+
+```bash
+# doctor
+plugins/silex-forge/scripts/forge-doctor.sh
+
+# ou skill interactif
+# → forge-setup
+```
+
+| Fichier | Rôle |
+|---|---|
+| `~/.config/silex/forge.config.json` | hub_root + artifacts_dir (hors git) |
+| `plugins/silex-forge/forge.config.example.json` | defaults + fallback code |
+
+**SSOT artefacts** = `$hub_root/00_COCKPIT/Forge/artifacts/<slug>/`  
+**Deploy live** = ce repo `site/a/<slug>/` (CF Pages).
+
+Hook plugin `SessionStart` : si config KO → rappeler `forge-setup`.
+
 ## Publier
 
 ```bash
 S=plugins/silex-forge/scripts/publish.sh
 
-# Interne (défaut) → https://forge.gosilex.com/a/<slug>/
+# Depuis hub SSOT (path omis si artifacts/<slug>/ existe)
+"$S" mon-deck --title "Mon deck" --type deck
+
+# Depuis un fichier (sync aussi vers hub après push)
 "$S" mon-deck ./mon-deck.html --title "Mon deck" --type deck
 
 # + share (lien /s/<slug>/<key>/, unlisted)
@@ -59,22 +84,27 @@ S=plugins/silex-forge/scripts/publish.sh
 "$S" --rebuild-index
 ```
 
-Le script : clone jetable → copie sous `site/a/<slug>/` → écrit `registry/<slug>.json` → régénère l’index → commit + push.
+Le script : clone jetable → copie sous `site/a/<slug>/` → écrit `registry/<slug>.json` → régénère l’index → commit + push → sync hub SSOT.
 
 ## Structure
 
 ```
 .claude-plugin/marketplace.json
 plugins/silex-forge/
+  forge.config.example.json
+  hooks/                      # SessionStart doctor
   skills/
     forge-publish/
+    forge-setup/              # setup + doctor config machine
     silex-slides/
     frontend-slides/
     silex-onepager/
   scripts/publish.sh
+  scripts/forge-doctor.sh
+  scripts/lib/load_config.py
   scripts/gen-index.py
 registry/<slug>.json          # métadonnées (hors site/ → jamais servi)
-site/                         # BUILD OUTPUT Pages
+site/                         # BUILD OUTPUT Pages (deploy, pas SSOT éditorial)
   index.html                  # catalogue (généré)
   404.html                    # structurel
   _headers  _redirects  robots.txt

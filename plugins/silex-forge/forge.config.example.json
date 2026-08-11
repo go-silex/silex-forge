@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hub_root": "",
+  "artifacts_dir": "00_COCKPIT/Forge/artifacts",
+  "public_host": "forge.gosilex.com",
+  "forge_repo": "git@github.com:go-silex/silex-forge.git",
+  "shlink_domain": "s.gosilex.com",
+  "site_dir": "site",
+  "registry_dir": "registry",
+  "internal_prefix": "a",
+  "types": ["deck", "talk", "guide", "diagram", "gallery", "html", "other"]
+}

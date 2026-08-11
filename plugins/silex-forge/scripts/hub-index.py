@@ -1,33 +1,48 @@
 #!/usr/bin/env python3
 """Write/update hub memory notes for forge artefacts.
 
-SSOT HTML stays in silex-forge git. Hub gets:
+SSOT HTML: hub artifacts/ (forge.config). Deploy copy: silex-forge git site/a/.
+Hub notes:
   - 00_COCKPIT/Forge_Catalogue.md  (index all list_on_index)
   - 00_COCKPIT/Forge/<slug>.md     (per artefact pointer)
 
 Hub root resolution:
-  1) --hub / env HUB_ROOT
-  2) ~/.config/silex/hub-root
-  3) ~/projects/gosilex/silex-hub
+  1) --hub
+  2) forge.config (local → example fallback) via load_config
+  3) HUB_ROOT env / ~/.config/silex/hub-root (legacy bootstrap)
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import sys
 from datetime import date
 from pathlib import Path
+
+_LIB = Path(__file__).resolve().parent / "lib"
+if _LIB.is_dir() and str(_LIB) not in sys.path:
+    sys.path.insert(0, str(_LIB))
 
 
 def resolve_hub(explicit: str | None) -> Path:
     if explicit:
         return Path(explicit).expanduser().resolve()
+    try:
+        from load_config import load_config
+
+        cfg = load_config()
+        hub = (cfg.get("hub_root") or "").strip()
+        if hub:
+            return Path(hub).expanduser().resolve()
+    except Exception:
+        pass
     env = os.environ.get("HUB_ROOT", "").strip()
     if env:
         return Path(env).expanduser().resolve()
-    cfg = Path.home() / ".config/silex/hub-root"
-    if cfg.is_file():
-        return Path(cfg.read_text(encoding="utf-8").strip()).expanduser().resolve()
+    cfg_file = Path.home() / ".config/silex/hub-root"
+    if cfg_file.is_file():
+        return Path(cfg_file.read_text(encoding="utf-8").strip()).expanduser().resolve()
     return (Path.home() / "projects/gosilex/silex-hub").resolve()
 
 
@@ -76,10 +91,11 @@ def write_slug_note(hub: Path, item: dict, host: str) -> Path:
         "",
         "## SSOT",
         "",
-        f"- HTML : repo `go-silex/silex-forge` → `site/a/{slug}/`",
+        f"- HTML source : hub `00_COCKPIT/Forge/artifacts/{slug}/` (forge.config)",
+        f"- Deploy live : repo `go-silex/silex-forge` → `site/a/{slug}/`",
         f"- Registry : `registry/{slug}.json`",
         "",
-        "Ne pas re-déposer le HTML dans le vault — republier via forge-publish.",
+        "Éditer le HTML dans le hub ; republier via forge-publish pour le live.",
         "",
     ]
     path.write_text("\n".join(lines), encoding="utf-8")

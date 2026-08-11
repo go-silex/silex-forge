@@ -14,11 +14,29 @@ import sys
 from datetime import date
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]  # repo root
-REG = ROOT / "registry"
-SITE = ROOT / "site"
-OUT = SITE / "index.html"
-MANIFEST = SITE / "manifest.json"
+_LIB = Path(__file__).resolve().parent / "lib"
+if _LIB.is_dir() and str(_LIB) not in sys.path:
+    sys.path.insert(0, str(_LIB))
+
+
+def _resolve_paths() -> tuple[Path, Path, Path, Path, Path]:
+    """repo ROOT, registry, site, index out, manifest — config-aware with defaults."""
+    root = Path(__file__).resolve().parents[3]
+    site_dir = "site"
+    reg_dir = "registry"
+    try:
+        from load_config import load_config
+
+        cfg = load_config()
+        site_dir = str(cfg.get("site_dir") or site_dir)
+        reg_dir = str(cfg.get("registry_dir") or reg_dir)
+    except Exception:
+        pass
+    site = root / site_dir
+    return root, root / reg_dir, site, site / "index.html", site / "manifest.json"
+
+
+ROOT, REG, SITE, OUT, MANIFEST = _resolve_paths()
 
 TYPE_LABEL = {
     "talk": "Talk",

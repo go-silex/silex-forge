@@ -1,12 +1,18 @@
 # Deploy site/ + functions/ → Cloudflare Pages (silex-forge)
+#
+# Content transport = branch `cf-deploy` (built from hub SSOT by publish.sh).
+# Engine (functions/wrangler) lives on `main` — overlay site from cf-deploy.
 name: Deploy Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - cf-deploy
+      - main
     paths:
       - "site/**"
       - "functions/**"
+      - "registry/**"
       - "wrangler.toml"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
@@ -22,12 +28,28 @@ jobs:
       contents: read
       deployments: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout deploy payload
+        if: github.ref == 'refs/heads/cf-deploy'
+        uses: actions/checkout@v4
+
+      - name: Checkout main + overlay site from cf-deploy
+        if: github.ref == 'refs/heads/main'
+        uses: actions/checkout@v4
+
+      - name: Fetch site content from cf-deploy
+        if: github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          git fetch origin cf-deploy --depth 1
+          # Overlay built content (HTML + registry + catalogue)
+          git checkout origin/cf-deploy -- site/ registry/ 2>/dev/null || {
+            echo "⚠ cf-deploy has no site/ yet — deploying skeleton only"
+          }
+          # Ensure functions/wrangler from main remain
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # functions/ + wrangler.toml bindings picked from repo root (cwd)
           command: pages deploy site --project-name=silex-forge --branch=main --commit-dirty=true

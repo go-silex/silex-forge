@@ -1,59 +1,71 @@
-# Artefacts + config machine
+# Artefacts + config + pipeline CF
 
-## Décision
+## Pourquoi c’était dupliqué (avant)
 
-| Couche | Emplacement | Portable ? |
-|---|---|---|
-| **SSOT éditorial** (HTML source) | `silex-hub` → `$artifacts_dir/<slug>/` | path **local** par personne |
-| **Deploy live** | repo `silex-forge` → `site/a/<slug>/` | git partagé |
-| **Registry / catalogue** | `registry/*.json` + `site/index.html` | git |
-| **Share keys** | Cloudflare KV only | jamais git / hub |
-
-Le path vault diffère (Drive, clone, `~/…`) → **config machine**, pas un relative `../silex-hub` hardcodé.
-
-## Fichiers
-
-```
-~/.config/silex/forge.config.json     # local (hors git)
-plugins/silex-forge/forge.config.example.json  # defaults commités
-```
-
-### Résolution (code)
-
-1. `FORGE_CONFIG` env (path explicite)
-2. `~/.config/silex/forge.config.json`
-3. sinon **example** (fallback) — doctor **KO** tant que pas de local
-
-`hub_root` vide peut encore bootstrap depuis `HUB_ROOT` / `~/.config/silex/hub-root`, mais **doctor exige** un fichier local + vault valide (`00_COCKPIT` + `01_COMPANY`).
-
-### Exemple local
-
-```json
-{
-  "version": 1,
-  "hub_root": "/home/mickael/projects/gosilex/silex-hub",
-  "artifacts_dir": "00_COCKPIT/Forge/artifacts",
-  "public_host": "forge.gosilex.com",
-  "forge_repo": "git@github.com:go-silex/silex-forge.git"
-}
-```
-
-## Outils
-
-| Cmd / skill | Rôle |
+| Couche | Rôle historique |
 |---|---|
-| `scripts/forge-doctor.sh` | exit 0/1 + rapport |
-| skill **forge-setup** | crée local, valide hub, mkdir artifacts |
-| hook **SessionStart** | injecte rappel si doctor KO |
-| `publish.sh` | path optionnel si hub a le slug ; sync hub après push |
+| `site/a/` + `registry/` **dans git main** | **Transport deploy** : push → GH Action → `wrangler pages deploy` **sans token CF sur les postes** |
+| Hub notes | pointeurs markdown seulement |
 
-## Flux
+Direct Upload CF = irréversible → le contenu HTML devait voyager **par git**.  
+D’où la double copie hub ⟷ git : l’une pour éditer, l’autre pour déployer.
+
+## Modèle actuel (engine-only main)
+
+| Couche | Emplacement | Git ? |
+|---|---|---|
+| **SSOT HTML + meta** | `$hub_root/$artifacts_dir/<slug>/` | **non** (rclone Drive) |
+| **Engine** | `plugins/`, `functions/`, `wrangler.toml`, skeleton `site/` | **main** |
+| **Payload Pages** | `site/` + `registry/` + `functions/` | branche **`cf-deploy`** (force-push) |
 
 ```
-générer HTML (silex-slides / …)
-    → écrire $hub/…/artifacts/<slug>/
-    → publish.sh <slug>   # ou path explicite
-    → git site/a/<slug>/ + registry
-    → CF Pages
-    → sync hub + note 00_COCKPIT/Forge/<slug>.md
+silex-slides / onepager / …
+        ↓ write
+hub artifacts/<slug>/{index.html, meta.json}
+        ↓ publish.sh
+build-site-from-hub.py  →  site/a + registry + catalogue
+        ↓ force-push
+branch cf-deploy
+        ↓ GH Action
+wrangler pages deploy site  →  forge.gosilex.com
 ```
+
+## Config machine
+
+```
+~/.config/silex/forge.config.json     # hub_root local
+plugins/.../forge.config.example.json # defaults + fallback code
+```
+
+Doctor : `plugins/silex-forge/scripts/forge-doctor.sh`  
+Setup : skill `forge-setup`  
+Hook SessionStart : rappel si config KO.
+
+## Commandes
+
+```bash
+# rebuild full deploy from hub (tous les slugs)
+plugins/silex-forge/scripts/publish.sh --rebuild-index
+
+# publish un slug (écrit hub puis cf-deploy)
+plugins/silex-forge/scripts/publish.sh mon-slug --title "…" --type deck
+
+# list hub
+plugins/silex-forge/scripts/publish.sh --list
+```
+
+## CI
+
+`.github/workflows/deploy-pages.yml` :
+
+- push **`cf-deploy`** → deploy payload
+- push **`main`** (`functions/**`, `wrangler.toml`) → checkout main + overlay `site/` depuis `cf-deploy` → deploy
+
+Secrets GH inchangés : `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
+
+## main ne contient plus
+
+- `site/a/**` (HTML live)
+- `registry/*.json`
+
+Garder : `site/404.html`, `_headers`, `_redirects`, `robots.txt`, `images/`, `functions/`.

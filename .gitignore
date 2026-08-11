@@ -15,3 +15,9 @@ forge.config.json
 
 __pycache__/
 *.pyc
+
+# Deploy content lives on branch cf-deploy (built from hub SSOT).
+# main = engine only — do not commit HTML artefacts.
+/site/a/
+/site/manifest.json
+/registry/*.json

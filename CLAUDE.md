@@ -72,19 +72,40 @@ Deploy : push `main` → GitHub Action `Deploy Pages` (secrets CF dans GH + note
 ## Structure
 
 ```
-site/a/<slug>/        # interne (Access)
+site/a/<slug>/        # deploy live (Access) — CF Pages
 # /s/*                 # Function + KV (pas de copie statique sous site/s)
 registry/<slug>.json  # métadonnées (jamais servi)
-plugins/silex-forge/  # plugin unique : publish + slides + onepager
-  skills/forge-publish|silex-slides|frontend-slides|silex-onepager
-  scripts/publish.sh …
+plugins/silex-forge/  # plugin : publish + slides + onepager + setup
+  forge.config.example.json
+  hooks/              # SessionStart → doctor config
+  skills/forge-publish|forge-setup|silex-slides|…
+  scripts/publish.sh · forge-doctor.sh · lib/load_config.py
 ```
+
+## Config machine (artefacts dans silex-hub)
+
+**SSOT HTML** = vault silex-hub (path **différent** par personne)  
+**Deploy** = ce repo `site/a/` via git push
+
+| Fichier | Rôle |
+|---|---|
+| `~/.config/silex/forge.config.json` | local (hub_root perso) — **hors git** |
+| plugin `forge.config.example.json` | defaults + fallback si pas de local |
+
+```bash
+# doctor
+plugins/silex-forge/scripts/forge-doctor.sh
+# setup interactif → skill forge-setup
+```
+
+Loader : local → example ; `hub_root` bootstrappable depuis `~/.config/silex/hub-root`.  
+Hook plugin SessionStart : si config KO → rappeler **forge-setup**.
 
 ## Plugin dans ce repo
 
 | Plugin | Contenu |
 |---|---|
-| **`silex-forge`** | `forge-publish` · `silex-slides` · `frontend-slides` · `silex-onepager` |
+| **`silex-forge`** | `forge-publish` · `forge-setup` · `silex-slides` · `frontend-slides` · `silex-onepager` |
 
 Ancien plugin `silex-craft` **fusionné** ici.  
 **Rocky** : `rocky@rocky` (`go-silex/rocky`) — hors de ce repo.
@@ -112,6 +133,7 @@ Install (scope **user**) :
 - `docs/cloudflare-access.md` — Access + Bypass `/s`
 - `docs/cloudflare-pages.md` — deploy Pages + secrets
 - `docs/share-model.md` — détail share / clé / shortlink
+- `docs/artifacts-config.md` — SSOT hub + forge.config locale / example
 
 ## Miniatures OG (landing)
 
@@ -133,3 +155,5 @@ Deps : `google-chrome`|`chromium`, `ffmpeg`, `jq`.
 5. Après gros publish : vérifier Access (302 sans cookie) et share (200 sans cookie sur `/s/.../key/`)
 6. **pages.dev** doit aussi être sous Access (+ middleware 403) — ne jamais sonder `*.pages.dev` comme origin ouverte
 7. Secrets share = **KV only** — jamais `share_key` dans registry/HTML ; `/api/share` = JWT Access vérifié ou `FORGE_SHARE_SECRET`
+8. Config forge absente/incomplète → **forge-setup** (ne pas inventer hub_root d’un collègue)
+9. Artefacts source → hub `$artifacts_dir/<slug>/` ; live → `site/a/` only via publish

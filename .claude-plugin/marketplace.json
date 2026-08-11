@@ -1,7 +1,7 @@
 {
   "name": "silex-forge",
-  "version": "1.3.0",
-  "description": "Host forge.gosilex.com + plugin silex-forge (publish, slides, onepager).",
+  "version": "1.4.0",
+  "description": "Host forge.gosilex.com + plugin silex-forge (publish, setup/doctor, slides, onepager).",
   "owner": {
     "name": "Silex",
     "url": "https://github.com/go-silex"

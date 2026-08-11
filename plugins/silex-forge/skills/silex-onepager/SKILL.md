@@ -68,16 +68,23 @@ Footer        Metalyde × Silex · date · liens
 
 ### Output paths
 
-**SSOT publish = repo `go-silex/silex-forge`** (pas le tree Roxabi).
+**SSOT HTML = hub** (path via `~/.config/silex/forge.config.json` → `artifacts_dir`).  
+**Deploy live** = repo `go-silex/silex-forge` `site/a/` via `publish.sh` (pas Roxabi).
 
 ```
-# staging local (tmp ou vault), puis publish.sh
+# SSOT (écrire ici — doctor/forge-setup requis)
+$hub_root/$artifacts_dir/{slug}/index.html
+# défaut : …/silex-hub/00_COCKPIT/Forge/artifacts/{slug}/index.html
+# meta optionnelle : …/{slug}/meta.json  (title, type, description)
+
+# staging temporaire OK, puis publish (sync hub auto) :
 /tmp/{name}.html
-# ou miroir vault client :
+
+# miroir pipeline client (notes) :
 {silex-hub}/05_PIPELINE/{NN}_{Client}/preparation/{YYYY-MM-DD}_{Name}.html
 
-# après publish (écrit par le script, ne pas hand-edit en prod) :
-~/projects/gosilex/silex-forge/site/a/{slug}/index.html
+# deploy live (git, ne pas hand-edit comme SSOT) :
+site/a/{slug}/index.html   # dans le clone silex-forge
 ```
 
 `{slug}` : kebab-case ≤ 40 chars (ex. `metalyde-roadmap-performance-blocks`).
@@ -119,7 +126,10 @@ Réutiliser classes utiles : `.hero`, `.section-h`, `.section-n`, `.kpi-row`, `.
 **Référence golden** (pattern métier + tickets, déjà publié) :
 
 ```
-~/projects/gosilex/silex-forge/site/a/metalyde-roadmap-performance-blocks/index.html
+# hub SSOT (après forge-setup) :
+$artifacts/metalyde-roadmap-performance-blocks/index.html
+# ou deploy live :
+site/a/metalyde-roadmap-performance-blocks/index.html
 ```
 
 ### Liens tickets
@@ -142,14 +152,19 @@ Il existe un `Makefile.bak.silex-accident-*` pour rappel : pointer le Makefile R
 ### Publish (seul chemin correct)
 
 ```bash
-S="${CLAUDE_PLUGIN_ROOT}/scripts/publish.sh"  # ou: plugins/silex-forge/scripts/publish.sh depuis le clone
+# doctor d'abord si config manquante → skill forge-setup
+bash "${CLAUDE_PLUGIN_ROOT}/scripts/forge-doctor.sh"
 
-# Interne (Access, catalogue) — défaut
-"$S" {slug} /chemin/vers/onepager.html \
-  --title "…" --type guide --desc "…"
+S="${CLAUDE_PLUGIN_ROOT}/scripts/publish.sh"  # ou: plugins/silex-forge/scripts/publish.sh
+
+# Depuis hub SSOT (path omis si $artifacts/{slug}/index.html existe)
+"$S" {slug} --title "…" --type guide --desc "…"
+
+# Depuis un fichier (sync hub après push)
+"$S" {slug} /chemin/vers/onepager.html --title "…" --type guide --desc "…"
 
 # + lien share public unlisted /s/<slug>/<key>/
-"$S" {slug} /chemin/vers/onepager.html --share --title "…"
+"$S" {slug} [path] --share --title "…"
 ```
 
 Push `main` → GH Action **Deploy Pages** (secret BW `cloudflare/silex-forge-pages-deploy`).

@@ -1,8 +1,9 @@
 {
   "name": "silex-forge",
-  "version": "1.3.0",
-  "description": "Publier sur forge.gosilex.com + générer slides / onepagers brand Silex.",
+  "description": "Publier sur forge.gosilex.com + générer slides / onepagers brand Silex. Artefacts SSOT dans silex-hub (config locale).",
   "author": {
-    "name": "Silex"
-  }
+    "name": "Silex",
+    "url": "https://github.com/go-silex"
+  },
+  "version": "1.4.0"
 }

@@ -74,23 +74,41 @@ python3 scripts/inline-assets.py "<path-to-deck>.html"
 It replaces every `assets/…` reference with the image embedded as a base64 data URI — hero photos auto-compressed to JPEG (~×6 lighter), logos/marks kept as PNG, SVG inlined. The result is ONE portable `.html` with **no `assets/` folder to ship, copy, or lose** (a `.bak.html` is written first). A typical deck lands at ~1–2 Mo. After this step, no `assets/` folder should remain beside the deck (delete any temp one from a client-specific image; keep only a `.mp4` if the cover is a video).
 
 ## Phase 3: Verify & deliver
-1. Open the **inlined** deck in a browser (`open <file>.html`). Screenshot at 1280×720 and one phone viewport. (Verifying the inlined file confirms every image survived embedding.)
+
+**Output path (SSOT)** — écrire le deck sous le hub forge (config machine) :
+
+```
+$hub_root/$artifacts_dir/{slug}/index.html
+# défaut après forge-setup :
+# …/silex-hub/00_COCKPIT/Forge/artifacts/{slug}/index.html
+```
+
+Résoudre le path :
+
+```bash
+bash "${CLAUDE_PLUGIN_ROOT}/scripts/forge-doctor.sh"   # KO → skill forge-setup
+python3 "${CLAUDE_PLUGIN_ROOT}/scripts/lib/load_config.py" --print-artifacts
+# → mkdir -p "$ART/{slug}" && write index.html there (puis Phase 2.5 inline)
+```
+
+1. Open the **inlined** deck in a browser. Screenshot at 1280×720 and one phone viewport.
 2. Verify: stage stays 16:9, no text overflow, no panel overlap, grain visible, ink text legible over every hero scrim, blooms present.
 3. Fix source and re-verify on any issue.
-4. Tell the user: file location, slide count, navigation (←/→/Space), inline edit (hover top-left or press E), and how to tweak (`:root` variables for palette).
+4. Tell the user: hub path, slide count, navigation (←/→/Space), inline edit (E), and how to tweak (`:root`).
 
 ## Phase 4: Share (optional)
 
 **Do NOT use Vercel** (`frontend-slides/scripts/deploy.sh`). Silex host = **forge.gosilex.com**.
 
 ```bash
-# plugin installé : CLAUDE_PLUGIN_ROOT pointe sur plugins/silex-forge
 S="${CLAUDE_PLUGIN_ROOT}/scripts/publish.sh"
-# depuis clone repo :
-# S=plugins/silex-forge/scripts/publish.sh
 
+# depuis hub SSOT (path omis si artifacts/{slug}/ prêt)
+"$S" mon-deck --title "…" --type deck --share
+# ou fichier explicite :
 "$S" mon-deck ./deck.html --title "…" --type deck --share
 # → interne Access /a/mon-deck/  + share unlisted /s/mon-deck/<key>/
+# → sync hub meta.json + HTML
 ```
 
 PDF export remains: `bash ${CLAUDE_PLUGIN_ROOT}/skills/frontend-slides/scripts/export-pdf.sh <path>`.

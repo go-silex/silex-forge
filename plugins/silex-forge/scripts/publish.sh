@@ -120,13 +120,15 @@ build_from_hub() {
 push_cf_deploy() {
   local msg="$1"
   cd "$WORK/repo"
-  # Keep deploy branch lean: site + functions + wrangler (+ registry for gen-index reproducibility)
+  # Deploy payload: site + functions + wrangler + registry
+  # + workflow file (GitHub loads workflows FROM the branch that receives the push)
   GIT checkout --orphan "cf-deploy-build-$$" >/dev/null 2>&1
-  # stage only deploy payload
   GIT reset -q
-  GIT add -f site functions wrangler.toml registry 2>/dev/null || {
+  GIT add -f site functions wrangler.toml registry \
+    .github/workflows/deploy-pages.yml 2>/dev/null || {
     GIT add site functions wrangler.toml
     [ -d registry ] && GIT add registry
+    [ -f .github/workflows/deploy-pages.yml ] && GIT add .github/workflows/deploy-pages.yml
   }
   if GIT diff --cached --quiet 2>/dev/null; then
     info "rien à déployer (payload identique?)"

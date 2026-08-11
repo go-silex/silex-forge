@@ -138,7 +138,18 @@ push_cf_deploy() {
   local i
   for i in 1 2 3 4 5; do
     if GIT push --force --quiet origin "HEAD:${DEPLOY_BRANCH}" 2>/dev/null; then
-      ok "push ${DEPLOY_BRANCH} → GH Action Deploy Pages"
+      ok "push ${DEPLOY_BRANCH}"
+      # Trigger deploy from main (loads workflow reliably; overlays site from cf-deploy).
+      # Push-to-cf-deploy alone may not run Actions if branch filters/orphan edge cases.
+      if command -v gh >/dev/null 2>&1; then
+        if gh workflow run "Deploy Pages" --repo go-silex/silex-forge --ref main 2>/dev/null; then
+          ok "GH workflow_dispatch Deploy Pages (main + overlay cf-deploy)"
+        else
+          warn "gh workflow_dispatch failed — open Actions tab or: gh workflow run 'Deploy Pages' --ref main"
+        fi
+      else
+        warn "install gh CLI to auto-trigger deploy, or run: gh workflow run 'Deploy Pages' --ref main"
+      fi
       return 0
     fi
     warn "push ${DEPLOY_BRANCH} rejeté — retry $i/5"

@@ -9,7 +9,7 @@ Access team + share unlisted `/s/<slug>/<key>/`. Voir `CLAUDE.md`.
 | **Audience** | Équipe Silex (Access) + liens share à clé (unlisted) |
 | **≠** | `demo.gosilex.com` (funnel client) · `share.gosilex.com` / `silex-share` (**archived** 2026-07-30 — jamais livré) |
 | **Deploy** | Cloudflare Pages · Direct Upload (`wrangler`) depuis le laptop — HTML **hors git** |
-| **Plugin** | `silex-forge` — publish + slides + onepager |
+| **Plugin** | `silex-forge` — publish + slides + onepager + cheat sheets |
 
 ## Pourquoi ce repo
 
@@ -31,7 +31,7 @@ Scope **user** (sinon skills invisibles hors du projet d’install) :
 /plugin install silex-forge@silex-forge
 ```
 
-Skills : `forge-publish` · `forge-setup` · `silex-slides` · `frontend-slides` · `silex-onepager`.  
+Skills : `forge-publish` · `forge-setup` · `silex-slides` · `frontend-slides` · `silex-onepager` · `silex-cheatsheet`.  
 Illustrations Rocky (autre marketplace) :
 
 ```text
@@ -96,6 +96,7 @@ plugins/silex-forge/
     silex-slides/
     frontend-slides/
     silex-onepager/
+    silex-cheatsheet/         # infographies LinkedIn (poster 1260 × hauteur mesurée)
   scripts/publish.sh
   scripts/forge-doctor.sh
   scripts/lib/load_config.py

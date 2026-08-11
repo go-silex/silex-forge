@@ -59,7 +59,8 @@ plugins/silex-forge/scripts/forge-doctor.sh
 | `plugins/silex-forge/forge.config.example.json` | defaults + fallback code |
 
 **SSOT artefacts** = `$hub_root/00_COCKPIT/Forge/artifacts/<slug>/`  
-**Deploy live** = ce repo `site/a/<slug>/` (CF Pages).
+**Deploy live** = branche git **`cf-deploy`** (build from hub) → GH Action → CF Pages  
+**main** = engine only (plugins + functions — **pas** les HTML).
 
 Hook plugin `SessionStart` : si config KO → rappeler `forge-setup`.
 
@@ -71,20 +72,17 @@ S=plugins/silex-forge/scripts/publish.sh
 # Depuis hub SSOT (path omis si artifacts/<slug>/ existe)
 "$S" mon-deck --title "Mon deck" --type deck
 
-# Depuis un fichier (sync aussi vers hub après push)
+# Depuis un fichier → écrit hub d'abord, puis cf-deploy
 "$S" mon-deck ./mon-deck.html --title "Mon deck" --type deck
-
-# + share (lien /s/<slug>/<key>/, unlisted)
-"$S" mon-deck ./mon-deck.html --share --title "Mon deck" --type deck
 
 "$S" --share mon-deck
 "$S" --unshare mon-deck
 "$S" --list
 "$S" --remove mon-deck
-"$S" --rebuild-index
+"$S" --rebuild-index   # rebuild full site from hub → cf-deploy
 ```
 
-Le script : clone jetable → copie sous `site/a/<slug>/` → écrit `registry/<slug>.json` → régénère l’index → commit + push → sync hub SSOT.
+Le script : hub SSOT → `build-site-from-hub` → force-push **`cf-deploy`** → Action `wrangler pages deploy`.
 
 ## Structure
 
@@ -103,19 +101,17 @@ plugins/silex-forge/
   scripts/forge-doctor.sh
   scripts/lib/load_config.py
   scripts/gen-index.py
-registry/<slug>.json          # métadonnées (hors site/ → jamais servi)
-site/                         # BUILD OUTPUT Pages (deploy, pas SSOT éditorial)
-  index.html                  # catalogue (généré)
-  404.html                    # structurel
-  _headers  _redirects  robots.txt
-  images/
-  a/<slug>/                   # INTERNE (Access)
-  # share servi par Function /s/* + KV (pas de copie statique)
+# registry/*.json + site/a/**  →  PAS sur main (cf-deploy only)
+site/                         # skeleton engine (404, headers) — pas les HTML
+functions/                    # Access + share
 docs/
   cloudflare-access.md
   cloudflare-pages.md
   share-model.md
+  artifacts-config.md
 ```
+
+Branche **`cf-deploy`** (force-push par publish) : `site/` complet + `registry/` + `functions/`.
 
 ## Sécurité
 

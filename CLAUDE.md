@@ -72,20 +72,25 @@ Deploy : push `main` → GitHub Action `Deploy Pages` (secrets CF dans GH + note
 ## Structure
 
 ```
-site/a/<slug>/        # deploy live (Access) — CF Pages
-# /s/*                 # Function + KV (pas de copie statique sous site/s)
-registry/<slug>.json  # métadonnées (jamais servi)
-plugins/silex-forge/  # plugin : publish + slides + onepager + setup
+# main = ENGINE only
+plugins/silex-forge/     # publish + slides + onepager + setup
   forge.config.example.json
-  hooks/              # SessionStart → doctor config
-  skills/forge-publish|forge-setup|silex-slides|…
-  scripts/publish.sh · forge-doctor.sh · lib/load_config.py
+  hooks/                 # SessionStart → doctor
+  scripts/publish.sh · build-site-from-hub.py · forge-doctor.sh
+functions/               # Access middleware, /api/share, /s/*
+site/                    # skeleton only (404, _headers, …) — PAS les HTML
+# /s/* runtime           # Function + KV
+
+# hors main
+# hub  $artifacts/<slug>/{index.html,meta.json}  = SSOT
+# git  branch cf-deploy  = payload Pages (site/a + registry + functions)
 ```
 
 ## Config machine (artefacts dans silex-hub)
 
 **SSOT HTML** = vault silex-hub (path **différent** par personne)  
-**Deploy** = ce repo `site/a/` via git push
+**Deploy** = `publish.sh` → build from hub → force-push **`cf-deploy`** → GH Action Pages  
+**main** = engine only (pas de duplication HTML)
 
 | Fichier | Rôle |
 |---|---|
@@ -93,13 +98,12 @@ plugins/silex-forge/  # plugin : publish + slides + onepager + setup
 | plugin `forge.config.example.json` | defaults + fallback si pas de local |
 
 ```bash
-# doctor
 plugins/silex-forge/scripts/forge-doctor.sh
+plugins/silex-forge/scripts/publish.sh --rebuild-index   # hub → cf-deploy
 # setup interactif → skill forge-setup
 ```
 
-Loader : local → example ; `hub_root` bootstrappable depuis `~/.config/silex/hub-root`.  
-Hook plugin SessionStart : si config KO → rappeler **forge-setup**.
+Loader : local → example. Hook SessionStart : config KO → **forge-setup**.
 
 ## Plugin dans ce repo
 
@@ -151,9 +155,10 @@ Deps : `google-chrome`|`chromium`, `ffmpeg`, `jq`.
 1. Ne **jamais** déployer forge sur Vercel
 2. Ne **pas** mettre de secrets dans `site/`
 3. Ne **pas** lister les share keys dans le catalogue
-4. Publish = git only ; CF token uniquement GH Actions / BW ops
-5. Après gros publish : vérifier Access (302 sans cookie) et share (200 sans cookie sur `/s/.../key/`)
-6. **pages.dev** doit aussi être sous Access (+ middleware 403) — ne jamais sonder `*.pages.dev` comme origin ouverte
-7. Secrets share = **KV only** — jamais `share_key` dans registry/HTML ; `/api/share` = JWT Access vérifié ou `FORGE_SHARE_SECRET`
-8. Config forge absente/incomplète → **forge-setup** (ne pas inventer hub_root d’un collègue)
-9. Artefacts source → hub `$artifacts_dir/<slug>/` ; live → `site/a/` only via publish
+4. Publish = hub SSOT + push **`cf-deploy`** ; CF token uniquement GH Actions / BW ops
+5. **main** n’accueille **pas** les HTML (`site/a`, `registry/*.json`) — engine only
+6. Après gros publish : vérifier Access (302 sans cookie) et share (200 sans cookie sur `/s/.../key/`)
+7. **pages.dev** sous Access (+ middleware 403) — ne jamais sonder `*.pages.dev` comme origin ouverte
+8. Secrets share = **KV only** — jamais `share_key` dans meta/registry/HTML
+9. Config forge absente → **forge-setup** (ne pas inventer hub_root)
+10. Artefacts → hub `$artifacts_dir/<slug>/` ; live CF ← branche `cf-deploy`

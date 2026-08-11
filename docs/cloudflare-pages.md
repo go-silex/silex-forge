@@ -16,9 +16,11 @@
 Ce projet a été recréé en **Direct Upload** (API `pages/projects`) — le mode est **irréversible**.  
 On compense avec :
 
-1. **Git = source de vérité** (`site/` + `registry/` dans le repo)
-2. **`.github/workflows/deploy-pages.yml`** → `wrangler pages deploy site` sur push `main` (paths `site/**`)
-3. Token CF **uniquement** dans secrets GH org/repo — **pas** sur les postes
+1. **SSOT HTML** = hub silex-hub (`artifacts/`) — **pas** main
+2. **Transport deploy** = branche git **`cf-deploy`** (built par `publish.sh` / `build-site-from-hub.py`)
+3. **`.github/workflows/deploy-pages.yml`** → `wrangler pages deploy site` sur push `cf-deploy` (et overlay si `main` functions)
+4. Token CF **uniquement** dans secrets GH — **pas** sur les postes
+5. **main** = engine only (`plugins/`, `functions/`, skeleton `site/`)
 
 Secrets GH (repo `go-silex/silex-forge`) — **déjà posés** :
 
@@ -47,14 +49,18 @@ npx wrangler pages deploy site --project-name=silex-forge --branch=main
 ## Publish flow (équipe)
 
 ```bash
-# 1) publish.sh → commit + push site/ + registry/
+# 1) SSOT hub + build + force-push cf-deploy
 plugins/silex-forge/scripts/publish.sh mon-slug ./file.html --title "…"
-# 2) GH Action déploie site/ → forge.gosilex.com
+#    ou rebuild tout depuis hub :
+plugins/silex-forge/scripts/publish.sh --rebuild-index
+
+# 2) GH Action (push cf-deploy) → wrangler pages deploy site → forge.gosilex.com
 ```
 
-Fallback manuel (ops avec CF credentials) :
+Fallback manuel (ops avec CF credentials + hub local) :
 
 ```bash
+python3 plugins/silex-forge/scripts/build-site-from-hub.py --repo-root .
 npx wrangler pages deploy site --project-name=silex-forge --branch=main
 ```
 

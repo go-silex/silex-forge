@@ -13,10 +13,11 @@ Voir **`CLAUDE.md`** (chim opérationnel complet).
 ## Paths
 
 - **SSOT** : hub `$artifacts_dir/<slug>/` (path local via forge.config)
-- `/a/<slug>/` — deploy live Access, catalogue
-- `/s/<slug>/<key>/` — share public unlisted (Bypass Access)
-- `registry/` — jamais servi
+- **main** : engine only (pas `site/a` ni `registry/*.json`)
+- **cf-deploy** : payload Pages (build from hub)
+- `/a/<slug>/` — live Access · `/s/<slug>/<key>/` — share unlisted
 
 ## Deploy
 
-Push `main` → GH Action Pages. Token BW : `cloudflare/silex-forge-pages-deploy`.
+`publish.sh` → force-push `cf-deploy` → GH Action Pages.  
+Token BW : `cloudflare/silex-forge-pages-deploy`.

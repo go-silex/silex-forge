@@ -39,13 +39,14 @@ jobs:
       - name: Fetch site content from cf-deploy
         if: github.ref == 'refs/heads/main'
         run: |
-          set -euo pipefail
-          git fetch origin cf-deploy --depth 1
-          # Overlay built content (HTML + registry + catalogue)
-          git checkout origin/cf-deploy -- site/ registry/ 2>/dev/null || {
-            echo "⚠ cf-deploy has no site/ yet — deploying skeleton only"
-          }
-          # Ensure functions/wrangler from main remain
+          set -uo pipefail
+          if git fetch origin cf-deploy --depth 1; then
+            git checkout origin/cf-deploy -- site/ registry/ \
+              && echo "✓ overlaid site/ + registry/ from cf-deploy" \
+              || echo "⚠ cf-deploy checkout partial"
+          else
+            echo "⚠ branch cf-deploy absent — deploy skeleton only (run publish.sh --rebuild-index)"
+          fi
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3

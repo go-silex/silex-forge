@@ -1,0 +1,1525 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+<!-- forge-og:start -->
+  <meta name="description" content="One-pager — installer, cadrer, builder et shipper avec le plugin Roxabi dev-core (/dev, /ship, skills).">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Silex Forge">
+  <meta property="og:title" content="Comment utiliser dev-core">
+  <meta property="og:description" content="One-pager — installer, cadrer, builder et shipper avec le plugin Roxabi dev-core (/dev, /ship, skills).">
+  <meta property="og:url" content="https://forge.gosilex.com/a/comment-utiliser-dev-core/">
+  <meta property="og:image" content="https://forge.gosilex.com/a/comment-utiliser-dev-core/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://forge.gosilex.com/a/comment-utiliser-dev-core/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Comment utiliser dev-core">
+  <meta name="twitter:description" content="One-pager — installer, cadrer, builder et shipper avec le plugin Roxabi dev-core (/dev, /ship, skills).">
+<!-- forge-og:end -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Comment utiliser dev-core">
+<meta property="og:description" content="Comment utiliser dev-core">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://forge.roxabi.dev/roxabi/visuals/comment-utiliser-dev-core.html">
+<meta property="og:image" content="https://forge.roxabi.dev/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Roxabi Forge">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Comment utiliser dev-core">
+<meta name="twitter:description" content="Comment utiliser dev-core">
+<meta name="twitter:image" content="https://forge.roxabi.dev/og-image.png">
+<meta property="og:description" content="Guide one-pager — installer, cadrer, spécifier, builder et shipper avec le plugin Roxabi dev-core.">
+<meta property="og:url" content="https://forge.gosilex.com/a/comment-utiliser-dev-core/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Guide one-pager — cycle de vie complet avec /dev, /ship et 31 skills.">
+  <!-- diagram-meta:start -->
+  <meta name="diagram:title" content="Comment utiliser dev-core">
+  <meta name="diagram:date" content="2026-07-29">
+  <meta name="diagram:category" content="analysis">
+  <meta name="diagram:cat-label" content="Guide">
+  <meta name="diagram:color" content="cyan">
+  <meta name="diagram:badges" content="latest">
+  <!-- diagram-meta:end -->
+  <title>Comment utiliser dev-core</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --surface2: #eef1f6;
+      --border: #e2e6ee;
+      --border-bright: #c8d0dc;
+      --ink: #0b1220;
+      --text: #0b1220;
+      --text-muted: #4b5568;
+      --text-dim: #6b7280;
+      --accent: #2e5f9d;
+      --accent-soft: rgba(46, 95, 157, 0.1);
+      --accent-glow: rgba(107, 159, 212, 0.22);
+      --peach: rgba(235, 116, 87, 0.18);
+      --green: #15803d;
+      --green-soft: rgba(21, 128, 61, 0.1);
+      --amber: #b45309;
+      --amber-soft: rgba(180, 83, 9, 0.1);
+      --purple: #6d28d9;
+      --purple-soft: rgba(109, 40, 217, 0.1);
+      --red: #b91c1c;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 1px 2px rgba(11, 18, 32, 0.04), 0 8px 24px rgba(11, 18, 32, 0.05);
+      --font-display: "Outfit", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+      --font-mono: "Space Mono", ui-monospace, monospace;
+      --max: 1080px;
+      --nav-h: 56px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code, .mono {
+      font-family: var(--font-mono);
+      font-size: 0.86em;
+    }
+    code {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.12em 0.4em;
+      border-radius: 5px;
+      color: var(--ink);
+    }
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.15rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.55;
+      box-shadow: var(--shadow);
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    /* ── Sticky nav ── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0 1rem;
+      background: rgba(247, 248, 250, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .topnav a {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.4rem 0.65rem;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: 0.15s ease;
+    }
+    .topnav a:hover, .topnav a.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .topnav .brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--ink);
+      margin-right: 0.5rem;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 4.5rem 1.5rem 3.5rem;
+      border-bottom: 1px solid var(--border);
+      background:
+        radial-gradient(ellipse 70% 55% at 15% 20%, var(--accent-glow), transparent 55%),
+        radial-gradient(ellipse 55% 50% at 90% 10%, var(--peach), transparent 50%),
+        var(--bg);
+    }
+    .hero-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      gap: 2rem;
+    }
+    @media (min-width: 860px) {
+      .hero-inner { grid-template-columns: 1.4fr 1fr; align-items: end; }
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(46, 95, 157, 0.18);
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: 1.1rem;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .hero-lead {
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      max-width: 38rem;
+      margin-bottom: 1.4rem;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-bottom: 1.5rem;
+    }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+    }
+    .chip.accent { background: var(--accent-soft); border-color: rgba(46,95,157,.2); color: var(--accent); }
+    .chip.green { background: var(--green-soft); border-color: rgba(21,128,61,.2); color: var(--green); }
+    .chip.amber { background: var(--amber-soft); border-color: rgba(180,83,9,.2); color: var(--amber); }
+    .chip.purple { background: var(--purple-soft); border-color: rgba(109,40,217,.2); color: var(--purple); }
+    .hero-scroll {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.5rem;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    @media (min-width: 520px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+      box-shadow: var(--shadow);
+    }
+    .kpi .n {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .kpi .l {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Sections ── */
+    .section-pad {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem;
+    }
+    .section-h {
+      display: flex;
+      align-items: baseline;
+      gap: 0.85rem;
+      margin-bottom: 0.65rem;
+    }
+    .section-n {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .section-h h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.45rem, 2.5vw, 1.85rem);
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .lede {
+      color: var(--text-muted);
+      max-width: 46rem;
+      margin-bottom: 1.75rem;
+      font-size: 1.02rem;
+    }
+
+    /* ── Cards / panels ── */
+    .grid-2 {
+      display: grid;
+      gap: 1rem;
+    }
+    @media (min-width: 760px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    .grid-3 {
+      display: grid;
+      gap: 1rem;
+    }
+    @media (min-width: 860px) {
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+    .modcard, .panel-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.3rem;
+      box-shadow: var(--shadow);
+    }
+    .modcard h3, .panel-wrap h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+      color: var(--ink);
+    }
+    .modcard p, .panel-wrap p {
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      margin-bottom: 0.55rem;
+    }
+    .modcard p:last-child, .panel-wrap p:last-child { margin-bottom: 0; }
+    .modcard .prio {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      margin-bottom: 0.65rem;
+    }
+    .prio.p1 { background: var(--accent-soft); color: var(--accent); }
+    .prio.p2 { background: var(--green-soft); color: var(--green); }
+    .prio.p3 { background: var(--amber-soft); color: var(--amber); }
+    .prio.p4 { background: var(--purple-soft); color: var(--purple); }
+
+    .split {
+      display: grid;
+      gap: 1rem;
+    }
+    @media (min-width: 800px) {
+      .split { grid-template-columns: 1fr 1fr; }
+    }
+    .split .col {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.25rem;
+    }
+    .split .col h4 {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 0.7rem;
+    }
+    .split .col ul {
+      list-style: none;
+      padding: 0;
+    }
+    .split .col li {
+      position: relative;
+      padding-left: 1rem;
+      margin-bottom: 0.45rem;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+    .split .col li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.8rem;
+    }
+
+    /* ── Flow steps ── */
+    .flow {
+      display: grid;
+      gap: 0.65rem;
+      margin: 1.25rem 0 0;
+    }
+    .flow-step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.9rem;
+      align-items: start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.95rem 1.1rem;
+    }
+    .flow-step .num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: var(--accent-soft);
+      width: 2rem;
+      height: 2rem;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .flow-step strong {
+      display: block;
+      font-family: var(--font-display);
+      color: var(--ink);
+      margin-bottom: 0.15rem;
+    }
+    .flow-step span {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── Tables ── */
+    .tbl-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      background: var(--surface2);
+      font-weight: 500;
+    }
+    tr:last-child td { border-bottom: none; }
+    td { color: var(--text-muted); }
+    td:first-child, td strong { color: var(--ink); }
+    td code { white-space: nowrap; }
+
+    /* ── Callouts ── */
+    .callout {
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 0.95rem 1.1rem;
+      margin: 1.25rem 0;
+      color: var(--text-muted);
+      font-size: 0.93rem;
+    }
+    .callout strong { color: var(--ink); }
+    .callout.warn {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+    .callout.ok {
+      border-left-color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .caveat-grid {
+      display: grid;
+      gap: 0.85rem;
+    }
+    @media (min-width: 760px) {
+      .caveat-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .caveat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.1rem;
+    }
+    .caveat h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+      color: var(--ink);
+    }
+    .caveat p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* ── Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible, .hero.reveal {
+      opacity: 1;
+      transform: none;
+    }
+    .hero.reveal { transition: none; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem 3rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+    footer .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+    }
+    footer strong { color: var(--ink); font-family: var(--font-display); }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+  </style>
+</head>
+<body>
+  <nav class="topnav" aria-label="Sommaire">
+    <a class="brand" href="#hero">dev-core</a>
+    <a href="#s1">Fil</a>
+    <a href="#s2">Vue</a>
+    <a href="#s3">Setup</a>
+    <a href="#s4">/dev</a>
+    <a href="#s5">Shape &amp; Build</a>
+    <a href="#s6">Verify &amp; Ship</a>
+    <a href="#s7">Agents</a>
+    <a href="#s8">Commandes</a>
+    <a href="#s9">Périmètre</a>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="hero reveal visible" id="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">Roxabi · Claude Code · plugin</div>
+        <h1>Comment utiliser<br>dev-core</h1>
+        <p class="hero-lead">
+          Un orchestrateur de cycle de vie complet&nbsp;: de l’issue GitHub au merge,
+          avec des gates humains, des artefacts versionnés et des agents spécialisés.
+          Une seule entrée principale — <code>/dev #N</code> — et un raccourci pour shipper du code déjà prêt&nbsp;: <code>/ship</code>.
+        </p>
+        <div class="hero-meta">
+          <span class="chip accent">31 skills</span>
+          <span class="chip green">9 agents</span>
+          <span class="chip amber">3 tiers · S / F-lite / F-full</span>
+          <span class="chip purple">2026-07-29</span>
+        </div>
+        <div class="hero-scroll">↓ défiler · lecture autonome · ~8&nbsp;min</div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="n">1</div><div class="l">commande pour démarrer un ticket&nbsp;: <code>/dev</code></div></div>
+        <div class="kpi"><div class="n">5</div><div class="l">phases&nbsp;: Frame → Shape → Build → Verify → Ship</div></div>
+        <div class="kpi"><div class="n">3</div><div class="l">niveaux d’effort selon la complexité</div></div>
+        <div class="kpi"><div class="n">0</div><div class="l">force-push / amend — le workflow refuse le destructive</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ §01 FIL ═══════════════ -->
+  <section id="s1" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§01</span>
+      <h2>Fil conducteur — pourquoi cet ordre</h2>
+    </div>
+    <p class="lede">
+      dev-core ne remplace pas le jugement d’un développeur&nbsp;: il structure le trajet
+      <strong>problème → solution → code → preuve → livraison</strong>, et s’arrête
+      à chaque porte où un humain doit valider.
+    </p>
+    <div class="grid-2">
+      <div class="modcard">
+        <span class="prio p1">Principe 1</span>
+        <h3>Problème avant solution</h3>
+        <p>
+          Frame et Spec forcent à écrire <em>ce qu’on résout</em> et <em>ce qu’on accepte comme done</em>
+          avant d’ouvrir l’éditeur. Moins de rework, moins de «&nbsp;on verra en PR&nbsp;».
+        </p>
+      </div>
+      <div class="modcard">
+        <span class="prio p2">Principe 2</span>
+        <h3>Effort calibré (tiers)</h3>
+        <p>
+          Un typo de 2 fichiers ne mérite pas une analyse multi-domaines.
+          Un changement d’architecture ne se shippe pas sans sketch ni plan.
+          Le tier choisit les étapes, pas l’inverse.
+        </p>
+      </div>
+      <div class="modcard">
+        <span class="prio p3">Principe 3</span>
+        <h3>Vous êtes la gate</h3>
+        <p>
+          Frame, Spec et Plan demandent une approbation explicite.
+          Review multi-agents, puis vous décidez fix / merge / stop.
+          Rien d’irréversible sans votre feu vert.
+        </p>
+      </div>
+      <div class="modcard">
+        <span class="prio p4">Principe 4</span>
+        <h3>Reprise d’état</h3>
+        <p>
+          Les artefacts sous <code>artifacts/</code> (frames, analyses, specs, plans)
+          sont la mémoire du ticket. Session coupée&nbsp;? <code>/dev #N</code> reprend au bon step.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ §02 VUE ═══════════════ -->
+  <section id="s2" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§02</span>
+      <h2>Vue d’ensemble — 5 phases, 2 entrées</h2>
+    </div>
+    <p class="lede">
+      Deux façons d’entrer dans le flux&nbsp;: cycle complet depuis une issue, ou atterrissage
+      quand le code est déjà sur une branche feature.
+    </p>
+    <div class="grid-2" style="margin-bottom:1.25rem">
+      <div class="panel-wrap">
+        <h3><code>/dev #42</code> — cycle complet</h3>
+        <p>Scanne les artefacts, choisit le tier, affiche la barre de progression, enchaîne Frame → … → cleanup.</p>
+        <pre><code>/dev #42
+/dev "dark mode"
+/dev #42 --from spec
+/dev #42 --audit</code></pre>
+      </div>
+      <div class="panel-wrap">
+        <h3><code>/ship</code> — code déjà prêt</h3>
+        <p>Quand le build est fait sur la branche&nbsp;: commit → PR → code-review → fix loop → label <code>reviewed</code> + watch CI / auto-merge.</p>
+        <pre><code>/ship
+# alias mental :
+# commit → pr → review → fix* → ci-watch</code></pre>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="modcard">
+        <span class="prio p1">Frame</span>
+        <h3>recheck → frame</h3>
+        <p>Drift-check de l’issue, puis cadrage du problème (scope, contraintes, tier).</p>
+      </div>
+      <div class="modcard">
+        <span class="prio p2">Shape</span>
+        <h3>analyze → spec</h3>
+        <p>Analyse profonde (F-full), critères d’acceptation, découpage intelligent.</p>
+      </div>
+      <div class="modcard">
+        <span class="prio p3">Build</span>
+        <h3>plan → implement → pr</h3>
+        <p>Micro-tâches, agents de code, worktree isolé, PR Conventional Commits.</p>
+      </div>
+      <div class="modcard">
+        <span class="prio p4">Verify</span>
+        <h3>ci → validate → review → fix</h3>
+        <p>CI live, validation qualité, review multi-domaines, boucle de correctifs.</p>
+      </div>
+      <div class="modcard">
+        <span class="prio p1">Ship</span>
+        <h3>cleanup (+ promote)</h3>
+        <p>Nettoyage worktree/branches. Promotion staging→main en commande séparée.</p>
+      </div>
+      <div class="modcard">
+        <span class="prio p2">Mémoire</span>
+        <h3>artifacts/*</h3>
+        <p>Chaque phase laisse une trace lisible — reprise sûre, auditabilité, onboarding.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ §03 SETUP ═══════════════ -->
+  <section id="s3" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§03</span>
+      <h2>Setup — installer et câbler le projet</h2>
+    </div>
+    <p class="lede">
+      Prérequis&nbsp;: Claude Code, un package manager (Bun / npm / pnpm / yarn),
+      <code>gh</code> authentifié. Optionnel mais recommandé&nbsp;: plugin <strong>forge</strong> pour les diagrammes d’architecture.
+    </p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num">01</div>
+        <div>
+          <strong>Marketplace + install</strong>
+          <span>Ajouter le marketplace Roxabi, installer dev-core (et dev-init pour le harness complet).</span>
+          <pre><code>claude plugin marketplace add Roxabi/roxabi-plugins
+claude plugin install dev-core
+claude plugin install dev-init   # harness /dev-init
+claude plugin install forge      # diagrammes architecture</code></pre>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">02</div>
+        <div>
+          <strong>Harness projet — <code>/dev-init</code></strong>
+          <span>
+            Pas le <code>/init</code> natif de Claude Code (qui ne fait que scaffolder un CLAUDE.md).
+            <code>/dev-init</code> écrit la config, enregistre le workspace, crée <code>artifacts/</code>, pousse les workflows CI.
+          </span>
+          <pre><code>/dev-init
+/dev-init --force   # reconfigurer</code></pre>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">03</div>
+        <div>
+          <strong>Stack agents — <code>/stack-setup</code></strong>
+          <span>
+            Auto-découvre runtime, framework, tests, linter → écrit <code>.claude/stack.yml</code>.
+            Toutes les skills lisent ce fichier au runtime&nbsp;: le plugin reste project-agnostic.
+          </span>
+          <pre><code>/stack-setup
+# ou standalone sans harness complet :
+/env-setup</code></pre>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">04</div>
+        <div>
+          <strong>Santé — <code>/checkup</code></strong>
+          <span>
+            Vérifie GitHub (labels, branch protection, secrets, workflows), stack.yml, workspace, LSP.
+            Distingue ❌ bloquant vs ⚠️ optionnel.
+          </span>
+          <pre><code>/checkup</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout ok">
+      <strong>Mise à jour</strong> — le cache est hash-keyed. Après un push sur le marketplace&nbsp;:
+      <code>claude plugin install dev-core</code> pour récupérer les nouvelles skills.
+      Sans re-install, un skill récent (ex. <code>/recheck</code>) peut manquer dans vos triggers.
+    </div>
+  </section>
+
+  <!-- ═══════════════ §04 /dev ═══════════════ -->
+  <section id="s4" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§04</span>
+      <h2>Le fil <code>/dev</code> — tiers &amp; progression</h2>
+    </div>
+    <p class="lede">
+      Au lancement, <code>/dev</code> lit l’issue, scanne l’état (artefacts, worktree, PR),
+      propose un tier si nécessaire, affiche une barre Frame / Shape / Build / Verify / Ship,
+      puis enchaîne le prochain step sans vous demander «&nbsp;on continue&nbsp;?&nbsp;» entre chaque skill.
+    </p>
+
+    <div class="tbl-wrap" style="margin-bottom:1.5rem">
+      <table>
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Quand</th>
+            <th>Chemin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>S</strong></td>
+            <td>≤3 fichiers, pas d’archi, risque faible</td>
+            <td>recheck → implement → pr → validate → review → fix* → cleanup*</td>
+          </tr>
+          <tr>
+            <td><strong>F-lite</strong></td>
+            <td>Scope clair, un seul domaine</td>
+            <td>Frame → Spec → Plan → Implement → Verify → Ship</td>
+          </tr>
+          <tr>
+            <td><strong>F-full</strong></td>
+            <td>Nouvelle archi, reqs flous, multi-domaines</td>
+            <td>Frame → <em>Analyze</em> → Spec → Plan (+ sketch archi) → … → Ship</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split">
+      <div class="col">
+        <h4>Ce que vous voyez</h4>
+        <ul>
+          <li>Titre + #issue + tier</li>
+          <li>Barre par phase (done / pending)</li>
+          <li>Next step explicite</li>
+          <li>Task list Claude Code = engagement de session</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Gates humaines</h4>
+        <ul>
+          <li><strong>Frame</strong> — approuver le cadrage</li>
+          <li><strong>Spec</strong> — valider critères &amp; découpage</li>
+          <li><strong>Plan</strong> — valider micro-tâches (+ sketch F-full)</li>
+          <li><strong>Review</strong> — fix / merge / stop</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:1.25rem">
+      <strong>Pause plan → implement (F-lite / F-full)</strong> —
+      après approbation du plan, le pipeline s’arrête et recommande <code>/compact</code> puis
+      <code>/dev #N</code> pour repartir propre côté contexte avant de coder.
+      Les tâches persistent dans la task list + l’artefact plan.
+    </div>
+
+    <div class="callout warn">
+      <strong>Worktree obligatoire</strong> —
+      le code feature ne se fait pas sur <code>main</code>/<code>staging</code>.
+      <code>/dev</code> bootstrappe un worktree <code>.claude/worktrees/{N}-slug</code> sur
+      <code>feat/{N}-slug</code> avant frame / analyze / spec / plan / implement.
+    </div>
+  </section>
+
+  <!-- ═══════════════ §05 SHAPE & BUILD ═══════════════ -->
+  <section id="s5" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§05</span>
+      <h2>Shape &amp; Build — du problème au PR</h2>
+    </div>
+    <p class="lede">
+      Chaque skill est autonome&nbsp;: vous pouvez les lancer hors de <code>/dev</code>
+      (<code>/frame</code>, <code>/spec</code>, <code>/plan</code>…).
+      L’orchestrateur ne réécrit pas leur logique — il les enchaîne.
+    </p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num">R</div>
+        <div>
+          <strong><code>/recheck</code> — avant tout travail</strong>
+          <span>
+            Détecte drift git, symboles manquants, deps déjà résolues.
+            Signal propre → silencieux. Signal feu → Proceed / Update / Close / Abort.
+            Jamais skippé par <code>/dev</code>.
+          </span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">F</div>
+        <div>
+          <strong><code>/frame</code> — cadrer</strong>
+          <span>
+            Problème, contraintes, scope, tier. Produit
+            <code>artifacts/frames/{N}-{slug}-frame.md</code>. Gate d’approbation.
+          </span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">A</div>
+        <div>
+          <strong><code>/analyze</code> + <code>/consensus</code> — (F-full)</strong>
+          <span>
+            Analyse technique profonde&nbsp;; panel multi-experts (architect + 2 contextuels)
+            si la décision est structurante. Artefacts sous <code>artifacts/analyses/</code>.
+          </span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">S</div>
+        <div>
+          <strong><code>/spec</code> — spécifier</strong>
+          <span>
+            Critères d’acceptation, breadboard, slices, smart-splitting.
+            Peut invoquer des experts. Gate d’approbation.
+          </span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">P</div>
+        <div>
+          <strong><code>/plan</code> — micro-tâches</strong>
+          <span>
+            Plan d’implémentation, agents assignés, groupes de fichiers, dépendances.
+            F-full&nbsp;: sketch d’archi (boundaries, data flow, state ownership, intégrations)
+            <em>avant</em> le plan.
+          </span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">I</div>
+        <div>
+          <strong><code>/implement</code> — coder</strong>
+          <span>
+            Exécute le plan via agents domaine (frontend / backend / devops / tester…).
+            Recovery de conflits, abandon après 3 échecs d’une tâche.
+          </span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">PR</div>
+        <div>
+          <strong><code>/pr</code> — pull request</strong>
+          <span>
+            Titre Conventional Commits, lien issue, guard rails.
+            Puis <code>/ci-watch</code> pour le dashboard live des jobs.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tag-row">
+      <span class="chip">artifacts/frames/</span>
+      <span class="chip">artifacts/analyses/</span>
+      <span class="chip">artifacts/specs/</span>
+      <span class="chip">artifacts/plans/</span>
+      <span class="chip">artifacts/visuals/ · forge-chart</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ §06 VERIFY & SHIP ═══════════════ -->
+  <section id="s6" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§06</span>
+      <h2>Verify &amp; Ship — preuve, fix, atterrissage</h2>
+    </div>
+    <p class="lede">
+      La qualité n’est pas un «&nbsp;bonus en fin de PR&nbsp;»&nbsp;: review multi-domaines,
+      hooks de sécurité, format auto, et un meta-orchestrateur pour lander sans friction.
+    </p>
+
+    <div class="grid-2">
+      <div class="modcard">
+        <span class="prio p1">Verify</span>
+        <h3><code>/validate</code> · <code>/code-review</code> · <code>/fix</code></h3>
+        <p>
+          <strong>Validate</strong> — gates lint / typecheck / test / env / i18n / license.
+        </p>
+        <p>
+          <strong>Code-review</strong> — agents multi-domaines, Conventional Comments,
+          scan secrets avant spawn, verdict APPROVED / CHANGES_REQUESTED.
+        </p>
+        <p>
+          <strong>Fix</strong> — auto-apply high-confidence, 1-by-1 pour le reste, max 2 itérations review↔fix.
+        </p>
+      </div>
+      <div class="modcard">
+        <span class="prio p2">Ship</span>
+        <h3><code>/ship</code> · <code>/cleanup</code> · <code>/promote</code></h3>
+        <p>
+          <strong>Ship</strong> — commit → PR → review → fix → label <code>reviewed</code> + ci-watch.
+          Idéal quand vous avez déjà codé hors <code>/dev</code>.
+        </p>
+        <p>
+          <strong>Cleanup</strong> — branches/worktrees orphelins, labels pipeline coincés, CI runs morts.
+        </p>
+        <p>
+          <strong>Promote</strong> — staging→main (repos staging-train). Sur trunk, le pre-flight seul&nbsp;;
+          l’auto-release coupe le tag.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:1.25rem">
+      <strong>Hooks toujours actifs</strong> —
+      (1) bloque secrets / injections sur Edit-Write,
+      (2) force <code>bun run test</code> plutôt que <code>bun test</code> (évite le spin CPU),
+      (3) auto-format via <code>stack.yml</code> après chaque Edit/Write.
+    </div>
+  </section>
+
+  <!-- ═══════════════ §07 AGENTS ═══════════════ -->
+  <section id="s7" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§07</span>
+      <h2>Agents — qui fait quoi</h2>
+    </div>
+    <p class="lede">
+      Neuf agents en trois tiers. Chacun a un guard de config (<code>stack.yml</code> requis),
+      un chemin d’escalade, et un seuil de confiance (stop + escalate sous ~70–80&nbsp;%).
+    </p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Agent</th>
+            <th>Rôle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Domain</strong></td>
+            <td><code>frontend-dev</code></td>
+            <td>UI, chemins <code>{frontend.path}</code> / <code>{shared.ui}</code></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><code>backend-dev</code></td>
+            <td>API, services, <code>{backend.path}</code></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><code>devops</code></td>
+            <td>CI/CD, configs root, infra</td>
+          </tr>
+          <tr>
+            <td><strong>Quality</strong></td>
+            <td><code>tester</code></td>
+            <td>Écrit / lance les tests, RED-GATE</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><code>fixer</code></td>
+            <td>Applique les findings de review acceptés</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><code>security-auditor</code></td>
+            <td>OWASP Top 10, scénarios d’exploit, filtre FP</td>
+          </tr>
+          <tr>
+            <td><strong>Strategy</strong></td>
+            <td><code>architect</code></td>
+            <td>Décisions d’archi, ADRs</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><code>product-lead</code></td>
+            <td>Analyse, specs, priorisation produit</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><code>doc-writer</code></td>
+            <td>Docs, sync, AI Quick Reference</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok" style="margin-top:1.25rem">
+      <strong>Overrides projet</strong> —
+      déposez <code>.claude/agents/&lt;name&gt;.md</code> ou <code>.claude/skills/&lt;name&gt;/SKILL.md</code>
+      pour surcharger le comportement du plugin <em>dans ce repo uniquement</em>
+      (contraintes maison, checklists plus strictes, escalades spécifiques).
+    </div>
+  </section>
+
+  <!-- ═══════════════ §08 COMMANDES ═══════════════ -->
+  <section id="s8" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§08</span>
+      <h2>Cheat sheet — commandes utiles</h2>
+    </div>
+    <p class="lede">
+      Les skills se déclenchent aussi en langage naturel («&nbsp;work on #42&nbsp;», «&nbsp;ship this&nbsp;»).
+      Les slash commands restent le chemin le plus précis.
+    </p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Besoin</th>
+            <th>Commande</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bootstrap projet</td>
+            <td><code>/dev-init</code></td>
+            <td>≠ <code>/init</code> Claude Code</td>
+          </tr>
+          <tr>
+            <td>Configurer le stack</td>
+            <td><code>/stack-setup</code></td>
+            <td>écrit <code>.claude/stack.yml</code></td>
+          </tr>
+          <tr>
+            <td>Santé du setup</td>
+            <td><code>/checkup</code></td>
+            <td>local + GitHub REST</td>
+          </tr>
+          <tr>
+            <td>Travailler une issue</td>
+            <td><code>/dev #N</code></td>
+            <td>entrée principale</td>
+          </tr>
+          <tr>
+            <td>Idée sans numéro</td>
+            <td><code>/dev "ma feature"</code></td>
+            <td>cherche ou crée l’issue</td>
+          </tr>
+          <tr>
+            <td>Reprendre à un step</td>
+            <td><code>/dev #N --from plan</code></td>
+            <td>warn si deps manquantes</td>
+          </tr>
+          <tr>
+            <td>Land code prêt</td>
+            <td><code>/ship</code></td>
+            <td>commit → merge gate</td>
+          </tr>
+          <tr>
+            <td>Review seule</td>
+            <td><code>/code-review</code></td>
+            <td>PR ou diff local</td>
+          </tr>
+          <tr>
+            <td>Watch CI</td>
+            <td><code>/ci-watch</code></td>
+            <td>dashboard emoji live</td>
+          </tr>
+          <tr>
+            <td>Promo staging→main</td>
+            <td><code>/promote</code></td>
+            <td>standalone, pas auto par /dev</td>
+          </tr>
+          <tr>
+            <td>Clarifier l’intent</td>
+            <td><code>/clarify</code></td>
+            <td>éphémère, pas d’artefact</td>
+          </tr>
+          <tr>
+            <td>ADR</td>
+            <td><code>/adr</code></td>
+            <td>décisions d’architecture</td>
+          </tr>
+          <tr>
+            <td>Sync docs post-change</td>
+            <td><code>/doc-sync</code></td>
+            <td>CLAUDE.md, README, skills</td>
+          </tr>
+          <tr>
+            <td>Audit contexte</td>
+            <td><code>/cleanup-context</code></td>
+            <td>bloat=0, memory, rules</td>
+          </tr>
+          <tr>
+            <td>CI / hooks / release</td>
+            <td><code>/ci-setup</code> · <code>/release-setup</code></td>
+            <td>workflows, Dependabot, semantic-release</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════ §09 PÉRIMÈTRE ═══════════════ -->
+  <section id="s9" class="reveal section-pad">
+    <div class="section-h">
+      <span class="section-n">§09</span>
+      <h2>Périmètre — ce que dev-core n’est pas</h2>
+    </div>
+    <p class="lede">
+      Clarifier le hors-scope évite de forcer le plugin hors de son job&nbsp;:
+      <strong>exécuter le cycle de dev sur des issues déjà triées</strong>.
+    </p>
+
+    <div class="caveat-grid">
+      <div class="caveat">
+        <h4>≠ triage d’issues</h4>
+        <p>
+          Labels size / priority / lane / type, blocked-by, parent/child&nbsp;:
+          c’est le plugin séparé <strong>roxabi-issues</strong> (marketplace live).
+          <code>/dev</code> lit les issues, ne les mute plus.
+        </p>
+      </div>
+      <div class="caveat">
+        <h4>≠ board GitHub Projects V2</h4>
+        <p>
+          dev-core est issues-only. Pas de synchro de colonnes Project.
+          La source de vérité d’avancement = artefacts + PR + labels pipeline.
+        </p>
+      </div>
+      <div class="caveat">
+        <h4>≠ rewrite de votre stack</h4>
+        <p>
+          Le plugin s’adapte via <code>stack.yml</code>. Il n’impose pas Bun, Nest ou Vitest —
+          il lit les commandes que vous lui donnez.
+        </p>
+      </div>
+      <div class="caveat">
+        <h4>≠ merge sans humain</h4>
+        <p>
+          Auto-merge possible <em>après</em> label <code>reviewed</code> + CI green,
+          mais la review multi-agents et l’approbation restent le contrat.
+        </p>
+      </div>
+    </div>
+
+    <div class="panel-wrap" style="margin-top:1.5rem">
+      <h3>Next step recommandé</h3>
+      <p style="margin-bottom:0.75rem;color:var(--text-muted)">
+        Sur un repo déjà GitHub-ready, enchaînez dans Claude Code&nbsp;:
+      </p>
+      <pre><code>claude plugin install dev-core
+claude plugin install dev-init
+# dans le repo cible :
+/dev-init
+/stack-setup
+/checkup
+/dev #&lt;première-issue&gt;</code></pre>
+      <p style="margin:0;color:var(--text-muted);font-size:0.92rem">
+        Sources&nbsp;:
+        <a href="https://github.com/Roxabi/roxabi-plugins" target="_blank" rel="noopener">Roxabi/roxabi-plugins</a>
+        · plugin <code>plugins/dev-core/</code>
+        · docs cache / data management dans le repo marketplace.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="links">
+      <a href="https://github.com/Roxabi/roxabi-plugins" target="_blank" rel="noopener">roxabi-plugins</a>
+      <a href="https://github.com/Roxabi/roxabi-forge" target="_blank" rel="noopener">roxabi-forge</a>
+      <a href="#hero">↑ haut de page</a>
+    </div>
+    <p><strong>Roxabi × Silex</strong> · guide dev-core · 2026-07-29 · one-pager scroll</p>
+  </footer>
+
+  <script>
+    // Reveal on scroll — hero already visible
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) e.target.classList.add("visible");
+      }
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    document.querySelectorAll(".reveal").forEach((el) => {
+      if (el.classList.contains("hero")) return;
+      io.observe(el);
+    });
+
+    // Active nav section
+    const sections = [...document.querySelectorAll("section[id]")];
+    const navLinks = [...document.querySelectorAll(".topnav a[href^='#']")].filter(
+      (a) => a.getAttribute("href") !== "#hero" || true
+    );
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const id = e.target.id;
+        navLinks.forEach((a) => {
+          a.classList.toggle("active", a.getAttribute("href") === "#" + id);
+        });
+      });
+    }, { threshold: 0.35, rootMargin: "-20% 0px -55% 0px" });
+    sections.forEach((s) => spy.observe(s));
+  </script>
+
+<!-- forge-share-bar -->
+<script>window.__FORGE_SHARE__={"slug": "comment-utiliser-dev-core"};</script>
+<script>
+/* forge share-bar — interne (Access) / externe (/s/ + shlink) + toast + revoke
+ * window.__FORGE_SHARE__ = { slug?, shareUrl?, shortUrl? }
+ * slug déduit du path /a/<slug>/ si absent.
+ */
+(function () {
+  if (window.__FORGE_SHARE_BAR__) return;
+  window.__FORGE_SHARE_BAR__ = true;
+
+  var cfg = window.__FORGE_SHARE__ || {};
+  var slug = cfg.slug || "";
+  if (!slug) {
+    var m = location.pathname.match(/^\/a\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?/);
+    if (m) slug = m[1];
+  }
+  if (!slug || location.pathname.indexOf("/a/") !== 0) return;
+
+  var state = {
+    active: false,
+    shareUrl: "",
+    shortUrl: "",
+  };
+
+  /* ── styles ───────────────────────────────────────────── */
+  var css = document.createElement("style");
+  css.textContent =
+    "[data-forge-share-bar]{position:fixed;top:12px;right:12px;z-index:2147483646;" +
+    "display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:min(96vw,420px);" +
+    "font-family:system-ui,-apple-system,sans-serif;font-size:13px;" +
+    "background:rgba(254,254,254,.92);backdrop-filter:blur(10px);" +
+    "border:1px solid rgba(3,22,53,.12);padding:6px;box-shadow:0 8px 28px rgba(3,22,53,.12)}" +
+    "[data-forge-share-bar] button{cursor:pointer;border:1px solid #031635;padding:7px 11px;" +
+    "background:#FEFEFE;color:#031635;border-radius:0;font-weight:600;font-size:12.5px;" +
+    "font-family:inherit;line-height:1.2;transition:background .12s,color .12s,opacity .12s}" +
+    "[data-forge-share-bar] button:hover:not(:disabled){background:#eef2f7}" +
+    "[data-forge-share-bar] button:disabled{opacity:.55;cursor:wait}" +
+    "[data-forge-share-bar] button.primary{background:#031635;color:#FEFEFE}" +
+    "[data-forge-share-bar] button.primary:hover:not(:disabled){background:#1a2b4b}" +
+    "[data-forge-share-bar] button.danger{border-color:#c43c3c;color:#c43c3c}" +
+    "[data-forge-share-bar] button.danger:hover:not(:disabled){background:rgba(196,60,60,.08)}" +
+    "[data-forge-share-bar] .fsb-shared{display:none;align-items:center;gap:6px;" +
+    "font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;" +
+    "color:#0d7a5f;background:rgba(13,122,95,.1);border:1px solid rgba(13,122,95,.35);" +
+    "padding:5px 9px}" +
+    "[data-forge-share-bar] .fsb-shared.on{display:inline-flex}" +
+    "[data-forge-share-bar] .fsb-shared-dot{width:6px;height:6px;border-radius:50%;" +
+    "background:#0d7a5f;box-shadow:0 0 0 3px rgba(13,122,95,.2)}" +
+    "[data-forge-share-bar] .fsb-hint{font-size:10.5px;opacity:.5;color:#031635;padding:0 4px}" +
+    "[data-forge-toast]{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(12px);" +
+    "z-index:2147483647;background:#031635;color:#FEFEFE;padding:12px 18px;font:600 13px system-ui,sans-serif;" +
+    "box-shadow:0 10px 32px rgba(3,22,53,.28);opacity:0;pointer-events:none;" +
+    "transition:opacity .18s ease,transform .18s ease;max-width:min(92vw,360px);text-align:center}" +
+    "[data-forge-toast].on{opacity:1;transform:translateX(-50%) translateY(0)}" +
+    "[data-forge-toast].err{background:#c43c3c}";
+  document.documentElement.appendChild(css);
+
+  /* ── toast ────────────────────────────────────────────── */
+  var toastEl = document.createElement("div");
+  toastEl.setAttribute("data-forge-toast", "1");
+  toastEl.setAttribute("role", "status");
+  toastEl.setAttribute("aria-live", "polite");
+  document.documentElement.appendChild(toastEl);
+  var toastTimer = null;
+
+  function toast(msg, isErr) {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("err", !!isErr);
+    toastEl.classList.add("on");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove("on");
+    }, 2400);
+  }
+
+  /* ── bar ──────────────────────────────────────────────── */
+  var bar = document.createElement("div");
+  bar.setAttribute("data-forge-share-bar", "1");
+  bar.setAttribute("role", "toolbar");
+  bar.setAttribute("aria-label", "Partage forge");
+
+  var sharedBadge = document.createElement("span");
+  sharedBadge.className = "fsb-shared";
+  sharedBadge.innerHTML =
+    '<span class="fsb-shared-dot" aria-hidden="true"></span>Partagé';
+  sharedBadge.title = "Lien externe actif (/s/… clé) — accessible hors équipe";
+
+  function mkBtn(label, cls) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    if (cls) b.className = cls;
+    return b;
+  }
+
+  var internalBtn = mkBtn("Interne");
+  internalBtn.title = "Copier le lien équipe (Access) — sans shortlink";
+
+  var externalBtn = mkBtn("Externe", "primary");
+  externalBtn.title = "Créer / copier le lien public (/s/…, shortlink si dispo). ⇧+clic = nouvelle clé";
+
+  var revokeBtn = mkBtn("Révoquer", "danger");
+  revokeBtn.title = "Annuler le partage externe — le lien public cesse de fonctionner";
+  revokeBtn.hidden = true;
+
+  var hint = document.createElement("span");
+  hint.className = "fsb-hint";
+  hint.textContent = "⇧+Externe = régénérer";
+
+  bar.appendChild(sharedBadge);
+  bar.appendChild(internalBtn);
+  bar.appendChild(externalBtn);
+  bar.appendChild(revokeBtn);
+  bar.appendChild(hint);
+  document.documentElement.appendChild(bar);
+
+  function setBusy(on) {
+    internalBtn.disabled = on;
+    externalBtn.disabled = on;
+    revokeBtn.disabled = on;
+  }
+
+  function renderState() {
+    sharedBadge.classList.toggle("on", state.active);
+    revokeBtn.hidden = !state.active;
+    externalBtn.textContent = state.active ? "Copier externe" : "Externe";
+  }
+
+  function copyText(url) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(url);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;left:-9999px;top:0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error("copy_failed"));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  function internalUrl() {
+    return location.origin + "/a/" + slug + "/";
+  }
+
+  /* ── API ──────────────────────────────────────────────── */
+  function apiShare(method, body) {
+    var opts = {
+      method: method,
+      credentials: "same-origin",
+      headers: { "content-type": "application/json" },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch("/api/share" + (method === "GET" ? "?slug=" + encodeURIComponent(slug) : ""), opts).then(
+      function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error(data.error || "error_" + r.status);
+          return data;
+        });
+      }
+    );
+  }
+
+  function refreshState() {
+    return apiShare("GET")
+      .then(function (data) {
+        // GET returns { active } only — never a key
+        state.active = !!data.active;
+        if (!state.active) {
+          state.shareUrl = "";
+          state.shortUrl = "";
+        }
+        renderState();
+      })
+      .catch(function () {
+        /* offline / unauthorized — assume inactive */
+        renderState();
+      });
+  }
+
+  /* ── actions ──────────────────────────────────────────── */
+  internalBtn.addEventListener("click", function () {
+    setBusy(true);
+    var url = internalUrl();
+    copyText(url)
+      .then(function () {
+        toast("Lien interne copié");
+      })
+      .catch(function () {
+        toast("Impossible de copier — " + url, true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  externalBtn.addEventListener("click", function (ev) {
+    var rotate = !!ev.shiftKey;
+    setBusy(true);
+    apiShare("POST", { slug: slug, rotate: rotate })
+      .then(function (data) {
+        state.active = true;
+        state.shareUrl = data.shareUrl || "";
+        state.shortUrl = data.shortUrl || "";
+        cfg.shareUrl = state.shareUrl;
+        cfg.shortUrl = state.shortUrl;
+        renderState();
+        var url = data.shortUrl || data.shareUrl;
+        return copyText(url).then(function () {
+          toast(
+            rotate
+              ? "Nouveau lien externe copié"
+              : data.shortUrl
+                ? "Lien externe copié (shortlink)"
+                : "Lien externe copié"
+          );
+        });
+      })
+      .catch(function (err) {
+        console.error("[forge share]", err);
+        toast("Échec — connecte-toi (Access)", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  revokeBtn.addEventListener("click", function () {
+    if (!state.active) return;
+    if (!confirm("Révoquer le partage externe ?\nLe lien public cessera de fonctionner immédiatement.")) {
+      return;
+    }
+    setBusy(true);
+    apiShare("DELETE", { slug: slug })
+      .then(function () {
+        state.active = false;
+        state.shareUrl = "";
+        state.shortUrl = "";
+        cfg.shareUrl = "";
+        cfg.shortUrl = "";
+        renderState();
+        toast("Partage externe révoqué");
+      })
+      .catch(function (err) {
+        console.error("[forge share revoke]", err);
+        toast("Échec de la révocation", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  renderState();
+  refreshState();
+})();
+
+</script>
+<!-- /forge-share-bar -->
+</body>
+</html>

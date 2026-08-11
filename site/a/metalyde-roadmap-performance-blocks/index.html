@@ -1,0 +1,2937 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+<!-- forge-og:start -->
+  <meta name="description" content="Roadmap Performance Metalyde — blocs métier (visual)">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Silex Forge">
+  <meta property="og:title" content="Metalyde × Silex — Roadmap Performance">
+  <meta property="og:description" content="Roadmap Performance Metalyde — blocs métier (visual)">
+  <meta property="og:url" content="https://forge.gosilex.com/a/metalyde-roadmap-performance-blocks/">
+  <meta property="og:image" content="https://forge.gosilex.com/a/metalyde-roadmap-performance-blocks/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://forge.gosilex.com/a/metalyde-roadmap-performance-blocks/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Metalyde × Silex — Roadmap Performance">
+  <meta name="twitter:description" content="Roadmap Performance Metalyde — blocs métier (visual)">
+<!-- forge-og:end -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Metalyde — Roadmap Performance (blocs métier)">
+<meta property="og:description" content="Metalyde — Roadmap Performance (blocs métier)">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://forge.roxabi.dev/metalyde/visuals/roadmap-performance-blocks.html">
+<meta property="og:image" content="https://forge.roxabi.dev/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Roxabi Forge">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Metalyde — Roadmap Performance (blocs métier)">
+<meta name="twitter:description" content="Metalyde — Roadmap Performance (blocs métier)">
+<meta name="twitter:image" content="https://forge.roxabi.dev/og-image.png">
+<!-- diagram-meta:start -->
+  <meta name="diagram:title" content="Metalyde — Roadmap Performance (blocs métier)">
+  <meta name="diagram:date" content="2026-07-17">
+  <meta name="diagram:category" content="analysis">
+  <meta name="diagram:cat-label" content="Roadmap">
+  <meta name="diagram:color" content="cyan">
+  <meta name="diagram:badges" content="latest">
+  <!-- diagram-meta:end -->
+  <title>Metalyde × Silex — Roadmap Performance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>/* ══════════════════════════════════════════════════════════════════
+   reset.css — box-sizing reset, antialiasing, baseline token contract
+   Part of forge base/ layer. Read once, inline into <style>.
+
+   Token contract: every aesthetic file must define the same custom
+   properties listed below. These are Lyra theme defaults.
+   Roxabi theme values are in aesthetics/roxabi.css (issue #79).
+
+   Extended palette (--amber through --red-dim, --border-bright,
+   --surface2, --bg-panel, --bg-card, --accent-glow) added for
+   fgraph-base.css and explainer-base.css compatibility.
+   Aesthetics override structural tokens; palette tokens are universal.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* ── Baseline Tokens — Lyra Dark (default) ── */
+:root, [data-theme="dark"] {
+  --bg:           #0a0a0f;
+  --surface:      #18181f;
+  --surface2:     #202028;
+  --border:       #2a2a35;
+  --border-bright: #3a3a45;
+  --text:         #fafafa;
+  --text-muted:   #9ca3af;
+  --text-dim:     #6b7280;
+  --accent:       #e85d04;
+  --accent-dim:   #7c2d0e;
+  --accent-glow:  rgba(232,93,4,0.2);
+  --radius:       8px;
+  --radius-sm:    6px;
+  --shadow:       0 1px 3px rgba(0,0,0,0.3);
+
+  /* fgraph + explainer palette */
+  --bg-panel:     var(--surface);
+  --bg-card:      var(--surface);
+  --amber:        #fbbf24;
+  --amber-dim:    rgba(251,191,36,0.12);
+  --cyan:         #22d3ee;
+  --cyan-dim:     rgba(34,211,238,0.12);
+  --green:        #4ade80;
+  --green-dim:    rgba(74,222,128,0.12);
+  --purple:       #c084fc;
+  --purple-dim:   rgba(192,132,252,0.12);
+  --red:          #f87171;
+  --red-dim:      rgba(248,113,113,0.12);
+}
+
+/* ── Baseline Tokens — Lyra Light ── */
+[data-theme="light"] {
+  --bg:           #fafaf9;
+  --surface:      #f4f4f0;
+  --surface2:     #eaeae6;
+  --border:       #d1ccc7;
+  --border-bright: #b0aaa5;
+  --text:         #1c1917;
+  --text-muted:   #57534e;
+  --text-dim:     #78716c;
+  --accent:       #c2410c;
+  --accent-dim:   #fef2e8;
+  --accent-glow:  rgba(194,65,12,0.15);
+  --shadow:       0 1px 3px rgba(0,0,0,0.1);
+
+  --bg-panel:     var(--surface);
+  --bg-card:      var(--surface);
+  --amber:        #d97706;
+  --amber-dim:    rgba(217,119,6,0.1);
+  --cyan:         #0891b2;
+  --cyan-dim:     rgba(8,145,178,0.1);
+  --green:        #16a34a;
+  --green-dim:    rgba(22,163,74,0.1);
+  --purple:       #9333ea;
+  --purple-dim:   rgba(147,51,234,0.1);
+  --red:          #dc2626;
+  --red-dim:      rgba(220,38,38,0.1);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   typography.css — font loading, type scale, code blocks
+   Part of forge base/ layer. Inline after layout.css.
+
+   Preconnect (add to <head> of output HTML):
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Body ── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Headings ── */
+h1, h2, h3, h4 { color: var(--text); font-weight: 600; }
+h1 { font-size: 1.75rem; margin-bottom: 0.75rem; }
+h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem; }
+h3 { font-size: 1rem;    margin: 1.5rem 0 0.5rem; }
+
+/* ── Body Text ── */
+p  { color: var(--text-muted); margin-bottom: 0.875rem; }
+ul, ol { color: var(--text-muted); padding-left: 1.5rem; margin-bottom: 0.875rem; }
+li { margin-bottom: 0.25rem; }
+
+/* ── Code ── */
+code {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.875em;
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 0.125em 0.35em; border-radius: 3px; color: var(--text);
+}
+pre {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1rem; overflow-x: auto; margin-bottom: 1rem;
+}
+pre code {
+  background: none; border: none; padding: 0;
+  font-size: 0.875rem; white-space: pre-wrap;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   roxabi.css — Roxabi brand aesthetic (Gold)
+   Used by: roxabi*, 2ndBrain projects
+
+   Brand tokens only. Semantic colors and typography come from
+   base/components.css and base/typography.css respectively.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Brand Tokens — Dark (default) ──
+   v1.5 cool-dark migration (2026-04-20). Warm text #f0ede6 + amber #f0b429
+   retained as signatures against the cool ground. See
+   ~/.roxabi/forge/roxabi-site/brand/BRAND-BOOK.md v1.5 §6. */
+:root, [data-theme="dark"] {
+  color-scheme: light dark;
+  --bg:           #0d1117;
+  --panel:        #13191f;
+  --surface:      #161b22;
+  --surface2:     #1f252d;
+  --border:       #21262d;
+  --border-bright: #30363d;
+  --text:         #f0ede6;
+  --text-muted:   #9ca3af;
+  --text-dim:     #7a7468;
+  --accent:       #f0b429;
+  --accent-dim:   #78460d;
+  --accent-glow:  rgba(240,180,41,0.2);
+}
+
+/* ── Brand Tokens — Light (manual override) ── */
+[data-theme="light"] {
+  --bg:           #f8f7f4;
+  --surface:      #f0ede8;
+  --surface2:     #e8e5e0;
+  --border:       #d6cfc8;
+  --border-bright: #bfb8b0;
+  --text:         #1c1917;
+  --text-muted:   #57534e;
+  --text-dim:     #78716c;
+  --accent:       #d97706;
+  --accent-dim:   #fef3c7;
+  --accent-glow:  rgba(217,119,6,0.15);
+}
+
+/* ── Brand Tokens — Light (OS preference, unless manually dark) ── */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:           #f8f7f4;
+    --surface:      #f0ede8;
+    --surface2:     #e8e5e0;
+    --border:       #d6cfc8;
+    --border-bright: #bfb8b0;
+    --text:         #1c1917;
+    --text-muted:   #57534e;
+    --text-dim:     #78716c;
+    --accent:       #d97706;
+    --accent-dim:   #fef3c7;
+    --accent-glow:  rgba(217,119,6,0.15);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Slide mode — roxabi aesthetic (used by forge-slides)
+   House brand: cool-dark bg, forge-gold accent, geometric feel.
+   ══════════════════════════════════════════════════════════════════ */
+
+.deck .slide--title {
+  background-image:
+    radial-gradient(ellipse at 50% 30%, var(--accent-glow) 0%, transparent 50%),
+    linear-gradient(135deg, var(--bg) 0%, var(--surface) 100%);
+}
+.deck .slide--title .slide__display {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: -3px;
+  text-shadow: 0 2px 30px var(--accent-glow);
+}
+.deck .slide--title .slide__subtitle {
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+.deck .slide--content .slide__heading {
+  color: var(--text);
+  letter-spacing: -0.75px;
+}
+.deck .slide--content .slide__label {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+.deck .slide--content li::before {
+  color: var(--accent);
+}
+.deck .slide--closing {
+  background-image:
+    radial-gradient(ellipse at 50% 70%, var(--accent-glow) 0%, transparent 60%),
+    linear-gradient(to top, var(--bg), var(--surface));
+}
+.deck .slide--closing .slide__heading {
+  color: var(--accent);
+  font-weight: 700;
+  text-shadow: 0 2px 20px var(--accent-glow);
+}
+.deck .slide--closing .cta {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.deck .slide--closing .cta:hover {
+  background: transparent;
+  color: var(--accent);
+}
+
+.deck .slide--section .slide__number {
+  color: var(--accent);
+  opacity: 0.08;
+  font-weight: 200;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   explainer-base.css — visual explainer primitives for forge
+   v0.2.0
+
+   Provides: hero variants, section labels, phase/section cards,
+   stat grid, zoom controls, verdict badges, finding cards,
+   data tables, reveal animations, grid background, TOC sidebar,
+   steps timeline, two-column layouts, io-strip, callout.
+
+   Expected CSS tokens (inherited from forge base/ layer):
+     --bg, --surface, --surface2, --border, --border-bright,
+     --text, --text-dim, --text-muted,
+     --success, --success-dim, --warning, --warning-dim,
+     --error, --error-dim, --info, --info-dim,
+     --accent, --accent-dim
+     --green, --green-dim, --amber, --amber-dim,
+     --cyan, --cyan-dim, --red, --red-dim, --purple, --purple-dim
+
+   Distribution: inline into <style> for single-file HTML,
+   or link from _shared/ for multi-tab docs.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────
+   GRID BACKGROUND
+   ───────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(99,179,237,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,179,237,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: -1;
+}
+
+[data-theme="light"] body::before {
+  background-image:
+    linear-gradient(rgba(99,179,237,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,179,237,0.05) 1px, transparent 1px);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   REVEAL ANIMATIONS
+   ───────────────────────────────────────────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* JS pattern:
+   const obs = new IntersectionObserver(entries => {
+     entries.forEach(e => {
+       if (e.isIntersecting) {
+         e.target.classList.add('visible');
+         obs.unobserve(e.target);
+       }
+     });
+   }, { threshold: 0.15 });
+   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+*/
+
+/* ─────────────────────────────────────────────────────────────────
+   HERO VARIANTS
+   ───────────────────────────────────────────────────────────────── */
+
+/* ── Base Hero ── */
+.hero {
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.hero-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ── Hero Variant: Left Border (default) ── */
+.hero.left-border {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.5rem;
+}
+
+/* ── Hero Variant: Top Border (elegant/slides) ── */
+.hero.top-border {
+  border-top: 3px solid var(--accent);
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+.hero.top-border .hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Hero Variant: Elevated (audit style) ── */
+.hero.elevated {
+  background: var(--surface);
+  border: 1px solid var(--border-bright);
+  border-radius: 12px;
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.12),
+    0 4px 12px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.hero.elevated::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent);
+  border-radius: 12px 0 0 12px;
+}
+
+/* ── Hero Components ── */
+.hero-kicker,
+.hero-label {
+  font-family: 'IBM Plex Mono', 'Space Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.hero-title,
+.page-title {
+  font-family: 'Outfit', 'Chakra Petch', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title .accent,
+.page-title span {
+  color: var(--accent);
+}
+
+.hero-sub,
+.page-sub {
+  font-family: 'IBM Plex Mono', 'Space Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+.hero.top-border .hero-sub {
+  text-align: center;
+}
+
+/* ── Hero CTAs ── */
+.hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  text-decoration: none;
+}
+
+.hero-btn.primary {
+  background: var(--accent);
+  color: var(--bg);
+  border: 1px solid var(--accent);
+}
+
+.hero-btn.primary:hover {
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.hero-btn.secondary {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border-bright);
+}
+
+.hero-btn.secondary:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
+}
+
+/* ── Tag Row ── */
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.tag.green  { border-color: var(--success); color: var(--success); }
+.tag.amber  { border-color: var(--warning); color: var(--warning); }
+.tag.cyan   { border-color: var(--info); color: var(--info); }
+.tag.red    { border-color: var(--error); color: var(--error); }
+.tag.purple { border-color: #c084fc; color: #c084fc; }
+
+/* ─────────────────────────────────────────────────────────────────
+   HEADER (for multi-tab guides)
+   ───────────────────────────────────────────────────────────────── */
+
+header {
+  padding: 2rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+header .header-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+header h1,
+.guide-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  color: var(--text);
+  margin-bottom: 0.375rem;
+  line-height: 1.15;
+}
+
+header h1 .accent { color: var(--accent); }
+
+header .header-subtitle {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ── Verdict Badges Row ── */
+.header-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.verdict-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', monospace;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.verdict-badge.green  {
+  background: var(--success-dim); color: var(--success);
+  border-color: rgba(74,222,128,0.35);
+}
+.verdict-badge.amber  {
+  background: var(--warning-dim); color: var(--warning);
+  border-color: rgba(251,191,36,0.35);
+}
+.verdict-badge.cyan   {
+  background: var(--info-dim); color: var(--info);
+  border-color: rgba(34,211,238,0.35);
+}
+.verdict-badge.red    {
+  background: var(--error-dim); color: var(--error);
+  border-color: rgba(248,113,113,0.35);
+}
+.verdict-badge.purple {
+  background: rgba(192,132,252,0.12); color: #c084fc;
+  border-color: rgba(192,132,252,0.35);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   STAT GRID
+   ───────────────────────────────────────────────────────────────── */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: border-color 0.15s;
+}
+
+.stat:hover {
+  border-color: var(--border-bright);
+}
+
+.stat__value {
+  display: block;
+  font-family: 'Chakra Petch', 'Outfit', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat__label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.375rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Animated counter support via JS:
+   document.querySelectorAll('.stat__value[data-target]').forEach(el => {
+     const target = parseInt(el.dataset.target);
+     let current = 0;
+     const step = Math.ceil(target / 30);
+     const timer = setInterval(() => {
+       current += step;
+       if (current >= target) { current = target; clearInterval(timer); }
+       el.textContent = current;
+     }, 30);
+   });
+*/
+
+/* ─────────────────────────────────────────────────────────────────
+   SECTION LABELS
+   ───────────────────────────────────────────────────────────────── */
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'IBM Plex Mono', 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+
+/* ── Dot prefix (default) ── */
+.section-label.dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ── Triangle prefix (plans) ── */
+.section-label.triangle::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 6px solid var(--accent);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  flex-shrink: 0;
+}
+
+/* ── Square prefix (slides) ── */
+.section-label.square::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SECTION TITLE
+   ───────────────────────────────────────────────────────────────── */
+
+.section-title {
+  font-family: 'IBM Plex Mono', 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 1.5rem 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   PHASE / SECTION CARDS
+   ───────────────────────────────────────────────────────────────── */
+
+/* ── Phase Cards (4-col grid with top strip) ── */
+.phases {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.phase-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  padding-top: 1.25rem;
+}
+
+.phase-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 6px 6px 0 0;
+}
+
+.phase-card.p1::before { background: var(--success); }
+.phase-card.p2::before { background: var(--warning); }
+.phase-card.p3::before { background: var(--info); }
+.phase-card.p4::before { background: #c084fc; }
+
+.phase-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.phase-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.phase-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.phase-card li {
+  margin-bottom: 0.25rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.phase-card li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ── Section Cards (2-col with border-left) ── */
+.sections-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.sec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  position: relative;
+}
+
+.sec-card.hero-sec   { border-left: 3px solid var(--accent); }
+.sec-card.amber-sec  { border-left: 3px solid var(--warning); }
+.sec-card.green-sec  { border-left: 3px solid var(--success); }
+.sec-card.cyan-sec   { border-left: 3px solid var(--info); }
+.sec-card.impl-sec   { border-left: 3px solid #c084fc; }
+
+.sec-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sec-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.25rem 0;
+}
+
+.sec-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Two-Phase Columns ── */
+.two-phases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.phase-col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.phase-col-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.phase-col.gather .phase-col-title::before { content: '▸'; color: var(--warning); }
+.phase-col.design .phase-col-title::before { content: '◆'; color: var(--info); }
+
+.phase-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.phase-col li {
+  margin-bottom: 0.375rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.phase-col.gather li::before { content: '$'; color: var(--accent); position: absolute; left: 0; font-family: 'IBM Plex Mono', monospace; }
+.phase-col.design li::before { content: '→'; color: var(--info); position: absolute; left: 0; }
+
+/* ─────────────────────────────────────────────────────────────────
+   DATA TABLES
+   ───────────────────────────────────────────────────────────────── */
+
+.tbl-wrap {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* No sticky thead: `.tbl-wrap` has `overflow-x: auto` which makes it the
+   sticky scroll container. Page-scroll sticky and overflow-x wrappers
+   are incompatible — the thead ends up scoped to the wrapper instead of
+   the viewport. Removed rather than left as a trap. If a future long-form
+   doc actually needs a sticky thead, do it without the overflow wrapper. */
+
+table.data-table th {
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-bright);
+  font-weight: 600;
+}
+
+table.data-table td {
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+table.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+table.data-table tr:hover td {
+  background: var(--surface);
+}
+
+/* Code styling in cells */
+table.data-table td code,
+table.data-table th code {
+  font-family: 'IBM Plex Mono', 'Space Mono', monospace;
+  font-size: 0.8rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  color: var(--text);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   FINDING CARDS
+   ───────────────────────────────────────────────────────────────── */
+
+.finding {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.finding--high   { border-left: 4px solid var(--error); }
+.finding--medium { border-left: 4px solid var(--warning); }
+.finding--low    { border-left: 4px solid var(--success); }
+
+.finding-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .finding-header {
+  background: rgba(0,0,0,0.02);
+}
+
+.finding-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.finding-body {
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.finding-files {
+  padding: 0 1rem 1rem;
+  font-size: 0.8rem;
+}
+
+.finding-files code {
+  font-family: 'IBM Plex Mono', 'Space Mono', monospace;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 0.125rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* ── Risk/Severity Badge ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.badge--risk.high {
+  background: var(--error-dim);
+  color: var(--error);
+}
+
+.badge--risk.medium {
+  background: var(--warning-dim);
+  color: var(--warning);
+}
+
+.badge--risk.low {
+  background: var(--success-dim);
+  color: var(--success);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   CALLOUT
+   ───────────────────────────────────────────────────────────────── */
+
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.callout strong {
+  color: var(--text);
+}
+
+.callout code {
+  font-family: 'IBM Plex Mono', monospace;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   STEPS TIMELINE
+   ───────────────────────────────────────────────────────────────── */
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 1.5rem 0;
+}
+
+.step {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.step:last-child {
+  padding-bottom: 0;
+}
+
+.step:last-child::after {
+  display: none;
+}
+
+.step::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 32px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.step-body {
+  flex: 1;
+  padding-top: 2px;
+}
+
+.step-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.step-sub {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.sub-badge {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TWO-COLUMN LAYOUTS
+   ───────────────────────────────────────────────────────────────── */
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.col-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.col-card.forbidden { border-left: 3px solid var(--error); }
+.col-card.allowed   { border-left: 3px solid var(--success); }
+
+.col-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.col-card.forbidden .col-title::before { content: '✗'; color: var(--error); }
+.col-card.allowed .col-title::before   { content: '✓'; color: var(--success); }
+
+.col-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.col-card li {
+  margin-bottom: 0.375rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.col-card.forbidden li::before { content: '✗'; color: var(--error); position: absolute; left: 0; }
+.col-card.allowed li::before   { content: '✓'; color: var(--success); position: absolute; left: 0; }
+
+/* ─────────────────────────────────────────────────────────────────
+   ZOOM CONTROLS
+   ───────────────────────────────────────────────────────────────── */
+
+.zoom-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+}
+
+.zoom-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.zoom-btn:hover {
+  background: var(--surface2);
+  color: var(--text);
+  border-color: var(--border-bright);
+}
+
+.zoom-btn:active {
+  background: var(--border);
+}
+
+/* Alternative: inline zoom controls (outside container) */
+.zoom-controls.inline {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-bottom: 0.75rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TOC SIDEBAR (for mono-page guides)
+   ───────────────────────────────────────────────────────────────── */
+
+.wrap--toc {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.toc {
+  position: sticky;
+  top: 3.5rem;
+  align-self: start;
+  padding: 1rem 0;
+}
+
+.toc-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+
+.toc a {
+  display: block;
+  padding: 0.375rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: 0.75rem;
+  margin-left: -0.75rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.toc a:hover {
+  color: var(--text);
+}
+
+.toc a.active {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.main--toc {
+  min-width: 0;
+  padding: 2rem 0;
+}
+
+/* ── Scroll margin for TOC links ── */
+.sec-head {
+  scroll-margin-top: 4rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   IO STRIP (input → arrow → output)
+   ───────────────────────────────────────────────────────────────── */
+
+.io-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.io-strip .io-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.io-strip .io-box {
+  padding: 0.5rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   COLLAPSIBLE DETAILS (progressive disclosure)
+   Usage: <details class="disclosure"><summary>Title</summary>Content</details>
+   ───────────────────────────────────────────────────────────────── */
+
+details.disclosure {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+details.disclosure summary {
+  padding: 0.75rem 1rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.15s;
+  user-select: none;
+}
+
+details.disclosure summary::-webkit-details-marker { display: none; }
+
+details.disclosure summary::before {
+  content: '▸';
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+
+details.disclosure[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details.disclosure summary:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+[data-theme="light"] details.disclosure summary:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+details.disclosure summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+details.disclosure > :not(summary) {
+  padding: 0 1rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Accordion group — exclusive open via name attr (HTML spec) */
+details.disclosure[name] {
+  margin-bottom: 0;
+  border-radius: 0;
+  border-bottom: none;
+}
+
+details.disclosure[name]:first-of-type {
+  border-radius: 6px 6px 0 0;
+}
+
+details.disclosure[name]:last-of-type {
+  border-radius: 0 0 6px 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Tonal variants for callout-style disclosures */
+details.disclosure.info    { border-left: 3px solid var(--info); }
+details.disclosure.warning { border-left: 3px solid var(--warning); }
+details.disclosure.error   { border-left: 3px solid var(--error); }
+details.disclosure.success { border-left: 3px solid var(--success); }
+
+/* ─────────────────────────────────────────────────────────────────
+   TOOLTIP (hover/focus for inline terms)
+   Usage: <span class="has-tip" data-tip="Definition here">term</span>
+   ───────────────────────────────────────────────────────────────── */
+
+.has-tip {
+  position: relative;
+  border-bottom: 1px dashed var(--text-dim);
+  cursor: help;
+}
+
+.has-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 0.75rem;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s, visibility 0.15s;
+  z-index: 100;
+}
+
+.has-tip:hover::after,
+.has-tip:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Variant: tooltip below */
+.has-tip.tip-below::after {
+  bottom: auto;
+  top: calc(100% + 6px);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   KEY-VALUE STRIP (compact metadata row)
+   Usage: <div class="kv-strip"><span class="kv"><b>Key</b> Value</span>...</div>
+   ───────────────────────────────────────────────────────────────── */
+
+.kv-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.kv-strip > .kv {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.kv-strip > .kv b {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  margin-right: 0.375rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SUMMARY CARD (5-second glance overview)
+   Usage: <div class="summary-card"><div class="summary-title">...</div>
+          <div class="summary-body">...</div></div>
+   ───────────────────────────────────────────────────────────────── */
+
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-card .summary-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.summary-card .summary-body {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.summary-card .summary-body strong {
+  color: var(--text);
+}
+
+.summary-card .summary-kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+}
+
+.summary-card .summary-kv dt {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  padding-top: 0.1rem;
+}
+
+.summary-card .summary-kv dd {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .phases {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sections-grid,
+  .two-phases,
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 1.5rem 1rem;
+  }
+
+  .hero-title,
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .wrap--toc {
+    display: block;
+    padding: 0 1rem;
+  }
+
+  .toc {
+    position: relative;
+    top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .toc-title {
+    display: none;
+  }
+
+  .toc a {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.375rem 0.625rem;
+    margin: 0;
+  }
+
+  .toc a.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+
+  .phases {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .zoom-controls {
+    top: 8px;
+    right: 8px;
+  }
+
+  .zoom-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 0.875rem;
+  }
+
+  details.disclosure summary {
+    font-size: 0.8125rem;
+    padding: 0.625rem 0.75rem;
+  }
+
+  .kv-strip {
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .has-tip::after {
+    left: 0;
+    transform: none;
+    max-width: 200px;
+  }
+
+  .summary-card .summary-kv {
+    grid-template-columns: 1fr;
+    gap: 0.375rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   presentation-shell.css — long-form scroll presentation layout
+   Inline 5th (after explainer-base, before composition).
+   Used by forge-presentation skill outputs and showcase-presentation.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── section layout ── */
+section {
+  position: relative;
+  padding: 5rem 2.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+@media (max-width: 780px) {
+  section { padding: 3.5rem 1.25rem; }
+}
+
+/* ── eyebrow ── */
+.eyebrow {
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+/* ── hero (split wordmark) ── */
+.hero {
+  min-height: 92vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding: 0;
+  max-width: 100%;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.hero-left {
+  padding: 5rem 2.5rem 4rem;
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+.hero-wordmark {
+  font-family: 'Outfit', var(--font-display, system-ui), sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+}
+.hero-wordmark sup {
+  color: var(--accent);
+  font-size: 0.45em;
+  vertical-align: super;
+  margin-left: 0.08em;
+}
+.hero-release {
+  font-family: var(--mono, 'IBM Plex Mono', monospace);
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+  color: var(--text-dim);
+  letter-spacing: 0.22em;
+  margin-bottom: 1.5rem;
+}
+.hero-release::before {
+  content: '—  ';
+  color: var(--accent);
+}
+.hero-tagline {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  color: var(--text-muted);
+  max-width: 42ch;
+  line-height: 1.45;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-dim);
+  font-family: var(--mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  animation: pres-bob 2s ease-in-out infinite;
+}
+@keyframes pres-bob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 5px); }
+}
+
+/* ── section heading row ── */
+.section-h {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  align-items: start;
+}
+.section-n {
+  font-family: var(--mono, monospace);
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  padding-top: 0.35rem;
+}
+/* Override explainer-base .section-title (small label) for presentation H2 */
+.section-h .section-title {
+  font-family: 'Outfit', var(--font-display, system-ui), sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--text);
+}
+.section-sub {
+  margin-top: 0.65rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 52ch;
+  line-height: 1.5;
+}
+
+/* ── KPI row ── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.85rem;
+  margin: 1.5rem 0;
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 8px);
+  padding: 1rem;
+  text-align: center;
+}
+.kpi-val {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+.kpi-lbl {
+  font-family: var(--mono, monospace);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin-top: 0.35rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── caveat cards ── */
+.caveat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.caveat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 8px);
+  padding: 1.1rem 1.25rem;
+  border-top: 3px solid var(--amber, #fbbf24);
+}
+.caveat-card.ok { border-top-color: var(--green, #34d399); }
+.caveat-card.warn { border-top-color: var(--amber, #fbbf24); }
+.caveat-card strong {
+  display: block;
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+}
+.caveat-card p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* ── panel head (presentation tables) ── */
+.panel-head {
+  margin-bottom: 0.75rem;
+}
+.panel-eyebrow {
+  font-family: var(--mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+}
+.panel-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+}
+
+/* ── footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  max-width: 100%;
+}
+.foot-brand {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.foot-date {
+  font-family: var(--mono, monospace);
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+  font-size: 0.85rem;
+  margin: 0.5rem 0 1.25rem;
+}
+.foot-meta {
+  font-family: var(--mono, monospace);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+/* ══════════════════════════════════════════════════════════════════
+   composition.css — presentation composition primitives (v0.1.0)
+
+   panel-wrap · arch-wrap · diagram-embed · forge swimlanes
+   Load AFTER explainer-base.css (uses same tokens + .reveal.visible)
+
+   Contract: references/composition-contract.md
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── arch-wrap (native flows) ── */
+.arch-wrap {
+  position: relative;
+  background: var(--bg-elev, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem 1.75rem;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+.arch-wrap:not(:has(.diagram-embed)) {
+  border-top: 2px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+.arch-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 85% 50% at 50% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 68%);
+  pointer-events: none;
+}
+.arch-wrap:has(.diagram-embed) {
+  overflow: visible;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.arch-wrap:has(.diagram-embed)::before { display: none; }
+
+.arch-title {
+  font-weight: 700;
+  text-align: center;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.arch-wrap--flow { padding: 0; overflow: hidden; }
+.arch-wrap--flow::before {
+  background: radial-gradient(ellipse 70% 40% at 50% 0%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 75%);
+}
+.arch-wrap--flow .arch-title {
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+  padding: 1.15rem 1.75rem 1rem;
+  text-align: left;
+  background: color-mix(in srgb, var(--accent) 3%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.arch-wrap--flow .swimlanes { border: none; border-radius: 0; margin: 0; }
+
+.arch-pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.55rem;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.arch-pipeline .arch-arrow {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.arch-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.arch-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.8rem;
+  border-radius: 7px;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+}
+.arch-node.biz { border-color: color-mix(in srgb, var(--amber, var(--accent)) 45%, var(--border)); }
+.arch-node.tech { border-color: color-mix(in srgb, var(--cyan, #22d3ee) 45%, var(--border)); }
+.arch-node.client { border-color: color-mix(in srgb, var(--green, #4ade80) 45%, var(--border)); }
+.arch-node.internal { border-color: color-mix(in srgb, var(--purple, #a78bfa) 45%, var(--border)); }
+.arch-node.hub { border-color: var(--accent); box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 25%, transparent); }
+.arch-arrow { text-align: center; font-size: 1.2rem; color: var(--text-muted); }
+
+/* ── panel-wrap (tables + swimlanes) ── */
+.panel-wrap {
+  position: relative;
+  background: var(--bg-elev, var(--surface));
+  border: 1px solid var(--border);
+  border-top: 2px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  margin: 2rem 0;
+}
+.panel-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 85% 50% at 50% 0%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 68%);
+  pointer-events: none;
+}
+.panel-block { position: relative; z-index: 1; }
+.panel-block + .panel-block { border-top: 1px solid var(--border); }
+.panel-head {
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 1.15rem 1.75rem 1rem;
+  background: color-mix(in srgb, var(--accent) 3%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.panel-block .tbl-wrap,
+.panel-block .swimlanes { margin: 0; border: none; border-radius: 0; }
+.panel-block .arch-pipeline { padding: 1.75rem 1.5rem; }
+.panel-block table.data-table th { background: color-mix(in srgb, var(--surface2, var(--surface)) 55%, transparent); }
+.panel-block table.data-table tr:last-child td { border-bottom: none; }
+.panel-block table.data-table td:first-child { font-weight: 500; color: var(--text); }
+
+/* ── forge swimlanes (native, not craft canvas) ── */
+.swimlanes {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+.swimlane {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  border-bottom: 1px dashed var(--border);
+  min-height: 68px;
+}
+.swimlane:last-child { border-bottom: none; }
+.swimlane-lbl {
+  padding: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-left: 4px solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.swimlane-lbl small { font-weight: 400; color: var(--text-dim); font-size: 0.72rem; }
+.swimlane-lbl.client { background: color-mix(in srgb, var(--green, #4ade80) 6%, transparent); border-color: var(--green, #4ade80); }
+.swimlane-lbl.biz { background: color-mix(in srgb, var(--amber, var(--accent)) 6%, transparent); border-color: var(--amber, var(--accent)); }
+.swimlane-lbl.tech { background: color-mix(in srgb, var(--cyan, #22d3ee) 6%, transparent); border-color: var(--cyan, #22d3ee); }
+.swimlane-lbl.internal { background: color-mix(in srgb, var(--purple, #a78bfa) 6%, transparent); border-color: var(--purple, #a78bfa); }
+.swimlane-track { display: flex; align-items: center; gap: 0.6rem; padding: 1rem; flex-wrap: wrap; }
+.snode {
+  padding: 0.4rem 0.75rem;
+  background: var(--surface2, var(--surface));
+  border: 1px solid var(--border-bright, var(--border));
+  font-size: 0.78rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.panel-block .swimlane-lbl {
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.panel-block .snode {
+  background: color-mix(in srgb, var(--surface2, var(--surface)) 70%, transparent);
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+}
+.sarrow { color: var(--accent); font-size: 0.85rem; }
+
+/* ── diagram iframe bridge ── */
+.diagram-embed { margin: 1.5rem auto; max-width: 100%; }
+.diagram-frame {
+  width: 100%;
+  border: none;
+  display: block;
+  background: var(--bg, #0d1117);
+  border-radius: 12px;
+  border: 1px solid var(--border-bright, var(--border));
+  min-height: 200px;
+}
+.arch-wrap .diagram-embed { margin: 0; }
+.arch-wrap .diagram-embed.reveal { opacity: 1; transform: none; transition: none; }
+
+/* Hero embed: no frame */
+.hero-right .diagram-frame {
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color-scheme: only dark;
+}
+
+/* ── reveal stagger (uses explainer-base .reveal.visible) ── */
+.arch-wrap.reveal.visible > .arch-title,
+.arch-wrap.reveal.visible > .arch-row,
+.arch-wrap.reveal.visible > .arch-pipeline,
+.arch-wrap.reveal.visible > .swimlanes,
+.arch-wrap.reveal.visible > .forbidden-band {
+  animation: composition-child-in 0.45s ease both;
+}
+.arch-wrap.reveal.visible > *:nth-child(1) { animation-delay: 0.06s; }
+.arch-wrap.reveal.visible > *:nth-child(2) { animation-delay: 0.14s; }
+.arch-wrap.reveal.visible > *:nth-child(3) { animation-delay: 0.22s; }
+
+.panel-wrap.reveal.visible .panel-block:nth-child(1) { animation: composition-child-in 0.45s ease 0.06s both; }
+.panel-wrap.reveal.visible .panel-block:nth-child(2) { animation: composition-child-in 0.45s ease 0.14s both; }
+.panel-wrap.reveal.visible .panel-block:nth-child(3) { animation: composition-child-in 0.45s ease 0.22s both; }
+
+@keyframes composition-child-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arch-wrap.reveal.visible > *,
+  .panel-wrap.reveal.visible .panel-block {
+    animation: none;
+  }
+}</style>
+  
+<style>
+  /* Client-facing light overrides (Metalyde one-pager) */
+  html[data-theme="light"] {
+    --bg: #f7f8fa;
+    --bg-elevated: #ffffff;
+    --surface: #ffffff;
+    --surface2: #eef1f6;
+    --text: #0b1220;
+    --text-muted: #4a5568;
+    --border: rgba(11,18,32,0.12);
+    --border-bright: rgba(11,18,32,0.22);
+    --accent: #2e5f9d;
+    --accent-glow: rgba(46,95,157,0.18);
+    --amber: #c45c26;
+    --gold: #b8976e;
+    --cyan: #2e5f9d;
+  }
+  html[data-theme="light"] body { background: var(--bg); color: var(--text); }
+  html[data-theme="light"] .hero {
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 20%, rgba(107,159,212,0.28), transparent 60%),
+      radial-gradient(ellipse 50% 45% at 10% 90%, rgba(235,116,87,0.14), transparent 55%),
+      #f7f8fa;
+  }
+  html[data-theme="light"] .topnav {
+    background: rgba(247,248,250,0.85);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+  }
+  .block-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+    margin-top: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .block-grid { grid-template-columns: 1fr; }
+  }
+  .modcard {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.25rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    min-height: 100%;
+  }
+  .modcard .prio {
+    font-family: var(--font-mono, 'Space Mono', monospace);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .modcard h3 {
+    font-size: 1.25rem;
+    margin: 0;
+    line-height: 1.25;
+  }
+  .modcard p { margin: 0; color: var(--text-muted); font-size: 0.95rem; line-height: 1.55; }
+  .modcard .split-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.35rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  .modcard .split-meta .lbl {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+  .modcard .split-meta .val {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .ticket-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+  }
+  .ticket-links a {
+    font-family: var(--font-mono, 'Space Mono', monospace);
+    font-size: 0.75rem;
+    text-decoration: none;
+    color: var(--accent);
+    border: 1px solid var(--border-bright);
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    background: var(--surface2);
+  }
+  .ticket-links a:hover { border-color: var(--accent); }
+  .ticket-links .soon {
+    font-family: var(--font-mono, 'Space Mono', monospace);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+  }
+  .prose { max-width: 72ch; font-size: 1.05rem; line-height: 1.7; color: var(--text); }
+  .prose p { margin: 0 0 1rem; }
+  .prose strong { color: var(--text); font-weight: 600; }
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+  @media (max-width: 900px) {
+    .flow { grid-template-columns: 1fr 1fr; }
+  }
+  .flow-step {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1rem;
+    position: relative;
+  }
+  .flow-step .n {
+    font-family: var(--font-mono, 'Space Mono', monospace);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .flow-step .t {
+    font-weight: 600;
+    margin: 0.4rem 0 0.35rem;
+    font-size: 1rem;
+  }
+  .flow-step .d { font-size: 0.88rem; color: var(--text-muted); line-height: 1.45; }
+  a.inline {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .section-pad { padding: 4.5rem clamp(1.25rem, 4vw, 4rem) 2rem; max-width: 1100px; margin: 0 auto; }
+  .hero.reveal { opacity: 1; transform: none; }
+  section.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  section.reveal.visible { opacity: 1; transform: none; }
+  .hero { min-height: 78vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 5rem clamp(1.25rem, 4vw, 4rem) 3rem; position: relative; }
+  .hero-wordmark { font-size: clamp(2.6rem, 6vw, 4.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; }
+  .hero-tagline { max-width: 42rem; font-size: 1.15rem; line-height: 1.55; color: var(--text-muted); margin-top: 1rem; }
+  .hero-release { font-family: var(--font-mono, 'Space Mono', monospace); font-size: 0.85rem; opacity: 0.8; margin-top: 0.75rem; }
+  .eyebrow { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .section-h { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: start; margin-bottom: 1.5rem; }
+  .section-n { font-family: var(--font-mono, 'Space Mono', monospace); font-size: 0.85rem; color: var(--accent); padding-top: 0.35rem; }
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .section-sub { color: var(--text-muted); margin-top: 0.45rem; font-size: 1.02rem; line-height: 1.5; max-width: 60ch; }
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem; margin: 1.5rem 0; }
+  @media (max-width: 700px) { .kpi-row { grid-template-columns: 1fr; } }
+  .kpi { border: 1px solid var(--border); background: var(--surface); border-radius: 12px; padding: 1rem 1.1rem; }
+  .kpi-val { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em; }
+  .kpi-lbl { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem; line-height: 1.4; }
+  .panel-wrap { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--surface); }
+  .panel-head { padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .panel-title { font-weight: 600; }
+  .panel-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.25rem; }
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+  td a { color: var(--accent); }
+  .caveat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+  @media (max-width: 700px) { .caveat-grid { grid-template-columns: 1fr; } }
+  .caveat-card { border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.15rem; background: var(--surface); }
+  .caveat-card.warn { border-color: rgba(196,92,38,0.35); }
+  .caveat-card.ok { border-color: rgba(46,95,157,0.3); }
+  .caveat-card h4 { margin: 0 0 0.4rem; font-size: 0.95rem; }
+  .caveat-card p { margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+  footer { padding: 3rem clamp(1.25rem, 4vw, 4rem); border-top: 1px solid var(--border); margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: baseline; }
+  .foot-brand { font-weight: 700; font-size: 1.1rem; }
+  .foot-meta a { color: var(--accent); margin-left: 1rem; font-size: 0.9rem; }
+  .topnav { position: sticky; top: 0; z-index: 50; display: flex; gap: 1rem; flex-wrap: wrap; padding: 0.75rem 1.25rem; font-size: 0.82rem; }
+  .topnav a { color: var(--text-muted); text-decoration: none; }
+  .topnav a:hover { color: var(--accent); }
+  .hero-scroll { margin-top: 2.5rem; font-family: var(--font-mono, monospace); font-size: 0.8rem; opacity: 0.7; }
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  @media (max-width: 800px) { .duo { grid-template-columns: 1fr; } }
+  .duo .box { border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem; background: var(--surface); }
+  .duo .box h4 { margin: 0 0 0.5rem; font-size: 0.95rem; }
+  .duo .box p { margin: 0; color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; }
+</style>
+
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="#hero">Intro</a>
+  <a href="#s1">Fil conducteur</a>
+  <a href="#s2">4 blocs</a>
+  <a href="#s3">Détail</a>
+  <a href="#s7">Archi</a>
+  <a href="#s8">Tickets</a>
+  <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">Pilotage Spark ↗</a>
+</nav>
+
+<section class="hero reveal" id="hero">
+  <div class="hero-left">
+    <div class="eyebrow">Metalyde × Silex · Agency OS</div>
+    <div class="hero-wordmark">Prioriser le temps<br>de l’équipe</div>
+    <div class="hero-release">2026-07-17 · post-call Performance · one-pager</div>
+    <div class="hero-tagline">
+      Une proposition de roadmap claire : d’abord ce qui libère du temps pour <em>tous</em> les consultants,
+      ensuite ce qui fluidifie la relation client, enfin les accélérateurs puissants mais ciblés.
+      Chaque bloc relie un enjeu métier à une surface technique déjà présente dans la plateforme.
+    </div>
+    <div class="hero-scroll">↓ défiler</div>
+  </div>
+</section>
+
+<section id="s1" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 01</div>
+    <div>
+      <div class="eyebrow">Fil conducteur</div>
+      <div class="section-title">Le métier d’abord — la tech au service du temps gagné</div>
+      <div class="section-sub">Ce n’est pas une liste de features. C’est un ordre de valeur pour l’agence.</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p>Après le call d’audit process (16 juillet), on partage le même constat : le plus gros levier n’est pas forcément le plus spectaculaire. <strong>Valider un budget, préparer un call, clôturer un CR</strong> — c’est le quotidien de toute l’équipe. L’upload massif de créas via API, lui, change la vie sur certains comptes lourds… mais Armada couvre déjà le volume pour le reste.</p>
+    <p>D’où un enchaînement simple :</p>
+  </div>
+  <div class="flow">
+    <div class="flow-step"><div class="n">01 · QUOTIDIEN</div><div class="t">Budgets sous contrôle</div><div class="d">Savoir en un coup d’œil où en est chaque client — et alerter l’équipe.</div></div>
+    <div class="flow-step"><div class="n">02 · RELATION</div><div class="t">Brief créa livré</div><div class="d">Quand un brief part, le client le reçoit et le retrouve tout de suite.</div></div>
+    <div class="flow-step"><div class="n">03 · PRÉPA</div><div class="t">Avant / après call</div><div class="d">Moins de temps de prep, un CR qui repart vite vers le client.</div></div>
+    <div class="flow-step"><div class="n">04 · SCALE</div><div class="t">Upload multi-régies</div><div class="d">Gros gains sur comptes complexes — Armada en attendant.</div></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">Tous</div><div class="kpi-lbl">les consultants touchés par le cockpit budget (pas un seul power-user)</div></div>
+    <div class="kpi"><div class="kpi-val">Déjà là</div><div class="kpi-lbl">workflow budget, meetings, share brief — on enrichit, on ne reconstruit pas</div></div>
+    <div class="kpi"><div class="kpi-val">Armada</div><div class="kpi-lbl">workaround upload tant que le multi-API n’est pas prioritaire</div></div>
+  </div>
+</section>
+
+<section id="s2" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 02</div>
+    <div>
+      <div class="eyebrow">Vue d’ensemble</div>
+      <div class="section-title">Quatre blocs, une logique</div>
+      <div class="section-sub">Chaque carte : intérêt métier → adéquation technique → tickets Spark.</div>
+    </div>
+  </div>
+  <div class="block-grid">
+    <article class="modcard">
+      <div class="prio">P0 · Bloc B1</div>
+      <h3>Cockpit budget &amp; alertes équipe</h3>
+      <p><strong>Métier.</strong> On propose des budgets, mais on ne voit pas facilement qui a validé, qui est en attente, qui n’a rien reçu. Risque de passage à côté et de friction commerciale.</p>
+      <div class="split-meta">
+        <div><div class="lbl">Intérêt métier</div><div class="val">Pilotage clair + rappel proactif (Slack) pour toute l’équipe perf</div></div>
+        <div><div class="lbl">Adéquation tech</div><div class="val">Workflow propose/approve déjà en place — on ajoute vue + canal Slack</div></div>
+      </div>
+      <div class="ticket-links">
+        <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T21 · alerte / statuts budget</a>
+        <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T30 · section Budget vs Perf</a>
+        <span class="soon">Epic NEW à créer</span>
+      </div>
+    </article>
+    <article class="modcard">
+      <div class="prio">P1 · Bloc B2</div>
+      <h3>Livraison du brief créa au client</h3>
+      <p><strong>Métier.</strong> Le brief est le livrable visible. S’il n’arrive pas clairement chez le client (lien, email, bon endroit dans l’OS), la plateforme perd sa promesse « one place ».</p>
+      <div class="split-meta">
+        <div><div class="lbl">Intérêt métier</div><div class="val">Client informé, brief trouvable, moins de relances manuelles</div></div>
+        <div><div class="lbl">Adéquation tech</div><div class="val">Share + ressource auto existent — brancher l’email (comme les meetings)</div></div>
+      </div>
+      <div class="ticket-links">
+        <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T52 · module notification</a>
+        <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T51 · envoi liens brief</a>
+        <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T41 · destination brief client</a>
+      </div>
+    </article>
+    <article class="modcard">
+      <div class="prio">P1 · Bloc B3</div>
+      <h3>Brief pré-appel + CR post-appel</h3>
+      <p><strong>Métier.</strong> La qualité d’un call client se joue en amont (contexte prêt) et en aval (CR clair, actions). C’est du temps consultant récurrent, chaque semaine.</p>
+      <div class="split-meta">
+        <div><div class="lbl">Intérêt métier</div><div class="val">Prep plus courte, aftercare plus propre, image pro</div></div>
+        <div><div class="lbl">Adéquation tech</div><div class="val">Meetings + read.ai + email CR déjà là — manquent templates pré-appel &amp; flux</div></div>
+      </div>
+      <div class="ticket-links">
+        <span class="soon">Epic NEW à créer</span>
+        <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T13 · ressource depuis CR (related)</a>
+      </div>
+    </article>
+    <article class="modcard">
+      <div class="prio">P2 · Bloc B4</div>
+      <h3>Upload créas multi-régies</h3>
+      <p><strong>Métier.</strong> Sur les gros comptes, l’upload / l’arbitrage API change l’échelle (heures → minutes). Sur le volume « normal », Armada fait déjà le job.</p>
+      <div class="split-meta">
+        <div><div class="lbl">Intérêt métier</div><div class="val">ROI concentré sur comptes lourds — pas le meilleur quick win global</div></div>
+        <div><div class="lbl">Adéquation tech</div><div class="val">Intégrations API (Meta, Google…) = chantier à part, sécu &amp; scopes</div></div>
+      </div>
+      <div class="ticket-links">
+        <span class="soon">Epic NEW · P2 + Armada workaround</span>
+        <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T23 · data layer (related)</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="s3" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 03</div>
+    <div>
+      <div class="eyebrow">B1 · P0</div>
+      <div class="section-title">Budgets : de la proposition à la décision d’équipe</div>
+      <div class="section-sub">Ce que l’agence gagne, ce qu’on s’appuie dessus dans l’OS.</div>
+    </div>
+  </div>
+  <div class="duo">
+    <div class="box">
+      <h4>Ce que vous gagnez</h4>
+      <p>Fini le « on ne sait plus qui a validé ». Une pastille / liste par client : non proposé, en attente, validé, rejeté. Des alertes Slack pour ne pas laisser traîner un budget critique. L’onglet Performance redevient lisible si le budget a sa place dédiée.</p>
+    </div>
+    <div class="box">
+      <h4>Pourquoi c’est réaliste techniquement</h4>
+      <p>Le cycle propose → valider / refuser + emails clients existe déjà. On n’invente pas le métier budget : on le rend <strong>pilotable pour l’interne</strong> (vue + Slack). C’est un enrichissement du module Budgets, pas un second outil.</p>
+    </div>
+  </div>
+  <p class="prose" style="margin-top:1.25rem">Tickets sources : <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T21</a> · <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T30</a> — à fusionner dans un epic roadmap « Cockpit budget &amp; alertes » (création board à valider ensemble).</p>
+</section>
+
+<section id="s4" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 04</div>
+    <div>
+      <div class="eyebrow">B2 · P1</div>
+      <div class="section-title">Le brief créa doit arriver — pas seulement exister</div>
+      <div class="section-sub">Même logique que le partage d’un compte-rendu de réunion.</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p>Vous avez déjà le tunnel brief (tops créas, benchmark, concepts, document). Le point de friction remonte du terrain : <strong>lien à envoyer, email, endroit côté client</strong>. C’est exactement le pattern qu’on a pour les meetings : publier → notifier → retrouver dans l’espace client.</p>
+    <p>Intérêt métier : moins d’allers-retours Slack/mail « tu as le brief ? ». Adéquation tech : un seul point d’ancrage (<em>partage brief</em>) + Resend, déjà utilisé ailleurs dans l’OS.</p>
+  </div>
+  <div class="ticket-links" style="margin-top:1rem">
+    <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T52</a> <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T51</a> <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T41</a>
+  </div>
+</section>
+
+<section id="s5" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 05</div>
+    <div>
+      <div class="eyebrow">B3 · P1</div>
+      <div class="section-title">Avant le call, après le call</div>
+      <div class="section-sub">Le temps caché des media buyers — et le levier du call du 16/07.</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p><strong>Pré-appel</strong> : un dossier de context prêt (budget du mois, derniers CR, tâches ouvertes, points d’attention) pour entrer en call en 2 minutes, pas en 30. <strong>Post-appel</strong> : s’appuyer sur les CR (manuel ou read.ai) pour un envoi client propre, sans re-saisie.</p>
+    <p>Ce n’est pas le module « Brief créa » marketing : c’est le rythme <em>performance / account</em>. Techniquement, le socle Meetings est déjà riche — on ajoute le manquant (template pré-appel + fluidité aftercare), sans ouvrir les boîtes mail perso des collaborateurs.</p>
+  </div>
+</section>
+
+<section id="s6" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 06</div>
+    <div>
+      <div class="eyebrow">B4 · P2</div>
+      <div class="section-title">Upload multi-régies : puissant, pas urgent pour tout le monde</div>
+      <div class="section-sub">Meta · Instagram · Google · TikTok — avec Armada comme filet.</div>
+    </div>
+  </div>
+  <div class="prose">
+    <p>Sur un compte complexe, l’automatisation d’upload / d’arbitrage peut diviser le temps par plusieurs. C’est réel — et c’est pour ça qu’on le garde sur la roadmap. Mais <strong>ce n’est pas le premier levier pour toute l’équipe</strong> : Armada absorbe déjà le flux de production créa pour la majorité des cas.</p>
+    <p>Côté tech, c’est un chantier d’intégrations (clés, droits, audit) distinct du cœur Agency OS. On le traite en P2, documenté, sans bloquer les quick wins P0/P1.</p>
+  </div>
+</section>
+
+<section id="s7" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 07</div>
+    <div>
+      <div class="eyebrow">Adéquation technique</div>
+      <div class="section-title">Pourquoi ces blocs collent à l’architecture de l’OS</div>
+      <div class="section-sub">Un bloc métier ≈ un module déjà dans la plateforme.</div>
+    </div>
+  </div>
+  <div class="panel-wrap">
+    <div class="panel-head">
+      <div class="panel-eyebrow">Mapping</div>
+      <div class="panel-title">Métier → module Agency OS</div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Bloc</th><th>Module existant</th><th>Ce qu’on ajoute</th><th>Canal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1 Budget</strong></td><td>Budgets (propose / valide)</td><td>Vue pilotage interne + pastilles</td><td>Slack équipe</td></tr>
+          <tr><td><strong>B2 Brief créa</strong></td><td>Brief créa + share client</td><td>Email + liens + destination claire</td><td>Email client</td></tr>
+          <tr><td><strong>B3 Pré / post call</strong></td><td>Meetings + read.ai</td><td>Template pré-appel + flux aftercare</td><td>Email / OS</td></tr>
+          <tr><td><strong>B4 Upload</strong></td><td>Médiathèque (stockage)</td><td>Poussée vers les régies</td><td>API régies · Armada en attendant</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="caveat-grid" style="margin-top:1.25rem">
+    <div class="caveat-card ok">
+      <h4>Séparer « notifs budget » et « notifs brief »</h4>
+      <p>Même mot, deux publics : l’équipe en Slack vs le client en email. Deux blocs = deux livraisons testables, sans se bloquer mutuellement.</p>
+    </div>
+    <div class="caveat-card ok">
+      <h4>Enrichir, pas reconstruire</h4>
+      <p>Budget, meetings et brief créa sont déjà en production. La roadmap pousse la dernière mile (visibilité, alerte, livraison) plutôt qu’un greenfield.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s8" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 08</div>
+    <div>
+      <div class="eyebrow">Pilotage Spark</div>
+      <div class="section-title">Carte des tickets</div>
+      <div class="section-sub">Liens vers le board Metalyde — les epics « NEW » seront créés après validation de ce plan.</div>
+    </div>
+  </div>
+  <div class="panel-wrap">
+    <div class="panel-head">
+      <div class="panel-eyebrow">Board</div>
+      <div class="panel-title"><a class="inline" href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">spark.gosilex.com/metalyde/pilotage ↗</a></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Bloc</th><th>Prio</th><th>Tickets existants</th><th>Action board (proposée)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>B1 Cockpit budget</strong></td>
+            <td>P0</td>
+            <td><a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T21</a>, <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T30</a></td>
+            <td>Créer epic roadmap · absorber T21/T30</td>
+          </tr>
+          <tr>
+            <td><strong>B2 Livraison brief</strong></td>
+            <td>P1</td>
+            <td><a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T52</a>, <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T51</a>, <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T41</a></td>
+            <td>Étendre T52 · pointer T51/T41</td>
+          </tr>
+          <tr>
+            <td><strong>B3 Pré / post call</strong></td>
+            <td>P1</td>
+            <td><a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T13</a> (related)</td>
+            <td>Créer epic NEW roadmap</td>
+          </tr>
+          <tr>
+            <td><strong>B4 Upload multi-régies</strong></td>
+            <td>P2</td>
+            <td><a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T23</a> (data, related)</td>
+            <td>Créer epic NEW + note Armada</td>
+          </tr>
+          <tr>
+            <td>Contacts client</td>
+            <td>P2</td>
+            <td><a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T22</a>, <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T29</a></td>
+            <td>Grouper (delta multi-contacts)</td>
+          </tr>
+          <tr>
+            <td>Polish UX brief créa</td>
+            <td>P2</td>
+            <td><a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T47</a>, <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T48</a>, <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T54</a>, <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T56</a>, <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T57</a></td>
+            <td>Grouper en un ticket UX</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="s9" class="reveal section-pad">
+  <div class="section-h">
+    <div class="section-n">§ 09</div>
+    <div>
+      <div class="eyebrow">Périmètre</div>
+      <div class="section-title">Ce qui reste volontairement à côté</div>
+    </div>
+  </div>
+  <div class="caveat-grid">
+    <div class="caveat-card warn">
+      <h4>Skills &amp; plugins partagés (équipe)</h4>
+      <p>Accompagnement Quentin / GitHub org — piste parallèle d’efficacité, hors « feature » Agency OS stricte. À caler en ops, pas dans le même epic budget.</p>
+    </div>
+    <div class="caveat-card warn">
+      <h4>Data layer live (spend régies)</h4>
+      <p>Overspend automatique et kill rules « live » demandent Meta/Google (ou équivalent). <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">T23</a> reste un sujet data, distinct du cockpit budget v1 (statuts + alertes).</p>
+    </div>
+    <div class="caveat-card ok">
+      <h4>Bugs bloquants</h4>
+      <p>Les correctifs P0 (ex. images CR, Creaboost si encore bloquant) restent prioritaires et ne sont pas dilués dans ces epics roadmap.</p>
+    </div>
+    <div class="caveat-card ok">
+      <h4>Prochaine étape</h4>
+      <p>Valider ce découpage ensemble → puis matérialiser les epics et les liens de tickets sur le pilotage (sans perdre l’historique T21, T52, etc.).</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="foot-brand">Metalyde × Silex</div>
+    <div class="foot-date">Roadmap Performance · 2026-07-17</div>
+  </div>
+  <div class="foot-meta">
+    <a href="https://spark.gosilex.com/metalyde/pilotage" target="_blank" rel="noopener">Pilotage Spark</a>
+    <a href="#hero">Haut de page</a>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+<!-- forge-share-bar -->
+<script>window.__FORGE_SHARE__={"slug": "metalyde-roadmap-performance-blocks"};</script>
+<script>
+/* forge share-bar — interne (Access) / externe (/s/ + shlink) + toast + revoke
+ * window.__FORGE_SHARE__ = { slug?, shareUrl?, shortUrl? }
+ * slug déduit du path /a/<slug>/ si absent.
+ */
+(function () {
+  if (window.__FORGE_SHARE_BAR__) return;
+  window.__FORGE_SHARE_BAR__ = true;
+
+  var cfg = window.__FORGE_SHARE__ || {};
+  var slug = cfg.slug || "";
+  if (!slug) {
+    var m = location.pathname.match(/^\/a\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?/);
+    if (m) slug = m[1];
+  }
+  if (!slug || location.pathname.indexOf("/a/") !== 0) return;
+
+  var state = {
+    active: false,
+    shareUrl: "",
+    shortUrl: "",
+  };
+
+  /* ── styles ───────────────────────────────────────────── */
+  var css = document.createElement("style");
+  css.textContent =
+    "[data-forge-share-bar]{position:fixed;top:12px;right:12px;z-index:2147483646;" +
+    "display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:min(96vw,420px);" +
+    "font-family:system-ui,-apple-system,sans-serif;font-size:13px;" +
+    "background:rgba(254,254,254,.92);backdrop-filter:blur(10px);" +
+    "border:1px solid rgba(3,22,53,.12);padding:6px;box-shadow:0 8px 28px rgba(3,22,53,.12)}" +
+    "[data-forge-share-bar] button{cursor:pointer;border:1px solid #031635;padding:7px 11px;" +
+    "background:#FEFEFE;color:#031635;border-radius:0;font-weight:600;font-size:12.5px;" +
+    "font-family:inherit;line-height:1.2;transition:background .12s,color .12s,opacity .12s}" +
+    "[data-forge-share-bar] button:hover:not(:disabled){background:#eef2f7}" +
+    "[data-forge-share-bar] button:disabled{opacity:.55;cursor:wait}" +
+    "[data-forge-share-bar] button.primary{background:#031635;color:#FEFEFE}" +
+    "[data-forge-share-bar] button.primary:hover:not(:disabled){background:#1a2b4b}" +
+    "[data-forge-share-bar] button.danger{border-color:#c43c3c;color:#c43c3c}" +
+    "[data-forge-share-bar] button.danger:hover:not(:disabled){background:rgba(196,60,60,.08)}" +
+    "[data-forge-share-bar] .fsb-shared{display:none;align-items:center;gap:6px;" +
+    "font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;" +
+    "color:#0d7a5f;background:rgba(13,122,95,.1);border:1px solid rgba(13,122,95,.35);" +
+    "padding:5px 9px}" +
+    "[data-forge-share-bar] .fsb-shared.on{display:inline-flex}" +
+    "[data-forge-share-bar] .fsb-shared-dot{width:6px;height:6px;border-radius:50%;" +
+    "background:#0d7a5f;box-shadow:0 0 0 3px rgba(13,122,95,.2)}" +
+    "[data-forge-share-bar] .fsb-hint{font-size:10.5px;opacity:.5;color:#031635;padding:0 4px}" +
+    "[data-forge-toast]{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(12px);" +
+    "z-index:2147483647;background:#031635;color:#FEFEFE;padding:12px 18px;font:600 13px system-ui,sans-serif;" +
+    "box-shadow:0 10px 32px rgba(3,22,53,.28);opacity:0;pointer-events:none;" +
+    "transition:opacity .18s ease,transform .18s ease;max-width:min(92vw,360px);text-align:center}" +
+    "[data-forge-toast].on{opacity:1;transform:translateX(-50%) translateY(0)}" +
+    "[data-forge-toast].err{background:#c43c3c}";
+  document.documentElement.appendChild(css);
+
+  /* ── toast ────────────────────────────────────────────── */
+  var toastEl = document.createElement("div");
+  toastEl.setAttribute("data-forge-toast", "1");
+  toastEl.setAttribute("role", "status");
+  toastEl.setAttribute("aria-live", "polite");
+  document.documentElement.appendChild(toastEl);
+  var toastTimer = null;
+
+  function toast(msg, isErr) {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("err", !!isErr);
+    toastEl.classList.add("on");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove("on");
+    }, 2400);
+  }
+
+  /* ── bar ──────────────────────────────────────────────── */
+  var bar = document.createElement("div");
+  bar.setAttribute("data-forge-share-bar", "1");
+  bar.setAttribute("role", "toolbar");
+  bar.setAttribute("aria-label", "Partage forge");
+
+  var sharedBadge = document.createElement("span");
+  sharedBadge.className = "fsb-shared";
+  sharedBadge.innerHTML =
+    '<span class="fsb-shared-dot" aria-hidden="true"></span>Partagé';
+  sharedBadge.title = "Lien externe actif (/s/… clé) — accessible hors équipe";
+
+  function mkBtn(label, cls) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    if (cls) b.className = cls;
+    return b;
+  }
+
+  var internalBtn = mkBtn("Interne");
+  internalBtn.title = "Copier le lien équipe (Access) — sans shortlink";
+
+  var externalBtn = mkBtn("Externe", "primary");
+  externalBtn.title = "Créer / copier le lien public (/s/…, shortlink si dispo). ⇧+clic = nouvelle clé";
+
+  var revokeBtn = mkBtn("Révoquer", "danger");
+  revokeBtn.title = "Annuler le partage externe — le lien public cesse de fonctionner";
+  revokeBtn.hidden = true;
+
+  var hint = document.createElement("span");
+  hint.className = "fsb-hint";
+  hint.textContent = "⇧+Externe = régénérer";
+
+  bar.appendChild(sharedBadge);
+  bar.appendChild(internalBtn);
+  bar.appendChild(externalBtn);
+  bar.appendChild(revokeBtn);
+  bar.appendChild(hint);
+  document.documentElement.appendChild(bar);
+
+  function setBusy(on) {
+    internalBtn.disabled = on;
+    externalBtn.disabled = on;
+    revokeBtn.disabled = on;
+  }
+
+  function renderState() {
+    sharedBadge.classList.toggle("on", state.active);
+    revokeBtn.hidden = !state.active;
+    externalBtn.textContent = state.active ? "Copier externe" : "Externe";
+  }
+
+  function copyText(url) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(url);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;left:-9999px;top:0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error("copy_failed"));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  function internalUrl() {
+    return location.origin + "/a/" + slug + "/";
+  }
+
+  /* ── API ──────────────────────────────────────────────── */
+  function apiShare(method, body) {
+    var opts = {
+      method: method,
+      credentials: "same-origin",
+      headers: { "content-type": "application/json" },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch("/api/share" + (method === "GET" ? "?slug=" + encodeURIComponent(slug) : ""), opts).then(
+      function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error(data.error || "error_" + r.status);
+          return data;
+        });
+      }
+    );
+  }
+
+  function refreshState() {
+    return apiShare("GET")
+      .then(function (data) {
+        // GET returns { active } only — never a key
+        state.active = !!data.active;
+        if (!state.active) {
+          state.shareUrl = "";
+          state.shortUrl = "";
+        }
+        renderState();
+      })
+      .catch(function () {
+        /* offline / unauthorized — assume inactive */
+        renderState();
+      });
+  }
+
+  /* ── actions ──────────────────────────────────────────── */
+  internalBtn.addEventListener("click", function () {
+    setBusy(true);
+    var url = internalUrl();
+    copyText(url)
+      .then(function () {
+        toast("Lien interne copié");
+      })
+      .catch(function () {
+        toast("Impossible de copier — " + url, true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  externalBtn.addEventListener("click", function (ev) {
+    var rotate = !!ev.shiftKey;
+    setBusy(true);
+    apiShare("POST", { slug: slug, rotate: rotate })
+      .then(function (data) {
+        state.active = true;
+        state.shareUrl = data.shareUrl || "";
+        state.shortUrl = data.shortUrl || "";
+        cfg.shareUrl = state.shareUrl;
+        cfg.shortUrl = state.shortUrl;
+        renderState();
+        var url = data.shortUrl || data.shareUrl;
+        return copyText(url).then(function () {
+          toast(
+            rotate
+              ? "Nouveau lien externe copié"
+              : data.shortUrl
+                ? "Lien externe copié (shortlink)"
+                : "Lien externe copié"
+          );
+        });
+      })
+      .catch(function (err) {
+        console.error("[forge share]", err);
+        toast("Échec — connecte-toi (Access)", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  revokeBtn.addEventListener("click", function () {
+    if (!state.active) return;
+    if (!confirm("Révoquer le partage externe ?\nLe lien public cessera de fonctionner immédiatement.")) {
+      return;
+    }
+    setBusy(true);
+    apiShare("DELETE", { slug: slug })
+      .then(function () {
+        state.active = false;
+        state.shareUrl = "";
+        state.shortUrl = "";
+        cfg.shareUrl = "";
+        cfg.shortUrl = "";
+        renderState();
+        toast("Partage externe révoqué");
+      })
+      .catch(function (err) {
+        console.error("[forge share revoke]", err);
+        toast("Échec de la révocation", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  renderState();
+  refreshState();
+})();
+
+</script>
+<!-- /forge-share-bar -->
+</body>
+</html>

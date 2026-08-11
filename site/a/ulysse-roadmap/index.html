@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- forge-og:start -->
+  <meta name="description" content="Livrable roadmap 12 mois — 19 chantiers, 5 streams. Version 1.0 du 2026-08-05.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Silex Forge">
+  <meta property="og:title" content="Roadmap AI-native — Ulysse">
+  <meta property="og:description" content="Livrable roadmap 12 mois — 19 chantiers, 5 streams. Version 1.0 du 2026-08-05.">
+  <meta property="og:url" content="https://forge.gosilex.com/a/ulysse-roadmap/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Roadmap AI-native — Ulysse">
+  <meta name="twitter:description" content="Livrable roadmap 12 mois — 19 chantiers, 5 streams. Version 1.0 du 2026-08-05.">
+<!-- forge-og:end -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap AI-native — Ulysse</title>
+<!-- diagram-meta:start -->
+<meta name="diagram:title" content="Roadmap AI-native — Ulysse">
+<meta name="diagram:date" content="2026-08-05">
+<meta name="diagram:category" content="analysis">
+<meta name="diagram:cat-label" content="Roadmap">
+<meta name="diagram:color" content="cyan">
+<!-- diagram-meta:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fa; --surface:#ffffff; --surface-2:#f2f4f7;
+  --ink:#0b1220; --ink-2:#41506a; --ink-3:#7b879b;
+  --line:#e2e6ed; --line-2:#cfd6e2;
+  --accent:#2e5f9d; --accent-soft:rgba(46,95,157,.09);
+  --green:#2f8a5b; --green-soft:rgba(47,138,91,.12);
+  --orange:#c2701f; --orange-soft:rgba(194,112,31,.12);
+  --blue:#3d6fa8; --blue-soft:rgba(61,111,168,.12);
+  --gray:#8a93a3; --gray-soft:rgba(138,147,163,.12);
+  --red:#a52228; --red-soft:rgba(165,34,40,.10);
+  --f-display:'Outfit',system-ui,sans-serif;
+  --f-body:'Inter',system-ui,sans-serif;
+  --f-mono:'Space Mono',ui-monospace,monospace;
+  --maxw:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{
+  font-family:var(--f-body); background:var(--bg); color:var(--ink);
+  -webkit-font-smoothing:antialiased; line-height:1.62; font-size:16px;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+
+/* ---------- NAV ---------- */
+.topbar{position:sticky; top:0; z-index:50; background:rgba(247,248,250,.88);
+  backdrop-filter:blur(12px); border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw); margin:0 auto; padding:11px 22px;
+  display:flex; align-items:center; gap:18px}
+.brand{font-family:var(--f-mono); font-size:12px; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--ink); display:flex; align-items:center; gap:8px; flex-shrink:0}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.navpills{display:flex; gap:2px; flex-wrap:wrap; overflow-x:auto}
+.navpills a{font-size:12.5px; color:var(--ink-3); text-decoration:none;
+  padding:5px 9px; border-radius:6px; white-space:nowrap; transition:.15s}
+.navpills a:hover,.navpills a.active{color:var(--ink); background:var(--accent-soft)}
+@media(max-width:900px){.navpills{display:none}}
+
+/* ---------- HERO ---------- */
+.hero{position:relative; padding:76px 0 44px; overflow:hidden}
+.hero::before{content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(760px 420px at 78% -12%, rgba(107,159,212,.20), transparent 62%),
+             radial-gradient(620px 380px at -8% 104%, rgba(235,116,87,.13), transparent 62%)}
+.hero > *{position:relative}
+.kicker{font-family:var(--f-mono); font-size:11px; letter-spacing:2.6px;
+  text-transform:uppercase; color:var(--accent); margin-bottom:16px}
+.hero h1{font-family:var(--f-display); font-size:clamp(34px,5.4vw,58px);
+  font-weight:400; line-height:1.08; letter-spacing:-.5px}
+.hero h1 em{font-style:normal; color:var(--accent)}
+.hero .sub{font-size:19px; color:var(--ink-2); margin-top:18px; max-width:660px}
+.hero-meta{display:flex; gap:30px; flex-wrap:wrap; margin-top:30px;
+  padding-top:22px; border-top:1px solid var(--line)}
+.hero-meta .f{display:flex; flex-direction:column; gap:2px}
+.hero-meta .k{font-family:var(--f-mono); font-size:10px; letter-spacing:1.6px;
+  text-transform:uppercase; color:var(--ink-3)}
+.hero-meta .v{font-size:14.5px; font-weight:500}
+
+/* ---------- SECTIONS ---------- */
+section{padding:52px 0; border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+.section-n{font-family:var(--f-mono); font-size:11px; letter-spacing:2.4px;
+  color:var(--accent); text-transform:uppercase; margin-bottom:10px}
+.section-h{font-family:var(--f-display); font-size:clamp(25px,3.4vw,34px);
+  font-weight:400; letter-spacing:-.3px; line-height:1.18; margin-bottom:8px}
+.section-lead{font-size:17.5px; color:var(--ink-2); max-width:720px; margin-bottom:26px}
+h3{font-family:var(--f-display); font-size:22px; font-weight:500; margin:34px 0 10px}
+h4{font-family:var(--f-display); font-size:18px; font-weight:500; margin:24px 0 8px}
+p{margin:0 0 14px} p:last-child{margin-bottom:0}
+ul,ol{margin:0 0 16px; padding-left:20px} li{margin-bottom:6px}
+strong{font-weight:600}
+a{color:var(--accent)}
+code{font-family:var(--f-mono); font-size:.88em; background:var(--surface-2);
+  padding:1px 5px; border-radius:4px}
+
+.pull{font-family:var(--f-display); font-size:clamp(20px,2.7vw,27px); font-weight:400;
+  line-height:1.35; color:var(--ink); border-left:3px solid var(--accent);
+  padding:6px 0 6px 22px; margin:26px 0}
+blockquote{border-left:3px solid var(--line-2); padding-left:18px; margin:20px 0; color:var(--ink-2)}
+
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:24px 26px; margin:20px 0}
+.panel.accent{border-color:var(--accent); background:linear-gradient(180deg,var(--accent-soft),transparent 60%)}
+.panel.warn{border-color:var(--line-2); background:var(--surface-2)}
+.panel-t{font-family:var(--f-mono); font-size:10.5px; letter-spacing:2px;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:10px}
+
+.grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ---------- TABLES ---------- */
+.tbl-wrap{overflow-x:auto; margin:20px 0; border:1px solid var(--line);
+  border-radius:12px; background:var(--surface)}
+table{width:100%; border-collapse:collapse; font-size:14.5px; min-width:560px}
+th{text-align:left; font-family:var(--f-mono); font-size:10px; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--ink-3); font-weight:400;
+  padding:12px 14px; border-bottom:1px solid var(--line); white-space:nowrap}
+td{padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface-2)}
+
+/* ---------- BADGES / DOTS ---------- */
+.badge{display:inline-block; font-family:var(--f-mono); font-size:10px; font-weight:700;
+  letter-spacing:.6px; padding:2px 7px; border-radius:4px; white-space:nowrap}
+.b-P1{background:var(--green-soft); color:var(--green)}
+.b-P2{background:var(--orange-soft); color:var(--orange)}
+.b-P3{background:var(--blue-soft); color:var(--blue)}
+.b-P4{background:var(--gray-soft); color:var(--gray)}
+.b-fond{background:var(--accent-soft); color:var(--accent)}
+.b-livre{background:var(--green-soft); color:var(--green)}
+.dots{display:inline-flex; gap:3px}
+.dots span{width:7px;height:7px;border-radius:50%;background:var(--line-2)}
+.dots span.on{background:var(--ink-3)}
+.num{display:inline-flex; align-items:center; justify-content:center;
+  width:24px; height:24px; border-radius:6px; font-family:var(--f-mono);
+  font-size:11.5px; font-weight:700; color:#fff}
+.n-P1{background:var(--green)} .n-P2{background:var(--orange)}
+.n-P3{background:var(--blue)} .n-P4{background:var(--gray)}
+.sub-desc{display:block; font-size:13px; color:var(--ink-2); margin-top:3px; line-height:1.5}
+
+/* ---------- MATRICE ---------- */
+.matrix-box{background:var(--surface); border:1px solid var(--line);
+  border-radius:12px; padding:20px; margin:22px 0; position:relative}
+#matrix{width:100%; height:auto; display:block}
+.mx-tip{position:absolute; background:var(--ink); color:#fff; padding:7px 11px;
+  border-radius:7px; font-size:12.5px; pointer-events:none; display:none;
+  z-index:10; max-width:280px; line-height:1.4; box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.mx-tip b{display:block; font-size:13px; margin-bottom:2px}
+.legend{display:flex; gap:18px; flex-wrap:wrap; margin-top:14px;
+  font-size:12.5px; color:var(--ink-2)}
+.legend i{display:inline-block; width:10px;height:10px;border-radius:50%;
+  margin-right:6px; vertical-align:middle; font-style:normal}
+/* sous 700px, la matrice devient illisible si on la comprime : on la fait défiler */
+@media(max-width:700px){
+  .matrix-box{overflow-x:auto}
+  #matrix{min-width:640px}
+  .mx-tip{display:none !important}
+}
+
+/* ---------- GANTT ---------- */
+.gantt{background:var(--surface); border:1px solid var(--line);
+  border-radius:12px; padding:20px; margin:22px 0; overflow-x:auto}
+.gantt-inner{min-width:660px}
+.g-head{display:grid; grid-template-columns:250px repeat(4,1fr); gap:0;
+  border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:10px}
+.g-head div{font-family:var(--f-mono); font-size:10px; letter-spacing:1.4px;
+  text-transform:uppercase; color:var(--ink-3); text-align:center}
+.g-head div:first-child{text-align:left}
+.g-row{display:grid; grid-template-columns:250px repeat(4,1fr);
+  align-items:center; gap:0; padding:4px 0; position:relative}
+.g-row:hover{background:var(--surface-2)}
+.g-label{font-size:13.5px; padding-right:14px; display:flex; align-items:center; gap:7px}
+.g-label span.t{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.g-track{grid-column:2 / -1; position:relative; height:20px}
+.g-bar{position:absolute; height:12px; top:4px; border-radius:6px; opacity:.9}
+.g-grid{position:absolute; inset:0; display:grid; grid-template-columns:repeat(4,1fr);
+  pointer-events:none}
+.g-grid div{border-left:1px solid var(--line)}
+.g-grid div:first-child{border-left:none}
+
+/* ---------- FICHES ---------- */
+.fiche{background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:26px 28px; margin:18px 0}
+.fiche.fondation{border-left:3px solid var(--accent)}
+.fiche-h{display:flex; align-items:flex-start; gap:12px; margin-bottom:6px}
+.fiche-h h3{margin:0; font-size:21px; flex:1}
+.fiche-meta{display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+  margin:10px 0 18px; font-size:12px; color:var(--ink-3);
+  padding-bottom:16px; border-bottom:1px solid var(--line)}
+.fiche-meta .sep{color:var(--line-2)}
+.rub{margin:16px 0}
+.rub-t{font-family:var(--f-mono); font-size:10px; letter-spacing:1.6px;
+  text-transform:uppercase; color:var(--accent); margin-bottom:5px}
+.rub.need{background:var(--accent-soft); border-radius:9px; padding:16px 18px}
+.rub.need .rub-t{color:var(--accent)}
+.rub.watch{background:var(--red-soft); border-radius:9px; padding:16px 18px}
+.rub.watch .rub-t{color:var(--red)}
+
+/* ---------- WEEK CARDS ---------- */
+.week{background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:20px 22px; margin:14px 0}
+.week-t{font-family:var(--f-display); font-size:19px; margin-bottom:12px;
+  display:flex; align-items:center; gap:10px}
+.week-t .n{font-family:var(--f-mono); font-size:11px; background:var(--accent);
+  color:#fff; padding:3px 8px; border-radius:5px}
+.week-row{display:grid; grid-template-columns:160px 1fr; gap:12px;
+  padding:9px 0; border-top:1px solid var(--line); font-size:14.5px}
+.week-row .k{font-family:var(--f-mono); font-size:10px; letter-spacing:1.3px;
+  text-transform:uppercase; color:var(--ink-3); padding-top:3px}
+@media(max-width:640px){.week-row{grid-template-columns:1fr; gap:2px}}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line); padding:34px 0 60px; margin-top:20px;
+  font-size:13.5px; color:var(--ink-3)}
+footer .fl{display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap}
+
+/* ---------- VISIBILITÉ ----------
+   Pas d'animation d'apparition. C'est délibéré : ce document est une référence de
+   plusieurs dizaines de milliers de pixels, consultée et imprimée. Toute mécanique
+   qui masque du contenu en attendant un événement JavaScript finit par en masquer
+   pour de bon — la section des chantiers, trop haute pour atteindre un seuil
+   d'intersection, est restée invisible en production. Le contenu s'affiche, point.
+   La classe `.reveal` reste tolérée dans le balisage mais n'a aucun effet. */
+@media print{.topbar{display:none} section{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="inner">
+  <div class="brand"><span class="dot"></span>SILEX</div>
+  <nav class="navpills">
+    <a href="#constat">Le constat</a>
+    <a href="#cible">La cible</a>
+    <a href="#carte">La carte</a>
+    <a href="#livre">Déjà livré</a>
+    <a href="#chantiers">Les chantiers</a>
+    <a href="#sequence">La séquence</a>
+    <a href="#parcours">Les parcours</a>
+    <a href="#demarrer">Vos 30 jours</a>
+    <a href="#pilotage">Pilotage</a>
+    <a href="#ecartes">Écartés</a>
+    <a href="#decisions">Décisions</a>
+  </nav>
+</div></div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<header class="hero"><div class="wrap">
+  <div class="kicker">Roadmap AI-native · Version 1.0</div>
+  <h1>Ulysse,<br>version <em>AI-native</em></h1>
+  <p class="sub">Ce qu'on construit dans les 12 mois qui viennent, dans quel ordre, et pourquoi cet ordre-là. À commencer par les 30 jours qui vous séparent des 50 premières demandes.</p>
+  <div class="hero-meta">
+    <div class="f"><span class="k">Pour</span><span class="v">Axel · CEO — Lancelot · technique</span></div>
+    <div class="f"><span class="k">Horizon</span><span class="v">12 mois</span></div>
+    <div class="f"><span class="k">Chantiers</span><span class="v" id="m-count">19</span></div>
+    <div class="f"><span class="k">Version</span><span class="v">1.0 · 2026-08-05</span></div>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+<!-- BODY:START — tout ce qui suit est remplacé par Build_Roadmap.py -->
+
+<section class="reveal"><div class="panel accent"><div class="panel-t">Comment lire ce document</div><p>Il décrit ce qu'on construit chez Ulysse dans les douze mois qui viennent, dans quel ordre, et pourquoi cet ordre-là. Il est adossé à votre objectif : <strong>50 demandes clients d'ici le 7 septembre</strong>. Tout ce qui ne sert pas cet objectif dans les trente prochains jours a été repoussé, y compris des chantiers qui nous démangent.</p>
+<ul><li><strong>Axel — 10 minutes</strong> : le constat, le lundi matin dans six mois, la carte des chantiers, ce qu'on n'a pas retenu, et les six décisions qui vous attendent.</li><li><strong>Lancelot — 45 minutes</strong> : tout, sauf les annexes.</li><li><strong>Charlie et l'équipe</strong> : les fiches des chantiers 4 à 16, celles qui touchent le métier.</li></ul>
+<p>Les chiffres marqués <code>[HYP]</code> sont des hypothèses ; chacun indique comment on le vérifie. Ce document évolue quand on apprend quelque chose de structurant — la version en tête de page fait foi.</p></div></section>
+
+<section id="constat" class="reveal"><div class="section-n">01 — Le constat</div><h2 class="section-h">Le constat</h2><div class="pull">Une agence de voyage sur-mesure met quatre à cinq jours à produire un devis peu personnalisé, et son niveau de service s'effondre le jour où le voyage est vendu.</div>
+<p>Ce n'est pas de l'incompétence : c'est la conséquence mécanique d'un métier où la connaissance vit dans la tête des conseillers, où chaque devis repart d'une page blanche, et où rien de ce qu'un voyage a appris ne revient dans le système. Les meilleures agences compensent par du talent individuel. Aucune ne compense par de la structure.</p>
+<p>Ulysse part de zéro. C'est un désavantage évident — pas de clients, pas de marque, pas de supply — et un avantage qui ne se représentera jamais : <strong>c'est la seule fois où vous pourrez construire l'inverse sans rien avoir à détruire.</strong></p>
+<p>La roadmap répond à une seule question :</p>
+<div class="pull">Comment construire une agence où le système porte la logistique et la mémoire, pour que les humains ne fassent que ce qu'une machine ne fera jamais — le goût, la relation, et l'arbitrage ?</div>
+<h3>Où vous en êtes</h3>
+<p><strong>Ce qui marche déjà.</strong> L'équipe est constituée et alignée : Axel sur la direction et le produit, Lancelot sur la technique, Charlie sur le métier voyage, Emile sur le design. Le positionnement est tranché — les familles comme angle d'entrée, les 30-45 ans comme cible réelle. Le concept de flow de pré-qualification visuel est une vraie idée de produit, pas une variation cosmétique. Et surtout, une décision structurante a été prise : le second cerveau remplace Notion, dès maintenant, pour ne pas se créer un doublon.</p>
+<p><strong>Ce qui bloque.</strong> Trois choses, honnêtement.</p>
+<p>Le second cerveau est installé et il est vide. Le problème de synchronisation est résolu ; le blocage restant est un blocage d'usage — <em>« je ne savais pas trop quoi faire, j'avais le cul un peu entre deux chaises »</em>. Tant qu'il est vide, aucun agent ne peut produire quoi que ce soit d'utile, et toute la partie basse de cette roadmap reste théorique.</p>
+<p>L'information d'Ulysse circule dans Slack et dans les réunions, et rien n'en arrive nulle part. Chaque semaine qui passe sans capture est une semaine de connaissance perdue — la plus chère des pertes, parce qu'elle est invisible.</p>
+<p>Le sprint des 50 demandes va pousser à tout faire à la main. C'est la bonne décision commerciale et c'est le principal risque de dette de cette roadmap. On y revient en §6.</p>
+<p><strong>Ce qui dort.</strong> La donnée HERA. Des années de devis réels : quelles destinations convertissent, quels réceptifs tiennent leurs promesses, quels hôtels et quelles activités reviennent. C'est le seul actif qu'un concurrent parti de zéro n'a pas — et il n'est pas exploité. C'est aussi, aujourd'hui, une dépendance à un outil dont vous voulez sortir juridiquement : raison de plus pour en extraire la valeur maintenant.</p></section>
+
+<section id="cible" class="reveal"><div class="section-n">02 — La cible</div><h2 class="section-h">Le lundi matin dans six mois</h2><p><strong>06:20 — pendant que tout le monde dort.</strong> Une famille a rempli le flow de pré-qualification hier soir, depuis un canapé, en quatre minutes : des photos choisies, un budget, deux enfants de 4 et 7 ans, trois semaines en février. Pendant la nuit, le système a croisé ce profil avec la base voyage — les destinations qui convertissent sur ce profil, les réceptifs qui ont bien travaillé, les logements déjà validés comme réellement praticables avec un enfant de 4 ans.</p>
+<p><strong>09:05 — Charlie ouvre sa journée.</strong> Il ne cherche rien. La fiche est là : ce que la famille a dit, dans ses mots, ce qu'elle a choisi visuellement, trois pistes de destination déjà étayées, et les deux questions qu'il reste à poser. Il a lu la fiche en trois minutes. Le call est dans une heure.</p>
+<p><strong>10:00 — l'appel.</strong> Charlie ne fait pas remplir un formulaire à voix haute. Il approfondit, il conseille, il désamorce l'inquiétude sur les vols avec un enfant en bas âge. À la fin de l'appel, la famille reçoit un récapitulatif qui reprend ses propres phrases. ⬥ <strong>C'est ici qu'Ulysse reste Ulysse</strong> : le système a apporté la matière, Charlie a apporté le jugement.</p>
+<p><strong>J+1, 16:00 — les trois propositions partent.</strong> Pas quatre jours plus tard : le lendemain. Trois options réellement différentes, chacune avec son devis dont les blocs existent parce qu'ils ont été évoqués pendant l'appel, et dont l'univers visuel reprend ce que la famille a choisi la veille. L'impression n'est pas d'avoir reçu un document : c'est d'avoir été compris.</p>
+<p><strong>Pendant le voyage.</strong> Le roadbook s'ouvre sur le téléphone. Un restaurant fermé, un train raté, une pharmacie à trouver : quelqu'un répond. C'est exactement le moment où le secteur décroche.</p>
+<p><strong>Au retour — la boucle se referme.</strong> Le retour d'expérience revient dans la base : ce logement n'était pas si praticable, ce réceptif a été excellent, cette activité a fait l'unanimité. La prochaine famille qui part sur ce profil part d'un cran plus haut. Et si celle-ci revient dans deux ans, il n'y a rien à réexpliquer.</p></section>
+
+<section id="carte" class="reveal"><div class="section-n">03 — La carte</div><h2 class="section-h">La carte des chantiers</h2><p>Dix-neuf chantiers, cinq streams, douze mois. Trois d'entre eux sont des <strong>fondations</strong> : ils ne produisent presque rien de visible, et tout le reste en dépend.</p>
+<div id="streams-cards" class="grid2"></div>
+<h3>La matrice</h3>
+<p>Chaque bulle est un chantier : plus il est haut, plus il compte ; plus il est à droite, plus il coûte. Les bulles cerclées de bleu sont les fondations.</p>
+<p>Deux choses à voir. D'abord, le quadrant en haut à gauche est bien rempli : il y a beaucoup à gagner tout de suite, ce qui est logique pour une structure qui se construit. Ensuite, les trois fondations — le cerveau alimenté, les sources branchées, la base HERA — ne sont <strong>pas</strong> dans ce quadrant. Elles sont modestes en impact direct et elles passent quand même devant. C'est l'arbitrage central de cette roadmap, et il est expliqué en §6.</p>
+<div class="matrix-box"><svg id="matrix" viewBox="0 0 900 540" role="img" aria-label="Matrice impact / effort"></svg><div class="mx-tip" id="mx-tip"></div><div class="legend"><span><i style="background:var(--green)"></i>Phase 1 · 0-30 j</span><span><i style="background:var(--orange)"></i>Phase 2 · 1-3 mois</span><span><i style="background:var(--blue)"></i>Phase 3 · 3-6 mois</span><span><i style="background:var(--gray)"></i>Phase 4 · au-delà</span><span><i style="background:transparent;border:2px solid var(--accent)"></i>Fondation</span></div></div>
+<h3>Le détail, stream par stream</h3>
+<div id="streams-tables"></div></section>
+
+<section id="livre" class="reveal"><div class="section-n">04 — Déjà livré</div><h2 class="section-h">Ce qu'on vous a déjà remis</h2><p><strong>Le second cerveau</strong>, livré le 21 juillet : le vault complet, dix-sept commandes, et le contexte d'Ulysse déjà pré-rempli — la vision, les boucles du parcours client, le travail de Discovery, la veille concurrentielle. L'agent connaît le business à l'ouverture ; il n'y a pas de phase d'apprentissage.</p>
+<p><strong>Son état réel aujourd'hui.</strong> Installé, synchronisé après la solution trouvée par Lancelot, et peu utilisé. On le dit franchement parce que c'est le point de départ du chantier 1, et parce que la cause est identifiée : ce n'est pas un problème d'outil, c'est qu'on ne vous a pas assez dit quoi y mettre ni quand. C'est corrigé en §8.</p>
+<p><strong>Où il se branche.</strong> C'est la première brique du chantier 1, et le socle des chantiers 2, 6, 16 et 18. Autrement dit : il est déjà sous la moitié de cette roadmap.</p>
+<p><strong>Ce qu'il reste à faire dessus.</strong> Le remplir, brancher Slack et les comptes rendus de réunion dessus, et rétablir l'accès Spark d'Axel. Trois choses, toutes en phase 1.</p></section>
+
+<section id="chantiers" class="reveal"><div class="section-n">05 — Les chantiers</div><h2 class="section-h">Les chantiers</h2><h3>Phase 1 — les 30 prochains jours</h3>
+<article class="fiche fondation"><div class="fiche-h"><span class="num n-P1">1</span><h3>Faire vivre le second cerveau</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="badge b-fond">Fondation</span><span class="sep">·</span><span>Le cerveau</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Ulysse + Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le second cerveau est livré, synchronisé, et vide. Le blocage n'est pas technique : <em>« je ne savais pas trop quoi faire, j'avais le cul un peu entre deux chaises »</em>. En parallèle, les meeting notes continuaient sur Notion, sans lien. Un cerveau vide ne produit rien : tous les agents décrits plus bas dépendent de ce qu'il contient.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Vous n'avez plus à choisir où écrire. Toute réflexion, toute décision, toute note de call va au même endroit — y compris en désordre, y compris à moitié. Quand vous cherchez pourquoi une décision a été prise il y a trois mois, vous demandez et vous obtenez la réponse avec sa source.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Aucun gain direct, et c'est assumé : c'est une fondation. Elle conditionne les chantiers 2, 6, 16 et 18. Le gain réel se mesure ailleurs — dans le temps qu'on ne passe plus à retrouver ou à réexpliquer.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Rien à acheter, tout est livré. Ce qui reste à construire est une habitude, pas un logiciel.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Rétablir l'accès Spark d'Axel et vérifier que la synchronisation trouvée par Lancelot est déployée chez tout le monde.</li><li>Importer en vrac le dump d'idées des notes Mac d'Axel — sans classer, en indiquant seulement les grandes catégories. L'agent produit un fichier par idée, rangé par étiquettes.</li><li>Écrire le master plan directement dans le dossier d'import, avec l'agent comme sparring partner, plutôt que dans un document externe.</li><li>Y déposer les décisions du sprint : la landing, les arbitrages de flow, ce qui marche et ce qui ne marche pas.</li><li>Prendre l'habitude de la commande de fin de session, qui ancre les décisions prises.</li><li>Au bout de deux semaines, demander à l'agent de proposer un rangement — pas avant.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Axel</strong> : déposer, même mal. C'est le seul geste qui compte, et il ne se délègue pas. Vous êtes le champion visible de l'outil : l'équipe suivra ce que vous faites, pas ce qu'on dit.</li><li><strong>Lancelot</strong> : confirmer que la synchronisation est déployée chez les 3-4 utilisateurs.</li><li><strong>Une session écran partagé</strong> avec nous, 45 minutes, sur trois ou quatre usages réels — à caler après une semaine de test, pour débloquer les frictions concrètes.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Au moins 5 dépôts par semaine dans le dossier d'import, à fin août.</li><li>Le master plan d'Axel vit dans le cerveau, pas ailleurs.</li><li>Plus aucune note de réunion dans Notion pour le projet Trips.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li><strong>Ne cherchez pas la bonne nomenclature avant de commencer.</strong> C'est le piège qui a coûté trois semaines. L'IA restructure très bien ; le seul vrai risque est de perdre de l'information, pas de mal la ranger.</li><li>Tout ne doit pas y aller. Les réflexions et décisions, oui. La donnée de pilotage et de back-office, non — elle appartient à des tableaux de bord dédiés.</li><li>Marquez les documents de référence — culture, vision, objectifs — comme intouchables dans leur en-tête, pour que l'agent ne les réécrive jamais.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Rien. C'est le point de départ.</p></div></article>
+<article class="fiche fondation"><div class="fiche-h"><span class="num n-P1">2</span><h3>Brancher les sources sur le cerveau</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="badge b-fond">Fondation</span><span class="sep">·</span><span>Le cerveau</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex + Ulysse</span></div><div class="rub "><div class="rub-t">Le problème</div><p>L'essentiel de ce que sait Ulysse passe par Slack tous les jours et par les réunions, et rien n'en arrive dans le cerveau. Aujourd'hui, alimenter le cerveau est un geste volontaire — c'est exactement le genre de geste qui s'arrête au bout de trois semaines chargées.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Vous ne déposez plus, ça arrive. Les comptes rendus de réunion atterrissent seuls. Vous interrogez le cerveau depuis Slack, sans changer d'outil. Et à terme, vous arrivez en call avec la fiche du call précédent déjà remontée.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Supprime la charge de dépôt manuel, qui est la première cause d'abandon d'un second cerveau. C'est ce qui fait passer le chantier 1 d'une discipline à un système.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On achète l'outil de captation de réunion — le choix est ouvert et vous appartient, le comparatif est en annexe. On construit les connexions et les règles de dépôt.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Choisir l'outil de réunion. Trois options crédibles, arbitrage en annexe.</li><li>Automatiser le dépôt des comptes rendus dans le cerveau, avec une convention de nommage.</li><li>Brancher Slack en lecture, limité aux canaux du nouveau projet — pas à l'historique Ulysse Flight.</li><li>Ouvrir le sens inverse : interroger le cerveau depuis Slack.</li><li>Ajouter la remontée automatique de la fiche du dossier avant chaque call.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Axel</strong> : la décision sur les canaux Slack concernés. C'est une question de canaux, pas de tout ou rien — l'activité historique reste dehors.</li><li><strong>Lancelot</strong> : le choix de l'outil de réunion et les accès administrateur Slack.</li><li>~2 h de Lancelot, en semaine 2.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>100 % des comptes rendus de réunion déposés automatiquement, à M2.</li><li>Une question posée au cerveau depuis Slack au moins une fois par semaine, par au moins deux personnes.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Ne pas tout ingérer. Un cerveau qui avale tout Slack devient inexploitable ; on commence étroit et on élargit.</li><li>Les comptes rendus automatiques sont bruts et peu agréables à lire pour un humain. Ce n'est pas grave : on les interroge, on ne les lit pas. Les documents destinés à la lecture humaine sont peu nombreux et se traitent à part.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 1.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P1">4</span><h3>Ouvrir la porte : landing et pré-qualification</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="sep">·</span><span>Capter et qualifier</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Ulysse</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Chez toutes les agences, le formulaire qui suit la page d'accueil est indigent : vous êtes combien, où voulez-vous aller, plage ou montagne. Cette étape est traitée comme une formalité administrative alors qu'elle est le premier moment de vérité.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Une personne reçoit un lien d'un ami, l'ouvre dans le métro, choisit des ambiances — un logement, une table, une cabane, un pique-nique sur une plage — et arrive au bout en quatre minutes sans avoir eu l'impression de remplir quoi que ce soit. Elle a envie de la suite.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>C'est ce qui produit, ou non, les 50 demandes du 7 septembre. C'est aussi la seule chose réellement testée à ce stade : <strong>la promesse</strong>. La qualité du flow ne compte pas si personne ne clique.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Entièrement construit côté Ulysse. Notre rôle ici est consultatif — c'est votre produit, votre design, votre voix.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Finaliser les messages marketing sur le design d'Emile.</li><li>Décliner la landing sur plusieurs marchés — la France seule est un échantillon trop étroit.</li><li>Choisir entre les trois prototypes de flow, et trancher la question du deux temps (voir §11).</li><li>Lancer les publicités avec un budget d'apprentissage, pas de performance.</li><li>Partager autour de soi, mais pour le retour qualitatif — pas pour le volume.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><p>Tout. C'est votre chantier. Ce dont <strong>nous</strong> avons besoin : que les décisions prises et les résultats observés atterrissent dans le cerveau au fil de l'eau — c'est ce qui nous permettra de construire les chantiers 6, 7 et 9 sur du réel plutôt que sur des hypothèses.</p></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>50 demandes qualifiées au 7 septembre 2026.</li><li>Un premier signal de compréhension du message sous deux semaines de publicité.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Le mois d'août est une mauvaise fenêtre. C'est assumé ; l'objectif est l'apprentissage autant que le volume.</li><li>Le piège avec l'IA est la landing surdimensionnée. Une première version dont on n'est pas fier mais qui est en ligne bat une version parfaite qui ne l'est pas.</li><li>Trois prototypes de flow, c'est deux de trop pour un test. Il faut trancher avant de lancer.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Rien.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P1">5</span><h3>Savoir ce qui se passe entre la publicité et la demande</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="sep">·</span><span>Capter et qualifier</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Ulysse</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Sans mesure, un sprint d'un mois ne produit qu'un chiffre : 50 demandes ou pas. C'est un verdict, pas un apprentissage. Si le résultat est mauvais, on ne saura pas si c'est le message, la cible, la landing ou le flow.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Vous ouvrez un tableau et vous voyez où les gens s'arrêtent : sur quel écran, à quelle question, sur quel marché. Vous corrigez la semaine suivante au lieu de refaire l'ensemble.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Transforme un mois d'essais en un mois d'apprentissage. C'est ce qui rend le sprint utile <strong>même s'il échoue</strong> — et c'est le meilleur ratio valeur/effort de toute la roadmap.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Outils sur étagère. Rien à construire.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Poser la mesure sur la landing et sur chaque étape du flow, avant le lancement des publicités.</li><li>Définir les trois chiffres qui comptent : taux d'entrée dans le flow, taux d'achèvement, coût par demande.</li><li>Segmenter par marché et par variante de message.</li><li>Faire un point de lecture hebdomadaire, court, sur ces trois chiffres uniquement.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Axel</strong> : une demi-journée pour poser la mesure avant le lancement. Après, c'est trop tard — les données du début ne se rattrapent pas.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Taux d'entrée dans le flow et point de décrochage connus dès la deuxième semaine de publicité.</li><li>Un coût par demande chiffré par marché.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Trois indicateurs, pas quinze. Un tableau de bord complet en semaine 1 ne sera pas lu.</li><li>Le partage autour de soi pollue les statistiques : marquer ce trafic à part.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 4.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P1">6</span><h3>Arriver au premier appel en ayant déjà compris</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="sep">·</span><span>Capter et qualifier</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le premier appel d'une agence commence par vingt minutes de collecte d'informations que le client a souvent déjà données. C'est le moment où l'agence prouve qu'elle n'écoute pas — et c'est le moment le plus déterminant du parcours.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Charlie ouvre sa fiche avant l'appel. Elle contient ce que la famille a dit, dans ses mots, ce qu'elle a choisi visuellement, les contraintes déduites, trois pistes déjà étayées et les deux questions qui restent ouvertes. L'appel commence à la vingtième minute.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>~20 minutes de préparation économisées par appel, et surtout un taux de transformation supérieur sur le premier contact <code>[HYP]</code> — à vérifier en comparant les dix premiers appels préparés aux dix suivants.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Entièrement construit. C'est la boucle qu'on a spécifiée avec vous et qu'on s'était engagés à faire tourner sur vos données — la preuve vivante du programme.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Figer le jeu de questions canoniques de qualification famille, validé par Charlie.</li><li>Construire la fiche à partir des réponses du flow de pré-qualification.</li><li>Croiser avec ce qu'on sait déjà : historique HERA sur la destination, contraintes connues pour l'âge des enfants.</li><li>Faire tourner sur cinq cas réels issus du sprint, et récolter les corrections de Charlie.</li><li>Réinjecter ces corrections comme règles — c'est ce qui fait que la fiche s'améliore.</li><li>Passer en usage systématique.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Charlie</strong> : ~1 h pour valider les questions canoniques, puis 15 minutes par fiche sur les cinq premiers cas pour corriger. Ses corrections sont la matière première, pas un contrôle qualité.</li><li>Les cinq premières vraies demandes du sprint, dès qu'elles arrivent.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Fiche disponible avant 100 % des appels, à M1.</li><li>Charlie n'a plus de correction majeure à faire au bout de dix fiches.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Une fiche qui invente est pire que pas de fiche. Tout ce qui est déduit plutôt que déclaré doit être marqué comme tel.</li><li>Ne pas transformer la fiche en script d'appel : elle prépare, elle ne dirige pas.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 1 et 4.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P1">19</span><h3>Voir où en sont les chantiers, sans réunion</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="sep">·</span><span>L'équipe augmentée</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>L'avancement d'un projet se demande en réunion ou sur Slack, et se perd. L'accès Spark d'Axel est par ailleurs perdu, ce qui coupe le seul endroit où tout ça était visible.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Un endroit unique où voir l'avancement des chantiers, signaler un problème avec une capture d'écran, et suivre les décisions prises. Vous n'avez plus à demander où on en est.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Supprime le point d'avancement récurrent, et rend nos échanges asynchrones sans perte d'information.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Notre plateforme, incluse. Rien à payer, rien à construire.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Recréer le compte d'Axel et ouvrir un accès à Lancelot.</li><li>Y basculer les chantiers de la phase 1 de cette roadmap.</li><li>Ouvrir le canal de signalement.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li>Rien, sinon l'utiliser. C'est nous qui remettons l'accès en place.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Accès rétabli et utilisé par Axel et Lancelot, à M1.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un tableau de bord que personne n'ouvre est pire que pas de tableau de bord. S'il n'est pas utilisé après un mois, on le supprime plutôt que de faire semblant.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Rien.</p></div></article>
+<h3>Phase 2 — 1 à 3 mois</h3>
+<article class="fiche fondation"><div class="fiche-h"><span class="num n-P2">3</span><h3>Transformer la data HERA en base voyage</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="badge b-fond">Fondation</span><span class="sep">·</span><span>Le cerveau</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Ulysse + Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Ulysse repart de zéro sur tout, sauf sur un point : des années de devis réels existent dans HERA. Quelles destinations convertissent, quels réceptifs tiennent leurs promesses, quels hôtels et quelles activités reviennent. Aujourd'hui cette donnée n'est ni extraite ni exploitable — et elle vit dans un outil dont vous voulez sortir juridiquement.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Quand une demande arrive sur une destination, Ulysse ne part pas d'une page blanche : il part de ce qui a déjà fonctionné, avec quels partenaires, à quel prix, pour quel profil.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Évite de reconstruire à la main une base fournisseurs — plusieurs mois de travail économisés <code>[HYP]</code>, à préciser une fois le volume réel de données mesuré. C'est aussi le seul actif qu'un concurrent parti de zéro n'a pas.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On construit tout : l'extraction, le nettoyage, la structure. C'est de la matière propriétaire, il n'y a rien à acheter.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Cadrer ce qui est extractible et juridiquement récupérable — à trancher avec vous.</li><li>Extraire : destinations, taux de conversion, réceptifs, logements, activités, prix.</li><li>Nettoyer et structurer autour de ce qui compte pour Ulysse : praticabilité avec enfants, type de rythme, budget réel.</li><li>Marquer les zones de confiance faible plutôt que de les masquer.</li><li>Prioriser dix destinations et les traiter en profondeur, plutôt que tout à moitié.</li><li>Poser l'enrichissement continu : chaque voyage produit met à jour la base (chantier 14).</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Axel</strong> : la décision sur ce qui peut être extrait, et le cadrage juridique de la sortie d'HERA. C'est le seul point bloquant de ce chantier.</li><li><strong>Charlie</strong> : la liste des dix destinations prioritaires, et son avis sur les réceptifs — la donnée dira des choses que le terrain dément parfois.</li><li>Un accès en export à HERA.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Base exploitable sur les dix destinations prioritaires, à M3.</li><li>Un devis produit à partir de la base plutôt que d'une page blanche, sur au moins la moitié des demandes.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Le conflit d'intérêt est réel : HERA sert des agences qui sont vos concurrentes. Extraire maintenant, c'est réduire une dépendance autant qu'exploiter un actif.</li><li>Une base sale est pire qu'une base absente : elle donne des recommandations fausses avec l'autorité de la donnée. Mieux vaut dix destinations propres que cinquante approximatives.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Rien techniquement — mais tout dépend du cadrage juridique.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">7</span><h3>La qualification longue, sans formulaire pénible</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>Capter et qualifier</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Ulysse + Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Les informations qui font vraiment la qualité d'une proposition sont ingrates à demander : âge exact des enfants, rythme supporté, contraintes alimentaires, niveau de guidage souhaité. Aucune famille ne remplit ça de bon cœur dans un formulaire.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>La famille reçoit un message qui reprend ses choix visuels de la veille — elle voit qu'elle a déjà été comprise. Les questions ingrates arrivent après, et passent, parce que ce qui précède a intrigué. Et elle peut répondre à la voix plutôt qu'en tapant.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>C'est le jeu de données sans lequel les trois propositions du chantier 9 sont génériques. La personnalisation ne se fabrique pas : elle se collecte.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On achète la transcription vocale. On construit l'enchaînement, la logique de questions et la reprise des choix visuels.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Trancher la question du deux temps contre le flow unique — décision en §11, à arbitrer par test réel.</li><li>Écrire le jeu de questions minimal : ce qui change réellement la proposition, rien d'autre.</li><li>Construire la reprise visuelle des choix de la pré-qualification dans le message.</li><li>Ouvrir la réponse vocale en option, en la transcrivant et en la structurant automatiquement.</li><li>Mesurer le taux d'achèvement et couper les questions qui font décrocher.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Axel</strong> : la décision deux temps / flow unique, à trancher sur données et non sur conviction.</li><li><strong>Charlie</strong> : la liste des questions qui changent vraiment une proposition — pas celles qu'on pose par habitude.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Plus de 60 % des personnes entrées en pré-qualification vont au bout de la qualification.</li><li>Aucune question dont le taux d'abandon dépasse 15 %.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>La friction crée de la valeur perçue, mais elle a un plancher. La ligne rouge partagée est claire : jamais de long formulaire pénible.</li><li>Le vocal est excellent en confort et fragile en fiabilité. À tester avant de le mettre en chemin principal.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 4.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">8</span><h3>Le brief récapitulatif à la fin du call</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>Capter et qualifier</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Après un appel de qualification, le conseiller reformule à l'écrit ce qu'il a compris — ou ne le fait pas. Dans les deux cas, c'est du temps perdu ou de la confiance perdue.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Dans les cinq dernières minutes de l'appel, un récapitulatif visuel se génère avec les verbatims du client. Charlie le montre à l'écran — <em>« voilà ce que j'ai retenu »</em> — ou l'envoie deux minutes après.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Supprime la reformulation écrite post-appel, et ancre l'impression d'avoir été écouté au moment exact où elle a le plus d'effet.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>La version simple s'appuie sur l'assistant intégré à votre outil de visio, avec un prompt préenregistré. La version robuste passe par un outil de transcription indépendant du logiciel d'appel.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Tester la version simple sur cinq appels réels — fiabilité avant élégance.</li><li>Si la fiabilité n'y est pas, basculer sur la transcription indépendante.</li><li>Cadrer le format : verbatims repris, pas de reformulation par la machine.</li><li>Trancher entre montrer pendant l'appel et envoyer juste après, sur retour terrain.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Charlie</strong> : cinq appels pour tester, et son avis sur le bon moment — montrer ou envoyer.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Brief envoyé en moins de 10 minutes après l'appel, sur 90 % des appels.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Dépend de l'outil de visio, qui varie selon les clients. La version indépendante est plus coûteuse mais ne casse pas.</li><li>Un récapitulatif qui reformule maladroitement fait plus de mal que de bien. On reprend les mots, on ne les traduit pas.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 6.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">9</span><h3>Trois propositions en moins de 48 heures</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>Produire et vendre</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex + Ulysse</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le secteur met quatre à cinq jours. C'est la conséquence d'une production entièrement manuelle, qui repart d'une page blanche à chaque demande et attend des réceptifs qui répondent quand ils peuvent.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Charlie valide un brief. La chaîne produit trois propositions réellement différentes en s'appuyant sur la base voyage et sur les réceptifs qualifiés. Il arbitre, corrige, ajoute ce que la machine ne peut pas savoir, et envoie le lendemain.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>De quatre-cinq jours à moins de 48 heures. C'est l'écart le plus visible côté client, et c'est aussi une mécanique de vente : trois options gardent le client dans le périmètre Ulysse plutôt que chez le concurrent.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Tout est construit. C'est le cœur de l'avantage — il n'existe pas sur étagère.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Trancher ce que contiennent les trois propositions : destinations alternatives, budgets différents, ou styles différents (décision en §11).</li><li>Construire la chaîne brief → sélection dans la base → assemblage → trois options.</li><li>Poser une grille d'évaluation binaire sur la qualité d'une proposition — des critères vérifiables, pas une note globale.</li><li>Faire tourner sur les demandes réelles du sprint, avec Charlie en validation systématique.</li><li>Utiliser ses corrections pour améliorer la grille, itération après itération.</li><li>Réduire progressivement la part de validation manuelle, sans jamais la supprimer.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Axel</strong> : la décision sur le contenu des trois propositions. Elle conditionne toute la construction — c'est la décision la plus structurante de cette roadmap.</li><li><strong>Charlie</strong> : disponibilité de validation sur les vingt premières productions. C'est le coût d'entrée, et il n'est pas contournable.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Délai médian brief → propositions inférieur à 48 h, sur les vingt premières demandes traitées.</li><li>Charlie modifie moins de 30 % du contenu produit, au bout de vingt itérations.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>La latence des réceptifs est hors de notre contrôle. Tant qu'ils sont dans la chaîne, la promesse des 48 h dépend d'eux : le chantier 12 existe pour ça.</li><li>Le risque est de vouloir automatiser la validation trop tôt. Une proposition médiocre envoyée vite coûte plus cher qu'une bonne envoyée en 48 h.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 3 et 7.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">10</span><h3>Un devis qui ressemble au voyage vendu</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>Produire et vendre</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>HERA sert un template fixe, avec toujours les mêmes blocs, quelle que soit la conversation qui a précédé. Le document est correct et impersonnel — exactement ce contre quoi Ulysse se positionne.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Le devis contient une section sur les enfants parce que les enfants ont été le sujet du call. Il reprend les verbatims de la famille en tête. Son univers visuel reprend les ambiances qu'elle a choisies. Le client ne lit pas un document type : il se reconnaît.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>C'est le principal levier de conversion identifié sur l'écart avec HERA <code>[HYP]</code> — à mesurer en comparant, sur trente devis, la version à blocs variables et la version fixe.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Tout construit : le générateur de blocs et le générateur d'assets visuels.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Inventorier les blocs possibles et leurs conditions d'apparition.</li><li>Construire le mécanisme de reprise des verbatims, éditable par le conseiller.</li><li>Brancher la génération d'assets sur les ambiances choisies en pré-qualification.</li><li>Ajouter la version racontée aux enfants comme bloc optionnel.</li><li>Comparer en A/B contre le format fixe.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Axel</strong> : l'inventaire des blocs, et la validation de la direction artistique du devis.</li><li>Un accès aux devis HERA existants comme base de comparaison.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Taux d'acceptation du devis supérieur au template fixe, mesuré sur trente devis.</li><li>Au moins trois blocs déclenchés en moyenne par ce qui a été dit pendant l'appel.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un devis trop personnalisé peut paraître bricolé. La personnalisation doit porter sur le contenu, jamais sur la rigueur de la mise en forme.</li><li>Envoyer trop vite dévalorise le travail perçu. Il y a une bonne jauge à trouver entre la vitesse réelle et le délai affiché.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 7.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">14</span><h3>Récupérer ce que le voyage a appris</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>Accompagner et apprendre</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le retour de voyage est le moment où l'information est la plus riche et la plus périssable. Chez la plupart des agences, il produit un avis client et rien d'autre. Le savoir opérationnel — ce logement n'est pas si praticable, ce réceptif a été excellent — s'évapore.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Chaque retour enrichit la base. La famille suivante qui part sur le même profil part d'un cran plus haut, sans que personne n'ait rien fait de plus.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>C'est la seule boucle qui fait que le système s'améliore tout seul. Sans elle, la base vieillit et la qualité des propositions plafonne.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On construit le traitement. Le formulaire post-voyage existe déjà chez vous — on s'appuie dessus plutôt que d'en refaire un.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Reprendre le formulaire post-voyage existant et l'enrichir des questions qui alimentent la base.</li><li>Extraire automatiquement les enseignements par entité : logement, réceptif, activité.</li><li>Mettre à jour les scores plutôt que d'empiler des commentaires.</li><li>Faire remonter les écarts francs — ce qui a été promis et n'a pas été tenu — en alerte.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Charlie</strong> : la liste des enseignements qui comptent vraiment, dans son métier.</li><li>L'accès au formulaire post-voyage existant.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Plus de 70 % de retours collectés, et intégrés à la base sous sept jours.</li><li>Au moins un partenaire déclassé ou promu sur la base des retours, au premier trimestre.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un questionnaire long tue le taux de réponse. Court, et complété par le vocal si besoin.</li><li>Attention au biais des extrêmes : ceux qui répondent sont les très contents et les très mécontents. En tenir compte dans le scoring.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 3.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">17</span><h3>Un socle technique commun pour que l'équipe puisse construire</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>L'équipe augmentée</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Ulysse</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Axel veut que toute l'équipe puisse construire. Sans socle commun, cela produit rapidement autant d'architectures que de personnes, et une dette que Lancelot seul devra porter.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>N'importe qui dans l'équipe démarre un outil interne à partir du même socle — même structure, mêmes règles de sécurité, même authentification, même interface. Lancelot reste le garant du socle et du passage en production, sans être le goulot de la construction.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>C'est la condition pour que plus d'une personne construise sans multiplier la dette. C'est aussi ce qui rend la maintenance tenable à effectif constant.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit côté Ulysse, avec notre retour d'expérience sur notre propre socle. Il y aura des désaccords d'arbitrage technique — c'est précisément l'intérêt de l'échange.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Poser les choix de socle avec Lancelot : structure, sécurité, authentification, interface.</li><li>Construire la commande « nouveau projet » qui va chercher le socle.</li><li>Fixer la règle : l'équipe construit, Lancelot valide le passage en production.</li><li>Éprouver le socle sur deux outils internes réels.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Lancelot</strong> : c'est son chantier. On apporte le retour d'expérience, il tranche — les arbitrages d'infrastructure lui appartiennent.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Deux projets internes démarrés depuis le socle, à M3.</li><li>Aucune mise en production hors du circuit de validation.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un socle trop rigide ne sera pas utilisé ; trop souple, il ne sert à rien. Il se règle à l'usage, sur les deux premiers projets.</li><li>Le vrai risque n'est pas au moment d'écrire le code, il est au moment où le plan et l'architecture sont pensés. Sur un petit changement, laisser la main à un profil non technique est acceptable ; dès qu'il faut créer un écran, une interface de données ou toucher à la modélisation, l'œil technique est indispensable.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Rien.</p></div></article>
+<h3>Phase 3 — 3 à 6 mois</h3>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">11</span><h3>Le roadbook plutôt que le PDF</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>Produire et vendre</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>L'itinéraire remis au voyageur est un document statique. Il est lu une fois avant le départ et ne sert plus à rien pendant le voyage — c'est-à-dire au moment où il serait le plus utile.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Le roadbook s'ouvre sur le téléphone : la carte, l'ordre des étapes, la météo du jour, les informations pratiques au clic. Et une version racontée aux enfants, avec son propre traitement graphique.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Transforme un document mort en objet qu'on rouvre pendant le voyage. C'est le support naturel de la conciergerie (chantier 15) et le déclencheur le plus crédible de la recommandation.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit. La cartographie est achetée sur étagère.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Concevoir le roadbook à partir de la structure d'itinéraire déjà produite.</li><li>Ajouter le contexte au clic : météo, horaires, accès.</li><li>Construire la version enfant.</li><li>Mesurer les ouvertures pendant le voyage — c'est le seul indicateur qui compte.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Charlie</strong> : ce qu'un voyageur cherche vraiment sur place, et à quel moment.</li><li>Emile, pour le traitement graphique de la version enfant.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Roadbook ouvert au moins trois fois par voyage, en moyenne.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Le risque est de construire une belle expérience sans intérêt commercial derrière. Le roadbook ne se justifie que s'il porte la conciergerie et la recommandation.</li><li>Prévoir le hors-ligne : le voyageur n'a pas toujours de réseau.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 10.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">12</span><h3>Choisir et piloter les bons réceptifs</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>Produire et vendre</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Ulysse</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le choix du réceptif se fait à l'habitude et à la relation. C'est le principal facteur de latence et de rework sur un itinéraire, et personne ne le mesure.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Chaque réceptif porte un score construit sur l'historique HERA et sur les retours réels : délai de réponse, taux de rework, satisfaction. Le choix devient un arbitrage documenté.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Réduit la latence de production et le taux de rework — les deux choses qui menacent la promesse des 48 heures.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit, sur la base voyage.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Définir les critères de score avec Charlie.</li><li>Initialiser depuis l'historique HERA.</li><li>Alimenter en continu depuis les retours de voyage (chantier 14).</li><li>Identifier le trio de tête par destination prioritaire.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Charlie</strong> : les critères, et son arbitrage quand la donnée contredit son intuition.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Top 5 réceptifs identifiés par destination prioritaire, à M5.</li><li>Délai de réponse moyen en baisse d'un trimestre à l'autre.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un score public dégrade la relation partenaire. Il reste interne.</li><li>Sur une destination peu volumique, le score n'est pas significatif. Le dire plutôt que l'afficher.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 3.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">15</span><h3>Être joignable pendant le séjour</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>Accompagner et apprendre</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Ulysse</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le niveau de service des agences s'effondre une fois le voyage vendu. C'est le point de rupture le plus documenté du secteur, et le plus facile à occuper.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Un restaurant fermé, un train raté, une pharmacie à trouver, un problème d'hôtel : quelqu'un répond. Le voyageur n'a pas à gérer, ce qui est exactement ce qu'il a acheté.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Le service qui justifie la marge du sur-mesure aux yeux du client <code>[HYP]</code> — à valider sur le taux de recommandation.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Arbitrage à faire : un service externe existe sur ce créneau, à un coût par jour et par voyage. Le construire n'a de sens qu'à partir d'un certain volume — à trancher au moment du go.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Cadrer le périmètre réel : ce qu'on prend en charge, ce qu'on ne prend pas.</li><li>Évaluer le service externe contre une construction interne, sur le volume prévu.</li><li>Poser les horaires de réponse annoncés — et ne promettre que ce qui est tenable.</li><li>Brancher sur le roadbook comme point d'entrée unique.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Charlie</strong> : le périmètre, et la confirmation du fonctionnement du service externe évalué.</li><li><strong>Axel</strong> : la décision acheter ou construire.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Temps de première réponse inférieur à 30 minutes en journée locale.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Promettre une conciergerie et ne pas répondre est pire que ne rien promettre.</li><li>Le décalage horaire est le vrai sujet opérationnel, pas la technologie.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 11.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">16</span><h3>La mémoire client qui compose</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>Accompagner et apprendre</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Au deuxième voyage, les agences repartent presque de zéro. Le client réexplique qui il est, et perd exactement la chose pour laquelle il était revenu.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Au deuxième voyage, Ulysse sait déjà : les enfants ont deux ans de plus, la famille avait détesté les longs transferts, elle avait adoré un type de logement précis. Il n'y a rien à réexpliquer.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Le coût de qualification tombe quasiment à zéro sur les clients qui reviennent — et c'est ce qu'aucun concurrent ne peut copier, parce que ça ne s'achète pas.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit, sur la base et le cerveau.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Structurer le profil client comme un objet qui s'enrichit, pas comme une fiche figée.</li><li>Y verser automatiquement les retours de voyage et les échanges.</li><li>Faire remonter ce profil à l'ouverture d'une nouvelle demande.</li><li>Poser les règles de conservation et de suppression — sujet de données personnelles.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Axel</strong> : le cadrage sur la conservation des données personnelles. À faire avant, pas après.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Second voyage qualifié en moins d'une heure de temps humain.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un client qui découvre qu'on sait beaucoup de choses sur lui peut mal le prendre. Ce qui est restitué doit toujours être ce qu'il a lui-même dit.</li><li>Le cadre juridique sur la conservation n'est pas optionnel.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 14.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">18</span><h3>Outiller chaque métier de ses propres automatismes</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>L'équipe augmentée</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex + Ulysse</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Chaque personne refait à la main des gestes devenus routiniers, et personne ne capitalise sur ce que les autres ont trouvé.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Ce qui devient routinier est transformé en commande réutilisable, partagée par domaine. La personne au marketing dispose de ses automatismes, celle à la production des siens.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Chaque automatisation économise le geste <strong>et</strong> se diffuse à toute l'équipe d'un coup.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit, au fil de l'usage.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Repérer ce qui est devenu routinier — la règle : tant que la tâche varie, on reste dans l'agent ; dès qu'elle se répète à l'identique, on l'automatise.</li><li>Écrire la commande, la tester, la partager au bon groupe.</li><li>Cartographier progressivement les usages automatisables par métier.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Lancelot</strong> : la mise à disposition et la maintenance des commandes partagées.</li><li>Chaque membre de l'équipe : signaler ce qu'il refait pour la troisième fois.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Cinq automatisations en usage réel, à M5.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Aujourd'hui les commandes vivent dans le cerveau : synchronisées pour l'équipe, mais indisponibles depuis les autres projets. La sortie en dépôts partagés est meilleure à l'échelle mais impose un compte par personne — arbitrage reporté, voir §10.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 1 et 17.</p></div></article>
+<h3>Phase 4 — au-delà de six mois</h3>
+<article class="fiche"><div class="fiche-h"><span class="num n-P4">13</span><h3>Réserver et encaisser sans couture</h3></div><div class="fiche-meta"><span class="badge b-P4">Phase 4</span><span class="sep">·</span><span>Produire et vendre</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Porté par Ulysse + Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>La réservation et le paiement sont aujourd'hui la partie la plus manuelle et la moins différenciante du métier — et celle qui coûte le plus cher à reprendre si elle est mal posée.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Le client réserve et paie sans rupture, et l'agence n'a pas à ressaisir. À terme, ce sont les agents qui déclenchent et réconcilient les réservations.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Direction structurante plutôt que gain immédiat. À ne pas construire avant d'avoir un volume qui le justifie — c'est le chantier où l'on peut le plus facilement dépenser trop, trop tôt.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>À arbitrer au moment du go. La position par défaut : acheter le paiement, construire la réconciliation.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><p>Cadrage au moment du go. On note seulement, dès maintenant, que les protocoles de paiement destinés aux agents arrivent, et qu'une architecture construite en 2026 a intérêt à ne pas les rendre impossibles.</p></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li>Rien à ce stade, sinon ne pas verrouiller d'architecture qui l'exclurait.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>À définir au moment du go.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>C'est le chantier où le sur-investissement précoce est le plus probable et le plus coûteux.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 9.</p></div></article></section>
+
+<section id="sequence" class="reveal"><div class="section-n">06 — La séquence</div><h2 class="section-h">La séquence, et pourquoi cet ordre</h2><p><strong>Les fondations passent devant.</strong> Les chantiers 1, 2 et 3 — le cerveau alimenté, les sources branchées, la base HERA — ne produisent presque rien de visible. Ils ne feront pas une demande de plus au 7 septembre. Ils passent quand même en premier, pour une raison simple : <strong>sans eux, les chantiers 6, 9, 10, 14 et 16 sont des gadgets isolés qui ne se parlent pas.</strong></p>
+<p>C'est l'arbitrage le plus important de ce document, et c'est celui qu'on se fait le plus souvent retourner. La formulation honnête : le chantier 9 — trois propositions en 48 heures — est ce qui vous distingue. Il est mécaniquement impossible sans une base voyage propre. Construire le chantier 9 avant le chantier 3, c'est construire un moteur sans carburant.</p>
+<p><strong>Ce qui change vite, en parallèle.</strong> Pendant que les fondations se posent, trois chantiers produisent un effet visible en moins de trente jours : la landing et la pré-qualification (4), la mesure (5) et la fiche conseiller pré-remplie (6). Il faut que quelque chose bouge pendant qu'on construit l'invisible — sinon les quatre premières semaines ressemblent à rien.</p>
+<p><strong>Le sprint et la dette.</strong> Le sprint des 50 demandes va pousser à tout faire à la main. C'est la bonne décision : il vaut mieux traiter dix demandes en bricolant que zéro demande proprement. La règle qu'on vous propose est simple, et c'est la seule ligne rouge de cette phase 1 : <strong>raccourcis autorisés sur la vente, jamais sur la donnée.</strong> Tout ce qui est capté pendant le sprint — une conversation, un refus, un arbitrage de flow — doit atterrir quelque part de réutilisable. Sinon on refera le travail en octobre.</p>
+<p><strong>La cadence.</strong> Deux chantiers de front, pas plus. C'est notre format de travail, et c'est surtout la capacité d'absorption réelle d'une équipe de quatre personnes qui lance une agence en même temps.</p>
+<div class="gantt"><div class="gantt-inner"><div class="g-head"><div>Chantier</div><div>0-30 j</div><div>1-3 mois</div><div>3-6 mois</div><div>6-12 mois</div></div><div id="gantt-rows"></div></div></div></section>
+
+<section id="parcours" class="reveal"><div class="section-n">07 — Les parcours</div><h2 class="section-h">Comment tout ça se recombine</h2><p>Les chantiers ne valent rien pris un par un. Voici les trois parcours qu'ils composent.</p>
+<h3>Parcours 1 — De l'inconnu au voyage vendu</h3>
+<p><code>chantiers 4 · 5 · 6 · 7 · 8 · 9 · 10</code></p>
+<ol><li>Une personne voit une publicité et arrive sur la landing <strong>(4)</strong>.</li><li>Elle entre dans le flow de vibes et le termine en quatre minutes <strong>(4)</strong>. Chaque étape est mesurée <strong>(5)</strong>.</li><li>Le système construit la fiche conseiller à partir de ses choix, croisée avec la base voyage <strong>(6)</strong>.</li><li>⬥ Charlie ouvre la fiche, mène l'appel, approfondit ce que la machine ne peut pas savoir.</li><li>En fin d'appel, le récapitulatif part avec ses propres mots <strong>(8)</strong>.</li><li>La qualification longue complète le profil, en vocal si elle préfère <strong>(7)</strong>.</li><li>La chaîne produit trois propositions <strong>(9)</strong>, chacune avec son devis à blocs variables <strong>(10)</strong>.</li><li>⬥ Charlie arbitre, corrige, envoie. Moins de 48 heures se sont écoulées.</li></ol>
+<h3>Parcours 2 — Du voyage vendu au voyage suivant</h3>
+<p><code>chantiers 11 · 15 · 14 · 16 · 12</code></p>
+<ol><li>Le roadbook est remis, avec sa version enfant <strong>(11)</strong>.</li><li>Pendant le voyage, il sert de point d'entrée à la conciergerie <strong>(15)</strong>.</li><li>Au retour, le formulaire enrichi collecte ce que le voyage a appris <strong>(14)</strong>.</li><li>Les enseignements mettent à jour la base : logements, activités, et le score des réceptifs <strong>(12)</strong>.</li><li>Le profil client s'enrichit <strong>(16)</strong>.</li><li>Au voyage suivant, la qualification prend une heure au lieu de trois.</li></ol>
+<h3>Parcours 3 — Comment l'entreprise apprend d'elle-même</h3>
+<p><code>chantiers 1 · 2 · 17 · 18 · 19</code></p>
+<ol><li>Une décision est prise en réunion. Le compte rendu arrive seul dans le cerveau <strong>(2)</strong>.</li><li>Ce qui se dit dans les canaux du projet y arrive aussi <strong>(2)</strong>.</li><li>⬥ Chacun dépose ses réflexions, même en désordre <strong>(1)</strong>.</li><li>Trois mois plus tard, la question « pourquoi avait-on décidé ça ? » a une réponse sourcée.</li><li>Les gestes devenus routiniers sont transformés en commandes partagées <strong>(18)</strong>, construites sur le socle commun <strong>(17)</strong>.</li><li>L'avancement se lit sans réunion <strong>(19)</strong>.</li></ol></section>
+
+<section id="demarrer" class="reveal"><div class="section-n">08 — Démarrer</div><h2 class="section-h">Vos 30 premiers jours</h2><p>C'est la section la plus importante de ce document. Elle existe parce qu'on a fait une erreur : on vous a livré un second cerveau parfaitement fonctionnel sans vous dire assez précisément quoi en faire lundi matin. Il est resté trois semaines à l'arrêt. On ne recommence pas.</p>
+<div class="week"><div class="week-t"><span class="n">S1</span>Poser la mesure et rouvrir le cerveau</div><div class="week-row"><div class="k">Ce qu'on fait</div><div>On rétablit l'accès Spark d'Axel, on prépare la session écran partagé, et on cadre l'extraction HERA avec vous.</div></div><div class="week-row"><div class="k">Ce que vous faites</div><div>Axel : poser la mesure sur la landing et le flow <strong>avant</strong> de lancer les publicités (une demi-journée). Lancelot : confirmer que la synchronisation du cerveau est déployée chez tout le monde.</div></div><div class="week-row"><div class="k">Visible à la fin</div><div>Vous savez ce que vous mesurerez. Le cerveau est accessible à toute l'équipe.</div></div></div>
+<div class="week"><div class="week-t"><span class="n">S2</span>Lancer, et déposer</div><div class="week-row"><div class="k">Ce qu'on fait</div><div>Session écran partagé de 45 minutes sur trois ou quatre usages réels du cerveau. On démarre la fiche conseiller pré-remplie.</div></div><div class="week-row"><div class="k">Ce que vous faites</div><div>Axel : importer le dump d'idées des notes Mac, en vrac. Commencer à écrire le master plan dans le dossier d'import. Lancer les publicités. Lancelot : choisir l'outil de réunion.</div></div><div class="week-row"><div class="k">Visible à la fin</div><div>Les premières demandes arrivent. Le cerveau n'est plus vide.</div></div></div>
+<div class="week"><div class="week-t"><span class="n">S3</span>Lire les chiffres, corriger</div><div class="week-row"><div class="k">Ce qu'on fait</div><div>On branche les comptes rendus de réunion et Slack sur le cerveau. On fait tourner la fiche conseiller sur les premiers cas réels.</div></div><div class="week-row"><div class="k">Ce que vous faites</div><div>Axel : lire les trois chiffres et corriger le message ou le ciblage. Charlie : corriger les cinq premières fiches conseiller — ses corrections sont la matière, pas un contrôle.</div></div><div class="week-row"><div class="k">Visible à la fin</div><div>Vous savez où les gens décrochent. Charlie arrive préparé à ses appels.</div></div></div>
+<div class="week"><div class="week-t"><span class="n">S4</span>Marseille, et l'arbitrage</div><div class="week-row"><div class="k">Ce qu'on fait</div><div>Session de travail en présentiel dans vos bureaux. On tranche ensemble les décisions ouvertes et on cale la phase 2.</div></div><div class="week-row"><div class="k">Ce que vous faites</div><div>Arriver avec les données du sprint et un avis tranché sur le deux temps contre le flow unique.</div></div><div class="week-row"><div class="k">Visible à la fin</div><div>La phase 2 est cadrée sur du réel, pas sur des hypothèses.</div></div></div>
+<h3>Les accès à ouvrir dès le premier jour</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Accès</th><th>Pourquoi</th><th>À demander à</th><th>Quand</th></tr></thead><tbody><tr><td>Export de la donnée HERA</td><td>Alimenter la base voyage (chantier 3)</td><td>Axel</td><td>Semaine 1</td></tr><tr><td>Administration Slack</td><td>Brancher les canaux du projet sur le cerveau</td><td>Lancelot</td><td>Semaine 2</td></tr><tr><td>Outil de mesure sur la landing</td><td>Rien ne se rattrape après le lancement</td><td>Axel</td><td><strong>Avant les publicités</strong></td></tr><tr><td>Formulaire post-voyage existant</td><td>Base du chantier 14</td><td>Charlie</td><td>Semaine 3</td></tr><tr><td>Accès Spark rétabli</td><td>Suivi des chantiers</td><td>Silex — c'est chez nous</td><td>Semaine 1</td></tr></tbody></table></div>
+<h3>Ce que vous faites, vous</h3>
+<p>Cinq gestes. Aucun ne demande plus de dix minutes par jour.</p>
+<ol><li><strong>Déposez dans le dossier d'import, même en désordre.</strong> Une note, un lien, un vocal, une décision prise en marchant. Ne réfléchissez pas au rangement — l'agent range très bien et sait dire ce qu'il n'a pas trouvé. Le seul vrai risque est de perdre l'information.</li><li><strong>Écrivez votre master plan dedans</strong>, pas dans un document externe. Gardez exactement votre façon de travailler — vous écrivez, l'IA en sparring partner à côté. La seule chose qui change, c'est l'endroit où le fichier vit.</li><li><strong>Terminez vos sessions de travail par la commande de fin de session.</strong> Elle ancre les décisions prises. C'est le geste qui fait la différence entre un dossier de fichiers et une mémoire.</li><li><strong>Ne rangez rien pendant deux semaines.</strong> Au bout de deux semaines, demandez à l'agent de vous proposer une structure. Corriger une nomenclature est facile ; récupérer une information perdue ne l'est pas.</li><li><strong>Montrez-le.</strong> Axel, vous êtes le champion de l'outil. L'équipe fera ce qu'elle vous voit faire, pas ce qu'on lui explique.</li></ol>
+<h3>À quoi ressemble une bonne première semaine</h3>
+<ul><li>Le cerveau a reçu au moins cinq dépôts, dont au moins un franchement mal rangé.</li><li>La mesure est posée sur la landing avant le premier euro de publicité.</li><li>Une question a été posée au cerveau et il a répondu quelque chose d'utile.</li></ul>
+<h3>À quoi ressemble une semaine bloquée</h3>
+<ul><li>Personne n'a rien déposé, et on entend « je ne savais pas quoi y mettre ».</li><li>Les publicités tournent sans mesure.</li><li>Une décision importante a été prise et n'existe nulle part par écrit.</li></ul>
+<p><strong>Dans ces trois cas, écrivez-nous le jour même.</strong> Ce sont exactement les signaux qui, non traités, coûtent trois semaines.</p></section>
+
+<section id="pilotage" class="reveal"><div class="section-n">09 — Pilotage</div><h2 class="section-h">Comment on pilote ensemble</h2><div class="tbl-wrap"><table><thead><tr><th>Rendez-vous</th><th>Fréquence</th><th>Durée</th><th>Qui</th></tr></thead><tbody><tr><td>Point d'avancement</td><td>Hebdomadaire</td><td>30 min</td><td>Axel + Silex</td></tr><tr><td>Point technique</td><td>Toutes les 2 semaines</td><td>45 min</td><td>Lancelot + Silex</td></tr><tr><td>Session de travail</td><td>Mensuelle</td><td>2 h</td><td>L'équipe + Silex</td></tr><tr><td>Revue de roadmap</td><td>Trimestrielle</td><td>1 h</td><td>Axel + Silex</td></tr></tbody></table></div>
+<p><strong>Qui décide quoi.</strong> Les arbitrages techniques d'infrastructure appartiennent à Lancelot ; on apporte le retour d'expérience et on assume le désaccord quand il y en a. Les arbitrages produit et positionnement appartiennent à Axel. Le périmètre et la séquence des chantiers se décident ensemble au point hebdomadaire. Tout ce qui relève de la mise en œuvre, on le tranche seuls et on vous le dit.</p>
+<p><strong>Quand nous écrire tout de suite</strong>, sans attendre le point hebdomadaire :</p>
+<ul><li>un chantier est bloqué par un accès qu'on n'a pas ;</li><li>une décision de la liste ci-dessous est prise, ou change ;</li><li>quelque chose qu'on a livré n'est pas utilisé après une semaine — c'est un signal, pas un détail ;</li><li>le sprint dérape sur les chiffres, et il faut réarbitrer la phase 1.</li></ul></section>
+
+<section id="ecartes" class="reveal"><div class="section-n">10 — Écartés</div><h2 class="section-h">Ce qu'on n'a pas retenu, et pourquoi</h2><p>Six sujets sérieux, écartés volontairement. Chacun est une bonne idée au mauvais moment, et chacun revient à un déclencheur précis.</p>
+<div class="tbl-wrap"><table><thead><tr><th style="width:26%">Sujet</th><th>Pourquoi pas maintenant</th><th style="width:20%">Reconsidéré quand</th></tr></thead><tbody id="ecartes-rows"></tbody></table></div></section>
+
+<section id="decisions" class="reveal"><div class="section-n">11 — Risques &amp; décisions</div><h2 class="section-h">Ce qui peut casser, et ce que vous devez trancher</h2><h3>Les risques</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Risque</th><th>Probabilité</th><th>Impact</th><th>Ce qu'on fait</th></tr></thead><tbody id="risques-rows"></tbody></table></div>
+<h3>Les décisions qui vous attendent</h3>
+<p>Six décisions. Trois d'entre elles bloquent des chantiers : le contenu des trois propositions (chantier 9), les canaux Slack (chantier 2), et le cadrage juridique d'HERA (chantier 3).</p>
+<div class="tbl-wrap"><table><thead><tr><th>Décision</th><th>Options</th><th>Échéance</th><th>Qui tranche</th></tr></thead><tbody id="decisions-rows"></tbody></table></div></section>
+
+<section id="annexes" class="reveal"><div class="section-n">12 — Annexes</div><h2 class="section-h">Annexes</h2><h3>Glossaire</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Terme</th><th>En clair</th></tr></thead><tbody><tr><td><strong>Second cerveau</strong></td><td>L'endroit unique où vivent les réflexions, décisions et connaissances de l'entreprise, sous forme de fichiers texte que l'IA peut lire et enrichir.</td></tr><tr><td><strong>Dossier d'import</strong></td><td>Le dossier où l'on dépose tout, en désordre, avant tout rangement. C'est volontaire : ranger vient après.</td></tr><tr><td><strong>Agent</strong></td><td>Un programme qui exécute une tâche en s'appuyant sur une IA et sur vos données — préparer une fiche, produire une proposition, extraire un enseignement.</td></tr><tr><td><strong>Boucle</strong></td><td>Un enchaînement qui produit un résultat <em>et</em> renvoie ce qu'il a appris dans le système, pour que la fois suivante soit meilleure.</td></tr><tr><td><strong>Base voyage</strong></td><td>La base structurée des destinations, réceptifs, logements et activités, construite depuis l'historique et enrichie par chaque voyage.</td></tr><tr><td><strong>Réceptif</strong></td><td>L'agence locale sur place qui fournit la base du voyage ; Ulysse apporte la surcouche.</td></tr><tr><td><strong>Roadbook</strong></td><td>Le document d'itinéraire remis au voyageur — ici, en version vivante plutôt qu'en PDF.</td></tr><tr><td><strong>Socle technique</strong></td><td>La base commune à tous vos outils internes : structure, sécurité, authentification, interface.</td></tr><tr><td><strong>Commande / automatisation</strong></td><td>Un geste répétitif transformé en raccourci réutilisable et partageable dans l'équipe.</td></tr></tbody></table></div>
+<h3>Le comparatif des outils de réunion</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Outil</th><th>Ce qu'il fait bien</th><th>Sa limite</th><th>Coût indicatif</th></tr></thead><tbody><tr><td>Claap</td><td>Vidéo + transcription + résumé personnalisable, fonctionne sur n'importe quelle visio, se branche facilement</td><td>Le plus cher</td><td>~40 €/siège/mois</td></tr><tr><td>Granola</td><td>Le meilleur rapport qualité-prix</td><td>Ne restitue pas toujours le transcript intégral</td><td>~15 €/siège/mois</td></tr><tr><td>Transcription native de la visio</td><td>Gratuit sur votre forfait</td><td>Cantonné à un seul univers logiciel</td><td>inclus</td></tr></tbody></table></div>
+<p>Notre recommandation : commencer par la solution incluse pour ne pas retarder le chantier 2, et basculer si la restitution est insuffisante. C'est un choix réversible — inutile d'en faire une décision structurante.</p>
+<h3>Qui fait quoi</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Personne</th><th>Rôle</th><th>À solliciter pour</th></tr></thead><tbody><tr><td>Axel</td><td>CEO</td><td>Positionnement, produit, arbitrages, cadrage HERA</td></tr><tr><td>Lancelot</td><td>Technique</td><td>Infrastructure, socle, accès, choix d'outillage</td></tr><tr><td>Charlie</td><td>Métier voyage</td><td>Qualification, réceptifs, validation des propositions</td></tr><tr><td>Emile</td><td>Design</td><td>Landing, flow, direction artistique des livrables clients</td></tr><tr><td>Silex</td><td>CAIO</td><td>Architecture, construction, formation, pilotage des chantiers</td></tr></tbody></table></div>
+<h3>Ce qui a changé depuis la version précédente</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th><th>Changement</th></tr></thead><tbody><tr><td>1.0</td><td>2026-08-05</td><td>Version initiale</td></tr></tbody></table></div></section>
+
+<!-- BODY:END -->
+
+<footer><div class="fl">
+  <div>Ulysse × Silex · Roadmap AI-native · version 1.0 — 2026-08-05</div>
+  <div>Document vivant — la version en tête de page fait foi.</div>
+</div></footer>
+
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DONNÉES — remplacées par Build_Roadmap.py depuis chantiers.yaml.
+   ═══════════════════════════════════════════════════════════════ */
+const DATA = {
+  "phases": {
+    "P1": {
+      "label": "0-30 jours",
+      "color": "var(--green)",
+      "i": 0
+    },
+    "P2": {
+      "label": "1-3 mois",
+      "color": "var(--orange)",
+      "i": 1
+    },
+    "P3": {
+      "label": "3-6 mois",
+      "color": "var(--blue)",
+      "i": 2
+    },
+    "P4": {
+      "label": "au-delà",
+      "color": "var(--gray)",
+      "i": 3
+    }
+  },
+  "streams": [
+    {
+      "id": "S1",
+      "nom": "Capter et qualifier",
+      "resume": "De l'inconnu qui clique sur une pub au brief exploitable par un conseiller. C'est ici que se joue la différenciation d'Ulysse — et les 50 demandes."
+    },
+    {
+      "id": "S2",
+      "nom": "Produire et vendre",
+      "resume": "Du brief au voyage réservé. Le cœur du métier, et le seul endroit où les 4-5 jours de devis du secteur peuvent devenir 48 heures."
+    },
+    {
+      "id": "S3",
+      "nom": "Accompagner et apprendre",
+      "resume": "Pendant le voyage et après. C'est ce que les agences abandonnent une fois la vente faite, et c'est ce qui alimente tout le reste."
+    },
+    {
+      "id": "S4",
+      "nom": "Le cerveau",
+      "resume": "La mémoire de l'entreprise : ce qu'elle sait, ce qu'elle a décidé, ce qu'elle a appris. Sans lui, chaque outil reste un gadget isolé."
+    },
+    {
+      "id": "S5",
+      "nom": "L'équipe augmentée",
+      "resume": "Comment quatre personnes opèrent comme quinze, sans que chacun parte dans sa direction."
+    }
+  ],
+  "chantiers": [
+    {
+      "id": 1,
+      "titre": "Faire vivre le second cerveau",
+      "stream": "S4",
+      "phase": "P1",
+      "impact": 5,
+      "effort": 2,
+      "fondation": true,
+      "statut": "en_cours",
+      "porte_par": "Ulysse + Silex",
+      "owner_client": "Axel",
+      "outils": [
+        "Second cerveau",
+        "Obsidian",
+        "Claude Code"
+      ],
+      "depend_de": [],
+      "resume": "Il est livré et synchronisé, mais il est vide. Tant qu'il l'est, aucun agent ne peut rien produire d'utile.",
+      "gain": "Aucun gain direct — c'est la matière première de tout le reste.",
+      "kpi": "Au moins 5 dépôts par semaine dans le dossier d'import, à fin août"
+    },
+    {
+      "id": 2,
+      "titre": "Brancher les sources sur le cerveau",
+      "stream": "S4",
+      "phase": "P1",
+      "impact": 4,
+      "effort": 2,
+      "fondation": true,
+      "statut": "a_faire",
+      "porte_par": "Silex + Ulysse",
+      "owner_client": "Lancelot",
+      "outils": [
+        "Slack",
+        "Outil de meetings",
+        "Email"
+      ],
+      "depend_de": [
+        1
+      ],
+      "resume": "L'essentiel de ce que sait Ulysse passe par Slack et par les réunions, et rien n'en arrive dans le cerveau.",
+      "gain": "Supprime la charge de dépôt manuel — la principale cause d'abandon d'un second cerveau.",
+      "kpi": "100 % des comptes rendus de réunion déposés automatiquement, à M2"
+    },
+    {
+      "id": 3,
+      "titre": "Transformer la data HERA en base voyage",
+      "stream": "S4",
+      "phase": "P2",
+      "impact": 5,
+      "effort": 3,
+      "fondation": true,
+      "statut": "a_faire",
+      "porte_par": "Ulysse + Silex",
+      "owner_client": "Axel",
+      "outils": [
+        "HERA",
+        "Base de données"
+      ],
+      "depend_de": [],
+      "resume": "Des années de devis réels : destinations qui convertissent, réceptifs, hôtels, activités. C'est le seul actif qu'un concurrent parti de zéro n'a pas.",
+      "gain": "Évite de reconstruire à la main une base fournisseurs — plusieurs mois de travail économisés [HYP]",
+      "kpi": "Base exploitable sur les 10 destinations prioritaires, à M3"
+    },
+    {
+      "id": 4,
+      "titre": "Ouvrir la porte : landing et pré-qualification",
+      "stream": "S1",
+      "phase": "P1",
+      "impact": 5,
+      "effort": 3,
+      "fondation": false,
+      "statut": "en_cours",
+      "porte_par": "Ulysse",
+      "owner_client": "Axel",
+      "outils": [
+        "Landing",
+        "Ads",
+        "Analytics"
+      ],
+      "depend_de": [],
+      "resume": "La landing multi-marchés et le flow de vibes qui donne envie d'aller plus loin. C'est ce qui est testé en premier : la promesse.",
+      "gain": "50 demandes d'ici le 7 septembre — l'objectif qui valide ou invalide la proposition de valeur.",
+      "kpi": "50 demandes qualifiées au 7 septembre 2026"
+    },
+    {
+      "id": 5,
+      "titre": "Savoir ce qui se passe entre la pub et la demande",
+      "stream": "S1",
+      "phase": "P1",
+      "impact": 4,
+      "effort": 1,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Ulysse",
+      "owner_client": "Axel",
+      "outils": [
+        "Analytics",
+        "Tracking"
+      ],
+      "depend_de": [
+        4
+      ],
+      "resume": "Sans mesure du taux d'entrée et du décrochage étape par étape, le sprint des 50 demandes n'apprend rien.",
+      "gain": "Transforme un mois d'essais en un mois d'apprentissage — c'est ce qui rend le sprint utile même s'il échoue.",
+      "kpi": "Taux d'entrée dans le flow et point de décrochage connus, dès la 2e semaine d'ads"
+    },
+    {
+      "id": 6,
+      "titre": "Arriver au premier appel en ayant déjà compris",
+      "stream": "S1",
+      "phase": "P1",
+      "impact": 4,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Charlie",
+      "outils": [
+        "Agent de préparation",
+        "Second cerveau"
+      ],
+      "depend_de": [
+        1,
+        4
+      ],
+      "resume": "Une fiche conseiller pré-remplie à partir de la pré-qualification, disponible avant le call. L'effet « il m'a compris » dès la première minute.",
+      "gain": "~20 min de préparation par appel, et surtout un taux de transformation supérieur sur le premier contact [HYP]",
+      "kpi": "Fiche disponible avant 100 % des appels, à M1"
+    },
+    {
+      "id": 7,
+      "titre": "La qualification longue, sans formulaire pénible",
+      "stream": "S1",
+      "phase": "P2",
+      "impact": 4,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Ulysse + Silex",
+      "owner_client": "Axel",
+      "outils": [
+        "Formulaire dynamique",
+        "Transcription vocale"
+      ],
+      "depend_de": [
+        4
+      ],
+      "resume": "Les questions ingrates — âge des enfants, rythme, contraintes — posées de façon acceptable, potentiellement en vocal.",
+      "gain": "Le jeu de données sans lequel les trois propositions sont génériques.",
+      "kpi": "> 60 % des personnes entrées en pré-qualification vont au bout de la qualification"
+    },
+    {
+      "id": 8,
+      "titre": "Le brief récapitulatif à la fin du call",
+      "stream": "S1",
+      "phase": "P2",
+      "impact": 3,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Charlie",
+      "outils": [
+        "Transcription live",
+        "Agent de synthèse"
+      ],
+      "depend_de": [
+        6
+      ],
+      "resume": "En fin d'appel, un brief visuel qui reprend les mots exacts du client. Montré à l'écran ou envoyé deux minutes après.",
+      "gain": "Supprime la reformulation écrite post-appel et ancre l'impression d'avoir été écouté.",
+      "kpi": "Brief envoyé en < 10 min après l'appel, sur 90 % des appels"
+    },
+    {
+      "id": 9,
+      "titre": "Trois propositions en moins de 48 heures",
+      "stream": "S2",
+      "phase": "P2",
+      "impact": 5,
+      "effort": 4,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex + Ulysse",
+      "owner_client": "Charlie",
+      "outils": [
+        "Base voyage",
+        "Agents de production",
+        "Réceptifs"
+      ],
+      "depend_de": [
+        3,
+        7
+      ],
+      "resume": "La chaîne complète du brief aux trois propositions. C'est la promesse commerciale d'Ulysse ; tout le reste la sert.",
+      "gain": "De 4-5 jours (norme du secteur) à moins de 48 h — l'écart le plus visible côté client.",
+      "kpi": "Délai médian brief → propositions < 48 h, sur les 20 premières demandes traitées"
+    },
+    {
+      "id": 10,
+      "titre": "Un devis qui ressemble au voyage vendu",
+      "stream": "S2",
+      "phase": "P2",
+      "impact": 5,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Axel",
+      "outils": [
+        "Générateur de devis",
+        "Générateur d'assets"
+      ],
+      "depend_de": [
+        7
+      ],
+      "resume": "Des blocs qui apparaissent parce qu'ils ont été évoqués, et une identité visuelle qui reprend les vibes choisies — là où HERA sert un template fixe.",
+      "gain": "Le principal levier de conversion identifié par Axel sur l'écart avec HERA [HYP] — à mesurer en A/B.",
+      "kpi": "Taux d'acceptation du devis supérieur au template fixe, mesuré sur 30 devis"
+    },
+    {
+      "id": 11,
+      "titre": "Le roadbook plutôt que le PDF",
+      "stream": "S2",
+      "phase": "P3",
+      "impact": 4,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Charlie",
+      "outils": [
+        "Web app",
+        "Cartographie"
+      ],
+      "depend_de": [
+        10
+      ],
+      "resume": "L'itinéraire vivant : la carte, l'ordre des étapes, la météo, les infos pratiques au clic. Et une version racontée aux enfants.",
+      "gain": "Transforme un document mort en objet qu'on rouvre pendant le voyage — le support naturel de la conciergerie et de la recommandation.",
+      "kpi": "Roadbook ouvert au moins 3 fois par voyage, en moyenne"
+    },
+    {
+      "id": 12,
+      "titre": "Choisir et piloter les bons réceptifs",
+      "stream": "S2",
+      "phase": "P3",
+      "impact": 4,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Ulysse",
+      "owner_client": "Charlie",
+      "outils": [
+        "Base voyage",
+        "Scoring"
+      ],
+      "depend_de": [
+        3
+      ],
+      "resume": "Un score par réceptif construit sur l'historique HERA et les retours réels, plutôt que sur l'habitude.",
+      "gain": "Réduit la latence de production et le taux de rework sur les itinéraires.",
+      "kpi": "Top 5 réceptifs identifiés par destination prioritaire, à M5"
+    },
+    {
+      "id": 13,
+      "titre": "Réserver et encaisser sans couture",
+      "stream": "S2",
+      "phase": "P4",
+      "impact": 4,
+      "effort": 5,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Ulysse + Silex",
+      "owner_client": "Lancelot",
+      "outils": [
+        "Paiement",
+        "Protocoles agentiques"
+      ],
+      "depend_de": [
+        9
+      ],
+      "resume": "L'infrastructure de réservation et de paiement, pensée dès le départ pour les protocoles de paiement destinés aux agents.",
+      "gain": "Direction structurante — à ne pas construire avant d'avoir un volume qui le justifie.",
+      "kpi": "À définir au moment du go"
+    },
+    {
+      "id": 14,
+      "titre": "Récupérer ce que le voyage a appris",
+      "stream": "S3",
+      "phase": "P2",
+      "impact": 4,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Charlie",
+      "outils": [
+        "Formulaire post-voyage",
+        "Base voyage"
+      ],
+      "depend_de": [
+        3
+      ],
+      "resume": "Chaque retour de voyage enrichit la base : ce qui a plu, ce qui a raté, quel logement tient sa promesse avec des enfants.",
+      "gain": "C'est la seule boucle qui fait que le système s'améliore tout seul. Sans elle, la base vieillit.",
+      "kpi": "> 70 % de retours collectés, et intégrés à la base sous 7 jours"
+    },
+    {
+      "id": 15,
+      "titre": "Être joignable pendant le séjour",
+      "stream": "S3",
+      "phase": "P3",
+      "impact": 3,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Ulysse",
+      "owner_client": "Charlie",
+      "outils": [
+        "Messagerie",
+        "Roadbook"
+      ],
+      "depend_de": [
+        11
+      ],
+      "resume": "Restaurant, taxi, pharmacie, problème d'hôtel. Le moment exact où le secteur décroche et où Ulysse peut se distinguer.",
+      "gain": "Le service qui justifie la marge du sur-mesure aux yeux du client [HYP]",
+      "kpi": "Temps de première réponse < 30 min en journée locale"
+    },
+    {
+      "id": 16,
+      "titre": "La mémoire client qui compose",
+      "stream": "S3",
+      "phase": "P3",
+      "impact": 4,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Axel",
+      "outils": [
+        "Base voyage",
+        "Second cerveau"
+      ],
+      "depend_de": [
+        14
+      ],
+      "resume": "Au deuxième voyage, Ulysse sait déjà. Rien à réexpliquer — c'est ce qu'aucun concurrent ne peut copier.",
+      "gain": "Le coût de qualification tombe quasiment à zéro sur les clients qui reviennent.",
+      "kpi": "Second voyage qualifié en < 1 h de temps humain"
+    },
+    {
+      "id": 17,
+      "titre": "Un socle technique commun pour que l'équipe puisse construire",
+      "stream": "S5",
+      "phase": "P2",
+      "impact": 4,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Ulysse",
+      "owner_client": "Lancelot",
+      "outils": [
+        "Boilerplate",
+        "GitHub"
+      ],
+      "depend_de": [],
+      "resume": "Un socle unique — structure, sécurité, authentification, interface — pour que toute l'équipe puisse construire sans que chacun parte dans sa direction.",
+      "gain": "C'est la condition pour que plus d'une personne construise, sans multiplier la dette.",
+      "kpi": "Deux projets internes démarrés depuis le socle, à M3"
+    },
+    {
+      "id": 18,
+      "titre": "Outiller chaque métier de ses propres automatismes",
+      "stream": "S5",
+      "phase": "P3",
+      "impact": 3,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex + Ulysse",
+      "owner_client": "Lancelot",
+      "outils": [
+        "Skills",
+        "Second cerveau"
+      ],
+      "depend_de": [
+        1,
+        17
+      ],
+      "resume": "Les gestes qui deviennent routiniers sont transformés en commandes réutilisables, partagées par domaine.",
+      "gain": "Chaque automatisation économise le geste, et se diffuse à toute l'équipe d'un coup.",
+      "kpi": "5 automatisations en usage réel, à M5"
+    },
+    {
+      "id": 19,
+      "titre": "Voir où en sont les chantiers, sans réunion",
+      "stream": "S5",
+      "phase": "P1",
+      "impact": 3,
+      "effort": 1,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Axel",
+      "outils": [
+        "Spark"
+      ],
+      "depend_de": [],
+      "resume": "Un endroit unique où voir l'avancement, signaler un problème et suivre les décisions — plutôt que de le demander.",
+      "gain": "Supprime le point d'avancement récurrent.",
+      "kpi": "Accès rétabli et utilisé par Axel et Lancelot, à M1"
+    }
+  ],
+  "ecartes": [
+    {
+      "titre": "Exposer la base d'activités aux moteurs génératifs (MCP client, GEO)",
+      "pourquoi": "Le levier est réel et Ulysse serait parmi les premiers. Mais il suppose une base propre et une offre stabilisée : l'exposer maintenant reviendrait à publier un catalogue qu'on ne maîtrise pas encore. Le chantier 3 en est le prérequis.",
+      "quand": "Quand la base voyage est stabilisée — phase 4"
+    },
+    {
+      "titre": "Le référencement longue traîne à grande échelle",
+      "pourquoi": "« Comment aller au Japon avec un bébé de six mois » est une vraie porte d'entrée. Mais c'est un levier à 6-12 mois qui ne produira rien avant le 7 septembre, et il mobiliserait exactement le temps dont le sprint a besoin.",
+      "quand": "Phase 3, une fois la promesse validée"
+    },
+    {
+      "titre": "L'agence « for good »",
+      "pourquoi": "Le storytelling est fort, mais le vrai obstacle est le sourcing des actions locales, et ce n'est pas un problème d'outillage. La version tenable est ponctuelle et personnalisée pendant un voyage, pas un pilier de positionnement.",
+      "quand": "À reconsidérer une fois la supply structurée"
+    },
+    {
+      "titre": "Équiper les logements pour les rendre kids-friendly",
+      "pourquoi": "L'idée est juste sur le fond — rendre la supply unique sans l'acheter. Mais c'est de la logistique physique, pas du système, et ça n'a de sens qu'à un volume qu'Ulysse n'a pas encore.",
+      "quand": "Quand le volume par destination le justifie"
+    },
+    {
+      "titre": "Enrichir les profils depuis les réseaux sociaux",
+      "pourquoi": "Techniquement trivial, juridiquement et humainement délicat. Le gain de personnalisation ne vaut pas le risque de perception sur un positionnement premium — et le RGPD impose un cadrage préalable qu'on n'a pas fait.",
+      "quand": "Seulement après un cadrage juridique explicite"
+    },
+    {
+      "titre": "Sortir les commandes du cerveau vers des plugins partagés",
+      "pourquoi": "C'est notre pratique, et elle est meilleure à l'échelle. Mais elle impose un compte pour chaque membre de l'équipe, ce qui a été jugé disproportionné à 3-4 utilisateurs. Arbitrage assumé en session : on y reviendra quand la douleur arrivera.",
+      "quand": "Quand l'équipe dépasse 5-6 utilisateurs"
+    }
+  ],
+  "decisions": [
+    {
+      "sujet": "Un flow unique, ou pré-qualification puis qualification en deux temps ?",
+      "options": "Deux temps (friction assumée) / un seul flow (conversion maximale)",
+      "echeance": "Avant le lancement des ads",
+      "decideur": "Axel"
+    },
+    {
+      "sujet": "Format des réponses de qualification",
+      "options": "Formulaire dynamique / vocal / mixte",
+      "echeance": "M2",
+      "decideur": "Axel"
+    },
+    {
+      "sujet": "Que contiennent les trois propositions ?",
+      "options": "Destinations alternatives / mêmes destinations à budgets différents / styles de voyage différents",
+      "echeance": "M1 — avant le chantier 9",
+      "decideur": "Axel + Charlie"
+    },
+    {
+      "sujet": "Quels canaux Slack alimentent le cerveau ?",
+      "options": "Tous / seulement les canaux du nouveau projet",
+      "echeance": "M1",
+      "decideur": "Axel"
+    },
+    {
+      "sujet": "Quel outil de réunion pour capter les comptes rendus ?",
+      "options": "Claap (complet, coûteux) / Granola (économique) / transcription native de la visio (gratuit, cantonné)",
+      "echeance": "M1",
+      "decideur": "Lancelot"
+    },
+    {
+      "sujet": "Sortie juridique de HERA",
+      "options": "Maintenant / à la première friction client / plus tard",
+      "echeance": "M3",
+      "decideur": "Axel"
+    }
+  ],
+  "risques": [
+    {
+      "risque": "Le sprint des 50 demandes installe une dette qu'on paiera cher",
+      "probabilite": "elevee",
+      "impact": "eleve",
+      "mitigation": "Assumer les raccourcis sur la vente, jamais sur la donnée. Les chantiers 1, 2 et 3 tournent en parallèle du sprint et ne sont pas négociables : tout ce qui est capté pendant le sprint doit atterrir quelque part de réutilisable."
+    },
+    {
+      "risque": "Le second cerveau reste un objet livré mais pas utilisé",
+      "probabilite": "moyenne",
+      "impact": "eleve",
+      "mitigation": "Le blocage n'est pas technique, il est d'usage. Session écran partagé sur 3-4 cas réels, Axel en champion visible, et surtout l'autorisation explicite de déposer en désordre."
+    },
+    {
+      "risque": "Août, et une fenêtre de quatre semaines seulement",
+      "probabilite": "elevee",
+      "impact": "moyen",
+      "mitigation": "Concentrer la phase 1 sur ce qui ne dépend que d'Ulysse et de Silex. La session de Marseille fin août sert de point de rattrapage."
+    },
+    {
+      "risque": "Axel n'est pas client de son propre produit",
+      "probabilite": "moyenne",
+      "impact": "moyen",
+      "mitigation": "L'intuition produit passe par la Discovery terrain et par Charlie, pas par le CEO seul. Chaque arbitrage produit se tranche sur une observation, pas sur une conviction."
+    },
+    {
+      "risque": "Dépendance à HERA, dont la sortie juridique n'est pas faite",
+      "probabilite": "moyenne",
+      "impact": "eleve",
+      "mitigation": "Extraire la data exploitable maintenant (chantier 3) plutôt que de rester branché sur l'outil. Une base autonome rend la sortie indolore."
+    },
+    {
+      "risque": "Dépendance à Silex sur la partie cerveau et agents",
+      "probabilite": "moyenne",
+      "impact": "moyen",
+      "mitigation": "Tout vit en markdown, dans vos dépôts, sans format propriétaire. Lancelot est associé à chaque décision d'architecture. Le coût de sortie doit rester proche de zéro — c'est un critère qu'on s'impose."
+    }
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDU — ne pas modifier sauf besoin réel.
+   ═══════════════════════════════════════════════════════════════ */
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dots = n => `<span class="dots">${[1,2,3,4,5].map(i=>`<span class="${i<=n?'on':''}"></span>`).join('')}</span>`;
+const byId = id => DATA.chantiers.find(c => c.id === id);
+
+/* --- compteur --- */
+document.getElementById('m-count').textContent = DATA.chantiers.length;
+
+/* --- cartes de streams --- */
+document.getElementById('streams-cards').innerHTML = DATA.streams.map(s => {
+  const n = DATA.chantiers.filter(c => c.stream === s.id).length;
+  return `<div class="panel"><div class="panel-t">${esc(s.id)} · ${n} chantier${n>1?'s':''}</div>
+    <h4 style="margin:0 0 6px">${esc(s.nom)}</h4>
+    <p style="margin:0;font-size:14.5px;color:var(--ink-2)">${esc(s.resume)}</p></div>`;
+}).join('');
+
+/* --- tables par stream --- */
+document.getElementById('streams-tables').innerHTML = DATA.streams.map(s => {
+  const rows = DATA.chantiers.filter(c => c.stream === s.id)
+    .sort((a,b) => DATA.phases[a.phase].i - DATA.phases[b.phase].i || a.id - b.id)
+    .map(c => `<tr>
+      <td><span class="num n-${c.phase}">${c.id}</span></td>
+      <td><strong>${esc(c.titre)}</strong>
+        ${c.fondation ? ' <span class="badge b-fond">Fondation</span>' : ''}
+        ${c.statut === 'livre' ? ' <span class="badge b-livre">Livré</span>' : ''}
+        <span class="sub-desc">${esc(c.resume)}</span></td>
+      <td>${dots(c.effort)}</td>
+      <td><span class="badge b-${c.phase}">${DATA.phases[c.phase].label}</span></td>
+      <td style="font-size:13px;color:var(--ink-2)">${(c.outils||[]).map(esc).join(', ')}</td>
+    </tr>`).join('');
+  return `<h4>${esc(s.nom)}</h4><div class="tbl-wrap"><table>
+    <thead><tr><th style="width:44px">#</th><th>Chantier</th><th style="width:80px">Effort</th>
+    <th style="width:110px">Quand</th><th style="width:170px">Outils</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
+}).join('');
+
+/* --- matrice impact × effort --- */
+(function matrix(){
+  const svg = document.getElementById('matrix');
+  const W=900, H=540, L=72, R=34, T=28, B=58;
+  const x = e => L + (e-1)/4 * (W-L-R);
+  const y = i => T + (5-i)/4 * (H-T-B);
+  let out = '';
+
+  // quadrant quick wins
+  out += `<rect x="${x(1)-26}" y="${y(5)-26}" width="${x(2.6)-x(1)+52}" height="${y(3.7)-y(5)+26}"
+          fill="var(--green-soft)" rx="12"/>`;
+  out += `<text x="${x(1)-16}" y="${y(3.7)+2}" font-family="Space Mono" font-size="10"
+          fill="var(--green)" letter-spacing="1.4">QUICK WINS</text>`;
+
+  // grille
+  for(let i=1;i<=5;i++){
+    out += `<line x1="${L-26}" y1="${y(i)}" x2="${W-R+10}" y2="${y(i)}" stroke="var(--line)" stroke-width="1"/>`;
+    out += `<text x="${L-38}" y="${y(i)+4}" text-anchor="end" font-family="Space Mono"
+            font-size="11" fill="var(--ink-3)">${i}</text>`;
+    out += `<line x1="${x(i)}" y1="${T-14}" x2="${x(i)}" y2="${H-B+8}" stroke="var(--line)" stroke-width="1"/>`;
+    out += `<text x="${x(i)}" y="${H-B+26}" text-anchor="middle" font-family="Space Mono"
+            font-size="11" fill="var(--ink-3)">${i}</text>`;
+  }
+  out += `<text x="${L-52}" y="${(T+H-B)/2}" text-anchor="middle" font-family="Space Mono"
+          font-size="10" fill="var(--ink-3)" letter-spacing="1.6"
+          transform="rotate(-90 ${L-52} ${(T+H-B)/2})">IMPACT →</text>`;
+  out += `<text x="${(L+W-R)/2}" y="${H-6}" text-anchor="middle" font-family="Space Mono"
+          font-size="10" fill="var(--ink-3)" letter-spacing="1.6">EFFORT →</text>`;
+
+  // dispersion déterministe des bulles superposées (pas de doublon, pas de drag)
+  const groups = {};
+  DATA.chantiers.forEach(c => {
+    const k = `${c.impact}|${c.effort}`;
+    (groups[k] = groups[k] || []).push(c);
+  });
+  const RAD = 13, GAP = 2*RAD + 3;
+  const pts = [];
+  Object.values(groups).forEach(list => {
+    const n = list.length, ring = 20;
+    list.forEach((c, k) => {
+      let cx = x(c.effort), cy = y(c.impact);
+      if(n > 1){
+        const a = (2*Math.PI*k)/n - Math.PI/2;
+        cx += Math.cos(a)*ring; cy += Math.sin(a)*ring;
+      }
+      pts.push({c, cx, cy});
+    });
+  });
+
+  // relaxation déterministe : aucune bulle ne recouvre sa voisine
+  for(let it = 0; it < 80; it++){
+    let moved = false;
+    for(let i = 0; i < pts.length; i++){
+      for(let j = i+1; j < pts.length; j++){
+        let dx = pts[j].cx - pts[i].cx, dy = pts[j].cy - pts[i].cy;
+        let d = Math.hypot(dx, dy);
+        if(d >= GAP) continue;
+        if(d < 0.01){ dx = (i % 2 ? 1 : -1); dy = (j % 2 ? 1 : -1); d = Math.hypot(dx, dy); }
+        const push = (GAP - d) / 2 / d;
+        pts[i].cx -= dx*push; pts[i].cy -= dy*push;
+        pts[j].cx += dx*push; pts[j].cy += dy*push;
+        moved = true;
+      }
+    }
+    // on reste dans le cadre
+    pts.forEach(p => {
+      p.cx = Math.max(L - 16, Math.min(p.cx, W - R + 4));
+      p.cy = Math.max(T + 2,  Math.min(p.cy, H - B - 2));
+    });
+    if(!moved) break;
+  }
+
+  pts.forEach(({c, cx, cy}) => {
+    const col = DATA.phases[c.phase].color;
+    out += `<g class="bub" data-id="${c.id}" style="cursor:default">
+      <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${RAD}" fill="${col}" opacity="0.92"
+        ${c.fondation ? 'stroke="var(--accent)" stroke-width="3"' : 'stroke="#fff" stroke-width="1.5"'}/>
+      <text x="${cx.toFixed(1)}" y="${(cy+3.7).toFixed(1)}" text-anchor="middle"
+        font-family="Space Mono" font-size="10.5" font-weight="700" fill="#fff">${c.id}</text></g>`;
+  });
+  svg.innerHTML = out;
+
+  const tip = document.getElementById('mx-tip'), box = svg.parentElement;
+  svg.querySelectorAll('.bub').forEach(g => {
+    g.addEventListener('mouseenter', ev => {
+      const c = byId(+g.dataset.id);
+      tip.innerHTML = `<b>${esc(c.id)} · ${esc(c.titre)}</b>${esc(c.resume)}`;
+      tip.style.display = 'block';
+      const r = box.getBoundingClientRect(), b = g.getBoundingClientRect();
+      let left = b.left - r.left + b.width/2 - tip.offsetWidth/2;
+      left = Math.max(8, Math.min(left, r.width - tip.offsetWidth - 8));
+      tip.style.left = left + 'px';
+      tip.style.top  = (b.top - r.top - tip.offsetHeight - 10) + 'px';
+    });
+    g.addEventListener('mouseleave', () => tip.style.display = 'none');
+  });
+})();
+
+/* --- timeline --- */
+document.getElementById('gantt-rows').innerHTML = DATA.chantiers
+  .slice().sort((a,b) => DATA.phases[a.phase].i - DATA.phases[b.phase].i || a.id - b.id)
+  .map(c => {
+    const p = DATA.phases[c.phase];
+    // un chantier occupe sa phase ; une fondation démarre une phase plus tôt si possible
+    const start = c.fondation ? Math.max(0, p.i - (p.i > 0 ? 1 : 0)) : p.i;
+    const span  = (p.i - start) + 1;
+    return `<div class="g-row">
+      <div class="g-label"><span class="num n-${c.phase}" style="width:22px;height:22px;font-size:10.5px">${c.id}</span>
+        <span class="t" title="${esc(c.titre)}">${esc(c.titre)}</span></div>
+      <div class="g-track">
+        <div class="g-grid"><div></div><div></div><div></div><div></div></div>
+        <div class="g-bar" style="left:${start*25}%; width:${span*25}%; background:${p.color}"></div>
+      </div></div>`;
+  }).join('');
+
+/* --- tables data-driven --- */
+document.getElementById('ecartes-rows').innerHTML = DATA.ecartes.map(e =>
+  `<tr><td><strong>${esc(e.titre)}</strong></td><td>${esc(e.pourquoi)}</td>
+   <td style="color:var(--ink-2)">${esc(e.quand)}</td></tr>`).join('');
+
+const lvl = v => ({faible:'Faible', moyenne:'Moyenne', elevee:'Élevée',
+                   moyen:'Moyen', eleve:'Élevé'}[v] || v);
+document.getElementById('risques-rows').innerHTML = DATA.risques.map(r =>
+  `<tr><td><strong>${esc(r.risque)}</strong></td><td>${esc(lvl(r.probabilite))}</td>
+   <td>${esc(lvl(r.impact))}</td><td>${esc(r.mitigation)}</td></tr>`).join('');
+
+document.getElementById('decisions-rows').innerHTML = DATA.decisions.map(d =>
+  `<tr><td><strong>${esc(d.sujet)}</strong></td><td>${esc(d.options)}</td>
+   <td>${esc(d.echeance)}</td><td>${esc(d.decideur)}</td></tr>`).join('');
+
+/* --- nav active --- */
+/* Aucun observateur ne pilote la visibilité du contenu : voir le commentaire
+   « VISIBILITÉ » dans la feuille de style. Le seul observateur restant surligne
+   l'entrée de menu courante — s'il ne se déclenche pas, on perd un surlignage,
+   jamais du contenu. */
+const links = [...document.querySelectorAll('.navpills a')];
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if(e.isIntersecting){
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+  }
+}), {rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
+</script>
+
+<!-- forge-share-bar -->
+<script>window.__FORGE_SHARE__={"slug": "ulysse-roadmap"};</script>
+<script>
+/* forge share-bar — interne (Access) / externe (/s/ + shlink) + toast + revoke
+ * window.__FORGE_SHARE__ = { slug?, shareUrl?, shortUrl? }
+ * slug déduit du path /a/<slug>/ si absent.
+ */
+(function () {
+  if (window.__FORGE_SHARE_BAR__) return;
+  window.__FORGE_SHARE_BAR__ = true;
+
+  var cfg = window.__FORGE_SHARE__ || {};
+  var slug = cfg.slug || "";
+  if (!slug) {
+    var m = location.pathname.match(/^\/a\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?/);
+    if (m) slug = m[1];
+  }
+  if (!slug || location.pathname.indexOf("/a/") !== 0) return;
+
+  var state = {
+    active: false,
+    shareUrl: "",
+    shortUrl: "",
+  };
+
+  /* ── styles ───────────────────────────────────────────── */
+  var css = document.createElement("style");
+  css.textContent =
+    "[data-forge-share-bar]{position:fixed;top:12px;right:12px;z-index:2147483646;" +
+    "display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:min(96vw,420px);" +
+    "font-family:system-ui,-apple-system,sans-serif;font-size:13px;" +
+    "background:rgba(254,254,254,.92);backdrop-filter:blur(10px);" +
+    "border:1px solid rgba(3,22,53,.12);padding:6px;box-shadow:0 8px 28px rgba(3,22,53,.12)}" +
+    "[data-forge-share-bar] button{cursor:pointer;border:1px solid #031635;padding:7px 11px;" +
+    "background:#FEFEFE;color:#031635;border-radius:0;font-weight:600;font-size:12.5px;" +
+    "font-family:inherit;line-height:1.2;transition:background .12s,color .12s,opacity .12s}" +
+    "[data-forge-share-bar] button:hover:not(:disabled){background:#eef2f7}" +
+    "[data-forge-share-bar] button:disabled{opacity:.55;cursor:wait}" +
+    "[data-forge-share-bar] button.primary{background:#031635;color:#FEFEFE}" +
+    "[data-forge-share-bar] button.primary:hover:not(:disabled){background:#1a2b4b}" +
+    "[data-forge-share-bar] button.danger{border-color:#c43c3c;color:#c43c3c}" +
+    "[data-forge-share-bar] button.danger:hover:not(:disabled){background:rgba(196,60,60,.08)}" +
+    "[data-forge-share-bar] .fsb-shared{display:none;align-items:center;gap:6px;" +
+    "font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;" +
+    "color:#0d7a5f;background:rgba(13,122,95,.1);border:1px solid rgba(13,122,95,.35);" +
+    "padding:5px 9px}" +
+    "[data-forge-share-bar] .fsb-shared.on{display:inline-flex}" +
+    "[data-forge-share-bar] .fsb-shared-dot{width:6px;height:6px;border-radius:50%;" +
+    "background:#0d7a5f;box-shadow:0 0 0 3px rgba(13,122,95,.2)}" +
+    "[data-forge-share-bar] .fsb-hint{font-size:10.5px;opacity:.5;color:#031635;padding:0 4px}" +
+    "[data-forge-toast]{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(12px);" +
+    "z-index:2147483647;background:#031635;color:#FEFEFE;padding:12px 18px;font:600 13px system-ui,sans-serif;" +
+    "box-shadow:0 10px 32px rgba(3,22,53,.28);opacity:0;pointer-events:none;" +
+    "transition:opacity .18s ease,transform .18s ease;max-width:min(92vw,360px);text-align:center}" +
+    "[data-forge-toast].on{opacity:1;transform:translateX(-50%) translateY(0)}" +
+    "[data-forge-toast].err{background:#c43c3c}";
+  document.documentElement.appendChild(css);
+
+  /* ── toast ────────────────────────────────────────────── */
+  var toastEl = document.createElement("div");
+  toastEl.setAttribute("data-forge-toast", "1");
+  toastEl.setAttribute("role", "status");
+  toastEl.setAttribute("aria-live", "polite");
+  document.documentElement.appendChild(toastEl);
+  var toastTimer = null;
+
+  function toast(msg, isErr) {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("err", !!isErr);
+    toastEl.classList.add("on");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove("on");
+    }, 2400);
+  }
+
+  /* ── bar ──────────────────────────────────────────────── */
+  var bar = document.createElement("div");
+  bar.setAttribute("data-forge-share-bar", "1");
+  bar.setAttribute("role", "toolbar");
+  bar.setAttribute("aria-label", "Partage forge");
+
+  var sharedBadge = document.createElement("span");
+  sharedBadge.className = "fsb-shared";
+  sharedBadge.innerHTML =
+    '<span class="fsb-shared-dot" aria-hidden="true"></span>Partagé';
+  sharedBadge.title = "Lien externe actif (/s/… clé) — accessible hors équipe";
+
+  function mkBtn(label, cls) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    if (cls) b.className = cls;
+    return b;
+  }
+
+  var internalBtn = mkBtn("Interne");
+  internalBtn.title = "Copier le lien équipe (Access) — sans shortlink";
+
+  var externalBtn = mkBtn("Externe", "primary");
+  externalBtn.title = "Créer / copier le lien public (/s/…, shortlink si dispo). ⇧+clic = nouvelle clé";
+
+  var revokeBtn = mkBtn("Révoquer", "danger");
+  revokeBtn.title = "Annuler le partage externe — le lien public cesse de fonctionner";
+  revokeBtn.hidden = true;
+
+  var hint = document.createElement("span");
+  hint.className = "fsb-hint";
+  hint.textContent = "⇧+Externe = régénérer";
+
+  bar.appendChild(sharedBadge);
+  bar.appendChild(internalBtn);
+  bar.appendChild(externalBtn);
+  bar.appendChild(revokeBtn);
+  bar.appendChild(hint);
+  document.documentElement.appendChild(bar);
+
+  function setBusy(on) {
+    internalBtn.disabled = on;
+    externalBtn.disabled = on;
+    revokeBtn.disabled = on;
+  }
+
+  function renderState() {
+    sharedBadge.classList.toggle("on", state.active);
+    revokeBtn.hidden = !state.active;
+    externalBtn.textContent = state.active ? "Copier externe" : "Externe";
+  }
+
+  function copyText(url) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(url);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;left:-9999px;top:0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error("copy_failed"));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  function internalUrl() {
+    return location.origin + "/a/" + slug + "/";
+  }
+
+  /* ── API ──────────────────────────────────────────────── */
+  function apiShare(method, body) {
+    var opts = {
+      method: method,
+      credentials: "same-origin",
+      headers: { "content-type": "application/json" },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch("/api/share" + (method === "GET" ? "?slug=" + encodeURIComponent(slug) : ""), opts).then(
+      function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error(data.error || "error_" + r.status);
+          return data;
+        });
+      }
+    );
+  }
+
+  function refreshState() {
+    return apiShare("GET")
+      .then(function (data) {
+        // GET returns { active } only — never a key
+        state.active = !!data.active;
+        if (!state.active) {
+          state.shareUrl = "";
+          state.shortUrl = "";
+        }
+        renderState();
+      })
+      .catch(function () {
+        /* offline / unauthorized — assume inactive */
+        renderState();
+      });
+  }
+
+  /* ── actions ──────────────────────────────────────────── */
+  internalBtn.addEventListener("click", function () {
+    setBusy(true);
+    var url = internalUrl();
+    copyText(url)
+      .then(function () {
+        toast("Lien interne copié");
+      })
+      .catch(function () {
+        toast("Impossible de copier — " + url, true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  externalBtn.addEventListener("click", function (ev) {
+    var rotate = !!ev.shiftKey;
+    setBusy(true);
+    apiShare("POST", { slug: slug, rotate: rotate })
+      .then(function (data) {
+        state.active = true;
+        state.shareUrl = data.shareUrl || "";
+        state.shortUrl = data.shortUrl || "";
+        cfg.shareUrl = state.shareUrl;
+        cfg.shortUrl = state.shortUrl;
+        renderState();
+        var url = data.shortUrl || data.shareUrl;
+        return copyText(url).then(function () {
+          toast(
+            rotate
+              ? "Nouveau lien externe copié"
+              : data.shortUrl
+                ? "Lien externe copié (shortlink)"
+                : "Lien externe copié"
+          );
+        });
+      })
+      .catch(function (err) {
+        console.error("[forge share]", err);
+        toast("Échec — connecte-toi (Access)", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  revokeBtn.addEventListener("click", function () {
+    if (!state.active) return;
+    if (!confirm("Révoquer le partage externe ?\nLe lien public cessera de fonctionner immédiatement.")) {
+      return;
+    }
+    setBusy(true);
+    apiShare("DELETE", { slug: slug })
+      .then(function () {
+        state.active = false;
+        state.shareUrl = "";
+        state.shortUrl = "";
+        cfg.shareUrl = "";
+        cfg.shortUrl = "";
+        renderState();
+        toast("Partage externe révoqué");
+      })
+      .catch(function (err) {
+        console.error("[forge share revoke]", err);
+        toast("Échec de la révocation", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  renderState();
+  refreshState();
+})();
+
+</script>
+<!-- /forge-share-bar -->
+</body>
+</html>

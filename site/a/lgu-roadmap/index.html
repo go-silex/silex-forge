@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- forge-og:start -->
+  <meta name="description" content="Livrable final de l&#x27;audit — 20 chantiers, 5 streams. Version 1.0 du 2026-08-05.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Silex Forge">
+  <meta property="og:title" content="Roadmap AI-native — Le Guide Ultime">
+  <meta property="og:description" content="Livrable final de l&#x27;audit — 20 chantiers, 5 streams. Version 1.0 du 2026-08-05.">
+  <meta property="og:url" content="https://forge.gosilex.com/a/lgu-roadmap/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Roadmap AI-native — Le Guide Ultime">
+  <meta name="twitter:description" content="Livrable final de l&#x27;audit — 20 chantiers, 5 streams. Version 1.0 du 2026-08-05.">
+<!-- forge-og:end -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap AI-native — Le Guide Ultime</title>
+<!-- diagram-meta:start -->
+<meta name="diagram:title" content="Roadmap AI-native — Le Guide Ultime">
+<meta name="diagram:date" content="2026-08-05">
+<meta name="diagram:category" content="analysis">
+<meta name="diagram:cat-label" content="Roadmap">
+<meta name="diagram:color" content="cyan">
+<!-- diagram-meta:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fa; --surface:#ffffff; --surface-2:#f2f4f7;
+  --ink:#0b1220; --ink-2:#41506a; --ink-3:#7b879b;
+  --line:#e2e6ed; --line-2:#cfd6e2;
+  --accent:#2e5f9d; --accent-soft:rgba(46,95,157,.09);
+  --green:#2f8a5b; --green-soft:rgba(47,138,91,.12);
+  --orange:#c2701f; --orange-soft:rgba(194,112,31,.12);
+  --blue:#3d6fa8; --blue-soft:rgba(61,111,168,.12);
+  --gray:#8a93a3; --gray-soft:rgba(138,147,163,.12);
+  --red:#a52228; --red-soft:rgba(165,34,40,.10);
+  --f-display:'Outfit',system-ui,sans-serif;
+  --f-body:'Inter',system-ui,sans-serif;
+  --f-mono:'Space Mono',ui-monospace,monospace;
+  --maxw:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{
+  font-family:var(--f-body); background:var(--bg); color:var(--ink);
+  -webkit-font-smoothing:antialiased; line-height:1.62; font-size:16px;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+
+/* ---------- NAV ---------- */
+.topbar{position:sticky; top:0; z-index:50; background:rgba(247,248,250,.88);
+  backdrop-filter:blur(12px); border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:var(--maxw); margin:0 auto; padding:11px 22px;
+  display:flex; align-items:center; gap:18px}
+.brand{font-family:var(--f-mono); font-size:12px; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--ink); display:flex; align-items:center; gap:8px; flex-shrink:0}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.navpills{display:flex; gap:2px; flex-wrap:wrap; overflow-x:auto}
+.navpills a{font-size:12.5px; color:var(--ink-3); text-decoration:none;
+  padding:5px 9px; border-radius:6px; white-space:nowrap; transition:.15s}
+.navpills a:hover,.navpills a.active{color:var(--ink); background:var(--accent-soft)}
+@media(max-width:900px){.navpills{display:none}}
+
+/* ---------- HERO ---------- */
+.hero{position:relative; padding:76px 0 44px; overflow:hidden}
+.hero::before{content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(760px 420px at 78% -12%, rgba(107,159,212,.20), transparent 62%),
+             radial-gradient(620px 380px at -8% 104%, rgba(235,116,87,.13), transparent 62%)}
+.hero > *{position:relative}
+.kicker{font-family:var(--f-mono); font-size:11px; letter-spacing:2.6px;
+  text-transform:uppercase; color:var(--accent); margin-bottom:16px}
+.hero h1{font-family:var(--f-display); font-size:clamp(34px,5.4vw,58px);
+  font-weight:400; line-height:1.08; letter-spacing:-.5px}
+.hero h1 em{font-style:normal; color:var(--accent)}
+.hero .sub{font-size:19px; color:var(--ink-2); margin-top:18px; max-width:660px}
+.hero-meta{display:flex; gap:30px; flex-wrap:wrap; margin-top:30px;
+  padding-top:22px; border-top:1px solid var(--line)}
+.hero-meta .f{display:flex; flex-direction:column; gap:2px}
+.hero-meta .k{font-family:var(--f-mono); font-size:10px; letter-spacing:1.6px;
+  text-transform:uppercase; color:var(--ink-3)}
+.hero-meta .v{font-size:14.5px; font-weight:500}
+
+/* ---------- SECTIONS ---------- */
+section{padding:52px 0; border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+.section-n{font-family:var(--f-mono); font-size:11px; letter-spacing:2.4px;
+  color:var(--accent); text-transform:uppercase; margin-bottom:10px}
+.section-h{font-family:var(--f-display); font-size:clamp(25px,3.4vw,34px);
+  font-weight:400; letter-spacing:-.3px; line-height:1.18; margin-bottom:8px}
+.section-lead{font-size:17.5px; color:var(--ink-2); max-width:720px; margin-bottom:26px}
+h3{font-family:var(--f-display); font-size:22px; font-weight:500; margin:34px 0 10px}
+h4{font-family:var(--f-display); font-size:18px; font-weight:500; margin:24px 0 8px}
+p{margin:0 0 14px} p:last-child{margin-bottom:0}
+ul,ol{margin:0 0 16px; padding-left:20px} li{margin-bottom:6px}
+strong{font-weight:600}
+a{color:var(--accent)}
+code{font-family:var(--f-mono); font-size:.88em; background:var(--surface-2);
+  padding:1px 5px; border-radius:4px}
+
+.pull{font-family:var(--f-display); font-size:clamp(20px,2.7vw,27px); font-weight:400;
+  line-height:1.35; color:var(--ink); border-left:3px solid var(--accent);
+  padding:6px 0 6px 22px; margin:26px 0}
+blockquote{border-left:3px solid var(--line-2); padding-left:18px; margin:20px 0; color:var(--ink-2)}
+
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:24px 26px; margin:20px 0}
+.panel.accent{border-color:var(--accent); background:linear-gradient(180deg,var(--accent-soft),transparent 60%)}
+.panel.warn{border-color:var(--line-2); background:var(--surface-2)}
+.panel-t{font-family:var(--f-mono); font-size:10.5px; letter-spacing:2px;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:10px}
+
+.grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ---------- TABLES ---------- */
+.tbl-wrap{overflow-x:auto; margin:20px 0; border:1px solid var(--line);
+  border-radius:12px; background:var(--surface)}
+table{width:100%; border-collapse:collapse; font-size:14.5px; min-width:560px}
+th{text-align:left; font-family:var(--f-mono); font-size:10px; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--ink-3); font-weight:400;
+  padding:12px 14px; border-bottom:1px solid var(--line); white-space:nowrap}
+td{padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface-2)}
+
+/* ---------- BADGES / DOTS ---------- */
+.badge{display:inline-block; font-family:var(--f-mono); font-size:10px; font-weight:700;
+  letter-spacing:.6px; padding:2px 7px; border-radius:4px; white-space:nowrap}
+.b-P1{background:var(--green-soft); color:var(--green)}
+.b-P2{background:var(--orange-soft); color:var(--orange)}
+.b-P3{background:var(--blue-soft); color:var(--blue)}
+.b-P4{background:var(--gray-soft); color:var(--gray)}
+.b-fond{background:var(--accent-soft); color:var(--accent)}
+.b-livre{background:var(--green-soft); color:var(--green)}
+.dots{display:inline-flex; gap:3px}
+.dots span{width:7px;height:7px;border-radius:50%;background:var(--line-2)}
+.dots span.on{background:var(--ink-3)}
+.num{display:inline-flex; align-items:center; justify-content:center;
+  width:24px; height:24px; border-radius:6px; font-family:var(--f-mono);
+  font-size:11.5px; font-weight:700; color:#fff}
+.n-P1{background:var(--green)} .n-P2{background:var(--orange)}
+.n-P3{background:var(--blue)} .n-P4{background:var(--gray)}
+.sub-desc{display:block; font-size:13px; color:var(--ink-2); margin-top:3px; line-height:1.5}
+
+/* ---------- MATRICE ---------- */
+.matrix-box{background:var(--surface); border:1px solid var(--line);
+  border-radius:12px; padding:20px; margin:22px 0; position:relative}
+#matrix{width:100%; height:auto; display:block}
+.mx-tip{position:absolute; background:var(--ink); color:#fff; padding:7px 11px;
+  border-radius:7px; font-size:12.5px; pointer-events:none; display:none;
+  z-index:10; max-width:280px; line-height:1.4; box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.mx-tip b{display:block; font-size:13px; margin-bottom:2px}
+.legend{display:flex; gap:18px; flex-wrap:wrap; margin-top:14px;
+  font-size:12.5px; color:var(--ink-2)}
+.legend i{display:inline-block; width:10px;height:10px;border-radius:50%;
+  margin-right:6px; vertical-align:middle; font-style:normal}
+/* sous 700px, la matrice devient illisible si on la comprime : on la fait défiler */
+@media(max-width:700px){
+  .matrix-box{overflow-x:auto}
+  #matrix{min-width:640px}
+  .mx-tip{display:none !important}
+}
+
+/* ---------- GANTT ---------- */
+.gantt{background:var(--surface); border:1px solid var(--line);
+  border-radius:12px; padding:20px; margin:22px 0; overflow-x:auto}
+.gantt-inner{min-width:660px}
+.g-head{display:grid; grid-template-columns:250px repeat(4,1fr); gap:0;
+  border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:10px}
+.g-head div{font-family:var(--f-mono); font-size:10px; letter-spacing:1.4px;
+  text-transform:uppercase; color:var(--ink-3); text-align:center}
+.g-head div:first-child{text-align:left}
+.g-row{display:grid; grid-template-columns:250px repeat(4,1fr);
+  align-items:center; gap:0; padding:4px 0; position:relative}
+.g-row:hover{background:var(--surface-2)}
+.g-label{font-size:13.5px; padding-right:14px; display:flex; align-items:center; gap:7px}
+.g-label span.t{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.g-track{grid-column:2 / -1; position:relative; height:20px}
+.g-bar{position:absolute; height:12px; top:4px; border-radius:6px; opacity:.9}
+.g-grid{position:absolute; inset:0; display:grid; grid-template-columns:repeat(4,1fr);
+  pointer-events:none}
+.g-grid div{border-left:1px solid var(--line)}
+.g-grid div:first-child{border-left:none}
+
+/* ---------- FICHES ---------- */
+.fiche{background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:26px 28px; margin:18px 0}
+.fiche.fondation{border-left:3px solid var(--accent)}
+.fiche-h{display:flex; align-items:flex-start; gap:12px; margin-bottom:6px}
+.fiche-h h3{margin:0; font-size:21px; flex:1}
+.fiche-meta{display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+  margin:10px 0 18px; font-size:12px; color:var(--ink-3);
+  padding-bottom:16px; border-bottom:1px solid var(--line)}
+.fiche-meta .sep{color:var(--line-2)}
+.rub{margin:16px 0}
+.rub-t{font-family:var(--f-mono); font-size:10px; letter-spacing:1.6px;
+  text-transform:uppercase; color:var(--accent); margin-bottom:5px}
+.rub.need{background:var(--accent-soft); border-radius:9px; padding:16px 18px}
+.rub.need .rub-t{color:var(--accent)}
+.rub.watch{background:var(--red-soft); border-radius:9px; padding:16px 18px}
+.rub.watch .rub-t{color:var(--red)}
+
+/* ---------- WEEK CARDS ---------- */
+.week{background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:20px 22px; margin:14px 0}
+.week-t{font-family:var(--f-display); font-size:19px; margin-bottom:12px;
+  display:flex; align-items:center; gap:10px}
+.week-t .n{font-family:var(--f-mono); font-size:11px; background:var(--accent);
+  color:#fff; padding:3px 8px; border-radius:5px}
+.week-row{display:grid; grid-template-columns:160px 1fr; gap:12px;
+  padding:9px 0; border-top:1px solid var(--line); font-size:14.5px}
+.week-row .k{font-family:var(--f-mono); font-size:10px; letter-spacing:1.3px;
+  text-transform:uppercase; color:var(--ink-3); padding-top:3px}
+@media(max-width:640px){.week-row{grid-template-columns:1fr; gap:2px}}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line); padding:34px 0 60px; margin-top:20px;
+  font-size:13.5px; color:var(--ink-3)}
+footer .fl{display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap}
+
+/* ---------- VISIBILITÉ ----------
+   Pas d'animation d'apparition. C'est délibéré : ce document est une référence de
+   plusieurs dizaines de milliers de pixels, consultée et imprimée. Toute mécanique
+   qui masque du contenu en attendant un événement JavaScript finit par en masquer
+   pour de bon — la section des chantiers, trop haute pour atteindre un seuil
+   d'intersection, est restée invisible en production. Le contenu s'affiche, point.
+   La classe `.reveal` reste tolérée dans le balisage mais n'a aucun effet. */
+@media print{.topbar{display:none} section{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="inner">
+  <div class="brand"><span class="dot"></span>SILEX</div>
+  <nav class="navpills">
+    <a href="#constat">Le constat</a>
+    <a href="#cible">La cible</a>
+    <a href="#carte">La carte</a>
+    <a href="#livre">Déjà livré</a>
+    <a href="#chantiers">Les chantiers</a>
+    <a href="#sequence">La séquence</a>
+    <a href="#parcours">Les parcours</a>
+    <a href="#demarrer">Vos 30 jours</a>
+    <a href="#pilotage">Pilotage</a>
+    <a href="#ecartes">Écartés</a>
+    <a href="#decisions">Décisions</a>
+  </nav>
+</div></div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<header class="hero"><div class="wrap">
+  <div class="kicker">Roadmap AI-native · Version 1.0</div>
+  <h1>Le Guide Ultime,<br>version <em>AI-native</em></h1>
+  <p class="sub">Ce qu'on construit dans les 12 mois qui viennent, dans quel ordre, et pourquoi cet ordre-là. En commençant par la seule chose qui débloque tout le reste : rendre votre catalogue et vos performances exploitables.</p>
+  <div class="hero-meta">
+    <div class="f"><span class="k">Pour</span><span class="v">Nora · CEO — Paul · opérations &amp; technique</span></div>
+    <div class="f"><span class="k">Horizon</span><span class="v">12 mois</span></div>
+    <div class="f"><span class="k">Chantiers</span><span class="v" id="m-count">20</span></div>
+    <div class="f"><span class="k">Version</span><span class="v">1.0 · 2026-08-05</span></div>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+<!-- BODY:START — tout ce qui suit est remplacé par Build_Roadmap.py -->
+
+<section class="reveal"><div class="panel accent"><div class="panel-t">Comment lire ce document</div><p>Il décrit ce qu'on construit chez Le Guide Ultime dans les douze mois qui viennent, dans quel ordre, et pourquoi cet ordre-là. C'est le livrable final de l'audit : la carte, avec ses arbitrages assumés.</p>
+<ul><li><strong>Nora — 10 minutes</strong> : le constat, le lundi matin dans six mois, la carte des chantiers, ce qu'on n'a pas retenu, et les six décisions qui vous attendent.</li><li><strong>Paul — 45 minutes</strong> : tout, sauf les annexes.</li><li><strong>L'équipe</strong> : les fiches des chantiers 9 à 15 et 19, celles qui touchent le quotidien de la production.</li></ul>
+<p>Les chiffres marqués <code>[HYP]</code> sont des hypothèses ; chacun indique comment on le vérifie. Ce document évolue quand on apprend quelque chose de structurant — la version en tête de page fait foi.</p></div></section>
+
+<section id="constat" class="reveal"><div class="section-n">01 — Le constat</div><h2 class="section-h">Le constat</h2><div class="pull">Le nombre de vidéos que Le Guide Ultime peut produire par semaine est égal au nombre d'heures que Nora peut donner. Point.</div>
+<p>C'est elle qui accompagne l'écriture de <em>tous</em> les créateurs, un par un. C'est elle qui valide <em>chaque</em> vidéo. C'est elle qui porte les collabs commerciales. Une entreprise qui a sorti plus de 2 000 vidéos en six ans, dont 237 au-dessus du million de vues, ne fonctionne pas mal — elle fonctionne <strong>à la main</strong>. Et c'est exactement ce plafond que cette roadmap vient lever.</p>
+<p>L'objectif n'est pas de « mettre de l'IA dans le studio ». Il tient en une question :</p>
+<div class="pull">Comment construire une organisation média où le système porte la production, pour que les humains ne fassent plus que ce qu'une machine ne fera jamais — le goût ?</div>
+<h3>Où vous en êtes</h3>
+<p><strong>Ce qui marche déjà.</strong> Six ans de contenus qui performent, une direction artistique documentée — ce qui est rare et précieux —, une équipe de créateurs, et un réflexe qu'on ne trouve presque jamais chez un client : Paul a construit lui-même son outil de suivi commercial en deux jours, là où un développement classique avait coûté 25 000 € pour rien. L'équipe sait déjà construire. C'est un point de départ que beaucoup n'ont pas.</p>
+<p><strong>Ce qui bloque.</strong> Trois choses.</p>
+<p>Toute la chaîne de qualité passe par une seule personne. Si Nora est indisponible trois semaines, l'écriture s'arrête, la validation s'embouteille et le commerce s'arrête. Ce n'est pas un problème d'organisation : c'est la signature d'une entreprise qui n'a pas encore externalisé sa mémoire.</p>
+<p>Le temps de Nora est consommé deux fois sur chaque vidéo : à l'accompagnement en amont, puis à la validation en aval — laquelle génère du retravail. Et la valeur captée au tournage s'évapore avant d'être écrite, ce qui fait qu'on retourne au lieu de réutiliser.</p>
+<p>Chacun construit ses micro-outils dans son coin, et aucun ne parle aux autres. Le suivi commercial ignore le contenu, qui ignore l'audience. C'est le « plat de spaghettis », et il grossit plus vite qu'on ne le range.</p>
+<p><strong>Ce qui dort.</strong> Plus de 2 000 vidéos non indexées. 237 contenus au-dessus du million de vues — c'est-à-dire le concentré de ce qui marche, sous forme non exploitable. Six ans d'historique de lieux. Aujourd'hui, il est impossible de répondre à <em>« trouve-moi tous les restos pakistanais avec qui on a fait une vidéo »</em>. Vous possédez six ans de signal sur ce qui fait performer un contenu lifestyle à Paris — un actif que personne ne peut copier — stocké dans un format strictement inutilisable.</p></section>
+
+<section id="cible" class="reveal"><div class="section-n">02 — La cible</div><h2 class="section-h">Le lundi matin dans six mois</h2><p><strong>07:40 — avant que personne n'arrive.</strong> Le système a passé la nuit à scanner les contenus city-guide du monde entier et isolé une tendance qui explose ailleurs : le format « le resto caché derrière une devanture banale ». Il dépose une fiche : ce qui fait marcher ce format, et une note de transposabilité à Paris.</p>
+<p><strong>08:55 — une créatrice ouvre son écran.</strong> Au lieu de scroller quarante minutes pour trouver une idée, elle a une proposition prête. Le système a croisé la tendance avec la base de lieux et sorti trois adresses parisiennes qui collent à l'angle, chacune avec sa fiche, son contexte, et le fait qu'elle n'a jamais été filmée.</p>
+<p><strong>09:20 — ⬥ c'est ici que LGU reste LGU.</strong> La créatrice et Nora regardent les trois options. Le système n'a <strong>rien décidé</strong> : il a apporté la matière. Nora tranche, et corrige le hook — le sien est meilleur que les deux propositions de la machine. <strong>Trente secondes de goût humain sur dix minutes de travail de préparation.</strong> L'inverse exact du goulot d'aujourd'hui.</p>
+<p><strong>09:25 — la fiche de tournage se génère.</strong> Les questions à poser, le plan de tournage, le hook retenu. La créatrice part faire la seule chose qu'une machine ne fera jamais : capter l'humain et l'histoire.</p>
+<p><strong>J+3 — au retour, le dérush est déjà prêt.</strong> Elle donne le sens et garde la main sur le rythme ; l'habillage applique la direction artistique tout seul. Les rushes sont déposés — sans quoi rien n'avance, et c'est assumé.</p>
+<p><strong>J+10 — la boucle se referme.</strong> La vidéo performe. La donnée revient dans le système : la tendance est confirmée, et le système apprend que le hook de Nora a battu les siens. <strong>La prochaine itération part un cran plus haut.</strong> Et le lendemain, l'annonceur reçoit son bilan sans que personne ne l'ait produit.</p></section>
+
+<section id="carte" class="reveal"><div class="section-n">03 — La carte</div><h2 class="section-h">La carte des chantiers</h2><p>Vingt chantiers, cinq streams, douze mois. Trois d'entre eux sont des <strong>fondations</strong> : ils ne produisent presque rien de visible, et tout le reste en dépend.</p>
+<div id="streams-cards" class="grid2"></div>
+<h3>La matrice</h3>
+<p>Chaque bulle est un chantier : plus il est haut, plus il compte ; plus il est à droite, plus il coûte. Les bulles cerclées de bleu sont les fondations.</p>
+<p>Ce que la grille révèle est le résultat le plus important de l'audit : <strong>les chantiers à plus fort impact partagent tous la même dépendance — rendre la donnée exploitable.</strong> La machine à écrire, le remontage des bangers, les repères par secteur, le reporting automatique : aucun ne fonctionne sans un catalogue indexé et sans un flux de performances. Ce n'est pas un cas d'usage parmi d'autres. C'est le socle.</p>
+<div class="matrix-box"><svg id="matrix" viewBox="0 0 900 540" role="img" aria-label="Matrice impact / effort"></svg><div class="mx-tip" id="mx-tip"></div><div class="legend"><span><i style="background:var(--green)"></i>Phase 1 · 0-30 j</span><span><i style="background:var(--orange)"></i>Phase 2 · 1-3 mois</span><span><i style="background:var(--blue)"></i>Phase 3 · 3-6 mois</span><span><i style="background:var(--gray)"></i>Phase 4 · au-delà</span><span><i style="background:transparent;border:2px solid var(--accent)"></i>Fondation</span></div></div>
+<h3>Le détail, stream par stream</h3>
+<div id="streams-tables"></div></section>
+
+<section id="livre" class="reveal"><div class="section-n">04 — Déjà livré</div><h2 class="section-h">Ce qu'on vous a déjà remis</h2><p>Deux plateformes, construites pendant l'audit. Elles ne sont pas des maquettes de présentation : ce sont les premières briques de cette roadmap, et elles tournent.</p>
+<p><strong>LGU Studio — l'espace client.</strong> Chaque agence et chaque annonceur ouvre son espace et voit ses campagnes en cours et passées, les vidéos publiées, leurs performances par plateforme, et peut exporter un bilan à ses couleurs. La maquette est complète et vérifiée : connexion, tableau de bord multi-marques, campagne en direct avec projection de fin, campagne passée avec bilan, repères par secteur, version mobile.</p>
+<p><strong>LGU Vault — l'outil interne.</strong> La base des vidéos, avec recherche et filtres, le pipeline de tournage avec sa complétude étape par étape, la fiche vidéo détaillée, la carte des lieux, les rôles et la connexion par lien. Les 500 premières fiches sont dedans.</p>
+<p><strong>Leur état réel.</strong> Studio est en focus et prêt à passer en production ; Vault a été volontairement mis en pause le 21 juillet pour ne pas mener deux fronts à la fois. C'est une décision, pas un abandon — et elle explique la séquence de la phase 2.</p>
+<p><strong>Où elles se branchent.</strong> Elles sont les chantiers 4, 5 et 9 de cette roadmap. Elles partagent le même modèle de données — la fiche vidéo, chantier 1 — ce qui est la raison pour laquelle elles pourront toujours lire la même vérité sans jamais se mélanger.</p>
+<p><strong>Ce qu'il reste à faire dessus.</strong> Brancher les vraies performances, ouvrir la console qui permet à l'équipe de les alimenter sans nous, et créer les trois premiers comptes clients réels. Tout est en phase 1.</p></section>
+
+<section id="chantiers" class="reveal"><div class="section-n">05 — Les chantiers</div><h2 class="section-h">Les chantiers</h2><h3>Phase 1 — les 30 prochains jours</h3>
+<article class="fiche fondation"><div class="fiche-h"><span class="num n-P1">1</span><h3>Faire de la fiche vidéo le socle commun</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="badge b-fond">Fondation</span><span class="sep">·</span><span>La mémoire du catalogue</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Une vidéo appartient à un <em>lieu</em> et à une <em>campagne client</em>. Aujourd'hui, ces deux réalités vivent dans des outils qui s'ignorent, et la même vidéo existe sous deux formes différentes. C'est ainsi que naissent les chiffres contradictoires — et la perte de confiance dans l'outil, qui est exactement ce qui a tué le tableur.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Une vidéo est un enregistrement unique : son lieu, son créateur, son format, ses liens de publication par plateforme, ses rushes, son script, ses performances. L'outil interne et l'espace client ne se parlent pas — ils lisent la même donnée. Personne n'a plus à se demander quel chiffre est le bon.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Aucun gain direct, et c'est assumé : c'est une fondation. Elle conditionne les chantiers 2, 4, 8, 9 et 13. Sans elle, chaque outil construit ensuite devient un îlot de plus.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Entièrement construit. Le modèle de données est déjà posé sur les deux plateformes ; il reste à le verrouiller comme référence commune.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Figer le modèle : ce qu'est une vidéo, ce qu'est une publication, ce qu'est un lieu, ce qu'est une campagne.</li><li>Distinguer explicitement la vidéo de sa publication : une même vidéo sur deux plateformes, ce sont deux publications, deux liens, deux jeux de performances.</li><li>Appliquer ce modèle aux deux surfaces, sans exception ni champ « spécial ».</li><li>Documenter le modèle dans le guide d'implémentation, pour qu'un prestataire tiers puisse le reprendre.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Paul</strong> : ~2 h pour valider le modèle et signaler ce qui manque au regard de la réalité opérationnelle. C'est le moment où une omission coûte le moins cher.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Modèle de données unique validé et appliqué aux deux surfaces, à M1.</li><li>Aucun champ dupliqué entre les deux plateformes.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>La tentation sera d'ajouter un champ « juste pour ce cas-là ». C'est comme ça qu'un modèle se délite. Toute exception passe par une décision explicite.</li><li>Le cloisonnement est une contrainte dure : les montants de deals et les marges ne descendent jamais dans ce qui est lu côté client.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Rien. C'est le point de départ.</p></div></article>
+<article class="fiche fondation"><div class="fiche-h"><span class="num n-P1">2</span><h3>Faire rentrer les performances toutes seules</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="badge b-fond">Fondation</span><span class="sep">·</span><span>La mémoire du catalogue</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex + LGU</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Sans les performances, rien n'apprend. Un système qui ne sait pas ce qui a marché ne peut pas dire <em>« ne fais pas ce hook, vous avez déjà testé, ça n'a pas performé »</em> — et c'est précisément la promesse du chantier 10. Aujourd'hui, les chiffres se saisissent à la main, avant chaque reporting, dans l'urgence.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Les vues, likes, commentaires et partages remontent seuls, par plateforme, et sont historisés. Meriem corrige et complète au lieu de tout saisir. Chaque relevé est daté : on voit l'évolution réelle plutôt qu'une photo à un instant donné, et on peut comparer à sept jours comme le demandent les annonceurs.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Supprime la saisie de performances avant chaque reporting, et surtout rend possibles les chantiers 6, 7, 10 et 13. C'est le chantier socle le plus souvent oublié dans ce genre de transformation.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On achète le service de relevé pour Instagram, Facebook et YouTube. On construit l'historisation, la réconciliation entre plateformes et la correction manuelle.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Brancher le relevé automatique sur Instagram, Facebook et YouTube — déjà testé et calibré.</li><li>Trancher le cas TikTok : accès officiel ou saisie manuelle en attendant.</li><li>Intégrer la saisie Snapchat au rituel de reporting, puisque aucun relevé automatique n'existe.</li><li>Historiser chaque relevé plutôt qu'écraser la valeur — c'est ce qui donne gratuitement les courbes et la comparaison à J+7.</li><li>Afficher partout la date du dernier relevé. La confiance dans la donnée se gagne là.</li><li>Distinguer les vues organiques des vues payées, pour ne pas fausser les comparaisons.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Paul</strong> : la décision sur TikTok, et les accès aux comptes.</li><li><strong>Meriem</strong> : intégrer la saisie Snapchat à son rituel hebdomadaire — ~20 min par semaine.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>90 % des publications avec des performances de moins de sept jours, à M2.</li><li>Aucun écart inexpliqué entre ce qu'affiche la plateforme et ce que voit l'équipe.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Les vues payées remontent sur les contenus organiques mais pas sur le reste : sans le distinguer, les comparaisons entre créateurs sont fausses.</li><li>Une plateforme peut fermer ou modifier son accès du jour au lendemain. L'historique reste chez vous, et la saisie manuelle reste possible partout — c'est délibéré.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 1.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P1">4</span><h3>Mettre l'espace client en production</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="sep">·</span><span>Le commerce et les clients</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Aujourd'hui, un annonceur qui veut savoir comment sa campagne a performé demande, et quelqu'un fabrique un document. <em>« Hello Publicis, toutes les campagnes qu'on a faites ensemble, nos CPM »</em> — cette phrase décrit un besoin permanent traité de façon ponctuelle.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Chaque agence et chaque annonceur ouvre son espace et voit ses campagnes en cours et passées, les vidéos publiées, leurs performances par plateforme, et peut exporter un bilan à ses couleurs. Personne chez LGU n'a rien produit pour ça.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Supprime la production manuelle des reportings, et change la perception : LGU devient un partenaire outillé plutôt qu'un prestataire qu'on relance.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Entièrement construit, et déjà largement fait : la plateforme existe, vérifiée écran par écran. Ce qui reste est le passage en production.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Basculer sur une vraie authentification, avec des comptes créés par l'équipe LGU.</li><li>Brancher les performances réelles à la place des données de démonstration.</li><li>Poser l'export du bilan en PDF, aux couleurs du compte.</li><li>Faire un audit de sécurité et de cloisonnement avant toute ouverture client.</li><li>Ouvrir trois comptes réels et observer l'usage pendant deux semaines.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : choisir les trois premiers clients à qui l'ouvrir. Prendre des clients exigeants plutôt que faciles — c'est là qu'on apprend.</li><li>Les logos et couleurs des comptes concernés.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Trois comptes clients réels ouverts et utilisés, à M1.</li><li>Au moins un client ouvre son espace de lui-même, sans qu'on le lui rappelle.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li><strong>Le cloisonnement est une ligne rouge.</strong> Aucun montant de deal, aucune marge ne doit pouvoir être atteint depuis un compte client. C'est une contrainte de construction, pas un réglage.</li><li>Les repères par secteur ne s'affichent que quand ils sont réels. Un chiffre inventé pour faire joli détruirait la crédibilité de toute la plateforme.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 1 et 2.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P1">5</span><h3>Donner à l'équipe les commandes de la plateforme</h3></div><div class="fiche-meta"><span class="badge b-P1">Phase 1</span><span class="sep">·</span><span>Le commerce et les clients</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>C'était le trou de la maquette : personne chez LGU ne pouvait alimenter la donnée. Une plateforme que seul le prestataire peut remplir est une plateforme qui meurt à la fin de la mission.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Meriem crée un client, une campagne, ajoute les vidéos et leurs liens de publication, actualise les performances d'un clic ou les corrige à la main. Le statut d'une campagne — à venir, en cours, passée — se déduit des dates : il n'y a rien à gérer.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Rend la plateforme autonome de nous. C'est la condition pour qu'elle survive à la fin de la mission, et c'est un critère qu'on s'impose sur tout ce qu'on construit.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Entièrement construit.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Ouvrir la console d'administration : clients, marques, comptes, couleurs d'export.</li><li>Création de campagne : dates, objectif de vues, cahier des charges, document de suivi.</li><li>Gestion des vidéos et de leurs publications, une ligne par plateforme.</li><li>Bouton d'actualisation des performances, plus l'édition manuelle pour ce qui ne remonte pas.</li><li>Former Meriem sur un cas réel, de bout en bout, sans nous à côté.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Meriem</strong> : ~2 h de prise en main sur une vraie campagne. C'est elle qui dira ce qui manque — personne d'autre ne peut le dire.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Une campagne créée de bout en bout par l'équipe LGU, sans nous, à M1.</li><li>Aucune demande d'intervention de notre part sur la saisie, après le premier mois.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Une console d'administration mal pensée fait perdre plus de temps qu'elle n'en fait gagner. Le test est simple : créer une campagne complète doit prendre moins de dix minutes.</li><li>Prévoir la correction et l'annulation. Une erreur de saisie qu'on ne peut pas défaire finit toujours par produire un tableur parallèle.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 4.</p></div></article>
+<h3>Phase 2 — 1 à 3 mois</h3>
+<article class="fiche fondation"><div class="fiche-h"><span class="num n-P2">3</span><h3>Rendre les six ans de contenus cherchables</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="badge b-fond">Fondation</span><span class="sep">·</span><span>La mémoire du catalogue</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Plus de 2 000 vidéos, six ans d'histoires, de lieux et de formules qui ont marché — et il est impossible de répondre à <em>« trouve-moi tous les restos pakistanais qu'on a filmés »</em>. Le capital est déjà payé et ne produit plus rien.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>On demande en français : « quels hooks ont marché sur les rooftops ? », « a-t-on déjà filmé ce lieu ? », « quelles vidéos parlent de brunch dans le 11e ? ». Le système répond, avec les vidéos, leurs scripts et leurs performances.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Transforme un stock d'archives en moteur de production, à coût quasi nul : le contenu existe déjà. C'est le rare cas où l'on baisse le coût <strong>et</strong> augmente l'espérance de performance en même temps — un contenu remonté part d'une base déjà prouvée.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On achète la transcription. On construit l'indexation, la jointure avec les performances et l'interrogation. C'est la seule couche qui compose — celle qui transforme « LGU utilise des outils IA », réplicable en un week-end, en « LGU possède un système qui s'améliore à chaque vidéo ».</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Transcrire les vidéos publiées, en commençant par les plus performantes.</li><li>Indexer les scripts pour qu'on puisse chercher par le sens, pas seulement par mot-clé.</li><li>Joindre les performances à chaque contenu : sans la perf, le système ne peut pas dire ce qui n'a pas marché.</li><li>Traiter le retard en deux temps : d'abord les récentes et complètes, ensuite l'ancien fonds.</li><li>Marquer les zones de confiance faible plutôt que de les masquer.</li><li>Ouvrir l'interrogation à l'équipe et observer les questions réellement posées — ce sont elles qui définiront la suite.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : les cinq questions qu'elle voudrait pouvoir poser. Elles orientent tout le travail d'indexation, et elles ne sont pas devinables.</li><li>L'accès aux rushes et aux contenus publiés.</li><li>Une décision sur le périmètre du rattrapage : tout, ou seulement ce qui est complet.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Une question métier posée en langage courant trouve la bonne vidéo, dans huit cas sur dix.</li><li>Au moins trois personnes de l'équipe l'interrogent chaque semaine, à M4.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Sans les performances jointes, l'outil devient un moteur de recherche sympathique et inutile. Le chantier 2 est un prérequis strict, pas une option.</li><li>L'ancien fonds a des rushes perdus et des droits non réglés. Le traiter à part plutôt que de bloquer l'ensemble.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 1 et 2.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">6</span><h3>Envoyer le reporting de campagne tout seul</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>Le commerce et les clients</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le bilan d'une campagne se fait quand quelqu'un y pense, dans un document refait à chaque fois. Souvent il ne se fait pas — et c'est un point de contact commercial perdu, au moment exact où le client est le plus réceptif.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Sept jours après la fin d'une campagne, le client reçoit son bilan, à ses couleurs, sans que personne ne l'ait produit. Le rendez-vous commercial devient systématique.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>~2 h par campagne récupérées <code>[HYP]</code> — à confirmer sur cinq campagnes. Le vrai gain est ailleurs : un bilan envoyé à chaque fin de campagne est une occasion de revente à chaque fois.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit, sur l'espace client existant.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Définir le contenu du bilan avec Nora : ce qu'un annonceur regarde vraiment.</li><li>Déclencher automatiquement à J+7 après la date de fin.</li><li>Générer le document aux couleurs du compte.</li><li>Prévoir une relecture avant envoi sur les premières campagnes, puis lever le contrôle.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : la structure du bilan, et l'arbitrage sur ce qu'on montre ou pas — notamment les chiffres décevants.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>100 % des campagnes terminées avec un bilan envoyé à J+7.</li><li>Aucune correction nécessaire sur les cinq derniers bilans générés.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un bilan automatique sur une campagne qui a mal marché part quand même. Il faut trancher en amont : on assume la transparence, ou on met un contrôle humain. Ne pas décider revient à choisir la première option par défaut.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 2 et 4.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">8</span><h3>Connecter le suivi des sponsors au reste</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>Le commerce et les clients</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par LGU + Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>L'outil de suivi commercial construit par Paul fonctionne bien, et il est isolé. Ce qu'on vend ne parle pas à ce qu'on produit, qui ne parle pas à ce que ça performe. C'est le meilleur exemple du plat de spaghettis — et le plus facile à corriger.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Une campagne vendue apparaît dans le suivi commercial, ses vidéos dans l'outil interne, ses performances dans l'espace client — sans double saisie, et sans risque de divergence.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Relie enfin le commerce, le contenu et l'audience. C'est aussi un gain psychologique : ça prouve que l'équipe est déjà capable de construire AI-native, et qu'il suffit d'arrêter de multiplier les îlots.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On ne refait rien. On construit la connexion. C'est explicite : refaire l'outil de Paul serait une faute.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Cartographier ce que l'outil de Paul contient déjà et ce qui doit devenir commun.</li><li>Établir la correspondance : un deal commercial correspond à une campagne.</li><li>Poser la source de vérité pour chaque champ — un champ, un propriétaire.</li><li>Vérifier le cloisonnement : les montants restent du côté interne.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Paul</strong> : ~3 h pour la cartographie, et son avis sur ce qui doit rester chez lui.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Une campagne vendue est visible dans les trois surfaces sans double saisie.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Le risque est de faire de l'outil de Paul un satellite dont il perd la maîtrise. Il en reste propriétaire ; on branche, on ne reprend pas.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 1.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">9</span><h3>Un tournage qui produit sa fiche</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>La production de contenu</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Les rushes se perdent, les métadonnées manquent, et l'information captée au tournage s'évapore avant d'être écrite. Résultat : on retourne au lieu de réutiliser. C'est le problème le plus coûteux de toute la chaîne, et il est en amont de tout.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>La fiche se remplit d'elle-même au fil des étapes — édito, tournage, montage, validation, publication. À chaque étape, on voit ce qui manque. Et le paiement du créateur dépend du dépôt des rushes : la saisie cesse d'être une bonne volonté.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Résout à la source ce qui coûte le plus cher. Chaque rush conservé est un contenu réutilisable au chantier 13 ; chaque métadonnée saisie est une entrée exploitable au chantier 3.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Entièrement construit, et déjà largement fait dans l'outil interne.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Reprendre le pipeline existant et le brancher sur les vrais tournages.</li><li>Poser le conditionnement : rushes manquants, paiement bloqué.</li><li>Filtrer automatiquement « mes tournages » pour chaque créateur.</li><li>Faire un pilote sur un mois de production avec Meriem avant de généraliser.</li><li>Traiter le retard séparément : les tournages anciens aux rushes perdus ne bloquent pas le présent.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : valider le conditionnement du paiement. C'est une décision managériale, pas technique, et elle ne se délègue pas.</li><li><strong>Meriem</strong> : le pilote sur un mois de production.</li><li>Les créateurs : accepter la règle. Elle doit être annoncée comme une règle, pas comme un outil.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Plus de 90 % des tournages avec rushes déposés et fiche complète, à M3.</li><li>Plus aucun rush perdu sur la production courante.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Conditionner un paiement est un geste fort. Il doit être annoncé, expliqué, et appliqué — une règle qu'on n'applique pas est pire que pas de règle.</li><li>Le retard et la production courante sont deux sujets distincts. Les mélanger, c'est ne traiter ni l'un ni l'autre.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 1.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">12</span><h3>La réunion édito qui produit ses fiches</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>La production de contenu</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le lundi, l'équipe décide des tournages. Puis quelqu'un ressaisit ces décisions ailleurs, plus tard, avec des trous.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Les fiches sont créées pendant la réunion, en trente secondes chacune. Le geste ancre l'outil dans un rituel qui existe déjà — ce qui est de loin la meilleure garantie d'adoption. Dans un second temps, le compte rendu de la réunion pré-remplit les fiches en brouillon, à valider.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Supprime la ressaisie et, surtout, garantit qu'aucun tournage décidé ne se perd.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit. La transcription est achetée.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Version 1 : créer les fiches à la main pendant la réunion. Volontairement manuel — le geste compte plus que l'automatisation.</li><li>Observer un mois : ce qui est réellement rempli, ce qui est ignoré.</li><li>Version 2 : pré-remplir depuis le compte rendu, en brouillon à valider. Jamais de création silencieuse.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Meriem</strong> : tenir le geste pendant la réunion, un mois durant.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>100 % des tournages décidés en réunion existent en fiche le jour même.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Automatiser trop tôt ferait perdre le rituel, qui est le vrai mécanisme d'adoption. La version manuelle n'est pas une étape provisoire subie : c'est un choix.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 9.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">13</span><h3>Faire re-percer les meilleurs contenus</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>La mémoire du catalogue</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>237 contenus ont dépassé le million de vues. C'est le concentré de ce qui marche, et il ne produit plus rien. Nora est claire sur la contrainte : <em>« je ne souhaite pas utiliser l'image de Victor ou Ali »</em> — donc republier tel quel est exclu.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>On repart des rushes pour remonter le contenu sous un autre angle, avec un autre hook, un autre rythme. Le sujet est déjà validé par l'audience ; seule la forme change.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Le seul cas où l'on baisse le coût de production <strong>et</strong> augmente l'espérance de performance en même temps : on supprime le tournage, et on repart d'un contenu déjà prouvé.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On construit la sélection des candidats. Le montage reste humain.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Clarifier le statut juridique des contenus — préalable strict, à traiter dès M1.</li><li>Lister les contenus au-dessus du million dont les rushes existent et dont les droits sont clairs.</li><li>Choisir trois candidats et les remonter sous un angle différent.</li><li>Mesurer honnêtement : si ça ne re-perce pas, le dire et ajuster le critère de sélection.</li><li>Industrialiser seulement si le test est concluant.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : la clarification juridique, et son arbitrage sur les angles de remontage.</li><li>L'accès aux rushes des contenus concernés.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Trois remontages publiés, dont au moins un au-dessus de la médiane du compte.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li><strong>Les droits sont le vrai obstacle, pas la technique.</strong> Tant qu'ils ne sont pas clarifiés, on se limite aux contenus sans ambiguïté.</li><li>Un remontage raté n'est pas un échec du chantier : c'est un critère de sélection à corriger. Trois essais avant de conclure.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 2 et 9.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">16</span><h3>Transformer les commentaires en conversations</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>L'audience et la diffusion</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par LGU</span></div><div class="rub "><div class="rub-t">Le problème</div><p>L'engagement en commentaire est sous-exploité alors que c'est le signal qui pèse le plus sur la portée. La mécanique est connue et éprouvée ailleurs : <em>« commente PARIS et on t'envoie la liste en message privé »</em>.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Une publication équipée transforme un commentaire en conversation privée, donc en relation directe avec l'audience — et en base de contacts qui appartient à LGU plutôt qu'à la plateforme.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Le meilleur rapport effort/effet de la roadmap sur la portée organique <code>[HYP]</code> — à mesurer sur dix publications équipées contre dix non équipées.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Entièrement acheté. Ce sont des outils sur étagère, matures. Développer ici serait du gaspillage.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Choisir l'outil, le brancher sur les comptes.</li><li>Concevoir deux ou trois mécaniques adaptées à la voix LGU — pas des copies littérales.</li><li>Tester sur dix publications et comparer.</li><li>Généraliser sur les formats où ça marche uniquement.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Paul</strong> : le choix de l'outil et les accès.</li><li><strong>Nora</strong> : valider la formulation. Une mécanique d'engagement mal écrite abîme la marque.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Taux de commentaires en hausse sur les publications équipées, mesuré sur dix posts.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Le procédé est visible et peut paraître racoleur s'il est mal amené. Il doit sonner LGU, pas sonner américain.</li><li>Ne pas l'appliquer partout. Sur certains formats, il dégraderait la perception.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Rien.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">18</span><h3>Sortir du plat de spaghettis</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>L'organisation</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex + LGU</span></div><div class="rub "><div class="rub-t">Le problème</div><p>« Tous les mecs de la team font des micro-SaaS. » C'est une bonne nouvelle sur la culture et une mauvaise sur la dette : autant d'outils, autant de sources de vérité, aucune connexion.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Un inventaire de ce qui existe, une source de vérité par sujet, et un socle commun pour tout ce qui se construit désormais. Les outils continuent d'être construits — mais ils se branchent au lieu de s'ajouter.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Évite que la dette de demain soit construite pendant qu'on répare celle d'hier.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit, avec Paul, à partir de notre propre socle.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Inventorier les micro-outils existants : ce qu'ils font, qui les utilise, ce qu'ils stockent.</li><li>Décider pour chacun : à connecter, à remplacer, à laisser mourir.</li><li>Poser le socle commun pour tout ce qui se construit ensuite.</li><li>Fixer la règle : un nouvel outil part du socle et lit la source de vérité.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Paul</strong> : l'inventaire, que lui seul peut faire.</li><li><strong>Nora</strong> : l'arbitrage quand un outil utile appartient à quelqu'un qui y tient.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Inventaire complet fait, et 100 % des nouveaux outils partis du socle.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Ne pas tuer la culture de construction en imposant un cadre trop rigide. L'objectif est que les outils se parlent, pas que l'équipe arrête d'en faire.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 1.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P2">19</span><h3>Apprendre à l'équipe à travailler avec le système</h3></div><div class="fiche-meta"><span class="badge b-P2">Phase 2</span><span class="sep">·</span><span>L'organisation</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Un outil livré sans méthode est utilisé par deux personnes et abandonné par les autres. La différence entre « demande à ChatGPT d'écrire une vidéo » et « applique la méthode LGU validée sur 2 000 vidéos » n'est pas une différence d'outil : c'est une différence de méthode.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Chacun sait interroger le système, reconnaître une réponse fausse, et corriger la méthode quand elle se trompe. La méthode d'écriture LGU — la recette du hook, la structure « lieu + humain + histoire », la grammaire de montage — existe noir sur blanc, versionnée.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Sans ça, tout le reste de la roadmap est un ensemble d'outils que personne n'utilise. C'est aussi ce qui permet au goût de Nora d'exister ailleurs que dans sa tête.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On construit le guide et la méthode. On forme.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Encoder la méthode d'écriture LGU avec Nora, en texte, versionnée.</li><li>Écrire le guide : comment interroger, comment corriger, comment maintenir.</li><li>Former en situation réelle, sur de vraies vidéos — pas en atelier théorique.</li><li>Instituer la mise à jour de la méthode : quand Nora corrige un texte, la correction doit remonter dans la méthode.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : c'est le chantier qui lui demande le plus. Encoder son goût suppose de le formuler, ce qui est un travail difficile et qu'elle seule peut faire. Compter plusieurs sessions.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Quatre personnes utilisent le système chaque semaine, à M4.</li><li>La méthode a été corrigée au moins trois fois par l'équipe elle-même.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>La méthode encodée est un garde-fou, jamais un substitut. Elle empêche de faire pire ; elle ne remplace pas le jugement.</li><li>Si elle n'est pas mise à jour, elle se périme en trois mois et discrédite tout le système.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 3.</p></div></article>
+<h3>Phase 3 — 3 à 6 mois</h3>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">7</span><h3>Chiffrer ce que vaut une campagne LGU</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>Le commerce et les clients</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Face à une agence, la discussion se fait sur le prix parce qu'il n'y a rien d'autre à comparer. Les agences réclament des repères par secteur — et personne sur le marché ne les fournit.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Un annonceur voit où il se situe : voici la performance médiane du secteur restauration, voici la vôtre. La discussion se déplace du tarif vers le résultat.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Le levier de marge le plus direct de la roadmap : justifier un prix par une performance documentée plutôt que par la négociation.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit, sur la base de performances. Aucune donnée externe : c'est votre historique qui fait la valeur.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Définir les secteurs pertinents — restauration, lifestyle, voyage pour commencer.</li><li>Calculer les agrégats, strictement anonymisés.</li><li>Fixer le seuil de volume en dessous duquel on ne publie rien.</li><li>Intégrer le comparatif dans l'espace client et dans le bilan de campagne.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : le seuil de publication, et la décision sur ce qu'on montre à un client qui performe mal.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Repères publiés sur trois secteurs, avec un volume suffisant pour être défendables.</li><li>Utilisés dans au moins une négociation commerciale.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un repère calculé sur trop peu de campagnes est faux et se retourne contre vous. Mieux vaut ne rien afficher que d'afficher un chiffre indéfendable.</li><li>L'anonymisation doit être réelle : sur un secteur étroit, un annonceur peut se reconnaître dans un agrégat.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 2.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">10</span><h3>La machine à écrire : un cerveau bis pour les créateurs</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>La production de contenu</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Nora accompagne l'écriture de tous les créateurs, un par un, et pour les collabs commerciales aussi. C'est le goulot central, et il est double : elle accompagne en amont <strong>et</strong> elle valide en aval, ce qui génère du retravail.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Un créateur soumet son idée et son texte. Le système répond : <em>« non, ne fais pas ce hook, vous avez déjà testé, ça n'a pas performé »</em>, ou <em>« ça me rappelle une vidéo que vous aviez faite, voilà comment elle était tournée »</em>. ⬥ Nora n'intervient plus que sur ce qui mérite son arbitrage.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>C'est le chantier qui lève le plafond. Tout le reste de la roadmap prépare celui-ci.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Entièrement construit, sur le catalogue indexé et la méthode encodée. C'est la couche qui compose — celle qu'un concurrent ne peut pas répliquer en un week-end.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>S'appuyer sur le catalogue indexé (chantier 3) et la méthode encodée (chantier 19).</li><li>Construire le mécanisme de challenge : confronter une proposition à ce qui a déjà été tenté et à ce que ça a donné.</li><li>Faire tourner sur des textes réels, en parallèle de Nora, sans la remplacer.</li><li>Comparer : là où le système et Nora divergent, c'est la méthode qu'il faut corriger.</li><li>Ouvrir progressivement aux créateurs, en commençant par les plus autonomes.</li><li>Mesurer la seule chose qui compte : le nombre de scripts validés sans passer par Nora.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : la phase de comparaison. Chaque désaccord entre elle et le système est une règle manquante — c'est ce travail-là qui construit l'outil, et il n'est pas délégable.</li><li>Les créateurs : accepter d'être challengés par une machine sur un sujet créatif. C'est un sujet d'adoption au moins autant que de technique.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Un créateur écrit un script validé sans passer par Nora, dans un cas sur deux à M6.</li><li>Nora déclare avoir récupéré du temps sur l'accompagnement — c'est subjectif, et c'est le bon juge.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li><strong>L'IA n'a pas de goût.</strong> Le système apporte la matière et le rappel de ce qui a marché ; il ne décide pas. Si on craque l'écriture automatique, on perd exactement ce qui fait la valeur de LGU.</li><li>Un système qui challenge mal est pire qu'aucun système : il fera fuir les créateurs en trois semaines. La phase de comparaison n'est pas raccourcissable.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 3.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">11</span><h3>Décharger le montage des tâches ingrates</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>La production de contenu</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Le dérush et le montage concentrent une part importante du temps humain par contenu, et l'essentiel de ce temps est ingrat : trier, découper, sous-titrer, habiller.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>La personne qui monte reçoit un dérush déjà trié et une base habillée à la charte. Elle donne le sens et garde la main sur le rythme émotionnel — la seule chose qui ne s'automatise pas.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Réduction forte du temps de post-production par vidéo <code>[HYP]</code> — à mesurer sur dix montages avant et après. Le temps n'est pas supprimé : il est réalloué vers ce qui fait la différence.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>On achète les briques de dérush et de sous-titrage, matures en 2026. On construit l'application de votre charte.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Observer un montage réel de bout en bout et chronométrer chaque étape.</li><li>Automatiser d'abord ce qui est le plus ingrat et le moins risqué : le sous-titrage, le tri.</li><li>Encoder la charte graphique pour l'habillage — elle est documentée, c'est un avantage rare.</li><li>Laisser intégralement le rythme et le sens à l'humain.</li><li>Mesurer sur dix montages.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li>La personne qui monte : une session d'observation, et son avis sur ce qui est ingrat et ce qui ne l'est pas. Se tromper ici ferait perdre du temps au lieu d'en gagner.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Temps de post-production par vidéo en baisse de 40 % sur un échantillon de dix.</li><li>Aucune baisse perçue de qualité sur ces dix montages.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Automatiser le rythme produirait des vidéos correctes et sans âme. La frontière est nette : le trier et l'habiller, oui ; le raconter, non.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 9.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">14</span><h3>Ne plus jamais reperdre le contexte d'un lieu</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>La mémoire du catalogue</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Ce qu'on sait d'un lieu — l'histoire, le contact, ce qui a été filmé, ce qui a été gardé pour plus tard — vit dans la tête du créateur qui y est allé. Quand il part, ça part avec lui.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Le savoir est attaché au lieu, pas à la personne. Avant de tourner, on sait ce qui a déjà été fait là-bas et ce qui n'a jamais été exploité.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Supprime le retournage inutile, et protège le savoir des départs — qui sont la norme dans ce métier.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit. Le géocodage est acheté.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Faire de la fiche lieu un objet à part entière, relié aux vidéos.</li><li>Y verser ce qui remonte des tournages et des transcriptions.</li><li>Géocoder automatiquement à la création, pour que les lieux apparaissent sur la carte.</li><li>Traiter en priorité les 200 lieux les plus filmés.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Meriem</strong> : ce qu'il faut savoir d'un lieu avant d'y retourner.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Fiche lieu complète pour les 200 lieux les plus filmés, à M5.</li><li>Une décision de ne pas retourner sur un lieu prise grâce à la fiche.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un lieu sans coordonnées n'apparaît pas sur la carte. Le géocodage à la création n'est pas un détail : c'est ce qui fait la différence entre une carte utile et une carte à moitié vide.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 3.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">15</span><h3>Poser les bases du label LGU</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>La mémoire du catalogue</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p><em>« On nous demande tout le temps des recommandations de lieux. »</em> La vision est un label LGU qui recense les lieux validés. Mais un label suppose des critères explicites — et aujourd'hui, le critère est le goût de Nora, non formulé.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Une grille de critères dit pourquoi un lieu est validé. Elle est appliquée par l'équipe, et elle donne le même résultat que Nora dans la grande majorité des cas.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Transforme un goût en critère transmissible, donc en actif de l'entreprise. C'est le préalable strict à tout outil de recommandation destiné au public.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit, sur la base de lieux.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Formuler les critères avec Nora, en partant de lieux réels validés et refusés.</li><li>Appliquer la grille à 100 lieux déjà jugés, et comparer au verdict de Nora.</li><li>Corriger la grille là où elle diverge — c'est le désaccord qui construit le critère.</li><li>Ne parler de label public qu'une fois la grille jugée fiable.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : plusieurs sessions de formulation, puis d'arbitrage sur les désaccords. Comme pour le chantier 19, c'est un travail difficile et non délégable.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Grille appliquée à 100 lieux et jugée juste par Nora dans neuf cas sur dix.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Un label posé sur une grille approximative abîme la marque durablement. Mieux vaut ne pas lancer que lancer trop tôt.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantier 14.</p></div></article>
+<article class="fiche"><div class="fiche-h"><span class="num n-P3">20</span><h3>Rendre les créateurs autonomes sur leurs performances</h3></div><div class="fiche-meta"><span class="badge b-P3">Phase 3</span><span class="sep">·</span><span>L'organisation</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex</span></div><div class="rub "><div class="rub-t">Le problème</div><p>Les créateurs sont incités sur les vidéos qui performent, et ils n'ont pas accès à leurs propres chiffres. Le calcul des primes est manuel.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Chaque créateur voit ses performances, ses forces, ses tournages. Un récapitulatif mensuel est généré pour le calcul des primes.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Aligne l'incitation sur la performance réelle, et supprime un calcul manuel récurrent.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>Construit, sur l'outil interne.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><ol><li>Trancher la question de la visibilité : chacun voit-il les chiffres des autres ?</li><li>Construire la page créateur, filtrée sur la personne connectée.</li><li>Générer le récapitulatif mensuel exportable.</li></ol></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : la décision sur la visibilité croisée. Elle est managériale avant d'être technique et elle change l'ambiance de l'équipe dans un sens ou dans l'autre.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>Récapitulatif mensuel généré automatiquement pour chaque créateur.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li>Rendre les performances comparables entre créateurs peut créer de la compétition saine ou toxique selon la culture. C'est un choix, pas un réglage par défaut.</li><li>Sans la distinction organique/payé (chantier 2), les comparaisons sont fausses et injustes.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 2 et 9.</p></div></article>
+<h3>Phase 4 — au-delà de six mois</h3>
+<article class="fiche"><div class="fiche-h"><span class="num n-P4">17</span><h3>Ouvrir LGU au-delà de Paris et du français</h3></div><div class="fiche-meta"><span class="badge b-P4">Phase 4</span><span class="sep">·</span><span>L'audience et la diffusion</span><span class="sep">·</span><span>Impact <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span></span><span class="sep">·</span><span>Effort <span class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></span></span><span class="sep">·</span><span>Porté par Silex + LGU</span></div><div class="rub "><div class="rub-t">Le problème</div><p><em>« Mon rêve serait d'avoir une communauté worldwide. J'ai personne ni pour assurer la vision de ce compte, ni pour l'alimenter. »</em> Le problème n'est pas la traduction — c'est devenu trivial. Le problème est qu'il n'y a personne pour le porter.</p></div><div class="rub "><div class="rub-t">Ce que ça change au quotidien</div><p>Les contenus sont déclinés en anglais et publiés sur un compte qui a sa propre ligne, sans mobiliser l'équipe française.</p></div><div class="rub "><div class="rub-t">Le gain</div><p>Le seul chantier qui change l'ordre de grandeur de LGU : une audience sans plafond géographique.</p></div><div class="rub "><div class="rub-t">Ce qu'on construit, ce qu'on achète</div><p>La traduction et le sous-titrage s'achètent. Ce qui se construit, c'est la chaîne de republication — et ce qui se recrute, c'est la personne qui porte la ligne éditoriale.</p></div><div class="rub "><div class="rub-t">Comment on s'y prend</div><p>Cadrage au moment du go. La question à résoudre en premier n'est pas technique : c'est qui porte ce compte.</p></div><div class="rub need"><div class="rub-t">Ce dont on a besoin de vous</div><ul><li><strong>Nora</strong> : la décision sur qui porte la vision. Sans elle, l'automatisation produira du contenu sans ligne, et ça ne marchera pas.</li></ul></div><div class="rub "><div class="rub-t">Comment on saura que ça marche</div><ul><li>À définir au moment du go.</li></ul></div><div class="rub watch"><div class="rub-t">Points d'attention</div><ul><li><strong>C'est un arbitrage assumé de calendrier, pas un désintérêt.</strong> Techniquement, traduire un contenu est facile. Stratégiquement, dupliquer en anglais un système de production encore bancal revient à exporter le désordre. On répare et on muscle la maison française d'abord ; on la clone ensuite.</li></ul></div><div class="rub "><div class="rub-t">Dépend de</div><p>Chantiers 3 et 9.</p></div></article></section>
+
+<section id="sequence" class="reveal"><div class="section-n">06 — La séquence</div><h2 class="section-h">La séquence, et pourquoi cet ordre</h2><p><strong>Les fondations passent devant.</strong> Les chantiers 1, 2 et 3 — la fiche vidéo comme socle commun, le flux de performances, le catalogue indexé — ne produisent presque rien de visible. Ils passent quand même en premier.</p>
+<p>C'est le résultat le plus important de l'audit, et il mérite d'être dit franchement : <strong>les chantiers que vous attendez le plus sont mécaniquement impossibles sans eux.</strong> La machine à écrire (10) ne peut pas dire <em>« ça n'a pas performé »</em> sans le flux de performances. Le remontage des bangers (13) ne peut pas sélectionner ses candidats sans le catalogue indexé. Les repères par secteur (7) n'existent pas sans historique fiable. Ce n'est pas un ordre de préférence : c'est un ordre de dépendance.</p>
+<p><strong>Ce qui change vite, en parallèle.</strong> Pendant que les fondations se posent, l'espace client (4) et sa console (5) passent en production. C'est visible en trente jours, ça se montre à un annonceur, et ça change immédiatement la perception de LGU côté commercial.</p>
+<p><strong>Deux arbitrages qu'on assume.</strong></p>
+<p>L'outil interne a été mis en pause le 21 juillet au profit de l'espace client. C'est délibéré : mener deux fronts en même temps aurait produit deux moitiés d'outil. L'espace client est repris d'abord parce qu'il produit du revenu et de la crédibilité commerciale ; l'outil interne revient en phase 2 avec le chantier 9, une fois la fiche vidéo verrouillée.</p>
+<p>Le worldwide part en phase 4. C'est l'un de vos six enjeux et c'est ce qui a le plus fort potentiel. C'est aussi ce qui échouerait le plus sûrement aujourd'hui, parce que le vrai obstacle n'est pas la traduction mais le fait que personne ne porte ce compte.</p>
+<p><strong>La cadence.</strong> Deux chantiers de front, pas plus. C'est notre format, et c'est aussi la capacité réelle d'absorption d'une équipe qui continue de produire pendant qu'on transforme.</p>
+<div class="gantt"><div class="gantt-inner"><div class="g-head"><div>Chantier</div><div>0-30 j</div><div>1-3 mois</div><div>3-6 mois</div><div>6-12 mois</div></div><div id="gantt-rows"></div></div></div></section>
+
+<section id="parcours" class="reveal"><div class="section-n">07 — Les parcours</div><h2 class="section-h">Comment tout ça se recombine</h2><h3>Parcours 1 — De l'idée à la vidéo publiée</h3>
+<p><code>chantiers 12 · 10 · 9 · 11 · 2 · 3</code></p>
+<ol><li>La réunion du lundi décide des tournages ; les fiches se créent dans la foulée <strong>(12)</strong>.</li><li>Un créateur travaille son angle avec le cerveau bis, qui le confronte à ce qui a déjà été tenté <strong>(10)</strong>.</li><li>⬥ Nora tranche sur ce qui mérite son arbitrage — et seulement là-dessus.</li><li>La fiche de tournage se remplit au fil des étapes ; les rushes sont déposés, sans quoi rien n'avance <strong>(9)</strong>.</li><li>Le dérush et l'habillage sont assistés ; le rythme reste humain <strong>(11)</strong>.</li><li>La vidéo est publiée. Les performances remontent seules <strong>(2)</strong>.</li><li>Le contenu, son script et ses chiffres rejoignent le catalogue <strong>(3)</strong> — et servent au créateur suivant.</li></ol>
+<h3>Parcours 2 — D'une collab vendue à la revente</h3>
+<p><code>chantiers 8 · 1 · 4 · 2 · 6 · 7</code></p>
+<ol><li>Une collab est signée et enregistrée dans le suivi commercial <strong>(8)</strong>.</li><li>Elle devient une campagne, avec ses vidéos, dans le modèle commun <strong>(1)</strong>.</li><li>Le client ouvre son espace et suit sa campagne en direct <strong>(4)</strong>, avec des performances à jour <strong>(2)</strong>.</li><li>Sept jours après la fin, le bilan part tout seul, à ses couleurs <strong>(6)</strong>.</li><li>Le bilan le situe par rapport à son secteur <strong>(7)</strong> — et devient l'occasion de la revente.</li></ol>
+<h3>Parcours 3 — Comment le catalogue travaille</h3>
+<p><code>chantiers 3 · 13 · 14 · 15</code></p>
+<ol><li>Le catalogue est interrogeable : on retrouve un lieu, un format, un hook <strong>(3)</strong>.</li><li>Les contenus au-dessus du million dont les rushes existent sont remontés sous un autre angle <strong>(13)</strong>.</li><li>Ce qui remonte des tournages et des transcriptions enrichit les fiches lieux <strong>(14)</strong>.</li><li>La grille de critères transforme le goût en label transmissible <strong>(15)</strong>.</li><li>⬥ Et à chaque étape, Nora arbitre — sur trente secondes au lieu de trente minutes.</li></ol></section>
+
+<section id="demarrer" class="reveal"><div class="section-n">08 — Démarrer</div><h2 class="section-h">Vos 30 premiers jours</h2><div class="week"><div class="week-t"><span class="n">S1</span>Verrouiller le socle, brancher les chiffres</div><div class="week-row"><div class="k">Ce qu'on fait</div><div>On fige le modèle de données commun et on branche le relevé automatique des performances sur Instagram, Facebook et YouTube.</div></div><div class="week-row"><div class="k">Ce que vous faites</div><div>Paul : 2 h pour valider le modèle, et trancher le cas TikTok. Nora : choisir les trois premiers clients à qui ouvrir l'espace.</div></div><div class="week-row"><div class="k">Visible à la fin</div><div>Les performances remontent seules sur trois plateformes.</div></div></div>
+<div class="week"><div class="week-t"><span class="n">S2</span>Ouvrir la console, former Meriem</div><div class="week-row"><div class="k">Ce qu'on fait</div><div>On ouvre la console d'administration et on fait l'audit de cloisonnement avant toute ouverture client.</div></div><div class="week-row"><div class="k">Ce que vous faites</div><div>Meriem : 2 h de prise en main sur une vraie campagne, de bout en bout. Nora : lancer la clarification juridique des droits sur les anciens contenus.</div></div><div class="week-row"><div class="k">Visible à la fin</div><div>L'équipe peut créer une campagne complète sans nous.</div></div></div>
+<div class="week"><div class="week-t"><span class="n">S3</span>Ouvrir aux trois premiers clients</div><div class="week-row"><div class="k">Ce qu'on fait</div><div>On ouvre les trois comptes réels et on observe l'usage.</div></div><div class="week-row"><div class="k">Ce que vous faites</div><div>Nora : prévenir les trois clients et leur montrer une fois. Meriem : intégrer la saisie Snapchat au rituel hebdomadaire.</div></div><div class="week-row"><div class="k">Visible à la fin</div><div>Un client ouvre son espace de lui-même.</div></div></div>
+<div class="week"><div class="week-t"><span class="n">S4</span>Préparer le catalogue</div><div class="week-row"><div class="k">Ce qu'on fait</div><div>On démarre la transcription des contenus les plus performants et on cadre le rattrapage du fonds ancien.</div></div><div class="week-row"><div class="k">Ce que vous faites</div><div>Nora : les cinq questions qu'elle voudrait pouvoir poser au catalogue. Elles orientent tout le travail d'indexation.</div></div><div class="week-row"><div class="k">Visible à la fin</div><div>Les premières recherches par le sens fonctionnent sur un échantillon.</div></div></div>
+<h3>Les accès à ouvrir dès le premier jour</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Accès</th><th>Pourquoi</th><th>À demander à</th><th>Quand</th></tr></thead><tbody><tr><td>Comptes des plateformes sociales</td><td>Relever les performances (chantier 2)</td><td>Paul</td><td>Semaine 1</td></tr><tr><td>Accès aux rushes et aux contenus publiés</td><td>Indexer le catalogue (chantier 3)</td><td>Nora</td><td>Semaine 2</td></tr><tr><td>Logos et couleurs des trois premiers clients</td><td>Personnaliser l'espace et les bilans</td><td>Nora</td><td>Semaine 2</td></tr><tr><td>Outil de suivi commercial de Paul</td><td>Cartographier avant de connecter (chantier 8)</td><td>Paul</td><td>Semaine 3</td></tr><tr><td>Statut juridique des contenus des anciens créateurs</td><td>Débloque le chantier 13</td><td>Nora</td><td><strong>Semaine 1 — c'est long</strong></td></tr></tbody></table></div>
+<h3>Ce que vous faites, vous</h3>
+<ol><li><strong>Nora — donnez vos cinq questions.</strong> Celles que vous voudriez poser au catalogue et auxquelles personne ne sait répondre aujourd'hui. Elles orientent tout le travail d'indexation, et elles ne sont pas devinables.</li><li><strong>Nora — lancez la clarification juridique cette semaine.</strong> C'est le seul point de la roadmap dont le délai ne dépend pas de nous, et il bloque le chantier le plus rentable.</li><li><strong>Nora — tranchez le conditionnement du paiement au dépôt des rushes.</strong> C'est une décision managériale. Sans elle, le chantier 9 est un vœu pieux.</li><li><strong>Paul — faites l'inventaire de vos micro-outils.</strong> Vous seul pouvez le faire, et c'est ce qui empêchera la dette de doubler pendant qu'on la répare.</li><li><strong>Meriem — utilisez la console sur une vraie campagne, et dites ce qui manque.</strong> Personne d'autre ne peut le dire, et c'est le meilleur moment pour le corriger.</li></ol>
+<h3>À quoi ressemble une bonne première semaine</h3>
+<ul><li>Les performances remontent seules sur au moins une plateforme.</li><li>Le modèle de données est validé, et Paul a signalé au moins une chose qui manquait.</li><li>La demande de clarification juridique est partie.</li></ul>
+<h3>À quoi ressemble une semaine bloquée</h3>
+<ul><li>Un accès n'est pas ouvert et personne ne l'a signalé.</li><li>Meriem continue de saisir les performances à la main.</li><li>Une décision de la liste ci-dessous est en attente depuis plus de deux semaines.</li></ul>
+<p><strong>Dans ces trois cas, écrivez-nous le jour même</strong> plutôt que d'attendre le point hebdomadaire.</p></section>
+
+<section id="pilotage" class="reveal"><div class="section-n">09 — Pilotage</div><h2 class="section-h">Comment on pilote ensemble</h2><div class="tbl-wrap"><table><thead><tr><th>Rendez-vous</th><th>Fréquence</th><th>Durée</th><th>Qui</th></tr></thead><tbody><tr><td>Point d'avancement</td><td>Hebdomadaire</td><td>30 min</td><td>Nora ou Paul + Silex</td></tr><tr><td>Point technique</td><td>Toutes les 2 semaines</td><td>45 min</td><td>Paul + Silex</td></tr><tr><td>Session méthode</td><td>Toutes les 2 semaines</td><td>1 h</td><td>Nora + Silex</td></tr><tr><td>Revue de roadmap</td><td>Trimestrielle</td><td>1 h</td><td>Nora + Silex</td></tr></tbody></table></div>
+<p>La <strong>session méthode</strong> est spécifique à LGU et elle est la plus importante. C'est là que se fait le travail d'encodage du goût — les chantiers 10, 15 et 19 en dépendent entièrement, et il n'y a pas de raccourci. C'est aussi le seul rendez-vous qui ne peut pas être délégué.</p>
+<p><strong>Qui décide quoi.</strong> Les décisions éditoriales et managériales appartiennent à Nora — le conditionnement du paiement, la visibilité des performances entre créateurs, ce qu'on montre à un client qui performe mal. Les décisions techniques et d'outillage appartiennent à Paul. Le périmètre et la séquence se décident ensemble. Le reste, on le tranche et on vous le dit.</p>
+<p><strong>Quand nous écrire tout de suite :</strong> un accès bloqué, une décision qui change, un outil livré qui n'est pas utilisé au bout d'une semaine, ou un client qui pose une question à laquelle la plateforme aurait dû répondre.</p></section>
+
+<section id="ecartes" class="reveal"><div class="section-n">10 — Écartés</div><h2 class="section-h">Ce qu'on n'a pas retenu, et pourquoi</h2><p>Six sujets sérieux, écartés volontairement. Trois d'entre eux sont des « jamais » assumés : ce sont des arbitrages de fond, pas des questions de calendrier.</p>
+<div class="tbl-wrap"><table><thead><tr><th style="width:26%">Sujet</th><th>Pourquoi pas maintenant</th><th style="width:20%">Reconsidéré quand</th></tr></thead><tbody id="ecartes-rows"></tbody></table></div></section>
+
+<section id="decisions" class="reveal"><div class="section-n">11 — Risques &amp; décisions</div><h2 class="section-h">Ce qui peut casser, et ce que vous devez trancher</h2><h3>Les risques</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Risque</th><th>Probabilité</th><th>Impact</th><th>Ce qu'on fait</th></tr></thead><tbody id="risques-rows"></tbody></table></div>
+<h3>Les décisions qui vous attendent</h3>
+<p>Six décisions. Trois bloquent des chantiers : les droits sur les anciens contenus (chantier 13), l'accès aux performances TikTok (chantier 2), et la visibilité des performances entre créateurs (chantier 20).</p>
+<div class="tbl-wrap"><table><thead><tr><th>Décision</th><th>Options</th><th>Échéance</th><th>Qui tranche</th></tr></thead><tbody id="decisions-rows"></tbody></table></div></section>
+
+<section id="annexes" class="reveal"><div class="section-n">12 — Annexes</div><h2 class="section-h">Annexes</h2><h3>Glossaire</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Terme</th><th>En clair</th></tr></thead><tbody><tr><td><strong>Fiche vidéo</strong></td><td>L'enregistrement unique qui décrit une vidéo : lieu, créateur, format, liens de publication, rushes, script, performances. Le socle commun aux deux plateformes.</td></tr><tr><td><strong>Publication</strong></td><td>Une vidéo publiée sur une plateforme donnée. Une même vidéo sur Instagram et TikTok, ce sont deux publications, deux liens, deux jeux de chiffres.</td></tr><tr><td><strong>Relevé de performances</strong></td><td>Une photo des chiffres d'une publication à une date donnée. On les empile au lieu de les écraser : c'est ce qui donne les courbes.</td></tr><tr><td><strong>Catalogue indexé</strong></td><td>L'ensemble des contenus rendus cherchables par le sens et non seulement par mot-clé, avec leurs performances attachées.</td></tr><tr><td><strong>Cerveau bis</strong></td><td>L'agent qui challenge l'écriture en s'appuyant sur ce qui a réellement performé et sur la méthode LGU.</td></tr><tr><td><strong>Méthode LGU</strong></td><td>La recette du hook, la structure « lieu + humain + histoire », la grammaire de montage — écrites noir sur blanc et versionnées.</td></tr><tr><td><strong>Cloisonnement</strong></td><td>Le fait qu'aucune donnée interne (marges, montants de deals) ne puisse être atteinte depuis un compte client. Une contrainte de construction, pas un réglage.</td></tr><tr><td><strong>Socle commun</strong></td><td>La base technique partagée par tous les outils internes, qui les empêche de devenir des îlots.</td></tr></tbody></table></div>
+<h3>La stack et ce qu'elle coûte</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Outil</th><th>Rôle</th><th>Coût indicatif</th><th>Quand</th></tr></thead><tbody><tr><td>Relevé de performances</td><td>Instagram, Facebook, YouTube</td><td>~50-150 €/mois selon volume</td><td>Phase 1</td></tr><tr><td>Transcription</td><td>Indexation du catalogue</td><td>~0,4 €/heure de vidéo</td><td>Phase 2</td></tr><tr><td>Base de données + hébergement</td><td>Les deux plateformes</td><td>~30-60 €/mois</td><td>Phase 1</td></tr><tr><td>Modèle de langage</td><td>Cerveau bis, extraction, résumés</td><td>usage réel, à mesurer</td><td>Phase 2</td></tr><tr><td>Automatisation de messages</td><td>Engagement en commentaire</td><td>~50 €/mois</td><td>Phase 2</td></tr></tbody></table></div>
+<p><strong>Ce qu'il faut surveiller dès le premier jour</strong> : le coût des modèles, l'hébergement, et les heures humaines encore dans la boucle. Sans ces trois chiffres, on ne sait pas si la transformation améliore réellement la marge.</p>
+<h3>Qui fait quoi</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Personne</th><th>Rôle</th><th>À solliciter pour</th></tr></thead><tbody><tr><td>Nora</td><td>CEO</td><td>Éditorial, méthode, décisions managériales, arbitrages sur le goût</td></tr><tr><td>Paul</td><td>Opérations &amp; technique</td><td>Accès, outillage, connexions, inventaire</td></tr><tr><td>Meriem</td><td>Production &amp; données</td><td>Saisie, console d'administration, rituel de reporting</td></tr><tr><td>Les créateurs</td><td>Contenu</td><td>Retours sur le cerveau bis, dépôt des rushes</td></tr><tr><td>Silex</td><td>CAIO</td><td>Architecture, construction, formation, pilotage</td></tr></tbody></table></div>
+<h3>Ce qui a changé depuis la version précédente</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th><th>Changement</th></tr></thead><tbody><tr><td>1.0</td><td>2026-08-05</td><td>Version initiale</td></tr></tbody></table></div></section>
+
+<!-- BODY:END -->
+
+<footer><div class="fl">
+  <div>Le Guide Ultime × Silex · Roadmap AI-native · version 1.0 — 2026-08-05</div>
+  <div>Document vivant — la version en tête de page fait foi.</div>
+</div></footer>
+
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DONNÉES — remplacées par Build_Roadmap.py depuis chantiers.yaml.
+   ═══════════════════════════════════════════════════════════════ */
+const DATA = {
+  "phases": {
+    "P1": {
+      "label": "0-30 jours",
+      "color": "var(--green)",
+      "i": 0
+    },
+    "P2": {
+      "label": "1-3 mois",
+      "color": "var(--orange)",
+      "i": 1
+    },
+    "P3": {
+      "label": "3-6 mois",
+      "color": "var(--blue)",
+      "i": 2
+    },
+    "P4": {
+      "label": "au-delà",
+      "color": "var(--gray)",
+      "i": 3
+    }
+  },
+  "streams": [
+    {
+      "id": "S1",
+      "nom": "La production de contenu",
+      "resume": "De l'idée à la vidéo publiée. C'est là qu'est le goulot — et c'est là que se joue la question de savoir si LGU peut produire plus sans que Nora donne plus d'heures."
+    },
+    {
+      "id": "S2",
+      "nom": "La mémoire du catalogue",
+      "resume": "Six ans de contenus, de lieux et de signaux de performance, aujourd'hui inexploitables. C'est le seul actif que personne ne peut copier — et il ne sert à rien tant qu'il n'est pas interrogeable."
+    },
+    {
+      "id": "S3",
+      "nom": "Le commerce et les clients",
+      "resume": "Les collabs, le suivi des campagnes, le reporting aux agences et aux annonceurs. C'est ce qui paie, et c'est aujourd'hui entièrement manuel."
+    },
+    {
+      "id": "S4",
+      "nom": "L'audience et la diffusion",
+      "resume": "L'engagement, les nouveaux formats, et l'ouverture au-delà de Paris et du français."
+    },
+    {
+      "id": "S5",
+      "nom": "L'organisation",
+      "resume": "Les rôles, les outils, et la façon dont l'équipe travaille avec le système plutôt qu'à côté."
+    }
+  ],
+  "chantiers": [
+    {
+      "id": 1,
+      "titre": "Faire de la fiche vidéo le socle commun",
+      "stream": "S2",
+      "phase": "P1",
+      "impact": 4,
+      "effort": 2,
+      "fondation": true,
+      "statut": "en_cours",
+      "porte_par": "Silex",
+      "owner_client": "Paul",
+      "outils": [
+        "LGU Studio",
+        "LGU Vault"
+      ],
+      "depend_de": [],
+      "resume": "Une vidéo = un enregistrement unique (lieu, créateur, format, liens de publication, rushes, script, perfs). Les deux plateformes ne se parlent pas : elles lisent la même donnée.",
+      "gain": "Aucun gain direct — c'est ce qui permet à l'outil interne et à l'espace client de ne jamais diverger.",
+      "kpi": "Modèle de données unique validé et appliqué aux deux surfaces, à M1"
+    },
+    {
+      "id": 2,
+      "titre": "Faire rentrer les performances toutes seules",
+      "stream": "S2",
+      "phase": "P1",
+      "impact": 5,
+      "effort": 3,
+      "fondation": true,
+      "statut": "en_cours",
+      "porte_par": "Silex + LGU",
+      "owner_client": "Paul",
+      "outils": [
+        "Apify",
+        "API TikTok",
+        "Saisie manuelle"
+      ],
+      "depend_de": [
+        1
+      ],
+      "resume": "Vues, likes, commentaires, partages, par plateforme, relevés régulièrement et historisés. Sans ce flux, aucun système ne peut apprendre ce qui marche.",
+      "gain": "Supprime la saisie de perfs avant chaque reporting, et rend possibles les chantiers 6, 7, 10 et 13.",
+      "kpi": "90 % des publications avec des perfs à jour de moins de 7 jours, à M2"
+    },
+    {
+      "id": 3,
+      "titre": "Rendre les six ans de contenus cherchables",
+      "stream": "S2",
+      "phase": "P2",
+      "impact": 5,
+      "effort": 4,
+      "fondation": true,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "Transcription",
+        "Recherche sémantique"
+      ],
+      "depend_de": [
+        1,
+        2
+      ],
+      "resume": "Transcrire les vidéos, indexer les scripts, joindre les performances. C'est le socle de la machine à écrire — et aujourd'hui, on ne peut même pas répondre à « trouve-moi tous les restos pakistanais qu'on a filmés ».",
+      "gain": "Transforme un stock d'archives en moteur de production, à coût quasi nul : le contenu est déjà payé.",
+      "kpi": "Une question métier posée en langage courant trouve la bonne vidéo, dans 8 cas sur 10"
+    },
+    {
+      "id": 4,
+      "titre": "Mettre l'espace client en production",
+      "stream": "S3",
+      "phase": "P1",
+      "impact": 5,
+      "effort": 3,
+      "fondation": false,
+      "statut": "en_cours",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "LGU Studio"
+      ],
+      "depend_de": [
+        1,
+        2
+      ],
+      "resume": "Chaque agence et chaque annonceur ouvre son espace et voit ses campagnes, ses vidéos et leurs performances. La maquette fonctionne ; il reste à la brancher sur du réel.",
+      "gain": "Supprime la production manuelle des reportings de campagne, et change la perception : LGU devient un partenaire outillé, pas un prestataire.",
+      "kpi": "3 comptes clients réels ouverts et utilisés, à M1"
+    },
+    {
+      "id": 5,
+      "titre": "Donner à l'équipe les commandes de la plateforme",
+      "stream": "S3",
+      "phase": "P1",
+      "impact": 4,
+      "effort": 2,
+      "fondation": false,
+      "statut": "en_cours",
+      "porte_par": "Silex",
+      "owner_client": "Meriem",
+      "outils": [
+        "LGU Studio — console admin"
+      ],
+      "depend_de": [
+        4
+      ],
+      "resume": "Créer un client, une campagne, ajouter des vidéos et leurs liens, actualiser ou corriger les perfs. Sans cette console, personne ne peut alimenter l'espace client.",
+      "gain": "Rend la plateforme autonome de nous — c'est la condition pour qu'elle survive à la fin de la mission.",
+      "kpi": "Une campagne créée de bout en bout par l'équipe LGU, sans nous, à M1"
+    },
+    {
+      "id": 6,
+      "titre": "Envoyer le reporting de campagne tout seul",
+      "stream": "S3",
+      "phase": "P2",
+      "impact": 4,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "LGU Studio",
+        "Export PDF"
+      ],
+      "depend_de": [
+        2,
+        4
+      ],
+      "resume": "Sept jours après la fin d'une campagne, le client reçoit son bilan, à ses couleurs, sans que personne ne l'ait produit.",
+      "gain": "~2 h par campagne récupérées [HYP], et surtout un rendez-vous commercial systématique plutôt qu'oublié.",
+      "kpi": "100 % des campagnes terminées avec un bilan envoyé à J+7"
+    },
+    {
+      "id": 7,
+      "titre": "Chiffrer ce que vaut une campagne LGU",
+      "stream": "S3",
+      "phase": "P3",
+      "impact": 4,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "LGU Studio",
+        "Base de perfs"
+      ],
+      "depend_de": [
+        2
+      ],
+      "resume": "Des repères anonymisés par secteur — restauration, lifestyle, voyage — pour montrer à un annonceur où il se situe. Un argument de vente que personne d'autre n'a.",
+      "gain": "Déplace la négociation du prix vers la performance — le levier de marge le plus direct.",
+      "kpi": "Repères publiés sur 3 secteurs, avec un volume suffisant pour être défendables"
+    },
+    {
+      "id": 8,
+      "titre": "Connecter le suivi des sponsors au reste",
+      "stream": "S3",
+      "phase": "P2",
+      "impact": 4,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "LGU + Silex",
+      "owner_client": "Paul",
+      "outils": [
+        "CRM interne"
+      ],
+      "depend_de": [
+        1
+      ],
+      "resume": "L'outil de suivi commercial construit par Paul fonctionne, mais il est isolé du contenu et de l'audience. Le connecter suffit — il ne s'agit pas de le refaire.",
+      "gain": "Relie enfin ce qu'on vend à ce qu'on produit et à ce que ça performe.",
+      "kpi": "Une campagne vendue est visible dans les trois surfaces sans double saisie"
+    },
+    {
+      "id": 9,
+      "titre": "Un tournage qui produit sa fiche",
+      "stream": "S1",
+      "phase": "P2",
+      "impact": 5,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Meriem",
+      "outils": [
+        "LGU Vault"
+      ],
+      "depend_de": [
+        1
+      ],
+      "resume": "La fiche se remplit au fil des étapes — édito, tournage, montage, validation, publication — et le paiement du créateur dépend du dépôt des rushes.",
+      "gain": "Résout à la source le problème qui coûte le plus cher : les rushes perdus et les métadonnées manquantes.",
+      "kpi": "> 90 % des tournages avec rushes déposés et fiche complète, à M3"
+    },
+    {
+      "id": 10,
+      "titre": "La machine à écrire : un cerveau bis pour les créateurs",
+      "stream": "S1",
+      "phase": "P3",
+      "impact": 5,
+      "effort": 4,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "Recherche sémantique",
+        "Méthode LGU"
+      ],
+      "depend_de": [
+        3
+      ],
+      "resume": "Un agent qui challenge l'écriture sur la base de ce qui a réellement performé — et qui applique la méthode LGU, pas un style générique.",
+      "gain": "C'est le chantier qui lève le plafond : Nora cesse d'être le passage obligé de chaque texte.",
+      "kpi": "Un créateur écrit un script validé sans passer par Nora, dans 1 cas sur 2 à M6"
+    },
+    {
+      "id": 11,
+      "titre": "Décharger le montage des tâches ingrates",
+      "stream": "S1",
+      "phase": "P3",
+      "impact": 4,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "Dérush assisté",
+        "Charte graphique"
+      ],
+      "depend_de": [
+        9
+      ],
+      "resume": "Le dérush, le sous-titrage et l'habillage sont automatisables ; le rythme émotionnel ne l'est pas. On automatise le premier, on laisse le second.",
+      "gain": "Réduit fortement le temps de post-production par vidéo [HYP] — à mesurer sur 10 montages avant/après.",
+      "kpi": "Temps de post-production par vidéo en baisse de 40 % sur un échantillon de 10"
+    },
+    {
+      "id": 12,
+      "titre": "La réunion édito qui produit ses fiches",
+      "stream": "S1",
+      "phase": "P2",
+      "impact": 3,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Meriem",
+      "outils": [
+        "Transcription",
+        "LGU Vault"
+      ],
+      "depend_de": [
+        9
+      ],
+      "resume": "Les décisions du lundi deviennent des fiches tournage en brouillon, à valider en un clic — plutôt qu'à ressaisir.",
+      "gain": "Ancre l'outil dans un rituel existant, ce qui est la meilleure garantie d'adoption.",
+      "kpi": "100 % des tournages décidés en réunion existent en fiche le jour même"
+    },
+    {
+      "id": 13,
+      "titre": "Faire re-percer les meilleurs contenus",
+      "stream": "S2",
+      "phase": "P2",
+      "impact": 5,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "Base de rushes",
+        "Montage"
+      ],
+      "depend_de": [
+        2,
+        9
+      ],
+      "resume": "237 contenus ont dépassé le million de vues. Les remonter sous un autre angle part d'un contenu déjà prouvé — mais suppose de régler la question des droits.",
+      "gain": "Le seul cas où l'on baisse le coût de production ET augmente l'espérance de performance en même temps.",
+      "kpi": "3 remontages publiés, dont au moins 1 au-dessus de la médiane du compte"
+    },
+    {
+      "id": 14,
+      "titre": "Ne plus jamais reperdre le contexte d'un lieu",
+      "stream": "S2",
+      "phase": "P3",
+      "impact": 4,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Meriem",
+      "outils": [
+        "Base de lieux",
+        "Géocodage"
+      ],
+      "depend_de": [
+        3
+      ],
+      "resume": "Ce qu'on sait d'un lieu — l'histoire, le contact, ce qui a été filmé, ce qui ne l'a pas été — reste attaché au lieu, pas au créateur qui y est allé.",
+      "gain": "Supprime le retournage inutile et protège le savoir quand un créateur part.",
+      "kpi": "Fiche lieu complète pour les 200 lieux les plus filmés, à M5"
+    },
+    {
+      "id": 15,
+      "titre": "Poser les bases du label LGU",
+      "stream": "S2",
+      "phase": "P3",
+      "impact": 3,
+      "effort": 3,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "Base de lieux",
+        "Scoring"
+      ],
+      "depend_de": [
+        14
+      ],
+      "resume": "Une grille de critères explicite qui dit pourquoi un lieu est validé par LGU. La condition d'un label — et le préalable à tout outil de recommandation public.",
+      "gain": "Transforme un goût en critère transmissible, donc en actif de l'entreprise.",
+      "kpi": "Grille appliquée à 100 lieux et jugée juste par Nora dans 9 cas sur 10"
+    },
+    {
+      "id": 16,
+      "titre": "Transformer les commentaires en conversations",
+      "stream": "S4",
+      "phase": "P2",
+      "impact": 3,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "LGU",
+      "owner_client": "Paul",
+      "outils": [
+        "Outil d'automatisation de messages"
+      ],
+      "depend_de": [],
+      "resume": "« Commente PARIS et on t'envoie la liste en message privé. » Mécanique éprouvée, outil sur étagère, effet direct sur l'engagement.",
+      "gain": "Le meilleur rapport effort/effet de la roadmap sur la portée organique [HYP]",
+      "kpi": "Taux de commentaires en hausse sur les publications équipées, mesuré sur 10 posts"
+    },
+    {
+      "id": 17,
+      "titre": "Ouvrir LGU au-delà de Paris et du français",
+      "stream": "S4",
+      "phase": "P4",
+      "impact": 5,
+      "effort": 4,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex + LGU",
+      "owner_client": "Nora",
+      "outils": [
+        "Traduction",
+        "Sous-titrage"
+      ],
+      "depend_de": [
+        3,
+        9
+      ],
+      "resume": "Traduire et republier est techniquement facile en 2026. Le problème n'est pas la traduction : c'est qu'il n'y a personne pour porter la vision de ce compte.",
+      "gain": "Une audience qui n'a pas de plafond géographique — le seul chantier qui change l'ordre de grandeur de LGU.",
+      "kpi": "À définir au moment du go"
+    },
+    {
+      "id": 18,
+      "titre": "Sortir du plat de spaghettis",
+      "stream": "S5",
+      "phase": "P2",
+      "impact": 4,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex + LGU",
+      "owner_client": "Paul",
+      "outils": [
+        "Inventaire",
+        "Socle commun"
+      ],
+      "depend_de": [
+        1
+      ],
+      "resume": "Chacun construit ses micro-outils dans son coin et aucun ne parle aux autres. Un socle commun et une source de vérité unique suffisent à arrêter l'hémorragie.",
+      "gain": "Évite que la dette de demain soit construite pendant qu'on répare celle d'hier.",
+      "kpi": "Inventaire complet fait, et 100 % des nouveaux outils partis du socle"
+    },
+    {
+      "id": 19,
+      "titre": "Apprendre à l'équipe à travailler avec le système",
+      "stream": "S5",
+      "phase": "P2",
+      "impact": 4,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "Guide de formation",
+        "Méthode LGU"
+      ],
+      "depend_de": [
+        3
+      ],
+      "resume": "Comment interroger le cerveau bis, comment maintenir la méthode d'écriture, comment corriger l'agent quand il se trompe. La méthode, pas un atelier ponctuel.",
+      "gain": "Sans ça, les outils sont utilisés par deux personnes et abandonnés par les autres.",
+      "kpi": "4 personnes utilisent le cerveau bis chaque semaine, à M4"
+    },
+    {
+      "id": 20,
+      "titre": "Rendre les créateurs autonomes sur leurs performances",
+      "stream": "S5",
+      "phase": "P3",
+      "impact": 3,
+      "effort": 2,
+      "fondation": false,
+      "statut": "a_faire",
+      "porte_par": "Silex",
+      "owner_client": "Nora",
+      "outils": [
+        "LGU Vault"
+      ],
+      "depend_de": [
+        2,
+        9
+      ],
+      "resume": "Chaque créateur voit ses propres performances, ses forces, ses tournages. Base du calcul des primes et levier de motivation.",
+      "gain": "Aligne l'incitation sur la performance réelle, et supprime le calcul manuel des primes.",
+      "kpi": "Récapitulatif mensuel généré automatiquement pour chaque créateur"
+    }
+  ],
+  "ecartes": [
+    {
+      "titre": "L'écriture entièrement automatique",
+      "pourquoi": "C'est techniquement à portée, et c'est une mauvaise quête. La vibe dans le bureau, les désaccords sur une vidéo, le goût — c'est votre défense ultime, et c'est exactement ce qu'une machine ne fera jamais. On construit un agent qui challenge et qui propose ; la décision reste humaine, par choix et non par prudence.",
+      "quand": "Jamais — c'est un arbitrage de fond, pas de calendrier"
+    },
+    {
+      "titre": "L'outil public de recommandation de lieux",
+      "pourquoi": "C'est l'enjeu au plus faible score de la grille : fort en désir, faible en faisabilité tant que la base de lieux n'est ni complète ni scorée. Le chantier 15 en est le préalable strict — construire l'outil avant la grille produirait des recommandations que vous ne défendriez pas.",
+      "quand": "Après le chantier 15, si la base est jugée assez dense"
+    },
+    {
+      "titre": "Le remaster industrialisé des 237 bangers",
+      "pourquoi": "La question n'est pas technique, elle est juridique : les droits sur l'image des anciens créateurs ne sont pas réglés. On fait un démonstrateur sur les contenus sans problème de droits (chantier 13) ; l'industrialisation attend la clarification.",
+      "quand": "Dès que le statut juridique des contenus est clarifié"
+    },
+    {
+      "titre": "Fusionner l'outil interne et l'espace client",
+      "pourquoi": "Ils partagent le même modèle de données, et c'est suffisant. Les fusionner ferait courir un risque disproportionné : une erreur de cloisonnement exposerait vos marges et vos montants de deals à un client. Deux surfaces séparées qui lisent la même donnée.",
+      "quand": "Jamais — c'est une contrainte de sécurité, pas une étape"
+    },
+    {
+      "titre": "Refaire l'outil de suivi commercial de Paul",
+      "pourquoi": "Il fonctionne, il a été construit en deux jours là où un développement classique avait coûté 25 k€ pour rien. Le refaire serait une faute. Le connecter suffit (chantier 8) — et c'est aussi la preuve, en interne, que l'équipe sait déjà construire.",
+      "quand": "Jamais"
+    },
+    {
+      "titre": "Des créateurs de synthèse",
+      "pourquoi": "La technique existe et se monétise ailleurs. Mais votre moat est précisément l'inverse : un lieu, un humain, une histoire. Une audience construite sur des visages synthétiques est une commodité fragile — vous perdriez ce que personne ne peut copier.",
+      "quand": "Jamais"
+    }
+  ],
+  "decisions": [
+    {
+      "sujet": "Droits sur l'image des anciens créateurs pour la réutilisation des contenus",
+      "options": "Clarification juridique / se limiter aux contenus sans problème de droits",
+      "echeance": "M1 — bloque le chantier 13",
+      "decideur": "Nora"
+    },
+    {
+      "sujet": "Un créateur voit-il ses propres performances ? Et celles des autres ?",
+      "options": "Les siennes seulement / tout / rien (réservé à l'équipe)",
+      "echeance": "M2 — conditionne le chantier 20",
+      "decideur": "Nora"
+    },
+    {
+      "sujet": "Snapchat et TikTok : saisie manuelle ou accès officiel ?",
+      "options": "Manuel dans le rituel de reporting / demande d'accès à l'API officielle",
+      "echeance": "M1 — conditionne la complétude du chantier 2",
+      "decideur": "Paul"
+    },
+    {
+      "sujet": "À partir de quel volume publie-t-on les repères par secteur ?",
+      "options": "Dès 20 campagnes par secteur / attendre 50 / ne rien publier tant que ce n'est pas défendable",
+      "echeance": "M3",
+      "decideur": "Nora"
+    },
+    {
+      "sujet": "Service d'envoi d'emails et domaine pour les accès",
+      "options": "Prestataire d'envoi + domaine de la marque / solution existante",
+      "echeance": "M1",
+      "decideur": "Paul"
+    },
+    {
+      "sujet": "Qui pilote le système après la mission ?",
+      "options": "Paul en plus de son poste / un recrutement dédié / accompagnement Silex prolongé",
+      "echeance": "M2",
+      "decideur": "Nora"
+    }
+  ],
+  "risques": [
+    {
+      "risque": "La donnée n'est pas saisie, et tout le reste s'écroule",
+      "probabilite": "elevee",
+      "impact": "eleve",
+      "mitigation": "C'est le risque numéro un et il est comportemental, pas technique. La réponse est le conditionnement du paiement au dépôt des rushes (chantier 9) : la saisie devient une condition de fonctionnement, pas une bonne volonté."
+    },
+    {
+      "risque": "Nora reste le goulot parce que le goût ne se délègue pas",
+      "probabilite": "elevee",
+      "impact": "eleve",
+      "mitigation": "On ne cherche pas à remplacer le jugement, on cherche à le rendre disponible : la méthode d'écriture LGU encodée noir sur blanc, consultable par les créateurs (chantiers 10 et 19). L'indicateur qui compte est le nombre de scripts validés sans passer par elle."
+    },
+    {
+      "risque": "Les droits sur les anciens contenus bloquent le recyclage",
+      "probabilite": "moyenne",
+      "impact": "eleve",
+      "mitigation": "Traiter la clarification juridique comme un chantier à part entière, dès M1. En attendant, ne travailler que sur les contenus sans ambiguïté."
+    },
+    {
+      "risque": "Paul devient le second point de rupture de l'organisation",
+      "probabilite": "moyenne",
+      "impact": "eleve",
+      "mitigation": "Tout ce qu'on construit est documenté et opérable par quelqu'un d'autre. La console admin (chantier 5) existe précisément pour que l'alimentation ne dépende pas d'une personne."
+    },
+    {
+      "risque": "Une donnée interne fuit vers un espace client",
+      "probabilite": "faible",
+      "impact": "eleve",
+      "mitigation": "Cloisonnement strict par construction : deux surfaces séparées, aucun montant de deal ni marge dans la base lue côté client, et un audit de sécurité avant toute ouverture."
+    },
+    {
+      "risque": "Les plateformes ferment ou modifient l'accès aux performances",
+      "probabilite": "moyenne",
+      "impact": "moyen",
+      "mitigation": "Les relevés sont historisés chez vous : même si une source se ferme, l'historique reste. Et la saisie manuelle reste possible partout, par conception."
+    },
+    {
+      "risque": "Dépendance à Silex sur le système construit",
+      "probabilite": "moyenne",
+      "impact": "moyen",
+      "mitigation": "Le code vit dans vos dépôts, la donnée dans votre base, la méthode dans des fichiers texte lisibles. Paul est associé aux décisions d'architecture. Le guide d'implémentation existe pour qu'un prestataire tiers puisse reprendre."
+    }
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDU — ne pas modifier sauf besoin réel.
+   ═══════════════════════════════════════════════════════════════ */
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dots = n => `<span class="dots">${[1,2,3,4,5].map(i=>`<span class="${i<=n?'on':''}"></span>`).join('')}</span>`;
+const byId = id => DATA.chantiers.find(c => c.id === id);
+
+/* --- compteur --- */
+document.getElementById('m-count').textContent = DATA.chantiers.length;
+
+/* --- cartes de streams --- */
+document.getElementById('streams-cards').innerHTML = DATA.streams.map(s => {
+  const n = DATA.chantiers.filter(c => c.stream === s.id).length;
+  return `<div class="panel"><div class="panel-t">${esc(s.id)} · ${n} chantier${n>1?'s':''}</div>
+    <h4 style="margin:0 0 6px">${esc(s.nom)}</h4>
+    <p style="margin:0;font-size:14.5px;color:var(--ink-2)">${esc(s.resume)}</p></div>`;
+}).join('');
+
+/* --- tables par stream --- */
+document.getElementById('streams-tables').innerHTML = DATA.streams.map(s => {
+  const rows = DATA.chantiers.filter(c => c.stream === s.id)
+    .sort((a,b) => DATA.phases[a.phase].i - DATA.phases[b.phase].i || a.id - b.id)
+    .map(c => `<tr>
+      <td><span class="num n-${c.phase}">${c.id}</span></td>
+      <td><strong>${esc(c.titre)}</strong>
+        ${c.fondation ? ' <span class="badge b-fond">Fondation</span>' : ''}
+        ${c.statut === 'livre' ? ' <span class="badge b-livre">Livré</span>' : ''}
+        <span class="sub-desc">${esc(c.resume)}</span></td>
+      <td>${dots(c.effort)}</td>
+      <td><span class="badge b-${c.phase}">${DATA.phases[c.phase].label}</span></td>
+      <td style="font-size:13px;color:var(--ink-2)">${(c.outils||[]).map(esc).join(', ')}</td>
+    </tr>`).join('');
+  return `<h4>${esc(s.nom)}</h4><div class="tbl-wrap"><table>
+    <thead><tr><th style="width:44px">#</th><th>Chantier</th><th style="width:80px">Effort</th>
+    <th style="width:110px">Quand</th><th style="width:170px">Outils</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
+}).join('');
+
+/* --- matrice impact × effort --- */
+(function matrix(){
+  const svg = document.getElementById('matrix');
+  const W=900, H=540, L=72, R=34, T=28, B=58;
+  const x = e => L + (e-1)/4 * (W-L-R);
+  const y = i => T + (5-i)/4 * (H-T-B);
+  let out = '';
+
+  // quadrant quick wins
+  out += `<rect x="${x(1)-26}" y="${y(5)-26}" width="${x(2.6)-x(1)+52}" height="${y(3.7)-y(5)+26}"
+          fill="var(--green-soft)" rx="12"/>`;
+  out += `<text x="${x(1)-16}" y="${y(3.7)+2}" font-family="Space Mono" font-size="10"
+          fill="var(--green)" letter-spacing="1.4">QUICK WINS</text>`;
+
+  // grille
+  for(let i=1;i<=5;i++){
+    out += `<line x1="${L-26}" y1="${y(i)}" x2="${W-R+10}" y2="${y(i)}" stroke="var(--line)" stroke-width="1"/>`;
+    out += `<text x="${L-38}" y="${y(i)+4}" text-anchor="end" font-family="Space Mono"
+            font-size="11" fill="var(--ink-3)">${i}</text>`;
+    out += `<line x1="${x(i)}" y1="${T-14}" x2="${x(i)}" y2="${H-B+8}" stroke="var(--line)" stroke-width="1"/>`;
+    out += `<text x="${x(i)}" y="${H-B+26}" text-anchor="middle" font-family="Space Mono"
+            font-size="11" fill="var(--ink-3)">${i}</text>`;
+  }
+  out += `<text x="${L-52}" y="${(T+H-B)/2}" text-anchor="middle" font-family="Space Mono"
+          font-size="10" fill="var(--ink-3)" letter-spacing="1.6"
+          transform="rotate(-90 ${L-52} ${(T+H-B)/2})">IMPACT →</text>`;
+  out += `<text x="${(L+W-R)/2}" y="${H-6}" text-anchor="middle" font-family="Space Mono"
+          font-size="10" fill="var(--ink-3)" letter-spacing="1.6">EFFORT →</text>`;
+
+  // dispersion déterministe des bulles superposées (pas de doublon, pas de drag)
+  const groups = {};
+  DATA.chantiers.forEach(c => {
+    const k = `${c.impact}|${c.effort}`;
+    (groups[k] = groups[k] || []).push(c);
+  });
+  const RAD = 13, GAP = 2*RAD + 3;
+  const pts = [];
+  Object.values(groups).forEach(list => {
+    const n = list.length, ring = 20;
+    list.forEach((c, k) => {
+      let cx = x(c.effort), cy = y(c.impact);
+      if(n > 1){
+        const a = (2*Math.PI*k)/n - Math.PI/2;
+        cx += Math.cos(a)*ring; cy += Math.sin(a)*ring;
+      }
+      pts.push({c, cx, cy});
+    });
+  });
+
+  // relaxation déterministe : aucune bulle ne recouvre sa voisine
+  for(let it = 0; it < 80; it++){
+    let moved = false;
+    for(let i = 0; i < pts.length; i++){
+      for(let j = i+1; j < pts.length; j++){
+        let dx = pts[j].cx - pts[i].cx, dy = pts[j].cy - pts[i].cy;
+        let d = Math.hypot(dx, dy);
+        if(d >= GAP) continue;
+        if(d < 0.01){ dx = (i % 2 ? 1 : -1); dy = (j % 2 ? 1 : -1); d = Math.hypot(dx, dy); }
+        const push = (GAP - d) / 2 / d;
+        pts[i].cx -= dx*push; pts[i].cy -= dy*push;
+        pts[j].cx += dx*push; pts[j].cy += dy*push;
+        moved = true;
+      }
+    }
+    // on reste dans le cadre
+    pts.forEach(p => {
+      p.cx = Math.max(L - 16, Math.min(p.cx, W - R + 4));
+      p.cy = Math.max(T + 2,  Math.min(p.cy, H - B - 2));
+    });
+    if(!moved) break;
+  }
+
+  pts.forEach(({c, cx, cy}) => {
+    const col = DATA.phases[c.phase].color;
+    out += `<g class="bub" data-id="${c.id}" style="cursor:default">
+      <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${RAD}" fill="${col}" opacity="0.92"
+        ${c.fondation ? 'stroke="var(--accent)" stroke-width="3"' : 'stroke="#fff" stroke-width="1.5"'}/>
+      <text x="${cx.toFixed(1)}" y="${(cy+3.7).toFixed(1)}" text-anchor="middle"
+        font-family="Space Mono" font-size="10.5" font-weight="700" fill="#fff">${c.id}</text></g>`;
+  });
+  svg.innerHTML = out;
+
+  const tip = document.getElementById('mx-tip'), box = svg.parentElement;
+  svg.querySelectorAll('.bub').forEach(g => {
+    g.addEventListener('mouseenter', ev => {
+      const c = byId(+g.dataset.id);
+      tip.innerHTML = `<b>${esc(c.id)} · ${esc(c.titre)}</b>${esc(c.resume)}`;
+      tip.style.display = 'block';
+      const r = box.getBoundingClientRect(), b = g.getBoundingClientRect();
+      let left = b.left - r.left + b.width/2 - tip.offsetWidth/2;
+      left = Math.max(8, Math.min(left, r.width - tip.offsetWidth - 8));
+      tip.style.left = left + 'px';
+      tip.style.top  = (b.top - r.top - tip.offsetHeight - 10) + 'px';
+    });
+    g.addEventListener('mouseleave', () => tip.style.display = 'none');
+  });
+})();
+
+/* --- timeline --- */
+document.getElementById('gantt-rows').innerHTML = DATA.chantiers
+  .slice().sort((a,b) => DATA.phases[a.phase].i - DATA.phases[b.phase].i || a.id - b.id)
+  .map(c => {
+    const p = DATA.phases[c.phase];
+    // un chantier occupe sa phase ; une fondation démarre une phase plus tôt si possible
+    const start = c.fondation ? Math.max(0, p.i - (p.i > 0 ? 1 : 0)) : p.i;
+    const span  = (p.i - start) + 1;
+    return `<div class="g-row">
+      <div class="g-label"><span class="num n-${c.phase}" style="width:22px;height:22px;font-size:10.5px">${c.id}</span>
+        <span class="t" title="${esc(c.titre)}">${esc(c.titre)}</span></div>
+      <div class="g-track">
+        <div class="g-grid"><div></div><div></div><div></div><div></div></div>
+        <div class="g-bar" style="left:${start*25}%; width:${span*25}%; background:${p.color}"></div>
+      </div></div>`;
+  }).join('');
+
+/* --- tables data-driven --- */
+document.getElementById('ecartes-rows').innerHTML = DATA.ecartes.map(e =>
+  `<tr><td><strong>${esc(e.titre)}</strong></td><td>${esc(e.pourquoi)}</td>
+   <td style="color:var(--ink-2)">${esc(e.quand)}</td></tr>`).join('');
+
+const lvl = v => ({faible:'Faible', moyenne:'Moyenne', elevee:'Élevée',
+                   moyen:'Moyen', eleve:'Élevé'}[v] || v);
+document.getElementById('risques-rows').innerHTML = DATA.risques.map(r =>
+  `<tr><td><strong>${esc(r.risque)}</strong></td><td>${esc(lvl(r.probabilite))}</td>
+   <td>${esc(lvl(r.impact))}</td><td>${esc(r.mitigation)}</td></tr>`).join('');
+
+document.getElementById('decisions-rows').innerHTML = DATA.decisions.map(d =>
+  `<tr><td><strong>${esc(d.sujet)}</strong></td><td>${esc(d.options)}</td>
+   <td>${esc(d.echeance)}</td><td>${esc(d.decideur)}</td></tr>`).join('');
+
+/* --- nav active --- */
+/* Aucun observateur ne pilote la visibilité du contenu : voir le commentaire
+   « VISIBILITÉ » dans la feuille de style. Le seul observateur restant surligne
+   l'entrée de menu courante — s'il ne se déclenche pas, on perd un surlignage,
+   jamais du contenu. */
+const links = [...document.querySelectorAll('.navpills a')];
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if(e.isIntersecting){
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+  }
+}), {rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
+</script>
+
+<!-- forge-share-bar -->
+<script>window.__FORGE_SHARE__={"slug": "lgu-roadmap"};</script>
+<script>
+/* forge share-bar — interne (Access) / externe (/s/ + shlink) + toast + revoke
+ * window.__FORGE_SHARE__ = { slug?, shareUrl?, shortUrl? }
+ * slug déduit du path /a/<slug>/ si absent.
+ */
+(function () {
+  if (window.__FORGE_SHARE_BAR__) return;
+  window.__FORGE_SHARE_BAR__ = true;
+
+  var cfg = window.__FORGE_SHARE__ || {};
+  var slug = cfg.slug || "";
+  if (!slug) {
+    var m = location.pathname.match(/^\/a\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?/);
+    if (m) slug = m[1];
+  }
+  if (!slug || location.pathname.indexOf("/a/") !== 0) return;
+
+  var state = {
+    active: false,
+    shareUrl: "",
+    shortUrl: "",
+  };
+
+  /* ── styles ───────────────────────────────────────────── */
+  var css = document.createElement("style");
+  css.textContent =
+    "[data-forge-share-bar]{position:fixed;top:12px;right:12px;z-index:2147483646;" +
+    "display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:min(96vw,420px);" +
+    "font-family:system-ui,-apple-system,sans-serif;font-size:13px;" +
+    "background:rgba(254,254,254,.92);backdrop-filter:blur(10px);" +
+    "border:1px solid rgba(3,22,53,.12);padding:6px;box-shadow:0 8px 28px rgba(3,22,53,.12)}" +
+    "[data-forge-share-bar] button{cursor:pointer;border:1px solid #031635;padding:7px 11px;" +
+    "background:#FEFEFE;color:#031635;border-radius:0;font-weight:600;font-size:12.5px;" +
+    "font-family:inherit;line-height:1.2;transition:background .12s,color .12s,opacity .12s}" +
+    "[data-forge-share-bar] button:hover:not(:disabled){background:#eef2f7}" +
+    "[data-forge-share-bar] button:disabled{opacity:.55;cursor:wait}" +
+    "[data-forge-share-bar] button.primary{background:#031635;color:#FEFEFE}" +
+    "[data-forge-share-bar] button.primary:hover:not(:disabled){background:#1a2b4b}" +
+    "[data-forge-share-bar] button.danger{border-color:#c43c3c;color:#c43c3c}" +
+    "[data-forge-share-bar] button.danger:hover:not(:disabled){background:rgba(196,60,60,.08)}" +
+    "[data-forge-share-bar] .fsb-shared{display:none;align-items:center;gap:6px;" +
+    "font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;" +
+    "color:#0d7a5f;background:rgba(13,122,95,.1);border:1px solid rgba(13,122,95,.35);" +
+    "padding:5px 9px}" +
+    "[data-forge-share-bar] .fsb-shared.on{display:inline-flex}" +
+    "[data-forge-share-bar] .fsb-shared-dot{width:6px;height:6px;border-radius:50%;" +
+    "background:#0d7a5f;box-shadow:0 0 0 3px rgba(13,122,95,.2)}" +
+    "[data-forge-share-bar] .fsb-hint{font-size:10.5px;opacity:.5;color:#031635;padding:0 4px}" +
+    "[data-forge-toast]{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(12px);" +
+    "z-index:2147483647;background:#031635;color:#FEFEFE;padding:12px 18px;font:600 13px system-ui,sans-serif;" +
+    "box-shadow:0 10px 32px rgba(3,22,53,.28);opacity:0;pointer-events:none;" +
+    "transition:opacity .18s ease,transform .18s ease;max-width:min(92vw,360px);text-align:center}" +
+    "[data-forge-toast].on{opacity:1;transform:translateX(-50%) translateY(0)}" +
+    "[data-forge-toast].err{background:#c43c3c}";
+  document.documentElement.appendChild(css);
+
+  /* ── toast ────────────────────────────────────────────── */
+  var toastEl = document.createElement("div");
+  toastEl.setAttribute("data-forge-toast", "1");
+  toastEl.setAttribute("role", "status");
+  toastEl.setAttribute("aria-live", "polite");
+  document.documentElement.appendChild(toastEl);
+  var toastTimer = null;
+
+  function toast(msg, isErr) {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("err", !!isErr);
+    toastEl.classList.add("on");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove("on");
+    }, 2400);
+  }
+
+  /* ── bar ──────────────────────────────────────────────── */
+  var bar = document.createElement("div");
+  bar.setAttribute("data-forge-share-bar", "1");
+  bar.setAttribute("role", "toolbar");
+  bar.setAttribute("aria-label", "Partage forge");
+
+  var sharedBadge = document.createElement("span");
+  sharedBadge.className = "fsb-shared";
+  sharedBadge.innerHTML =
+    '<span class="fsb-shared-dot" aria-hidden="true"></span>Partagé';
+  sharedBadge.title = "Lien externe actif (/s/… clé) — accessible hors équipe";
+
+  function mkBtn(label, cls) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    if (cls) b.className = cls;
+    return b;
+  }
+
+  var internalBtn = mkBtn("Interne");
+  internalBtn.title = "Copier le lien équipe (Access) — sans shortlink";
+
+  var externalBtn = mkBtn("Externe", "primary");
+  externalBtn.title = "Créer / copier le lien public (/s/…, shortlink si dispo). ⇧+clic = nouvelle clé";
+
+  var revokeBtn = mkBtn("Révoquer", "danger");
+  revokeBtn.title = "Annuler le partage externe — le lien public cesse de fonctionner";
+  revokeBtn.hidden = true;
+
+  var hint = document.createElement("span");
+  hint.className = "fsb-hint";
+  hint.textContent = "⇧+Externe = régénérer";
+
+  bar.appendChild(sharedBadge);
+  bar.appendChild(internalBtn);
+  bar.appendChild(externalBtn);
+  bar.appendChild(revokeBtn);
+  bar.appendChild(hint);
+  document.documentElement.appendChild(bar);
+
+  function setBusy(on) {
+    internalBtn.disabled = on;
+    externalBtn.disabled = on;
+    revokeBtn.disabled = on;
+  }
+
+  function renderState() {
+    sharedBadge.classList.toggle("on", state.active);
+    revokeBtn.hidden = !state.active;
+    externalBtn.textContent = state.active ? "Copier externe" : "Externe";
+  }
+
+  function copyText(url) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(url);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;left:-9999px;top:0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error("copy_failed"));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  function internalUrl() {
+    return location.origin + "/a/" + slug + "/";
+  }
+
+  /* ── API ──────────────────────────────────────────────── */
+  function apiShare(method, body) {
+    var opts = {
+      method: method,
+      credentials: "same-origin",
+      headers: { "content-type": "application/json" },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch("/api/share" + (method === "GET" ? "?slug=" + encodeURIComponent(slug) : ""), opts).then(
+      function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error(data.error || "error_" + r.status);
+          return data;
+        });
+      }
+    );
+  }
+
+  function refreshState() {
+    return apiShare("GET")
+      .then(function (data) {
+        // GET returns { active } only — never a key
+        state.active = !!data.active;
+        if (!state.active) {
+          state.shareUrl = "";
+          state.shortUrl = "";
+        }
+        renderState();
+      })
+      .catch(function () {
+        /* offline / unauthorized — assume inactive */
+        renderState();
+      });
+  }
+
+  /* ── actions ──────────────────────────────────────────── */
+  internalBtn.addEventListener("click", function () {
+    setBusy(true);
+    var url = internalUrl();
+    copyText(url)
+      .then(function () {
+        toast("Lien interne copié");
+      })
+      .catch(function () {
+        toast("Impossible de copier — " + url, true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  externalBtn.addEventListener("click", function (ev) {
+    var rotate = !!ev.shiftKey;
+    setBusy(true);
+    apiShare("POST", { slug: slug, rotate: rotate })
+      .then(function (data) {
+        state.active = true;
+        state.shareUrl = data.shareUrl || "";
+        state.shortUrl = data.shortUrl || "";
+        cfg.shareUrl = state.shareUrl;
+        cfg.shortUrl = state.shortUrl;
+        renderState();
+        var url = data.shortUrl || data.shareUrl;
+        return copyText(url).then(function () {
+          toast(
+            rotate
+              ? "Nouveau lien externe copié"
+              : data.shortUrl
+                ? "Lien externe copié (shortlink)"
+                : "Lien externe copié"
+          );
+        });
+      })
+      .catch(function (err) {
+        console.error("[forge share]", err);
+        toast("Échec — connecte-toi (Access)", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  revokeBtn.addEventListener("click", function () {
+    if (!state.active) return;
+    if (!confirm("Révoquer le partage externe ?\nLe lien public cessera de fonctionner immédiatement.")) {
+      return;
+    }
+    setBusy(true);
+    apiShare("DELETE", { slug: slug })
+      .then(function () {
+        state.active = false;
+        state.shareUrl = "";
+        state.shortUrl = "";
+        cfg.shareUrl = "";
+        cfg.shortUrl = "";
+        renderState();
+        toast("Partage externe révoqué");
+      })
+      .catch(function (err) {
+        console.error("[forge share revoke]", err);
+        toast("Échec de la révocation", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  renderState();
+  refreshState();
+})();
+
+</script>
+<!-- /forge-share-bar -->
+</body>
+</html>

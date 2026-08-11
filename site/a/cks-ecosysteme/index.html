@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- forge-og:start -->
+  <meta name="description" content="Pleine page: tous les tools, zones, piliers CKS, 10 flux d&#x27;interaction">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Silex Forge">
+  <meta property="og:title" content="Écosystème tools Silex — interactions">
+  <meta property="og:description" content="Pleine page: tous les tools, zones, piliers CKS, 10 flux d&#x27;interaction">
+  <meta property="og:url" content="https://forge.gosilex.com/a/cks-ecosysteme/">
+  <meta property="og:image" content="https://forge.gosilex.com/a/cks-ecosysteme/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://forge.gosilex.com/a/cks-ecosysteme/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Écosystème tools Silex — interactions">
+  <meta name="twitter:description" content="Pleine page: tous les tools, zones, piliers CKS, 10 flux d&#x27;interaction">
+<!-- forge-og:end -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Écosystème tools Silex — interactions</title>
+<meta name="description" content="Carte pleine page de tous les tools Silex, piliers CKS, et flux d'interaction.">
+<!-- diagram-meta:start -->
+<meta name="diagram:title" content="Écosystème tools Silex">
+<meta name="diagram:date" content="2026-07-30">
+<meta name="diagram:category" content="architecture">
+<meta name="diagram:cat-label" content="Écosystème">
+<meta name="diagram:color" content="navy">
+<meta name="diagram:badges" content="latest">
+<!-- diagram-meta:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --ink: #0a0a0a;
+    --ink70: rgba(0,0,0,.7);
+    --ink55: rgba(0,0,0,.55);
+    --ink12: rgba(0,0,0,.1);
+    --navy: #1a2a4a;
+    --navy2: #244b7a;
+    --tint: rgba(26,42,74,.06);
+    --line: rgba(26,42,74,.16);
+    --orange: #eb7457;
+    --mem: #1a2a4a;
+    --ssot: #2e5f9d;
+    --eng: #2d6a4f;
+    --plug: #6b4c9a;
+    --dep: #999;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Full-page layout */
+  .app {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+  header {
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--ink12);
+    padding: .85rem 1.25rem;
+    position: sticky; top: 0; z-index: 40;
+  }
+  .header-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; gap: .65rem 1.25rem;
+    align-items: center; justify-content: space-between;
+  }
+  .brand .kicker {
+    font-family: "JetBrains Mono", monospace; font-size: .62rem;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--navy);
+  }
+  .brand h1 {
+    font-size: 1.15rem; font-weight: 500; letter-spacing: -.02em;
+  }
+  .brand h1 em { font-style: italic; color: var(--navy); }
+  .filters {
+    display: flex; flex-wrap: wrap; gap: .35rem; align-items: center;
+  }
+  .filters label {
+    font-family: "JetBrains Mono", monospace; font-size: .6rem;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink55);
+    margin-right: .15rem;
+  }
+  .fbtn {
+    font-family: "JetBrains Mono", monospace; font-size: .68rem;
+    letter-spacing: .06em; text-transform: uppercase;
+    border: 1px solid var(--ink12); background: #fff; color: var(--ink55);
+    padding: .4rem .65rem; border-radius: 999px; cursor: pointer;
+    min-height: 2rem;
+  }
+  .fbtn:hover { border-color: var(--line); color: var(--navy); }
+  .fbtn[aria-pressed="true"] { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .fbtn.mem[aria-pressed="true"] { background: var(--mem); }
+  .fbtn.ssot[aria-pressed="true"] { background: var(--ssot); }
+  .fbtn.eng[aria-pressed="true"] { background: var(--eng); }
+  .fbtn.plug[aria-pressed="true"] { background: var(--plug); }
+  .fbtn.dep[aria-pressed="true"] { background: #555; }
+  .fbtn:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+  main {
+    max-width: 1400px; margin: 0 auto; width: 100%;
+    padding: 1.25rem 1.25rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  @media (max-width: 980px) {
+    main { grid-template-columns: 1fr; }
+  }
+
+  /* Map */
+  .map {
+    background: var(--surface);
+    border: 1px solid var(--ink12);
+    border-radius: 16px;
+    padding: 1rem 1rem 1.25rem;
+    overflow: hidden;
+  }
+  .map h2 {
+    font-family: "JetBrains Mono", monospace; font-size: .68rem;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--navy);
+    margin-bottom: .85rem;
+  }
+  .zones {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: .75rem;
+  }
+  @media (max-width: 720px) { .zones { grid-template-columns: 1fr; } }
+
+  .zone {
+    border: 1px solid var(--ink12);
+    border-radius: 12px;
+    background: var(--bg);
+    padding: .7rem .75rem .85rem;
+  }
+  .zone.wide { grid-column: 1 / -1; }
+  .zone h3 {
+    font-size: .78rem; font-weight: 600; margin-bottom: .15rem;
+    display: flex; align-items: center; gap: .4rem; flex-wrap: wrap;
+  }
+  .zone .where {
+    font-family: "JetBrains Mono", monospace; font-size: .62rem;
+    color: var(--ink55); margin-bottom: .55rem;
+  }
+  .zone .pillar-tag {
+    font-family: "JetBrains Mono", monospace; font-size: .58rem;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: .15rem .4rem; border-radius: 4px; color: #fff;
+  }
+  .pillar-tag.mem { background: var(--mem); }
+  .pillar-tag.ssot { background: var(--ssot); }
+  .pillar-tag.eng { background: var(--eng); }
+  .pillar-tag.plug { background: var(--plug); }
+  .pillar-tag.multi { background: #444; }
+
+  .tools {
+    display: flex; flex-wrap: wrap; gap: .4rem;
+  }
+  .tool {
+    border: 1px solid var(--ink12);
+    background: #fff;
+    border-radius: 10px;
+    padding: .45rem .55rem;
+    min-width: 7.5rem;
+    max-width: 11rem;
+    flex: 1 1 auto;
+    cursor: pointer;
+    transition: border-color .12s, box-shadow .12s, opacity .15s;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+  }
+  .tool:hover, .tool.active {
+    border-color: var(--navy);
+    box-shadow: 0 6px 18px rgba(26,42,74,.08);
+  }
+  .tool:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  .tool.dim { opacity: .22; pointer-events: none; }
+  .tool.dep { opacity: .55; border-style: dashed; }
+  .tool .name {
+    font-size: .82rem; font-weight: 600; color: var(--ink);
+    display: block; margin-bottom: .1rem;
+  }
+  .tool .sub {
+    font-size: .68rem; color: var(--ink55); line-height: 1.3;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .tool .pills {
+    display: flex; flex-wrap: wrap; gap: .2rem; margin-top: .3rem;
+  }
+  .tool .pills span {
+    font-family: "JetBrains Mono", monospace; font-size: .55rem;
+    letter-spacing: .04em; text-transform: uppercase;
+    padding: .1rem .28rem; border-radius: 3px; background: var(--tint); color: var(--navy);
+  }
+  .tool .pills span.ssot { background: rgba(46,95,157,.12); color: var(--ssot); }
+  .tool .pills span.eng { background: rgba(45,106,79,.12); color: var(--eng); }
+  .tool .pills span.plug { background: rgba(107,76,154,.12); color: var(--plug); }
+  .tool .pills span.dep { background: #eee; color: #777; }
+
+  /* Flows */
+  .flows {
+    margin-top: 1rem;
+    border-top: 1px solid var(--ink12);
+    padding-top: .85rem;
+  }
+  .flows h2 {
+    font-family: "JetBrains Mono", monospace; font-size: .68rem;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--navy);
+    margin-bottom: .65rem;
+  }
+  .flow-list { display: grid; gap: .45rem; }
+  .flow {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .55rem .75rem;
+    padding: .65rem .75rem;
+    background: var(--bg);
+    border-radius: 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    width: 100%;
+  }
+  .flow:hover, .flow.active { border-color: var(--line); background: #fff; }
+  .flow:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  .flow.dim { opacity: .25; }
+  .flow .fid {
+    font-family: "JetBrains Mono", monospace; font-size: .65rem;
+    color: var(--navy); padding-top: .15rem;
+  }
+  .flow .ftitle { font-size: .88rem; font-weight: 600; color: var(--ink); margin-bottom: .15rem; }
+  .flow .fchain {
+    font-family: "JetBrains Mono", monospace; font-size: .72rem;
+    color: var(--ink55); line-height: 1.45;
+  }
+  .flow .fchain b { color: var(--navy); font-weight: 500; }
+
+  /* Side panel */
+  .side {
+    position: sticky; top: 4.5rem;
+    background: var(--surface);
+    border: 1px solid var(--ink12);
+    border-radius: 16px;
+    padding: 1rem 1.05rem 1.15rem;
+    max-height: calc(100vh - 5.5rem);
+    overflow: auto;
+  }
+  @media (max-width: 980px) {
+    .side { position: static; max-height: none; }
+  }
+  .side .empty {
+    color: var(--ink55); font-size: .9rem; padding: .5rem 0;
+  }
+  .side h2 {
+    font-size: 1.1rem; font-weight: 600; margin-bottom: .25rem;
+  }
+  .side .meta {
+    font-family: "JetBrains Mono", monospace; font-size: .65rem;
+    color: var(--ink55); margin-bottom: .75rem;
+  }
+  .side p { font-size: .88rem; color: var(--ink70); margin-bottom: .55rem; }
+  .side h3 {
+    font-family: "JetBrains Mono", monospace; font-size: .62rem;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--navy);
+    margin: .85rem 0 .35rem;
+  }
+  .side ul { padding-left: 1.05rem; font-size: .85rem; color: var(--ink70); }
+  .side li { margin-bottom: .25rem; }
+  .side .badge-row { display: flex; flex-wrap: wrap; gap: .3rem; margin: .4rem 0 .6rem; }
+  .side .badge-row span {
+    font-family: "JetBrains Mono", monospace; font-size: .6rem;
+    letter-spacing: .05em; text-transform: uppercase;
+    padding: .2rem .4rem; border-radius: 4px; background: var(--tint); color: var(--navy);
+  }
+  .legend {
+    margin-top: 1rem; padding-top: .75rem; border-top: 1px solid var(--ink12);
+    font-size: .78rem; color: var(--ink55);
+  }
+  .legend div { margin-bottom: .25rem; }
+  .foot-link {
+    display: inline-block; margin-top: .75rem;
+    font-family: "JetBrains Mono", monospace; font-size: .65rem;
+    color: var(--navy);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="kicker">Silex · dogfood · 2026-07-30</div>
+        <h1>Écosystème tools — <em>où</em> · <em>comment ça parle</em></h1>
+      </div>
+      <div class="filters" role="group" aria-label="Filtrer par pilier">
+        <label>Filtre</label>
+        <button type="button" class="fbtn" data-filter="all" aria-pressed="true">Tout</button>
+        <button type="button" class="fbtn mem" data-filter="mem" aria-pressed="false">Memory</button>
+        <button type="button" class="fbtn ssot" data-filter="ssot" aria-pressed="false">SSOT</button>
+        <button type="button" class="fbtn eng" data-filter="eng" aria-pressed="false">Engine</button>
+        <button type="button" class="fbtn plug" data-filter="plug" aria-pressed="false">Plugins</button>
+        <button type="button" class="fbtn dep" data-filter="dep" aria-pressed="false">Deprecated</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="map">
+      <h2>Carte des tools · par zone d'hébergement</h2>
+      <div class="zones" id="zones">
+        <!-- filled by JS from data -->
+      </div>
+
+      <div class="flows">
+        <h2>Flux d'interaction (comment ça se parle)</h2>
+        <div class="flow-list" id="flows"></div>
+      </div>
+    </div>
+
+    <aside class="side" id="detail" aria-live="polite">
+      <p class="empty">Clique un <strong>tool</strong> ou un <strong>flux</strong> pour le détail (où, pilier, interactions).</p>
+      <div class="legend">
+        <div><strong style="color:var(--mem)">Memory</strong> — savoir durable (vault, notes)</div>
+        <div><strong style="color:var(--ssot)">SSOT</strong> — vérité live hors vault</div>
+        <div><strong style="color:var(--eng)">Engine</strong> — jobs / automations</div>
+        <div><strong style="color:var(--plug)">Plugins</strong> — skills / MCP / code agent</div>
+        <a class="foot-link" href="https://forge.gosilex.com/a/cks-carte/">← Cartographie maturité</a>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+const TOOLS = [
+  // Apps VPS
+  { id: "spark", name: "Spark", sub: "spark.gosilex.com · dashboards clients", zone: "apps", pillars: ["ssot","eng"], status: "ok",
+    where: "VPS Hostinger · app prod",
+    role: "Espace client : tickets, journeys, ressources, run projet.",
+    how: ["Staff + clients y travaillent le run", "SSOT tickets / board (pas le vault)", "Feeds / API pour agents (PAT spu_)"] },
+  { id: "rocky", name: "Rocky", sub: "rocky.gosilex.com · illustrations IA", zone: "apps", pillars: ["eng","plug"], status: "ok",
+    where: "VPS · app",
+    role: "Génération d'images (blog, social).",
+    how: ["Appelle Gemini API", "Sortie images pour com / contenu"] },
+  { id: "content-cal", name: "Content Calendar", sub: "content.gosilex.com · DEPRECATED", zone: "apps", pillars: ["dep"], status: "dep",
+    where: "VPS · deprecated",
+    role: "Ancien calendrier édito.",
+    how: ["Ne plus utiliser — voir vault / process contenu"] },
+  { id: "actions", name: "Actions server", sub: "actions.gosilex.com · webhooks Slack", zone: "apps", pillars: ["eng"], status: "ok",
+    where: "VPS · app",
+    role: "Réception webhooks Slack → actions.",
+    how: ["Slack → webhook → jobs / handlers"] },
+
+  // Infra
+  { id: "cloudron", name: "Cloudron", sub: "my.gosilex.com · apps + SSL", zone: "infra", pillars: ["eng"], status: "ok",
+    where: "VPS Hostinger 72.62.181.48",
+    role: "Orchestration apps self-hosted + certificats.",
+    how: ["Héberge n8n, Portainer UI, etc."] },
+  { id: "n8n", name: "n8n", sub: "n8n.gosilex.com · automations", zone: "infra", pillars: ["eng"], status: "ok",
+    where: "Cloudron / VPS",
+    role: "Automations no-code / low-code.",
+    how: ["Workflows event-driven", "Complète les crons Python/agent"] },
+  { id: "portainer", name: "Portainer", sub: "gestion Docker", zone: "infra", pillars: ["eng"], status: "ok",
+    where: "VPS", role: "Ops containers.", how: ["Deploy / restart services"] },
+  { id: "plausible", name: "Plausible", sub: "analytics.gosilex.com", zone: "infra", pillars: ["ssot"], status: "ok",
+    where: "VPS", role: "Analytics web privacy-friendly.", how: ["Mesure sites gosilex"] },
+  { id: "nocodb", name: "NocoDB", sub: "ndb.gosilex.com · DEPRECATED TBC", zone: "infra", pillars: ["dep"], status: "dep",
+    where: "VPS", role: "Ancienne base no-code.", how: ["À confirmer décom"] },
+  { id: "shlink", name: "Shlink", sub: "s.gosilex.com · shortlinks", zone: "infra", pillars: ["eng"], status: "ok",
+    where: "VPS", role: "Raccourcisseur d'URL.", how: ["skill /short · liens com & forge"] },
+  { id: "sftpgo", name: "SFTPGo", sub: "files.gosilex.com", zone: "infra", pillars: ["mem"], status: "ok",
+    where: "VPS", role: "Transfert fichiers.", how: ["Échange fichiers hors Drive"] },
+  { id: "whisper", name: "Whisper API", sub: "local · transcription", zone: "infra", pillars: ["eng"], status: "ok",
+    where: "VPS local", role: "Speech-to-text.", how: ["Lucy / audio → texte → vault"] },
+  { id: "nginx", name: "nginx", sub: "reverse proxy · SSL", zone: "infra", pillars: ["eng"], status: "ok",
+    where: "VPS", role: "Front des services.", how: ["Routage domaines *.gosilex.com"] },
+
+  // Automations
+  { id: "digest", name: "Daily Digest", sub: "cron lun-ven · Slack + Claap", zone: "auto", pillars: ["eng","mem"], status: "ok",
+    where: "cron VPS / 08_ENGINE",
+    role: "Résumé quotidien d'activité.",
+    how: ["Lit Slack (+ Claap selon config)", "Agent génère résumé", "Post #daily-digest + import vault"] },
+  { id: "content-ideas", name: "Weekly Content Ideas", sub: "cron vendredi", zone: "auto", pillars: ["eng","mem"], status: "ok",
+    where: "cron VPS",
+    role: "Idées de contenu hebdo.",
+    how: ["Agrège signaux (DM, calls, veille)", "Écrit drafts / idées dans vault com"] },
+  { id: "skill-evo", name: "Skill Evolution", sub: "cron dimanche", zone: "auto", pillars: ["eng","plug"], status: "ok",
+    where: "cron VPS",
+    role: "Propose évolutions de skills.",
+    how: ["Analyse usage / logs", "Candidats → review humaine → plugins GH"] },
+  { id: "lucy", name: "Lucy (bot vocal)", sub: "Telegram → vault", zone: "auto", pillars: ["eng","mem"], status: "ok",
+    where: "Telegram + pipeline VPS",
+    role: "Capture vocale terrain.",
+    how: ["Telegram audio → Whisper → formatage → push vault (inbox)"] },
+  { id: "watchdogs", name: "Watchdogs & backups", sub: "surveillance + nightly", zone: "auto", pillars: ["eng"], status: "ok",
+    where: "cron VPS", role: "Ops résilience.", how: ["Healthchecks + backups NocoDB/autres"] },
+
+  // Cloudflare Pages
+  { id: "site", name: "gosilex.com", sub: "Site vitrine", zone: "cf", pillars: ["mem"], status: "ok",
+    where: "Cloudflare Pages · silex-site",
+    role: "Marketing / brand publique.",
+    how: ["HTML statique · brand claire"] },
+  { id: "kc", name: "Knowledge Center", sub: "blog / doctrine", zone: "cf", pillars: ["mem"], status: "ok",
+    where: "site /knowledge-center",
+    role: "Contenu doctrine (3 mémoires, etc.).",
+    how: ["Articles issus vault / process édito"] },
+  { id: "ucc", name: "UCC Landing", sub: "unkillablecompanies.com", zone: "cf", pillars: ["mem"], status: "ok",
+    where: "CF Pages", role: "Landing marque Unkillable.", how: ["Com / acquisition"] },
+  { id: "forge", name: "Forge", sub: "forge.gosilex.com · artefacts équipe", zone: "cf", pillars: ["plug","mem"], status: "ok",
+    where: "CF Pages · go-silex/silex-forge",
+    role: "Host decks / guides / cartographies.",
+    how: ["publish.sh → git → Pages", "Access /a · share /s"] },
+  { id: "demo", name: "demo.gosilex.com", sub: "démos client", zone: "cf", pillars: ["plug"], status: "ok",
+    where: "silex-demos", role: "Funnel démos statiques.", how: ["demo-forge / teaser skills"] },
+
+  // Deprecated vercel
+  { id: "old-spark", name: "Ancien Spark", sub: "onboarding · décom", zone: "depz", pillars: ["dep"], status: "dep",
+    where: "Vercel déprécié", role: "Legacy.", how: ["Remplacé par Spark actuel"] },
+  { id: "ether", name: "Ether Impact", sub: "à migrer (Vercel perso)", zone: "depz", pillars: ["ssot"], status: "ok",
+    where: "Vercel perso Pierre", role: "Plateforme client Ether.", how: ["À migrer infra Silex"] },
+  { id: "raptor", name: "Raptor", sub: "prospection · DEPRECATED", zone: "depz", pillars: ["dep"], status: "dep",
+    where: "—", role: "Ancien outil prospection.", how: ["Ne plus utiliser"] },
+
+  // SaaS
+  { id: "attio", name: "Attio", sub: "CRM · pipeline", zone: "saas", pillars: ["ssot"], status: "ok",
+    where: "SaaS",
+    role: "SSOT commercial (deals, stages).",
+    how: ["Ne pas recopier le pipeline dans le vault", "MCP / API à la demande", "new-client peut créer fiche"] },
+  { id: "pappers", name: "Pappers", sub: "enrichissement entreprises", zone: "saas", pillars: ["ssot"], status: "ok",
+    where: "API", role: "SIREN / dirigeants.", how: ["Onboarding Spark · enrichissement leads"] },
+  { id: "claap", name: "Claap", sub: "calls · record + résumés", zone: "saas", pillars: ["ssot","eng"], status: "ok",
+    where: "SaaS",
+    role: "SSOT des meetings (brut).",
+    how: ["Record + transcript chez Claap", "Digest / import → notes Memory", "MCP lecture"] },
+  { id: "slack", name: "Slack", sub: "silexmonde · comms", zone: "saas", pillars: ["ssot","eng"], status: "ok",
+    where: "SaaS",
+    role: "Comms équipe live.",
+    how: ["Daily Digest lit les channels", "Actions webhooks", "Pas un dump total dans le vault"] },
+  { id: "telegram", name: "Telegram", sub: "capture Lucy", zone: "saas", pillars: ["eng"], status: "ok",
+    where: "SaaS", role: "Canal vocal terrain.", how: ["Audio → Lucy pipeline → vault"] },
+  { id: "gws", name: "Google Workspace", sub: "Drive vault · Sheets · Cal", zone: "saas", pillars: ["mem","ssot"], status: "ok",
+    where: "Drive partagé = SSOT vault",
+    role: "Drive = Memory humaine ; Cal/Gmail = SSOT temps/mail.",
+    how: ["silex-hub sur Drive", "MCP GWS pour agents", "rclone/mount VPS fragile"] },
+  { id: "bitwarden", name: "Bitwarden", sub: "secrets · legacy label", zone: "saas", pillars: ["ssot"], status: "ok",
+    where: "Vaultwarden / BW",
+    role: "SSOT secrets.",
+    how: ["Credentials ops — jamais dans le vault notes"] },
+  { id: "substack", name: "Substack", sub: "newsletters", zone: "saas", pillars: ["ssot"], status: "ok",
+    where: "SaaS", role: "Publication NL.", how: ["Sortie com"] },
+  { id: "drawio", name: "draw.io", sub: "diagrammes", zone: "saas", pillars: ["mem"], status: "ok",
+    where: "App / fichiers", role: "Schémas process.", how: ["Fichiers dans vault / export"] },
+  { id: "flame", name: "Flame", sub: "feedback vidéo", zone: "saas", pillars: ["ssot"], status: "ok",
+    where: "flame.gosilex.com", role: "Review vidéo clients.", how: ["Commentaires sur livrables vidéo"] },
+  { id: "trotto", name: "Trot.to", sub: "go/… raccourcis internes", zone: "saas", pillars: ["eng"], status: "ok",
+    where: "SaaS / self", role: "Shortlinks internes équipe.", how: ["Navigation rapide go/analytics…"] },
+
+  // Dev & IA
+  { id: "claude", name: "Claude Code", sub: "dev + agents", zone: "dev", pillars: ["plug","mem"], status: "ok",
+    where: "Local + VPS sessions",
+    role: "Agent principal d'exécution.",
+    how: ["Charge plugins GitHub", "MCP → Attio/Claap/GWS/Spark", "Lit/écrit vault Drive", "Publish forge"] },
+  { id: "github", name: "GitHub", sub: "go-silex · code + plugins", zone: "dev", pillars: ["plug","mem"], status: "ok",
+    where: "github.com/go-silex",
+    role: "SSOT code & skills versionnées.",
+    how: ["silex-plugins / forge / demos / spark…", "Semver plugins", "CI Pages forge"] },
+  { id: "gemini", name: "Gemini API", sub: "images Rocky", zone: "dev", pillars: ["eng"], status: "ok",
+    where: "API Google", role: "Backend image Rocky.", how: ["Rocky → Gemini → asset"] },
+  { id: "stack", name: "Stack techno", sub: "Next · TS · Python · Docker", zone: "dev", pillars: ["plug"], status: "ok",
+    where: "repos", role: "Socle technique apps.", how: ["Spark, Rocky, workers…"] },
+  { id: "mcp", name: "MCP", sub: "Claap · GWS · Attio · Wrangler…", zone: "dev", pillars: ["plug","ssot"], status: "ok",
+    where: "config machines Claude",
+    role: "Pont agent ↔ SSOTs live.",
+    how: ["Tools lecture/écriture contrôlée", "Complète plugins skills"] },
+  { id: "plugins", name: "silex-plugins", sub: "ops + delivery skills", zone: "dev", pillars: ["plug"], status: "ok",
+    where: "GitHub marketplace",
+    role: "Savoir-faire agent packagé.",
+    how: ["welcome/done/brain-factory…", "Install any cwd", "Pas dans le vault"] },
+];
+
+const ZONES = [
+  { id: "apps", title: "Apps produit", where: "VPS Hostinger · nos apps", pillars: ["multi"] },
+  { id: "infra", title: "Infra & outillage", where: "VPS · Cloudron · Docker", pillars: ["eng"] },
+  { id: "auto", title: "Automatisations", where: "crons VPS · 08_ENGINE · bots", pillars: ["eng"] },
+  { id: "cf", title: "Sites statiques", where: "Cloudflare Pages", pillars: ["mem","plug"] },
+  { id: "saas", title: "Outils SaaS", where: "externes · vérités live", pillars: ["ssot"] },
+  { id: "dev", title: "Dev & IA", where: "GitHub · agents · MCP", pillars: ["plug"] },
+  { id: "depz", title: "Legacy / à migrer", where: "Vercel perso · deprecated", pillars: ["dep"], wide: true },
+];
+
+const FLOWS = [
+  { id: "f1", title: "Capture vocale terrain",
+    chain: "Telegram → <b>Lucy</b> → Whisper → <b>Drive vault</b> (inbox)",
+    tools: ["telegram","lucy","whisper","gws"], pillars: ["eng","mem"],
+    detail: "L'humain parle sur Telegram. Lucy + Whisper transcrivent et poussent une note dans le vault (Memory)." },
+  { id: "f2", title: "Daily digest équipe",
+    chain: "Slack (+ Claap) → <b>Daily Digest</b> → Slack channel + import vault",
+    tools: ["slack","claap","digest","gws"], pillars: ["eng","ssot","mem"],
+    detail: "Job cron lit l'activité, un agent résume, le résumé est posté et classé en Memory." },
+  { id: "f3", title: "Session agent de travail",
+    chain: "Claude Code → <b>plugins GH</b> + <b>MCP</b> → lit Attio/Claap/Drive → écrit vault",
+    tools: ["claude","plugins","mcp","attio","claap","gws","github"], pillars: ["plug","ssot","mem"],
+    detail: "L'agent charge le savoir-faire (Plugins), lit les SSOTs live sans les copier en masse, écrit le durable dans Memory." },
+  { id: "f4", title: "Call client → mémoire",
+    chain: "Claap (record) → résumé / skill → <b>note Memory</b> · option Attio",
+    tools: ["claap","claude","plugins","gws","attio"], pillars: ["ssot","mem","plug"],
+    detail: "Brut reste Claap (SSOT). La décision / CR structuré va dans le vault. CRM non dupliqué." },
+  { id: "f5", title: "Contenu hebdo",
+    chain: "signaux vault/Slack → <b>Content Ideas</b> → drafts 09_COMMUNICATION",
+    tools: ["content-ideas","slack","gws","claude"], pillars: ["eng","mem"],
+    detail: "Engine qui nourrit la Memory éditoriale." },
+  { id: "f6", title: "Publish artefact équipe",
+    chain: "HTML local → <b>forge-publish</b> → GitHub silex-forge → CF Pages",
+    tools: ["claude","plugins","github","forge"], pillars: ["plug","mem"],
+    detail: "Les docs de vision/cartographie vivent en HTML sur forge (Access)." },
+  { id: "f7", title: "Run projet client",
+    chain: "Équipe + client → <b>Spark</b> (tickets/journeys) · notes profondes → vault",
+    tools: ["spark","gws","claude","attio"], pillars: ["ssot","mem"],
+    detail: "Spark = SSOT du run. Vault = mémoire narrative / delivery longue." },
+  { id: "f8", title: "Image com (Rocky)",
+    chain: "Rocky → <b>Gemini API</b> → asset image → site / LinkedIn",
+    tools: ["rocky","gemini","site"], pillars: ["eng"],
+    detail: "Pipeline créa isolé du vault métier." },
+  { id: "f9", title: "Évolution des skills",
+    chain: "usage / logs → <b>Skill Evolution</b> → PR / update <b>silex-plugins</b>",
+    tools: ["skill-evo","github","plugins","claude"], pillars: ["eng","plug"],
+    detail: "Engine propose, humain merge sur GitHub (Plugins versionnés)." },
+  { id: "f10", title: "Commercial",
+    chain: "Lead → <b>Attio</b> · calls <b>Claap</b> · pas de miroir CRM dans Drive",
+    tools: ["attio","claap","pappers","gws"], pillars: ["ssot","mem"],
+    detail: "Discipline SSOT : pipeline dans Attio ; brief / CR utiles en Memory." },
+];
+
+const ZONES_EL = document.getElementById("zones");
+const FLOWS_EL = document.getElementById("flows");
+const DETAIL = document.getElementById("detail");
+let filter = "all";
+let selectedTool = null;
+let selectedFlow = null;
+
+function pillarLabels(pillars) {
+  return pillars.map(p => {
+    if (p === "mem") return '<span class="mem">Memory</span>';
+    if (p === "ssot") return '<span class="ssot">SSOT</span>';
+    if (p === "eng") return '<span class="eng">Engine</span>';
+    if (p === "plug") return '<span class="plug">Plugins</span>';
+    if (p === "dep") return '<span class="dep">Deprecated</span>';
+    return "";
+  }).join("");
+}
+
+function toolMatches(t) {
+  if (filter === "all") return true;
+  if (filter === "dep") return t.status === "dep" || t.pillars.includes("dep");
+  return t.pillars.includes(filter);
+}
+
+function flowMatches(f) {
+  if (filter === "all") return true;
+  if (filter === "dep") return false;
+  return f.pillars.includes(filter);
+}
+
+function renderZones() {
+  ZONES_EL.innerHTML = ZONES.map(z => {
+    const tools = TOOLS.filter(t => t.zone === z.id);
+    const anyVisible = tools.some(toolMatches);
+    const wide = z.wide ? " wide" : "";
+    const pt = z.pillars[0];
+    const tag = pt === "multi"
+      ? '<span class="pillar-tag multi">multi</span>'
+      : `<span class="pillar-tag ${pt}">${pt === "dep" ? "legacy" : pt}</span>`;
+    return `<section class="zone${wide}" data-zone="${z.id}" style="${!anyVisible && filter !== "all" ? "opacity:.35" : ""}">
+      <h3>${z.title} ${tag}</h3>
+      <div class="where">${z.where}</div>
+      <div class="tools">
+        ${tools.map(t => {
+          const dim = !toolMatches(t) ? " dim" : "";
+          const dep = t.status === "dep" ? " dep" : "";
+          const act = selectedTool === t.id ? " active" : "";
+          return `<button type="button" class="tool${dim}${dep}${act}" data-tool="${t.id}">
+            <span class="name">${t.name}</span>
+            <span class="sub">${t.sub}</span>
+            <div class="pills">${pillarLabels(t.pillars)}</div>
+          </button>`;
+        }).join("")}
+      </div>
+    </section>`;
+  }).join("");
+
+  ZONES_EL.querySelectorAll("[data-tool]").forEach(btn => {
+    btn.addEventListener("click", () => selectTool(btn.getAttribute("data-tool")));
+  });
+}
+
+function renderFlows() {
+  FLOWS_EL.innerHTML = FLOWS.map((f, i) => {
+    const dim = !flowMatches(f) ? " dim" : "";
+    const act = selectedFlow === f.id ? " active" : "";
+    return `<button type="button" class="flow${dim}${act}" data-flow="${f.id}">
+      <span class="fid">F${i + 1}</span>
+      <div>
+        <div class="ftitle">${f.title}</div>
+        <div class="fchain">${f.chain}</div>
+      </div>
+    </button>`;
+  }).join("");
+  FLOWS_EL.querySelectorAll("[data-flow]").forEach(btn => {
+    btn.addEventListener("click", () => selectFlow(btn.getAttribute("data-flow")));
+  });
+}
+
+function selectTool(id) {
+  selectedTool = id;
+  selectedFlow = null;
+  const t = TOOLS.find(x => x.id === id);
+  if (!t) return;
+  // highlight related flows
+  DETAIL.innerHTML = `
+    <h2>${t.name}</h2>
+    <div class="meta">${t.where}</div>
+    <div class="badge-row">${pillarLabels(t.pillars)}</div>
+    <p>${t.role}</p>
+    <h3>Comment ça interagit</h3>
+    <ul>${t.how.map(h => `<li>${h}</li>`).join("")}</ul>
+    <h3>Flux liés</h3>
+    <ul>${FLOWS.filter(f => f.tools.includes(id)).map(f => `<li><strong>${f.title}</strong> — ${f.chain.replace(/<[^>]+>/g,"")}</li>`).join("") || "<li>Aucun flux principal listé</li>"}</ul>
+    <div class="legend">
+      <div>Clique un flux pour l'enchaînement complet.</div>
+      <a class="foot-link" href="https://forge.gosilex.com/a/cks-carte/">← Maturité 8 axes</a>
+    </div>`;
+  renderZones();
+  renderFlows();
+  // re-mark active tool after re-render
+  document.querySelector(`[data-tool="${id}"]`)?.classList.add("active");
+}
+
+function selectFlow(id) {
+  selectedFlow = id;
+  selectedTool = null;
+  const f = FLOWS.find(x => x.id === id);
+  if (!f) return;
+  DETAIL.innerHTML = `
+    <h2>${f.title}</h2>
+    <div class="meta">Flux d'interaction</div>
+    <div class="badge-row">${pillarLabels(f.pillars)}</div>
+    <p class="fchain" style="font-family:JetBrains Mono,monospace;font-size:.78rem;color:var(--navy);margin-bottom:.75rem">${f.chain}</p>
+    <p>${f.detail}</p>
+    <h3>Tools impliqués</h3>
+    <ul>${f.tools.map(tid => {
+      const t = TOOLS.find(x => x.id === tid);
+      return t ? `<li><strong>${t.name}</strong> — ${t.sub}</li>` : "";
+    }).join("")}</ul>
+    <div class="legend">
+      <div>Clique un tool pour son détail.</div>
+      <a class="foot-link" href="https://forge.gosilex.com/a/cks-carte/">← Maturité 8 axes</a>
+    </div>`;
+  renderZones();
+  renderFlows();
+  // dim tools not in flow
+  document.querySelectorAll("[data-tool]").forEach(el => {
+    const tid = el.getAttribute("data-tool");
+    if (!f.tools.includes(tid)) el.classList.add("dim");
+    else el.classList.add("active");
+  });
+  document.querySelector(`[data-flow="${id}"]`)?.classList.add("active");
+}
+
+document.querySelectorAll(".fbtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    filter = btn.getAttribute("data-filter");
+    document.querySelectorAll(".fbtn").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+    selectedTool = null;
+    selectedFlow = null;
+    DETAIL.innerHTML = `<p class="empty">Filtre <strong>${filter}</strong> — clique un tool ou un flux.</p>
+      <div class="legend">
+        <div><strong style="color:var(--mem)">Memory</strong> — savoir durable</div>
+        <div><strong style="color:var(--ssot)">SSOT</strong> — vérité live</div>
+        <div><strong style="color:var(--eng)">Engine</strong> — jobs</div>
+        <div><strong style="color:var(--plug)">Plugins</strong> — skills / MCP</div>
+      </div>`;
+    renderZones();
+    renderFlows();
+  });
+});
+
+renderZones();
+renderFlows();
+</script>
+
+<!-- forge-share-bar -->
+<script>window.__FORGE_SHARE__={"slug": "cks-ecosysteme"};</script>
+<script>
+/* forge share-bar — interne (Access) / externe (/s/ + shlink) + toast + revoke
+ * window.__FORGE_SHARE__ = { slug?, shareUrl?, shortUrl? }
+ * slug déduit du path /a/<slug>/ si absent.
+ */
+(function () {
+  if (window.__FORGE_SHARE_BAR__) return;
+  window.__FORGE_SHARE_BAR__ = true;
+
+  var cfg = window.__FORGE_SHARE__ || {};
+  var slug = cfg.slug || "";
+  if (!slug) {
+    var m = location.pathname.match(/^\/a\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?/);
+    if (m) slug = m[1];
+  }
+  if (!slug || location.pathname.indexOf("/a/") !== 0) return;
+
+  var state = {
+    active: false,
+    shareUrl: "",
+    shortUrl: "",
+  };
+
+  /* ── styles ───────────────────────────────────────────── */
+  var css = document.createElement("style");
+  css.textContent =
+    "[data-forge-share-bar]{position:fixed;top:12px;right:12px;z-index:2147483646;" +
+    "display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:min(96vw,420px);" +
+    "font-family:system-ui,-apple-system,sans-serif;font-size:13px;" +
+    "background:rgba(254,254,254,.92);backdrop-filter:blur(10px);" +
+    "border:1px solid rgba(3,22,53,.12);padding:6px;box-shadow:0 8px 28px rgba(3,22,53,.12)}" +
+    "[data-forge-share-bar] button{cursor:pointer;border:1px solid #031635;padding:7px 11px;" +
+    "background:#FEFEFE;color:#031635;border-radius:0;font-weight:600;font-size:12.5px;" +
+    "font-family:inherit;line-height:1.2;transition:background .12s,color .12s,opacity .12s}" +
+    "[data-forge-share-bar] button:hover:not(:disabled){background:#eef2f7}" +
+    "[data-forge-share-bar] button:disabled{opacity:.55;cursor:wait}" +
+    "[data-forge-share-bar] button.primary{background:#031635;color:#FEFEFE}" +
+    "[data-forge-share-bar] button.primary:hover:not(:disabled){background:#1a2b4b}" +
+    "[data-forge-share-bar] button.danger{border-color:#c43c3c;color:#c43c3c}" +
+    "[data-forge-share-bar] button.danger:hover:not(:disabled){background:rgba(196,60,60,.08)}" +
+    "[data-forge-share-bar] .fsb-shared{display:none;align-items:center;gap:6px;" +
+    "font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;" +
+    "color:#0d7a5f;background:rgba(13,122,95,.1);border:1px solid rgba(13,122,95,.35);" +
+    "padding:5px 9px}" +
+    "[data-forge-share-bar] .fsb-shared.on{display:inline-flex}" +
+    "[data-forge-share-bar] .fsb-shared-dot{width:6px;height:6px;border-radius:50%;" +
+    "background:#0d7a5f;box-shadow:0 0 0 3px rgba(13,122,95,.2)}" +
+    "[data-forge-share-bar] .fsb-hint{font-size:10.5px;opacity:.5;color:#031635;padding:0 4px}" +
+    "[data-forge-toast]{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(12px);" +
+    "z-index:2147483647;background:#031635;color:#FEFEFE;padding:12px 18px;font:600 13px system-ui,sans-serif;" +
+    "box-shadow:0 10px 32px rgba(3,22,53,.28);opacity:0;pointer-events:none;" +
+    "transition:opacity .18s ease,transform .18s ease;max-width:min(92vw,360px);text-align:center}" +
+    "[data-forge-toast].on{opacity:1;transform:translateX(-50%) translateY(0)}" +
+    "[data-forge-toast].err{background:#c43c3c}";
+  document.documentElement.appendChild(css);
+
+  /* ── toast ────────────────────────────────────────────── */
+  var toastEl = document.createElement("div");
+  toastEl.setAttribute("data-forge-toast", "1");
+  toastEl.setAttribute("role", "status");
+  toastEl.setAttribute("aria-live", "polite");
+  document.documentElement.appendChild(toastEl);
+  var toastTimer = null;
+
+  function toast(msg, isErr) {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("err", !!isErr);
+    toastEl.classList.add("on");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove("on");
+    }, 2400);
+  }
+
+  /* ── bar ──────────────────────────────────────────────── */
+  var bar = document.createElement("div");
+  bar.setAttribute("data-forge-share-bar", "1");
+  bar.setAttribute("role", "toolbar");
+  bar.setAttribute("aria-label", "Partage forge");
+
+  var sharedBadge = document.createElement("span");
+  sharedBadge.className = "fsb-shared";
+  sharedBadge.innerHTML =
+    '<span class="fsb-shared-dot" aria-hidden="true"></span>Partagé';
+  sharedBadge.title = "Lien externe actif (/s/… clé) — accessible hors équipe";
+
+  function mkBtn(label, cls) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    if (cls) b.className = cls;
+    return b;
+  }
+
+  var internalBtn = mkBtn("Interne");
+  internalBtn.title = "Copier le lien équipe (Access) — sans shortlink";
+
+  var externalBtn = mkBtn("Externe", "primary");
+  externalBtn.title = "Créer / copier le lien public (/s/…, shortlink si dispo). ⇧+clic = nouvelle clé";
+
+  var revokeBtn = mkBtn("Révoquer", "danger");
+  revokeBtn.title = "Annuler le partage externe — le lien public cesse de fonctionner";
+  revokeBtn.hidden = true;
+
+  var hint = document.createElement("span");
+  hint.className = "fsb-hint";
+  hint.textContent = "⇧+Externe = régénérer";
+
+  bar.appendChild(sharedBadge);
+  bar.appendChild(internalBtn);
+  bar.appendChild(externalBtn);
+  bar.appendChild(revokeBtn);
+  bar.appendChild(hint);
+  document.documentElement.appendChild(bar);
+
+  function setBusy(on) {
+    internalBtn.disabled = on;
+    externalBtn.disabled = on;
+    revokeBtn.disabled = on;
+  }
+
+  function renderState() {
+    sharedBadge.classList.toggle("on", state.active);
+    revokeBtn.hidden = !state.active;
+    externalBtn.textContent = state.active ? "Copier externe" : "Externe";
+  }
+
+  function copyText(url) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(url);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;left:-9999px;top:0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error("copy_failed"));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  function internalUrl() {
+    return location.origin + "/a/" + slug + "/";
+  }
+
+  /* ── API ──────────────────────────────────────────────── */
+  function apiShare(method, body) {
+    var opts = {
+      method: method,
+      credentials: "same-origin",
+      headers: { "content-type": "application/json" },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch("/api/share" + (method === "GET" ? "?slug=" + encodeURIComponent(slug) : ""), opts).then(
+      function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error(data.error || "error_" + r.status);
+          return data;
+        });
+      }
+    );
+  }
+
+  function refreshState() {
+    return apiShare("GET")
+      .then(function (data) {
+        // GET returns { active } only — never a key
+        state.active = !!data.active;
+        if (!state.active) {
+          state.shareUrl = "";
+          state.shortUrl = "";
+        }
+        renderState();
+      })
+      .catch(function () {
+        /* offline / unauthorized — assume inactive */
+        renderState();
+      });
+  }
+
+  /* ── actions ──────────────────────────────────────────── */
+  internalBtn.addEventListener("click", function () {
+    setBusy(true);
+    var url = internalUrl();
+    copyText(url)
+      .then(function () {
+        toast("Lien interne copié");
+      })
+      .catch(function () {
+        toast("Impossible de copier — " + url, true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  externalBtn.addEventListener("click", function (ev) {
+    var rotate = !!ev.shiftKey;
+    setBusy(true);
+    apiShare("POST", { slug: slug, rotate: rotate })
+      .then(function (data) {
+        state.active = true;
+        state.shareUrl = data.shareUrl || "";
+        state.shortUrl = data.shortUrl || "";
+        cfg.shareUrl = state.shareUrl;
+        cfg.shortUrl = state.shortUrl;
+        renderState();
+        var url = data.shortUrl || data.shareUrl;
+        return copyText(url).then(function () {
+          toast(
+            rotate
+              ? "Nouveau lien externe copié"
+              : data.shortUrl
+                ? "Lien externe copié (shortlink)"
+                : "Lien externe copié"
+          );
+        });
+      })
+      .catch(function (err) {
+        console.error("[forge share]", err);
+        toast("Échec — connecte-toi (Access)", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  revokeBtn.addEventListener("click", function () {
+    if (!state.active) return;
+    if (!confirm("Révoquer le partage externe ?\nLe lien public cessera de fonctionner immédiatement.")) {
+      return;
+    }
+    setBusy(true);
+    apiShare("DELETE", { slug: slug })
+      .then(function () {
+        state.active = false;
+        state.shareUrl = "";
+        state.shortUrl = "";
+        cfg.shareUrl = "";
+        cfg.shortUrl = "";
+        renderState();
+        toast("Partage externe révoqué");
+      })
+      .catch(function (err) {
+        console.error("[forge share revoke]", err);
+        toast("Échec de la révocation", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  renderState();
+  refreshState();
+})();
+
+</script>
+<!-- /forge-share-bar -->
+</body>
+</html>

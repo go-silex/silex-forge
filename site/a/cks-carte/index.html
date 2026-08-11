@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- forge-og:start -->
+  <meta name="description" content="Écosystème diagram + où vit chaque pilier + maturité 8 axes + 5 actions">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Silex Forge">
+  <meta property="og:title" content="Cartographie SSOT · 4 piliers · 8 axes">
+  <meta property="og:description" content="Écosystème diagram + où vit chaque pilier + maturité 8 axes + 5 actions">
+  <meta property="og:url" content="https://forge.gosilex.com/a/cks-carte/">
+  <meta property="og:image" content="https://forge.gosilex.com/a/cks-carte/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://forge.gosilex.com/a/cks-carte/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cartographie SSOT · 4 piliers · 8 axes">
+  <meta name="twitter:description" content="Écosystème diagram + où vit chaque pilier + maturité 8 axes + 5 actions">
+<!-- forge-og:end -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartographie SSOT · 4 piliers · 8 axes</title>
+<meta name="description" content="Où vivent les 4 piliers chez Silex, maturité des 8 axes, actions d'amélioration.">
+<!-- diagram-meta:start -->
+<meta name="diagram:title" content="Cartographie SSOT · 4 piliers · 8 axes">
+<meta name="diagram:date" content="2026-07-30">
+<meta name="diagram:category" content="analysis">
+<meta name="diagram:cat-label" content="Cartographie">
+<meta name="diagram:color" content="navy">
+<meta name="diagram:badges" content="latest">
+<!-- diagram-meta:end -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fff; --soft: #f5f5f7; --ink: #0a0a0a;
+    --ink70: rgba(0,0,0,.72); --ink55: rgba(0,0,0,.58); --ink12: rgba(0,0,0,.12);
+    --navy: #1a2a4a; --navy-soft: #244b7a; --tint: rgba(26,42,74,.06); --line: rgba(26,42,74,.18);
+    --ok: #1a2a4a; --mid: #b34a32; --low: #666;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.5;
+    -webkit-font-smoothing: antialiased; padding: 2rem 1.25rem 3.5rem;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .kicker {
+    font-family: "JetBrains Mono", monospace; font-size: .7rem;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--navy); margin-bottom: .5rem;
+  }
+  h1 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 500; letter-spacing: -.02em; margin-bottom: .5rem; }
+  h1 em { font-style: italic; color: var(--navy); }
+  .lede { color: var(--ink70); font-size: 1.05rem; max-width: 36rem; margin-bottom: 1.75rem; }
+  h2 {
+    font-size: 1.15rem; font-weight: 500; margin: 2rem 0 .75rem;
+    padding-bottom: .45rem; border-bottom: 1px solid var(--ink12);
+  }
+  h2 em { font-style: italic; color: var(--navy); }
+  h3 {
+    font-family: "JetBrains Mono", monospace; font-size: .68rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--navy); font-weight: 500; margin: 1.25rem 0 .45rem;
+  }
+  p, li { color: var(--ink70); font-size: .93rem; }
+  ul { padding-left: 1.1rem; margin: .3rem 0 .5rem; }
+  li { margin-bottom: .2rem; }
+  strong { color: var(--ink); }
+  code {
+    font-family: "JetBrains Mono", monospace; font-size: .82em;
+    background: var(--tint); color: var(--navy); padding: .05rem .3rem; border-radius: 3px;
+  }
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: .75rem 0 1rem; }
+  @media (max-width: 700px) { .pillars { grid-template-columns: 1fr; } }
+  .pillar {
+    border: 1px solid var(--ink12); border-radius: 12px; padding: 1rem 1.05rem; background: #fff;
+  }
+  .pillar .n {
+    font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .12em;
+    color: var(--navy); margin-bottom: .25rem;
+  }
+  .pillar h4 { font-size: 1rem; margin-bottom: .35rem; font-weight: 600; }
+  .pillar .verdict {
+    margin-top: .55rem; font-size: .85rem; color: var(--ink55);
+    border-top: 1px solid var(--ink12); padding-top: .45rem;
+  }
+  .scroll { overflow-x: auto; margin: .5rem 0 1rem; border: 1px solid var(--ink12); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: .86rem; min-width: 520px; }
+  th, td { text-align: left; padding: .55rem .65rem; border-bottom: 1px solid rgba(0,0,0,.06); vertical-align: top; }
+  th {
+    font-family: "JetBrains Mono", monospace; font-size: .62rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--ink55); background: var(--soft); font-weight: 500;
+  }
+  td { color: var(--ink70); }
+  td:first-child { color: var(--ink); font-weight: 500; }
+  tr:last-child td { border-bottom: none; }
+  .bar {
+    display: flex; gap: .35rem; flex-wrap: wrap; margin: .75rem 0 1rem;
+  }
+  .chip {
+    font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .06em;
+    padding: .3rem .55rem; border-radius: 8px; background: var(--soft); color: var(--ink55);
+  }
+  .chip.ok { background: var(--tint); color: var(--navy); }
+  .chip.mid { background: rgba(235,116,87,.12); color: var(--mid); }
+  .chip.low { background: #eee; color: var(--low); }
+  .score {
+    display: inline-block; min-width: 1.4rem; text-align: center;
+    font-family: "JetBrains Mono", monospace; font-weight: 500; color: var(--navy);
+  }
+  .actions { counter-reset: a; list-style: none; padding: 0; margin: .5rem 0; }
+  .actions li {
+    counter-increment: a; position: relative;
+    padding: .65rem .75rem .65rem 2.5rem; background: var(--soft);
+    border-radius: 10px; margin-bottom: .4rem; color: var(--ink70);
+  }
+  .actions li::before {
+    content: counter(a); position: absolute; left: .7rem; top: .65rem;
+    width: 1.3rem; height: 1.3rem; border-radius: 50%; background: var(--navy); color: #fff;
+    font-family: "JetBrains Mono", monospace; font-size: .7rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .schema {
+    font-family: "JetBrains Mono", monospace; font-size: .78rem; color: var(--navy);
+    background: var(--soft); padding: 1rem; border-radius: 10px; line-height: 1.7; margin: .75rem 0;
+    overflow-x: auto; white-space: pre;
+  }
+  .foot { margin-top: 2rem; padding-top: .85rem; border-top: 1px solid var(--ink12); font-size: .8rem; color: var(--ink55); }
+  .foot a { color: var(--navy); }
+
+  /* Ecosystem diagram */
+  .eco {
+    margin: 0 0 2rem;
+    border: 1px solid var(--ink12);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #fafbfc 0%, #fff 55%);
+    padding: 1rem 1rem 1.15rem;
+    overflow: hidden;
+  }
+  .eco .cap {
+    font-family: "JetBrains Mono", monospace; font-size: .62rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--navy); margin-bottom: .65rem;
+  }
+  .eco-svg { width: 100%; height: auto; display: block; max-width: 860px; margin: 0 auto; }
+  .eco-legend {
+    display: flex; flex-wrap: wrap; gap: .45rem .85rem; margin-top: .85rem;
+    padding-top: .75rem; border-top: 1px solid var(--ink12);
+    font-size: .8rem; color: var(--ink55);
+  }
+  .eco-legend span { display: inline-flex; align-items: center; gap: .35rem; }
+  .eco-legend i {
+    display: inline-block; width: .65rem; height: .65rem; border-radius: 3px;
+  }
+  .eco-note {
+    margin-top: .65rem; font-size: .82rem; color: var(--ink55); line-height: 1.45;
+  }
+  @media (max-width: 640px) {
+    .eco { padding: .75rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">Silex · dogfood interne · 2026-07-30</p>
+  <h1>Cartographie.<br><em>Où c’est</em> · <em>où on est faible</em></h1>
+  <p class="lede">Deux questions seulement : qu’est-ce qu’on a dans les 4 piliers et où ? Quelle maturité sur les 8 axes, et quoi faire pour monter ?</p>
+
+  <div class="eco" aria-label="Diagramme écosystème Silex">
+    <p class="cap">Écosystème · 4 piliers</p>
+    <!-- viewBox wide diagram: humans/agents top → 4 pillars middle → systems bottom -->
+    <svg class="eco-svg" viewBox="0 0 860 520" role="img" aria-labelledby="eco-title eco-desc">
+      <title id="eco-title">Écosystème connaissance Silex</title>
+      <desc id="eco-desc">Humains et agents consomment quatre piliers : Memory, SSOT, Engine, Plugins, branchés sur Drive, SaaS, crons et GitHub.</desc>
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a2a4a" opacity="0.45"/>
+        </marker>
+        <filter id="soft" x="-5%" y="-5%" width="110%" height="110%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1a2a4a" flood-opacity="0.08"/>
+        </filter>
+      </defs>
+
+      <!-- Top consumers -->
+      <rect x="120" y="18" width="200" height="56" rx="12" fill="#fff" stroke="#1a2a4a" stroke-width="1.5" filter="url(#soft)"/>
+      <text x="220" y="42" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#0a0a0a">Humains</text>
+      <text x="220" y="58" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">équipe · clients (plus tard)</text>
+
+      <rect x="540" y="18" width="200" height="56" rx="12" fill="#fff" stroke="#1a2a4a" stroke-width="1.5" filter="url(#soft)"/>
+      <text x="640" y="42" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#0a0a0a">Agents</text>
+      <text x="640" y="58" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">Claude · MCP · skills</text>
+
+      <!-- Arrows down to pillars band -->
+      <line x1="220" y1="74" x2="220" y2="108" stroke="#1a2a4a" stroke-width="1.2" stroke-opacity="0.35" marker-end="url(#arrow)"/>
+      <line x1="640" y1="74" x2="640" y2="108" stroke="#1a2a4a" stroke-width="1.2" stroke-opacity="0.35" marker-end="url(#arrow)"/>
+      <line x1="220" y1="108" x2="430" y2="130" stroke="#1a2a4a" stroke-width="1" stroke-opacity="0.2"/>
+      <line x1="640" y1="108" x2="430" y2="130" stroke="#1a2a4a" stroke-width="1" stroke-opacity="0.2"/>
+
+      <!-- Pillars band background -->
+      <rect x="24" y="120" width="812" height="168" rx="16" fill="rgba(26,42,74,0.04)" stroke="rgba(26,42,74,0.12)"/>
+      <text x="44" y="142" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="1.5" fill="#1a2a4a">4 PILIERS · CONNAISSANCE D'ORGANISATION</text>
+
+      <!-- 4 pillar boxes -->
+      <!-- Memory -->
+      <rect x="40" y="156" width="186" height="112" rx="12" fill="#fff" stroke="#1a2a4a" stroke-width="1.6" filter="url(#soft)"/>
+      <text x="133" y="180" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">01</text>
+      <text x="133" y="200" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#0a0a0a">Memory</text>
+      <text x="133" y="220" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.62)">savoir durable</text>
+      <text x="133" y="242" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">silex-hub · Drive</text>
+      <rect x="88" y="250" width="90" height="10" rx="3" fill="rgba(26,42,74,0.12)"/>
+      <rect x="88" y="250" width="55" height="10" rx="3" fill="#1a2a4a" opacity="0.55"/>
+
+      <!-- SSOT -->
+      <rect x="238" y="156" width="186" height="112" rx="12" fill="#fff" stroke="#1a2a4a" stroke-width="1.6" filter="url(#soft)"/>
+      <text x="331" y="180" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">02</text>
+      <text x="331" y="200" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#0a0a0a">SSOT</text>
+      <text x="331" y="220" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.62)">vérité live</text>
+      <text x="331" y="242" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">Attio · Claap · Spark…</text>
+      <rect x="286" y="250" width="90" height="10" rx="3" fill="rgba(26,42,74,0.12)"/>
+      <rect x="286" y="250" width="36" height="10" rx="3" fill="#eb7457" opacity="0.75"/>
+
+      <!-- Engine -->
+      <rect x="436" y="156" width="186" height="112" rx="12" fill="#fff" stroke="#1a2a4a" stroke-width="1.6" filter="url(#soft)"/>
+      <text x="529" y="180" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">03</text>
+      <text x="529" y="200" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#0a0a0a">Engine</text>
+      <text x="529" y="220" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.62)">automations</text>
+      <text x="529" y="242" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">crons · Lucy · n8n</text>
+      <rect x="484" y="250" width="90" height="10" rx="3" fill="rgba(26,42,74,0.12)"/>
+      <rect x="484" y="250" width="50" height="10" rx="3" fill="#1a2a4a" opacity="0.4"/>
+
+      <!-- Plugins -->
+      <rect x="634" y="156" width="186" height="112" rx="12" fill="#fff" stroke="#1a2a4a" stroke-width="1.6" filter="url(#soft)"/>
+      <text x="727" y="180" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">04</text>
+      <text x="727" y="200" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#0a0a0a">Plugins</text>
+      <text x="727" y="220" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.62)">savoir-faire</text>
+      <text x="727" y="242" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a2a4a">silex-plugins · MCP</text>
+      <rect x="682" y="250" width="90" height="10" rx="3" fill="rgba(26,42,74,0.12)"/>
+      <rect x="682" y="250" width="72" height="10" rx="3" fill="#1a2a4a" opacity="0.7"/>
+
+      <!-- Links pillars → systems -->
+      <line x1="133" y1="268" x2="133" y2="310" stroke="#1a2a4a" stroke-width="1.2" stroke-opacity="0.3" marker-end="url(#arrow)"/>
+      <line x1="331" y1="268" x2="331" y2="310" stroke="#1a2a4a" stroke-width="1.2" stroke-opacity="0.3" marker-end="url(#arrow)"/>
+      <line x1="529" y1="268" x2="529" y2="310" stroke="#1a2a4a" stroke-width="1.2" stroke-opacity="0.3" marker-end="url(#arrow)"/>
+      <line x1="727" y1="268" x2="727" y2="310" stroke="#1a2a4a" stroke-width="1.2" stroke-opacity="0.3" marker-end="url(#arrow)"/>
+
+      <!-- Bottom systems row -->
+      <text x="44" y="328" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="1.5" fill="#1a2a4a">OÙ ÇA VIT AUJOURD'HUI</text>
+
+      <!-- System clusters -->
+      <rect x="40" y="340" width="186" height="130" rx="12" fill="#fff" stroke="rgba(26,42,74,0.18)"/>
+      <text x="133" y="364" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#0a0a0a">Drive / vault</text>
+      <text x="133" y="386" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">silex-hub PARA</text>
+      <text x="133" y="406" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">notes · pipeline</text>
+      <text x="133" y="426" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">brand · process</text>
+      <text x="133" y="450" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#b34a32">search faible</text>
+
+      <rect x="238" y="340" width="186" height="130" rx="12" fill="#fff" stroke="rgba(26,42,74,0.18)"/>
+      <text x="331" y="364" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#0a0a0a">SaaS live</text>
+      <text x="331" y="386" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">Attio · Claap</text>
+      <text x="331" y="406" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">Slack · Spark</text>
+      <text x="331" y="426" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">Calendar · Gmail</text>
+      <text x="331" y="450" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#b34a32">pas de registry</text>
+
+      <rect x="436" y="340" width="186" height="130" rx="12" fill="#fff" stroke="rgba(26,42,74,0.18)"/>
+      <text x="529" y="364" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#0a0a0a">Workers / VPS</text>
+      <text x="529" y="386" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">Daily Digest</text>
+      <text x="529" y="406" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">Lucy · n8n</text>
+      <text x="529" y="426" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">Content Ideas</text>
+      <text x="529" y="450" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#666">dispersé</text>
+
+      <rect x="634" y="340" width="186" height="130" rx="12" fill="#fff" stroke="rgba(26,42,74,0.18)"/>
+      <text x="727" y="364" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#0a0a0a">GitHub org</text>
+      <text x="727" y="386" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">silex-plugins</text>
+      <text x="727" y="406" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">silex-forge</text>
+      <text x="727" y="426" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(0,0,0,0.6)">MCP tools</text>
+      <text x="727" y="450" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1a2a4a">le plus mature</text>
+
+      <!-- Side flows between pillars (subtle) -->
+      <path d="M 226 212 H 238" stroke="#1a2a4a" stroke-width="1" stroke-opacity="0.15" stroke-dasharray="3 3"/>
+      <path d="M 424 212 H 436" stroke="#1a2a4a" stroke-width="1" stroke-opacity="0.15" stroke-dasharray="3 3"/>
+      <path d="M 622 212 H 634" stroke="#1a2a4a" stroke-width="1" stroke-opacity="0.15" stroke-dasharray="3 3"/>
+
+      <!-- Engine writes to Memory annotation -->
+      <path d="M 529 268 C 529 290 200 290 133 310" fill="none" stroke="#1a2a4a" stroke-width="1" stroke-opacity="0.2" stroke-dasharray="4 3"/>
+      <text x="300" y="302" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(26,42,74,0.45)">jobs écrivent → Memory</text>
+    </svg>
+    <div class="eco-legend">
+      <span><i style="background:#1a2a4a;opacity:.7"></i> barre = maturité relative</span>
+      <span><i style="background:#eb7457;opacity:.8"></i> point faible (SSOT / search)</span>
+      <span><i style="background:#fff;border:1px solid #1a2a4a"></i> pilier / couche système</span>
+    </div>
+    <p class="eco-note">Lecture : humains &amp; agents <strong>consomment</strong> les 4 piliers. Chaque pilier s’appuie sur une couche technique réelle. Les barres sous les piliers = maturité dogfood aujourd’hui.</p>
+  </div>
+
+  <h2>1. Les <em>4 piliers</em> — inventaire</h2>
+  <div class="pillars">
+    <article class="pillar">
+      <div class="n">01 · Memory</div>
+      <h4>Ce qu’on sait</h4>
+      <ul>
+        <li><strong>Vault</strong> → Google Drive <code>silex-hub/</code></li>
+        <li><strong>Code</strong> → GitHub <code>go-silex/*</code></li>
+        <li><strong>Search</strong> → grep / Obsidian (pas d’index)</li>
+        <li><strong>MCP mémoire</strong> → absent</li>
+      </ul>
+      <p class="verdict">Vault fort · retrouver / servir faible</p>
+    </article>
+    <article class="pillar">
+      <div class="n">02 · SSOT externe</div>
+      <h4>Vérité live hors vault</h4>
+      <ul>
+        <li><strong>Attio</strong> → CRM / pipeline</li>
+        <li><strong>Claap</strong> → calls</li>
+        <li><strong>Slack</strong> → comms</li>
+        <li><strong>Spark</strong> → run clients</li>
+        <li><strong>GitHub</strong> → code &amp; plugins</li>
+      </ul>
+      <p class="verdict">Outils OK · pas de carte unique ni discipline L0–L3</p>
+    </article>
+    <article class="pillar">
+      <div class="n">03 · Engine</div>
+      <h4>Ce qui tourne</h4>
+      <ul>
+        <li>Daily Digest · Content Ideas</li>
+        <li>Lucy (Telegram → vault)</li>
+        <li>Skill Evolution · watchdogs</li>
+        <li>n8n · Actions server</li>
+      </ul>
+      <p class="verdict">Jobs existent · dispersés · pas de catalogue</p>
+    </article>
+    <article class="pillar">
+      <div class="n">04 · Plugins</div>
+      <h4>Comment on fait</h4>
+      <ul>
+        <li><code>silex-plugins</code> ops + delivery</li>
+        <li><code>silex-forge</code> HTML + slides</li>
+        <li><code>silex-demos</code> démos</li>
+        <li>MCP Claap / GWS / Attio…</li>
+      </ul>
+      <p class="verdict">Le plus mature · pin semver à durcir</p>
+    </article>
+  </div>
+
+  <div class="schema">Savoir durable     →  Drive silex-hub          (Memory)
+Vérité live        →  Attio · Claap · Slack · Spark · GH
+Temps / auto       →  crons VPS · n8n · Lucy   (Engine)
+Savoir-faire agent →  GitHub plugins + MCP     (Plugins)</div>
+
+  <h3>SSOT externes (détail)</h3>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Système</th><th>Vérité de…</th><th>Règle</th></tr></thead>
+      <tbody>
+        <tr><td>Attio</td><td>Pipeline commercial</td><td>Lire — ne pas recopier le CRM</td></tr>
+        <tr><td>Claap</td><td>Calls</td><td>Ingest sélectif → note Memory</td></tr>
+        <tr><td>Slack</td><td>Comms équipe</td><td>Digest → import, pas miroir total</td></tr>
+        <tr><td>Spark</td><td>Run projet client</td><td>Tickets / journeys = SSOT run</td></tr>
+        <tr><td>Google Drive</td><td>Vault notes</td><td>SSOT humain Memory</td></tr>
+        <tr><td>GitHub</td><td>Code + skills</td><td>SSOT code &amp; plugins</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>2. Les <em>8 axes</em> — maturité</h2>
+  <p style="margin-bottom:.5rem;color:var(--ink55);font-size:.88rem">1 = absent · 2 = bricolé · 3 = utilisable · 4 = solide · 5 = industrialisé</p>
+
+  <div class="bar">
+    <span class="chip ok">1 IA · 4</span>
+    <span class="chip mid">2 SSOT · 2</span>
+    <span class="chip ok">3 Plugins · 4</span>
+    <span class="chip mid">4 Retrieval · 2</span>
+    <span class="chip low">5 Serving · 1</span>
+    <span class="chip">6 Engine · 3</span>
+    <span class="chip mid">7 Auth · 2</span>
+    <span class="chip low">8 Versioning · 1</span>
+  </div>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Axe</th><th>Note</th><th>Aujourd’hui</th><th>Pour monter</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td><td>Information architecture</td>
+          <td class="score">4</td>
+          <td>PARA vault clair</td>
+          <td>Frontmatter type/status systématique</td>
+        </tr>
+        <tr>
+          <td>2</td><td>SSOT &amp; connecteurs</td>
+          <td class="score">2</td>
+          <td>Outils là, pas de registry</td>
+          <td><strong>sources.yaml</strong> + règles L0–L3</td>
+        </tr>
+        <tr>
+          <td>3</td><td>Compétences (skills)</td>
+          <td class="score">4</td>
+          <td>Marketplaces GH</td>
+          <td>Pin semver ; 0 skill source dans le vault</td>
+        </tr>
+        <tr>
+          <td>4</td><td>Retrieval</td>
+          <td class="score">2</td>
+          <td>grep / wikilinks</td>
+          <td>Ingest auto + FTS puis embeddings</td>
+        </tr>
+        <tr>
+          <td>5</td><td>Serving</td>
+          <td class="score">1</td>
+          <td>Collé au folder Drive</td>
+          <td>Memory MCP read staff</td>
+        </tr>
+        <tr>
+          <td>6</td><td>Runtime &amp; automations</td>
+          <td class="score">3</td>
+          <td>Digests, Lucy, n8n</td>
+          <td>Catalogue jobs + ingest + summarize-meeting</td>
+        </tr>
+        <tr>
+          <td>7</td><td>Identité &amp; accès</td>
+          <td class="score">2</td>
+          <td>Équipe flat OK dogfood</td>
+          <td>Multi-user client = plus tard</td>
+        </tr>
+        <tr>
+          <td>8</td><td>Versioning</td>
+          <td class="score">1</td>
+          <td>Drive history only</td>
+          <td>Versions artefacts + pin plugins</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>3. Ordre pour <em>améliorer</em> (5 actions)</h2>
+  <ol class="actions">
+    <li><strong>sources.yaml</strong> — lister Attio, Claap, Slack, Spark, GH, Drive + mode L0–L3 <em>(axe 2)</em></li>
+    <li><strong>Ingest + search</strong> vault (FTS puis embeddings) <em>(axes 4, 6)</em></li>
+    <li><strong>Job summarize-meeting</strong> → note Memory <em>(axe 6)</em></li>
+    <li><strong>Memory MCP read</strong> équipe <em>(axe 5)</em></li>
+    <li><strong>Pin semver</strong> plugins <em>(axes 3, 8)</em></li>
+  </ol>
+  <p style="color:var(--ink55);font-size:.88rem;margin-top:.5rem">Plus tard : graphe, multi-tenant, SSO.</p>
+
+  <div class="foot">
+    SSOT texte : <code>04_PROJECTS/Second_Cerveau/Cartographie_SSOT_Maturite.md</code> ·
+    Sources : Spark Stack · Plugins_Marketplaces · memory-design · axes Mickael ·
+    <a href="https://forge.gosilex.com/a/cks-4-piliers/">vision 4 piliers</a>
+  </div>
+</div>
+
+<!-- forge-share-bar -->
+<script>window.__FORGE_SHARE__={"slug": "cks-carte"};</script>
+<script>
+/* forge share-bar — interne (Access) / externe (/s/ + shlink) + toast + revoke
+ * window.__FORGE_SHARE__ = { slug?, shareUrl?, shortUrl? }
+ * slug déduit du path /a/<slug>/ si absent.
+ */
+(function () {
+  if (window.__FORGE_SHARE_BAR__) return;
+  window.__FORGE_SHARE_BAR__ = true;
+
+  var cfg = window.__FORGE_SHARE__ || {};
+  var slug = cfg.slug || "";
+  if (!slug) {
+    var m = location.pathname.match(/^\/a\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?/);
+    if (m) slug = m[1];
+  }
+  if (!slug || location.pathname.indexOf("/a/") !== 0) return;
+
+  var state = {
+    active: false,
+    shareUrl: "",
+    shortUrl: "",
+  };
+
+  /* ── styles ───────────────────────────────────────────── */
+  var css = document.createElement("style");
+  css.textContent =
+    "[data-forge-share-bar]{position:fixed;top:12px;right:12px;z-index:2147483646;" +
+    "display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:min(96vw,420px);" +
+    "font-family:system-ui,-apple-system,sans-serif;font-size:13px;" +
+    "background:rgba(254,254,254,.92);backdrop-filter:blur(10px);" +
+    "border:1px solid rgba(3,22,53,.12);padding:6px;box-shadow:0 8px 28px rgba(3,22,53,.12)}" +
+    "[data-forge-share-bar] button{cursor:pointer;border:1px solid #031635;padding:7px 11px;" +
+    "background:#FEFEFE;color:#031635;border-radius:0;font-weight:600;font-size:12.5px;" +
+    "font-family:inherit;line-height:1.2;transition:background .12s,color .12s,opacity .12s}" +
+    "[data-forge-share-bar] button:hover:not(:disabled){background:#eef2f7}" +
+    "[data-forge-share-bar] button:disabled{opacity:.55;cursor:wait}" +
+    "[data-forge-share-bar] button.primary{background:#031635;color:#FEFEFE}" +
+    "[data-forge-share-bar] button.primary:hover:not(:disabled){background:#1a2b4b}" +
+    "[data-forge-share-bar] button.danger{border-color:#c43c3c;color:#c43c3c}" +
+    "[data-forge-share-bar] button.danger:hover:not(:disabled){background:rgba(196,60,60,.08)}" +
+    "[data-forge-share-bar] .fsb-shared{display:none;align-items:center;gap:6px;" +
+    "font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;" +
+    "color:#0d7a5f;background:rgba(13,122,95,.1);border:1px solid rgba(13,122,95,.35);" +
+    "padding:5px 9px}" +
+    "[data-forge-share-bar] .fsb-shared.on{display:inline-flex}" +
+    "[data-forge-share-bar] .fsb-shared-dot{width:6px;height:6px;border-radius:50%;" +
+    "background:#0d7a5f;box-shadow:0 0 0 3px rgba(13,122,95,.2)}" +
+    "[data-forge-share-bar] .fsb-hint{font-size:10.5px;opacity:.5;color:#031635;padding:0 4px}" +
+    "[data-forge-toast]{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(12px);" +
+    "z-index:2147483647;background:#031635;color:#FEFEFE;padding:12px 18px;font:600 13px system-ui,sans-serif;" +
+    "box-shadow:0 10px 32px rgba(3,22,53,.28);opacity:0;pointer-events:none;" +
+    "transition:opacity .18s ease,transform .18s ease;max-width:min(92vw,360px);text-align:center}" +
+    "[data-forge-toast].on{opacity:1;transform:translateX(-50%) translateY(0)}" +
+    "[data-forge-toast].err{background:#c43c3c}";
+  document.documentElement.appendChild(css);
+
+  /* ── toast ────────────────────────────────────────────── */
+  var toastEl = document.createElement("div");
+  toastEl.setAttribute("data-forge-toast", "1");
+  toastEl.setAttribute("role", "status");
+  toastEl.setAttribute("aria-live", "polite");
+  document.documentElement.appendChild(toastEl);
+  var toastTimer = null;
+
+  function toast(msg, isErr) {
+    toastEl.textContent = msg;
+    toastEl.classList.toggle("err", !!isErr);
+    toastEl.classList.add("on");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove("on");
+    }, 2400);
+  }
+
+  /* ── bar ──────────────────────────────────────────────── */
+  var bar = document.createElement("div");
+  bar.setAttribute("data-forge-share-bar", "1");
+  bar.setAttribute("role", "toolbar");
+  bar.setAttribute("aria-label", "Partage forge");
+
+  var sharedBadge = document.createElement("span");
+  sharedBadge.className = "fsb-shared";
+  sharedBadge.innerHTML =
+    '<span class="fsb-shared-dot" aria-hidden="true"></span>Partagé';
+  sharedBadge.title = "Lien externe actif (/s/… clé) — accessible hors équipe";
+
+  function mkBtn(label, cls) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    if (cls) b.className = cls;
+    return b;
+  }
+
+  var internalBtn = mkBtn("Interne");
+  internalBtn.title = "Copier le lien équipe (Access) — sans shortlink";
+
+  var externalBtn = mkBtn("Externe", "primary");
+  externalBtn.title = "Créer / copier le lien public (/s/…, shortlink si dispo). ⇧+clic = nouvelle clé";
+
+  var revokeBtn = mkBtn("Révoquer", "danger");
+  revokeBtn.title = "Annuler le partage externe — le lien public cesse de fonctionner";
+  revokeBtn.hidden = true;
+
+  var hint = document.createElement("span");
+  hint.className = "fsb-hint";
+  hint.textContent = "⇧+Externe = régénérer";
+
+  bar.appendChild(sharedBadge);
+  bar.appendChild(internalBtn);
+  bar.appendChild(externalBtn);
+  bar.appendChild(revokeBtn);
+  bar.appendChild(hint);
+  document.documentElement.appendChild(bar);
+
+  function setBusy(on) {
+    internalBtn.disabled = on;
+    externalBtn.disabled = on;
+    revokeBtn.disabled = on;
+  }
+
+  function renderState() {
+    sharedBadge.classList.toggle("on", state.active);
+    revokeBtn.hidden = !state.active;
+    externalBtn.textContent = state.active ? "Copier externe" : "Externe";
+  }
+
+  function copyText(url) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(url);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;left:-9999px;top:0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error("copy_failed"));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  function internalUrl() {
+    return location.origin + "/a/" + slug + "/";
+  }
+
+  /* ── API ──────────────────────────────────────────────── */
+  function apiShare(method, body) {
+    var opts = {
+      method: method,
+      credentials: "same-origin",
+      headers: { "content-type": "application/json" },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch("/api/share" + (method === "GET" ? "?slug=" + encodeURIComponent(slug) : ""), opts).then(
+      function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error(data.error || "error_" + r.status);
+          return data;
+        });
+      }
+    );
+  }
+
+  function refreshState() {
+    return apiShare("GET")
+      .then(function (data) {
+        // GET returns { active } only — never a key
+        state.active = !!data.active;
+        if (!state.active) {
+          state.shareUrl = "";
+          state.shortUrl = "";
+        }
+        renderState();
+      })
+      .catch(function () {
+        /* offline / unauthorized — assume inactive */
+        renderState();
+      });
+  }
+
+  /* ── actions ──────────────────────────────────────────── */
+  internalBtn.addEventListener("click", function () {
+    setBusy(true);
+    var url = internalUrl();
+    copyText(url)
+      .then(function () {
+        toast("Lien interne copié");
+      })
+      .catch(function () {
+        toast("Impossible de copier — " + url, true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  externalBtn.addEventListener("click", function (ev) {
+    var rotate = !!ev.shiftKey;
+    setBusy(true);
+    apiShare("POST", { slug: slug, rotate: rotate })
+      .then(function (data) {
+        state.active = true;
+        state.shareUrl = data.shareUrl || "";
+        state.shortUrl = data.shortUrl || "";
+        cfg.shareUrl = state.shareUrl;
+        cfg.shortUrl = state.shortUrl;
+        renderState();
+        var url = data.shortUrl || data.shareUrl;
+        return copyText(url).then(function () {
+          toast(
+            rotate
+              ? "Nouveau lien externe copié"
+              : data.shortUrl
+                ? "Lien externe copié (shortlink)"
+                : "Lien externe copié"
+          );
+        });
+      })
+      .catch(function (err) {
+        console.error("[forge share]", err);
+        toast("Échec — connecte-toi (Access)", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  revokeBtn.addEventListener("click", function () {
+    if (!state.active) return;
+    if (!confirm("Révoquer le partage externe ?\nLe lien public cessera de fonctionner immédiatement.")) {
+      return;
+    }
+    setBusy(true);
+    apiShare("DELETE", { slug: slug })
+      .then(function () {
+        state.active = false;
+        state.shareUrl = "";
+        state.shortUrl = "";
+        cfg.shareUrl = "";
+        cfg.shortUrl = "";
+        renderState();
+        toast("Partage externe révoqué");
+      })
+      .catch(function (err) {
+        console.error("[forge share revoke]", err);
+        toast("Échec de la révocation", true);
+      })
+      .finally(function () {
+        setBusy(false);
+      });
+  });
+
+  renderState();
+  refreshState();
+})();
+
+</script>
+<!-- /forge-share-bar -->
+</body>
+</html>

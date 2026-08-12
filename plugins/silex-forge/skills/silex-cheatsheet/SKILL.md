@@ -128,6 +128,30 @@ déjà. Ne pas ajouter de marge « au cas où » : ça crée une bande vide sous
 Largeur toujours 1260. Hauteur libre. Un ratio autour de 0,65 est le confort de lecture
 visé, ce n'est pas une contrainte.
 
+### La zone LinkedIn : 4:5, vérifié
+
+**LinkedIn n'affiche en entier que jusqu'au ratio 4:5** (1080 × 1350). Au-delà, l'image est
+rognée dans le fil et remplacée par un « voir l'image complète ».
+
+À 1260 de large, la zone visible fait donc **1575 px**. Une fiche plus haute sera coupée :
+c'est assumé, c'est ce que fait ColdIQ, l'image tronquée sert d'accroche et le clic
+révèle le reste.
+
+**Mais la coupe doit être choisie, pas subie.** Deux règles :
+
+1. **La coupe tombe sur une fin de section**, jamais au milieu d'une carte. Une section
+   tranchée en deux ne lit pas comme une accroche, elle lit comme une image cassée.
+2. **Les 1575 premiers px doivent tenir seuls** : badge auteur, titre, chips, et au moins
+   une rangée de sections complète. Quelqu'un qui ne clique jamais doit quand même
+   avoir reçu quelque chose.
+
+`render.sh` calcule le pourcentage visible et produit `*_linkedin_crop.jpg`, qui montre
+exactement où tombe la coupe. **Le regarder avant de livrer.** Si la coupe tombe mal :
+réordonner les rangées, ou ajuster une section pour déplacer la frontière.
+
+Si le sujet tient en 1575 px, viser le 4:5 exact : l'image est alors entièrement visible,
+ce qui reste le meilleur cas.
+
 ## Phase 4 — QA visuelle, obligatoire
 
 Rendre, **puis regarder l'image**, pas seulement le code. Les bugs suivants ont tous été
@@ -143,6 +167,7 @@ attrapés à l'œil et étaient invisibles à la lecture du HTML :
 - [ ] Tous les logos sont visibles sur leur tuile blanche
 - [ ] `grep -c "—"` renvoie 0
 - [ ] Lisible une fois réduit à 504 px de large (la taille réelle dans le fil LinkedIn)
+- [ ] La coupe 4:5 tombe sur une fin de section (voir `*_linkedin_crop.jpg`)
 
 Corriger et reboucler, **trois tours maximum**. Au-delà, signaler ce qui résiste plutôt
 que de s'acharner.

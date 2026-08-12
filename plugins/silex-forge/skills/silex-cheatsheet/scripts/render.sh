@@ -97,6 +97,17 @@ base = os.path.splitext(out)[0]
 im.save(base + ".jpg", quality=93, subsampling=1)
 im.resize((504, round(504 * H / W)), Image.LANCZOS).save(base + "_feed.jpg", quality=90)
 
+# ── zone LinkedIn : 4:5 est le ratio portrait max affiché sans rognage ──
+safe = round(W * 5 / 4)                       # en px CSS
+safe_px = safe * 2                            # dans l'export ×2
+if H > safe:
+    from PIL import ImageDraw
+    ov = im.copy()
+    d = ImageDraw.Draw(ov, "RGBA")
+    d.rectangle([0, safe_px, im.size[0], im.size[1]], fill=(11, 27, 51, 150))
+    d.line([(0, safe_px), (im.size[0], safe_px)], fill=(201, 82, 44), width=10)
+    ov.resize((560, round(560 * H / W)), Image.LANCZOS).save(base + "_linkedin_crop.jpg", quality=88)
+
 # garde-fou : reste-t-il du vide sous le dernier contenu ?
 w, h = im.size
 last = 0
@@ -109,4 +120,11 @@ print(f"{out}  {im.size[0]}×{im.size[1]} px  ·  ratio {round(im.size[0]/im.siz
 print(f"JPG : {base}.jpg  ·  aperçu fil LinkedIn : {base}_feed.jpg")
 if gap > 60:
     print(f"⚠  {gap} px de vide sous le dernier contenu — relance --measure et corrige la hauteur")
+
+if H > safe:
+    print(f"LinkedIn : {round(safe/H*100)}% visible dans le fil (4:5 = {safe}px sur {H}px)")
+    print(f"           aperçu de la coupe : {base}_linkedin_crop.jpg")
+    print(f"           la coupe DOIT tomber sur une fin de section, jamais au milieu")
+else:
+    print("LinkedIn : image entièrement visible dans le fil (ratio ≤ 4:5)")
 PY

@@ -1,5 +1,6 @@
 # Cloudflare Pages — silex-forge
-# Deploy: wrangler pages deploy site --project-name=silex-forge
+# Deploy: publish.sh → wrangler pages deploy site --project-name=silex-forge
+# HTML comes from the hub (silex-hub), never from git.
 name = "silex-forge"
 compatibility_date = "2026-01-01"
 pages_build_output_dir = "site"

@@ -18,7 +18,7 @@ publish refusent d’improviser un path.
 | Couche | Où | Rôle |
 |---|---|---|
 | **SSOT artefacts** | `$hub_root/$artifacts_dir/<slug>/` | HTML source dans le vault (Drive/rclone) |
-| **Deploy live** | repo `silex-forge` → `site/a/<slug>/` | CF Pages (git push) |
+| **Deploy live** | `wrangler pages deploy` | Direct Upload (token `forge.env`) |
 | **Config machine** | `~/.config/silex/forge.config.json` | path hub perso (gitignore machine) |
 | **Defaults** | plugin `forge.config.example.json` | fallback si pas de local |
 
@@ -31,7 +31,8 @@ toujours un **absolu** dans la config locale.
 ✅ ~/.config/silex/forge.config.json (merge depuis example)
 ✅ hub_root = vault valide (00_COCKPIT + 01_COMPANY)
 ✅ $hub_root/$artifacts_dir existe
-✅ forge-doctor exit 0
+✅ ~/.config/silex/forge.env (token Pages, chmod 600) — requis pour publish
+✅ forge-doctor exit 0 (token absent = warning, pas KO hub)
 ```
 
 ## Étape 0 — Doctor
@@ -125,7 +126,7 @@ if [ ! -f "$ART/README.md" ]; then
 
 HTML source par slug : `<slug>/index.html` (+ assets).
 
-- Publish live : skill `forge-publish` → git `silex-forge` `site/a/<slug>/`
+- Publish live : skill `forge-publish` → wrangler Pages (pas git)
 - Ne pas y mettre de secrets / clés share
 - meta optionnelle : `<slug>/meta.json` (title, type, description)
 EOF
@@ -151,8 +152,41 @@ Rapport :
 **Suite**
 - Générer un deck : silex-slides / frontend-slides / silex-onepager
   → écrire sous $artifacts/<slug>/
-- Publier : forge-publish (copie hub → site/a + registry + push)
+- Publier : forge-publish (hub → wrangler Pages)
 ```
+
+## Étape 5 — Token Cloudflare (publish)
+
+Sans token : on peut **écrire** le hub / générer un deck. On ne peut **pas** mettre en live.
+
+Fichier **jamais** dans git / jamais dumpé par doctor :
+
+```
+~/.config/silex/forge.env    chmod 600
+CLOUDFLARE_ACCOUNT_ID=YOUR_CLOUDFLARE_ACCOUNT_ID
+CLOUDFLARE_API_TOKEN=…
+```
+
+Compte **Gosilex** (`YOUR_CF…`) uniquement — pas `wrangler login` Mickael/Roxabi.
+
+Ordre :
+
+1. Fichier déjà là + doctor `cf token : OK` → skip
+2. `bw` dispo → proposer :
+
+```bash
+umask 077
+mkdir -p ~/.config/silex
+{
+  echo "CLOUDFLARE_ACCOUNT_ID=YOUR_CLOUDFLARE_ACCOUNT_ID"
+  echo "CLOUDFLARE_API_TOKEN=$(bw get notes cloudflare/silex-forge-pages-deploy | tr -d '[:space:]')"
+} > ~/.config/silex/forge.env
+chmod 600 ~/.config/silex/forge.env
+```
+
+3. Sinon **demander le token** (une question) et l’écrire pareil. Ne pas l’écho dans le chat.
+
+Scope : Pages Write + Read, Account Settings Read, Workers KV Storage Edit (pour `--share` CLI).
 
 ## Fallback code (rappel)
 

@@ -4,42 +4,44 @@
 
 | Couche | Rôle historique |
 |---|---|
-| `site/a/` + `registry/` **dans git main** | **Transport deploy** : push → GH Action → `wrangler pages deploy` **sans token CF sur les postes** |
+| `site/a/` + `registry/` **dans git** (`main` puis `cf-deploy`) | **Transport deploy** : push → GH Action → `wrangler pages deploy` **sans token CF sur les postes** |
 | Hub notes | pointeurs markdown seulement |
 
-Direct Upload CF = irréversible → le contenu HTML devait voyager **par git**.  
-D’où la double copie hub ⟷ git : l’une pour éditer, l’autre pour déployer.
+Repo **public** (engine) + HTML d’équipe dans git = fuite.  
+`cf-deploy` est retiré. Transport = Direct Upload, comme `roxabi-forge`.
 
-## Modèle actuel (engine-only main)
+## Modèle actuel (engine git + HTML hors git)
 
 | Couche | Emplacement | Git ? |
 |---|---|---|
-| **SSOT HTML + meta** | `$hub_root/$artifacts_dir/<slug>/` | **non** (rclone Drive) |
+| **SSOT HTML + meta** | `$hub_root/$artifacts_dir/<slug>/` | **non** (rclone Drive, partagé équipe) |
 | **Engine** | `plugins/`, `functions/`, `wrangler.toml`, skeleton `site/` | **main** |
-| **Payload Pages** | `site/` + `registry/` + `functions/` | branche **`cf-deploy`** (force-push) |
+| **Live** | projet Pages `silex-forge` | **non** — `wrangler pages deploy` |
 
 ```
 silex-slides / onepager / …
         ↓ write
 hub artifacts/<slug>/{index.html, meta.json}
         ↓ publish.sh
-build-site-from-hub.py  →  site/a + registry + catalogue
-        ↓ force-push
-branch cf-deploy
-        ↓ GH Action
-wrangler pages deploy site  →  forge.gosilex.com
+build-site-from-hub.py  →  site/a + registry + catalogue  (temp, jamais commit)
+        ↓ wrangler pages deploy site
+forge.gosilex.com
 ```
+
+1 Cloudflare Gosilex + 1 hub silex-hub + 1 host `forge.gosilex.com`.  
+Publish = doctor OK (hub) + token Pages dans `forge.env`.
 
 ## Config machine
 
 ```
 ~/.config/silex/forge.config.json     # hub_root local
+~/.config/silex/forge.env             # CLOUDFLARE_API_TOKEN (chmod 600)
 plugins/.../forge.config.example.json # defaults + fallback code
 ```
 
 Doctor : `plugins/silex-forge/scripts/forge-doctor.sh`  
 Setup : skill `forge-setup`  
-Hook SessionStart : rappel si config KO.
+Hook SessionStart : rappel si config KO. Token absent = warning (generate OK, publish KO).
 
 ## Commandes
 
@@ -47,25 +49,17 @@ Hook SessionStart : rappel si config KO.
 # rebuild full deploy from hub (tous les slugs)
 plugins/silex-forge/scripts/publish.sh --rebuild-index
 
-# publish un slug (écrit hub puis cf-deploy)
+# publish un slug (écrit hub puis wrangler)
 plugins/silex-forge/scripts/publish.sh mon-slug --title "…" --type deck
 
 # list hub
 plugins/silex-forge/scripts/publish.sh --list
 ```
 
-## CI
-
-`.github/workflows/deploy-pages.yml` :
-
-- push **`cf-deploy`** → deploy payload
-- push **`main`** (`functions/**`, `wrangler.toml`) → checkout main + overlay `site/` depuis `cf-deploy` → deploy
-
-Secrets GH inchangés : `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
-
-## main ne contient plus
+## main ne contient pas
 
 - `site/a/**` (HTML live)
 - `registry/*.json`
+- aucune branche payload
 
 Garder : `site/404.html`, `_headers`, `_redirects`, `robots.txt`, `images/`, `functions/`.

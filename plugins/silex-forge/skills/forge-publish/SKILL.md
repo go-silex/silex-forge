@@ -16,7 +16,7 @@ Publie un **HTML autonome** (ou un dossier avec `index.html`) sur le host d’ar
 | Défaut | `/a/<slug>/` — **Cloudflare Access** (équipe) |
 | Share | `/s/<slug>/<key>/` — Bypass Access, **clé**, non listé |
 | SSOT | **hub** `$artifacts/<slug>/` (path via forge.config locale) |
-| Deploy | git push `go-silex/silex-forge` → `site/a/` → CF Pages |
+| Deploy | hub → `wrangler pages deploy` (token `~/.config/silex/forge.env`) |
 
 **≠** `demo.gosilex.com` (démos client). **≠** Vercel.  
 **Pas de `/p/`** — purgé ; utiliser `--share` / barre **Externe**.
@@ -28,6 +28,7 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/forge-doctor.sh"
 ```
 
 Si **KO** → skill **`forge-setup`** (ne pas inventer `hub_root`).  
+Publish exige aussi `~/.config/silex/forge.env` (token Pages Gosilex). Doctor warn si absent.  
 Config locale : `~/.config/silex/forge.config.json` (fallback plugin `forge.config.example.json`).
 
 ## Usage
@@ -39,7 +40,7 @@ S="${CLAUDE_PLUGIN_ROOT}/scripts/publish.sh"
 # Depuis le hub SSOT (path omis si $artifacts/<slug>/index.html existe)
 "$S" <slug> --title "…" --type deck
 
-# Depuis un fichier/dossier (copie aussi vers hub SSOT après push)
+# Depuis un fichier/dossier (copie aussi vers hub SSOT, puis wrangler)
 "$S" <slug> <fichier.html|dossier> --title "…" --type deck
 
 # Interne + mint share
@@ -79,5 +80,6 @@ Autres :
 
 | Source | Clés |
 |---|---|
-| `~/.config/silex/forge.config.json` | `hub_root`, `artifacts_dir`, `public_host`, `forge_repo`… |
-| Env override | `FORGE_REPO`, `PUBLIC_HOST`, `FORGE_CONFIG` |
+| `~/.config/silex/forge.config.json` | `hub_root`, `artifacts_dir`, `public_host`, `pages_project`… |
+| `~/.config/silex/forge.env` | `CLOUDFLARE_API_TOKEN` (+ `CLOUDFLARE_ACCOUNT_ID`) |
+| Env override | `FORGE_REPO`, `PUBLIC_HOST`, `FORGE_CONFIG`, `FORGE_ENV` |

@@ -37,7 +37,7 @@ if d.get("ok"):
         f"- artifacts: {art}\n"
         f"- config: {d.get('config_source')}\n"
         "SSOT artefacts HTML = hub (artifacts/). "
-        "Deploy live = git silex-forge site/a/ via forge-publish."
+        "Deploy live = wrangler pages deploy (forge.env), HTML hors git."
     )
     if d.get("warnings"):
         msg += "\nWarnings: " + "; ".join(d["warnings"])

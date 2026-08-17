@@ -5,74 +5,70 @@
 | Champ | Valeur |
 |---|---|
 | Projet Pages | `silex-forge` |
-| Compte | Tool@gosilex.com (Gosilex) |
-| Mode | **Direct Upload** + **GitHub Action** (deploy `site/`) |
+| Compte | Tool@gosilex.com (Gosilex) `YOUR_CLOUDFLARE_ACCOUNT_ID` |
+| Mode | **Direct Upload** (`wrangler pages deploy`) — comme `roxabi-forge` |
 | Domaine custom | `forge.gosilex.com` → CNAME `silex-forge-6mm.pages.dev` (proxied) |
-| Production | branch `main` côté wrangler |
+| Production | branch `main` côté wrangler (label only — pas de git-connect) |
 
-### Pourquoi pas Git Integration ici
+## Pourquoi pas Git Integration / `cf-deploy`
 
-`silex-demos` est en **Git Integration** (idéal).  
-Ce projet a été recréé en **Direct Upload** (API `pages/projects`) — le mode est **irréversible**.  
-On compense avec :
+Le repo est destiné à être **public** (engine / plugin). Les HTML d’équipe restent dans **silex-hub** (Drive partagé). Une branche payload dans le même repo = fuite.
 
-1. **SSOT HTML** = hub silex-hub (`artifacts/`) — **pas** main
-2. **Transport deploy** = branche git **`cf-deploy`** (built par `publish.sh` / `build-site-from-hub.py`)
-3. **`.github/workflows/deploy-pages.yml`** → `wrangler pages deploy site` sur push `cf-deploy` (et overlay si `main` functions)
-4. Token CF **uniquement** dans secrets GH — **pas** sur les postes
-5. **main** = engine only (`plugins/`, `functions/`, skeleton `site/`)
+Modèle Roxabi :
 
-Secrets GH (repo `go-silex/silex-forge`) — **déjà posés** :
-
-| Secret | Source |
-|---|---|
-| `CLOUDFLARE_API_TOKEN` | Token CF `silex-forge-pages-deploy` (Pages Write + Read, Account Settings Read, scope compte GOSILEX) |
-| `CLOUDFLARE_ACCOUNT_ID` | `YOUR_CLOUDFLARE_ACCOUNT_ID` |
-
-Vaultwarden (agent vault) : note **`cloudflare/silex-forge-pages-deploy`** (notes = token ; field `CLOUDFLARE_ACCOUNT_ID`).
-
-```bash
-source ~/projects/security/vaultwarden/scripts/agent-bw-login.sh
-export CLOUDFLARE_API_TOKEN="$(bw get notes cloudflare/silex-forge-pages-deploy | tr -d '[:space:]')"
-export CLOUDFLARE_ACCOUNT_ID=YOUR_CLOUDFLARE_ACCOUNT_ID
-npx wrangler pages deploy site --project-name=silex-forge --branch=main
+```
+silex-hub / artifacts/<slug>/     SSOT — hors git
+        ↓ publish.sh (OG local + build)
+temp clone engine (functions + skeleton)
+        ↓ wrangler pages deploy site
+Pages silex-forge                 live
 ```
 
-## Checklist ops (fait / à faire)
+Token CF = **laptop** (`~/.config/silex/forge.env`), pas secrets GH.
 
-- [x] Repo `go-silex/silex-forge`
-- [x] Projet Pages `silex-forge` + premier deploy
-- [x] Domaine `forge.gosilex.com`
-- [ ] Secrets GH `CLOUDFLARE_*` pour le workflow auto
-- [ ] Cloudflare Access — [`cloudflare-access.md`](./cloudflare-access.md)
+`wrangler` depuis le laptop sur le **mauvais compte** (OAuth Mickael / Roxabi) a déjà cassé un deploy — `forge-setup` fige `CLOUDFLARE_ACCOUNT_ID` Gosilex. Doctor warn si host gosilex + autre account.
+
+## Config machine
+
+| Fichier | Rôle |
+|---|---|
+| `~/.config/silex/forge.config.json` | `hub_root`, `pages_project`, `cloudflare_account_id` |
+| `~/.config/silex/forge.env` | `CLOUDFLARE_API_TOKEN` (+ optionnel `CLOUDFLARE_ACCOUNT_ID`) · chmod 600 |
+
+```bash
+# ~/.config/silex/forge.env
+CLOUDFLARE_ACCOUNT_ID=YOUR_CLOUDFLARE_ACCOUNT_ID
+CLOUDFLARE_API_TOKEN=…
+```
+
+Source token : note BW **`cloudflare/silex-forge-pages-deploy`** (notes = token ; field `CLOUDFLARE_ACCOUNT_ID`).
+
+```bash
+umask 077
+mkdir -p ~/.config/silex
+{
+  echo "CLOUDFLARE_ACCOUNT_ID=YOUR_CLOUDFLARE_ACCOUNT_ID"
+  echo "CLOUDFLARE_API_TOKEN=$(bw get notes cloudflare/silex-forge-pages-deploy | tr -d '[:space:]')"
+} > ~/.config/silex/forge.env
+chmod 600 ~/.config/silex/forge.env
+```
+
+Scope token : Pages Write + Read, Account Settings Read, **Workers KV Storage Edit** (CLI `--share`). Compte **Gosilex** uniquement.
 
 ## Publish flow (équipe)
 
 ```bash
-# 1) SSOT hub + build + force-push cf-deploy
+# doctor (hub + token)
+plugins/silex-forge/scripts/forge-doctor.sh
+
+# 1 artefact (écrit hub puis wrangler)
 plugins/silex-forge/scripts/publish.sh mon-slug ./file.html --title "…"
-#    ou rebuild tout depuis hub :
+
+# rebuild catalogue depuis le hub partagé
 plugins/silex-forge/scripts/publish.sh --rebuild-index
-
-# 2) GH Action (push cf-deploy) → wrangler pages deploy site → forge.gosilex.com
 ```
 
-Fallback manuel (ops avec CF credentials + hub local) :
-
-```bash
-python3 plugins/silex-forge/scripts/build-site-from-hub.py --repo-root .
-npx wrangler pages deploy site --project-name=silex-forge --branch=main
-```
-
-## Migration depuis `~/.roxabi/silex-forge`
-
-Ancien : Direct Upload local ad-hoc.  
-Nouveau : repo + `/a/` + catalogue généré.
-
-| Ancien | Nouveau |
-|---|---|
-| `/silex-talk-mcp/` | `/a/silex-talk-mcp/` (301 via `_redirects`) |
-| — | `/a/github-claude-ops/` |
+Pas de `git push` HTML. Pas d’Action `Deploy Pages`.
 
 ## Secrets Pages (Functions)
 
@@ -81,5 +77,25 @@ Nouveau : repo + `/a/` + catalogue généré.
 | `SHLINK_API_KEY` | secret | API Shlink `s.gosilex.com` — shortlinks au share |
 | `SHLINK_BASE` | plain | `https://s.gosilex.com` |
 | KV `SHARES` | binding | clés share (`share:<slug>`) |
+| `FORGE_SHARE_SECRET` | secret | bypass CLI `/api/share` |
 
-Source ops : `~/.config/silex/shlink-api-key`
+Source ops : `~/.config/silex/shlink-api-key` · BW `silex-forge/FORGE_SHARE_SECRET`.
+
+## Checklist ops
+
+- [x] Repo `go-silex/silex-forge` (engine)
+- [x] Projet Pages `silex-forge` + domaine `forge.gosilex.com`
+- [x] Cloudflare Access — [`cloudflare-access.md`](./cloudflare-access.md)
+- [ ] Token local sur chaque poste qui publie (`forge.env`)
+- [ ] Secrets GH `CLOUDFLARE_*` retirés (plus d’Action deploy)
+- [ ] Branche `cf-deploy` + historique HTML purgés **avant** repo public
+
+## Migration depuis `~/.roxabi/silex-forge`
+
+Ancien : Direct Upload local ad-hoc.  
+Nouveau : même Direct Upload, SSOT = hub partagé, engine = ce repo.
+
+| Ancien | Nouveau |
+|---|---|
+| `/silex-talk-mcp/` | `/a/silex-talk-mcp/` (301 via `_redirects`) |
+| — | `/a/github-claude-ops/` |

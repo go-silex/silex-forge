@@ -8,5 +8,7 @@
   "site_dir": "site",
   "registry_dir": "registry",
   "internal_prefix": "a",
+  "pages_project": "silex-forge",
+  "cloudflare_account_id": "",
   "types": ["deck", "talk", "guide", "diagram", "gallery", "html", "other"]
 }

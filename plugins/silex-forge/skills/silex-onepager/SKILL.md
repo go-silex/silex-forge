@@ -69,7 +69,7 @@ Footer        Metalyde × Silex · date · liens
 ### Output paths
 
 **SSOT HTML = hub** (path via `~/.config/silex/forge.config.json` → `artifacts_dir`).  
-**Deploy live** = repo `go-silex/silex-forge` `site/a/` via `publish.sh` (pas Roxabi).
+**Deploy live** = `publish.sh` → wrangler Pages (pas de git HTML, pas `~/.roxabi/forge`).
 
 ```
 # SSOT (écrire ici — doctor/forge-setup requis)
@@ -83,8 +83,7 @@ $hub_root/$artifacts_dir/{slug}/index.html
 # miroir pipeline client (notes) :
 {silex-hub}/05_PIPELINE/{NN}_{Client}/preparation/{YYYY-MM-DD}_{Name}.html
 
-# deploy live (git, ne pas hand-edit comme SSOT) :
-site/a/{slug}/index.html   # dans le clone silex-forge
+# live = wrangler (ne pas hand-edit site/ du repo engine)
 ```
 
 `{slug}` : kebab-case ≤ 40 chars (ex. `metalyde-roadmap-performance-blocks`).
@@ -144,7 +143,8 @@ site/a/metalyde-roadmap-performance-blocks/index.html
 
 ## Phase 3 — Deploy forge.gosilex.com
 
-**Host Silex** = repo **`go-silex/silex-forge`** → Pages `silex-forge` → custom domain **`forge.gosilex.com`** (Access `@gosilex.com`).
+**Host Silex** = Pages `silex-forge` → **`forge.gosilex.com`** (Access `@gosilex.com`).  
+Engine git = `go-silex/silex-forge` (pas les HTML). Token = `~/.config/silex/forge.env` (compte Gosilex).
 
 **NE PAS** utiliser `~/.roxabi/forge` ni `make -C ~/.roxabi/forge deploy` ni wrangler sur le monolithe Roxabi (`forge.roxabi.dev`).  
 Il existe un `Makefile.bak.silex-accident-*` pour rappel : pointer le Makefile Roxabi sur `silex-forge` a déjà cassé le site Silex.
@@ -160,14 +160,14 @@ S="${CLAUDE_PLUGIN_ROOT}/scripts/publish.sh"  # ou: plugins/silex-forge/scripts/
 # Depuis hub SSOT (path omis si $artifacts/{slug}/index.html existe)
 "$S" {slug} --title "…" --type guide --desc "…"
 
-# Depuis un fichier (sync hub après push)
+# Depuis un fichier (sync hub puis wrangler)
 "$S" {slug} /chemin/vers/onepager.html --title "…" --type guide --desc "…"
 
 # + lien share public unlisted /s/<slug>/<key>/
 "$S" {slug} [path] --share --title "…"
 ```
 
-Push `main` → GH Action **Deploy Pages** (secret BW `cloudflare/silex-forge-pages-deploy`).
+`publish.sh` appelle `wrangler pages deploy` (token `forge.env` / BW `cloudflare/silex-forge-pages-deploy`). Pas d’Action GH.
 
 **URL (après Access login) :**
 
@@ -184,9 +184,9 @@ Voir aussi `~/projects/gosilex/silex-forge/CLAUDE.md` (modèle `/a/` vs `/s/`).
 | Erreur | Cause | Fix |
 |---|---|---|
 | Deploy full `~/.roxabi/forge/_dist` | confondre Roxabi forge et Silex forge | **uniquement** `publish.sh` sur `go-silex/silex-forge` |
-| Auth / mauvais compte CF | OAuth wrangler perso / token Roxabi | publish = git only ; CF token = GH Actions |
+| Auth / mauvais compte CF | OAuth wrangler perso / token Roxabi | `forge.env` avec `CLOUDFLARE_ACCOUNT_ID=YOUR_CF…` |
 | 302 Access sur `/a/…` | normal sans cookie | se connecter Cloudflare Access Silex |
-| Fichier absent en prod | GH Action pas terminée | `gh run list --repo go-silex/silex-forge` |
+| Fichier absent en prod | wrangler pas lancé / token KO | relancer `publish.sh` ; doctor `cf token` |
 
 ## Phase 4 — Livrable à l’utilisateur
 
@@ -212,6 +212,5 @@ Toujours renvoyer :
 - [ ] § numérotés, nav sticky
 - [ ] Chaque bloc a métier + tech + tickets
 - [ ] Liens Pilotage cliquables
-- [ ] Publié via `publish.sh` (repo `go-silex/silex-forge`)
-- [ ] GH Action Deploy Pages verte
+- [ ] Publié via `publish.sh` (wrangler Pages, hub SSOT)
 - [ ] URL `https://forge.gosilex.com/a/{slug}/` communiquée

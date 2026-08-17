@@ -33,6 +33,10 @@ PLUGIN_ROOT = Path(__file__).resolve().parents[2]
 EXAMPLE_PATH = PLUGIN_ROOT / "forge.config.example.json"
 LOCAL_PATH = Path.home() / ".config/silex/forge.config.json"
 HUB_ROOT_FILE = Path.home() / ".config/silex/hub-root"
+FORGE_ENV_PATH = Path.home() / ".config/silex/forge.env"
+
+# Gosilex Pages (public id). Token never lives in JSON — ~/.config/silex/forge.env
+GOSILEX_ACCOUNT_ID = "f8026cffc9463a03e1a6a76af5301861"
 
 REQUIRED_KEYS = (
     "version",
@@ -44,6 +48,9 @@ REQUIRED_KEYS = (
     "registry_dir",
     "internal_prefix",
 )
+
+_ENV_SECRET_KEYS = frozenset({"CLOUDFLARE_API_TOKEN", "CLOUDFLARE_API_KEY"})
+_ENV_PUBLIC_KEYS = frozenset({"CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_EMAIL"})
 
 VAULT_MARKERS = ("00_COCKPIT", "01_COMPANY")
 
@@ -111,7 +118,63 @@ def load_config() -> dict[str, Any]:
         cfg["hub_root"] = str(Path(cfg["hub_root"]).expanduser().resolve())
     cfg.setdefault("shlink_domain", "s.gosilex.com")
     cfg.setdefault("types", ["deck", "talk", "guide", "diagram", "gallery", "html", "other"])
+    cfg.setdefault("pages_project", "silex-forge")
+    cfg.setdefault("cloudflare_account_id", GOSILEX_ACCOUNT_ID)
     return cfg
+
+
+def forge_env_path() -> Path:
+    env = os.environ.get("FORGE_ENV", "").strip()
+    if env:
+        return Path(env).expanduser()
+    return FORGE_ENV_PATH
+
+
+def parse_forge_env(path: Path | None = None) -> tuple[dict[str, str], bool]:
+    """Return (non-secret keys, has_token). Never returns token values."""
+    public: dict[str, str] = {}
+    has_token = False
+    p = path or forge_env_path()
+    if not p.is_file():
+        return public, False
+    try:
+        text = p.read_text(encoding="utf-8")
+    except OSError:
+        return public, False
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, _, v = line.partition("=")
+        k, v = k.strip(), v.strip().strip("'").strip('"')
+        if k in _ENV_SECRET_KEYS:
+            if v:
+                has_token = True
+        elif k in _ENV_PUBLIC_KEYS and v:
+            public[k] = v
+    return public, has_token
+
+
+def token_present() -> bool:
+    if os.environ.get("CLOUDFLARE_API_TOKEN", "").strip():
+        return True
+    if os.environ.get("CLOUDFLARE_API_KEY", "").strip() and os.environ.get(
+        "CLOUDFLARE_EMAIL", ""
+    ).strip():
+        return True
+    _, has = parse_forge_env()
+    return has
+
+
+def resolved_account_id(cfg: dict[str, Any] | None = None) -> str:
+    env = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "").strip()
+    if env:
+        return env
+    public, _ = parse_forge_env()
+    if public.get("CLOUDFLARE_ACCOUNT_ID"):
+        return public["CLOUDFLARE_ACCOUNT_ID"]
+    cfg = cfg or load_config()
+    return str(cfg.get("cloudflare_account_id") or GOSILEX_ACCOUNT_ID).strip()
 
 
 def artifacts_root(cfg: dict[str, Any] | None = None) -> Path | None:
@@ -168,6 +231,20 @@ def doctor(cfg: dict[str, Any] | None = None) -> dict[str, Any]:
         if not str(cfg.get(key) or "").strip():
             issues.append(f"{key} vide")
 
+    acct = resolved_account_id(cfg)
+    host = str(cfg.get("public_host") or "")
+    if host == "forge.gosilex.com" and acct and not acct.startswith("f8026cff"):
+        warnings.append(
+            f"CLOUDFLARE_ACCOUNT_ID {acct[:8]}… ≠ compte Gosilex — "
+            "risque deploy sur le mauvais compte (Mickael vs Tool@gosilex)"
+        )
+    has_token = token_present()
+    if not has_token:
+        warnings.append(
+            f"token CF absent — generate OK, publish KO. "
+            f"Écrire {forge_env_path()} (chmod 600) via forge-setup"
+        )
+
     return {
         "ok": len(issues) == 0,
         "issues": issues,
@@ -178,6 +255,11 @@ def doctor(cfg: dict[str, Any] | None = None) -> dict[str, Any]:
         "artifacts_root": str(art) if art else None,
         "local_path": str(LOCAL_PATH),
         "example_path": str(EXAMPLE_PATH),
+        "forge_env": str(forge_env_path()),
+        "has_token": has_token,
+        "deploy_ready": has_token and len(issues) == 0,
+        "cloudflare_account_id": acct or None,
+        "pages_project": cfg.get("pages_project") or "silex-forge",
         "skill": "forge-setup",
     }
 
@@ -196,6 +278,9 @@ def export_env(cfg: dict[str, Any] | None = None) -> str:
         "FORGE_SITE_DIR": cfg.get("site_dir", "site"),
         "FORGE_REGISTRY_DIR": cfg.get("registry_dir", "registry"),
         "FORGE_INTERNAL_PREFIX": cfg.get("internal_prefix", "a"),
+        "FORGE_PAGES_PROJECT": cfg.get("pages_project") or "silex-forge",
+        "CLOUDFLARE_ACCOUNT_ID": resolved_account_id(cfg),
+        "FORGE_ENV_FILE": str(forge_env_path()),
         "FORGE_CONFIG_SOURCE": cfg.get("_config_source", ""),
         "FORGE_CONFIG_FALLBACK": "1" if cfg.get("_config_fallback") else "0",
     }

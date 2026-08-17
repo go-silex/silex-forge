@@ -61,6 +61,12 @@ print(f"  source   : {d.get('config_source')}")
 print(f"  fallback : {d.get('fallback')}")
 print(f"  hub_root : {d.get('hub_root') or '—'}")
 print(f"  artifacts: {d.get('artifacts_root') or '—'}")
+acct = d.get("cloudflare_account_id") or ""
+acct_s = f"{acct[:8]}…" if len(acct) > 8 else (acct or "—")
+print(f"  pages    : {d.get('pages_project') or 'silex-forge'}")
+print(f"  cf acct  : {acct_s}")
+print(f"  cf token : {'OK' if d.get('has_token') else 'absent (publish KO)'}")
+print(f"  deploy   : {'OK' if d.get('deploy_ready') else 'KO'}")
 if d.get("ok"):
     print("  status   : OK")
     for w in d.get("warnings") or []:

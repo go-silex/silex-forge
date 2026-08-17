@@ -67,7 +67,7 @@ S=plugins/silex-forge/scripts/publish.sh
 "$S" --remove mon-deck
 ```
 
-Deploy : push `main` → GitHub Action `Deploy Pages` (secrets CF dans GH + note BW `cloudflare/silex-forge-pages-deploy`).
+Deploy : `publish.sh` → `wrangler pages deploy` (token local `~/.config/silex/forge.env` · note BW `cloudflare/silex-forge-pages-deploy`). HTML **hors git**.
 
 ## Structure
 
@@ -81,25 +81,26 @@ functions/               # Access middleware, /api/share, /s/*
 site/                    # skeleton only (404, _headers, …) — PAS les HTML
 # /s/* runtime           # Function + KV
 
-# hors main
+# hors git
 # hub  $artifacts/<slug>/{index.html,meta.json}  = SSOT
-# git  branch cf-deploy  = payload Pages (site/a + registry + functions)
+# live = wrangler Direct Upload (pas de branche payload)
 ```
 
 ## Config machine (artefacts dans silex-hub)
 
-**SSOT HTML** = vault silex-hub (path **différent** par personne)  
-**Deploy** = `publish.sh` → build from hub → force-push **`cf-deploy`** → GH Action Pages  
-**main** = engine only (pas de duplication HTML)
+**SSOT HTML** = vault silex-hub partagé (path **différent** par personne)  
+**Deploy** = `publish.sh` → build from hub → `wrangler pages deploy` (Direct Upload, comme roxabi-forge)  
+**main** = engine only (pas de HTML)
 
 | Fichier | Rôle |
 |---|---|
-| `~/.config/silex/forge.config.json` | local (hub_root perso) — **hors git** |
+| `~/.config/silex/forge.config.json` | local (hub_root) — **hors git** |
+| `~/.config/silex/forge.env` | token Pages (chmod 600) — **hors git** |
 | plugin `forge.config.example.json` | defaults + fallback si pas de local |
 
 ```bash
 plugins/silex-forge/scripts/forge-doctor.sh
-plugins/silex-forge/scripts/publish.sh --rebuild-index   # hub → cf-deploy
+plugins/silex-forge/scripts/publish.sh --rebuild-index   # hub → wrangler Pages
 # setup interactif → skill forge-setup
 ```
 
@@ -155,10 +156,10 @@ Deps : `google-chrome`|`chromium`, `ffmpeg`, `jq`.
 1. Ne **jamais** déployer forge sur Vercel
 2. Ne **pas** mettre de secrets dans `site/`
 3. Ne **pas** lister les share keys dans le catalogue
-4. Publish = hub SSOT + push **`cf-deploy`** ; CF token uniquement GH Actions / BW ops
+4. Publish = hub SSOT + `wrangler pages deploy` ; token CF = `~/.config/silex/forge.env` (compte **Gosilex** `f8026cff…`) — jamais dans git / GH
 5. **main** n’accueille **pas** les HTML (`site/a`, `registry/*.json`) — engine only
 6. Après gros publish : vérifier Access (302 sans cookie) et share (200 sans cookie sur `/s/.../key/`)
 7. **pages.dev** sous Access (+ middleware 403) — ne jamais sonder `*.pages.dev` comme origin ouverte
 8. Secrets share = **KV only** — jamais `share_key` dans meta/registry/HTML
 9. Config forge absente → **forge-setup** (ne pas inventer hub_root)
-10. Artefacts → hub `$artifacts_dir/<slug>/` ; live CF ← branche `cf-deploy`
+10. Artefacts → hub `$artifacts_dir/<slug>/` ; live CF ← Direct Upload (hors git)

@@ -12,12 +12,13 @@ Voir **`CLAUDE.md`** (chim opérationnel complet).
 
 ## Paths
 
-- **SSOT** : hub `$artifacts_dir/<slug>/` (path local via forge.config)
+- **SSOT** : hub `$artifacts_dir/<slug>/` (path local via forge.config) — **hors git**
 - **main** : engine only (pas `site/a` ni `registry/*.json`)
-- **cf-deploy** : payload Pages (build from hub)
+- **live** : `wrangler pages deploy` (Direct Upload)
 - `/a/<slug>/` — live Access · `/s/<slug>/<key>/` — share unlisted
 
 ## Deploy
 
-`publish.sh` → force-push `cf-deploy` → GH Action Pages.  
-Token BW : `cloudflare/silex-forge-pages-deploy`.
+`publish.sh` → build hub → `wrangler pages deploy site`.  
+Token : `~/.config/silex/forge.env` (BW `cloudflare/silex-forge-pages-deploy`).  
+Compte CF **Gosilex** (`f8026cff…`) — pas l’OAuth Mickael/Roxabi.

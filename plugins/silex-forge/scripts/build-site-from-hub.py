@@ -2,7 +2,7 @@
 """Build deploy tree (site/a + registry + catalogue) from hub SSOT.
 
 SSOT = $hub/$artifacts_dir/<slug>/{index.html, meta.json, …}
-Output (in-repo layout, for Pages / cf-deploy branch):
+Output (in-repo layout, for wrangler pages deploy — not committed):
   site/a/<slug>/…
   registry/<slug>.json   (from meta.json — no secrets)
   site/index.html + manifest.json via gen-index.py

@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
-# publish.sh — hub SSOT → build site → force-push branch cf-deploy → GH Action Pages
+# publish.sh — hub SSOT → build site → wrangler pages deploy (Direct Upload)
 #
 #   publish.sh <slug> [path] [options]
 #   publish.sh --share <slug>
 #   publish.sh --unshare <slug>
 #   publish.sh --list | --remove <slug> | --rebuild-index
 #
-# Architecture:
-#   SSOT     = $hub/$artifacts_dir/<slug>/  (silex-hub, rclone)
-#   engine   = git main (plugins, functions, site skeleton)
-#   deploy   = git branch cf-deploy (built site/ + functions/) → wrangler
+# Architecture (roxabi-forge shape):
+#   SSOT     = $hub/$artifacts_dir/<slug>/  (silex-hub partagé, hors git)
+#   engine   = git main (plugins, functions, site skeleton) — jamais les HTML
+#   deploy   = wrangler pages deploy site  (token ~/.config/silex/forge.env)
 #
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIB_DIR="$SCRIPT_DIR/lib"
-DEPLOY_BRANCH="${FORGE_DEPLOY_BRANCH:-cf-deploy}"
+GOSILEX_ACCOUNT_ID="f8026cffc9463a03e1a6a76af5301861"
 
 _ENV_FORGE_REPO="${FORGE_REPO-}"
 _ENV_PUBLIC_HOST="${PUBLIC_HOST-}"
@@ -64,8 +64,8 @@ Usage:
   publish.sh --list | --remove <slug> | --rebuild-index
 
   SSOT   : \$ARTIFACTS_ROOT/<slug>/  (hub, forge.config)
-  Deploy : branch ${DEPLOY_BRANCH} → GH Action → CF Pages
-  Engine : main (plugins/functions — pas les HTML)
+  Deploy : wrangler pages deploy (token ~/.config/silex/forge.env)
+  Engine : main (plugins/functions — pas les HTML, pas de branche payload)
 
   Interne : https://${PUBLIC_HOST}/${INTERNAL_PREFIX}/<slug>/
   Share   : https://${PUBLIC_HOST}/s/<slug>/<key>/
@@ -116,46 +116,62 @@ build_from_hub() {
     || die "build-site-from-hub failed"
 }
 
-# Force-push built payload to cf-deploy (transport only — not SSOT)
-push_cf_deploy() {
-  local msg="$1"
+# Load token + account from ~/.config/silex/forge.env (never print values)
+source_cf_credentials() {
+  local f="${FORGE_ENV_FILE:-$HOME/.config/silex/forge.env}"
+  [ -f "$f" ] || return 0
+  local mode
+  mode=$(stat -c '%a' "$f" 2>/dev/null || stat -f '%OLp' "$f" 2>/dev/null || echo "")
+  case "$mode" in
+    600|400|"" ) ;;
+    *) warn "forge.env mode $mode — chmod 600 recommandé" ;;
+  esac
+  local line key val
+  while IFS= read -r line || [ -n "$line" ]; do
+    line="${line%$'\r'}"
+    case "$line" in
+      ''|\#*) continue ;;
+    esac
+    key="${line%%=*}"
+    val="${line#*=}"
+    val="${val#\"}"
+    val="${val%\"}"
+    val="${val#\'}"
+    val="${val%\'}"
+    case "$key" in
+      CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|CLOUDFLARE_API_KEY|CLOUDFLARE_EMAIL)
+        export "$key=$val"
+        ;;
+    esac
+  done < "$f"
+}
+
+# Direct Upload — HTML never touches git (roxabi-forge shape)
+deploy_pages() {
+  source_cf_credentials
+  [ -n "${CLOUDFLARE_API_TOKEN:-}" ] || die \
+    "CLOUDFLARE_API_TOKEN manquant — forge-setup (écrire ~/.config/silex/forge.env, chmod 600)"
+  local acct="${CLOUDFLARE_ACCOUNT_ID:-$GOSILEX_ACCOUNT_ID}"
+  local project="${FORGE_PAGES_PROJECT:-silex-forge}"
+  export CLOUDFLARE_ACCOUNT_ID="$acct"
   cd "$WORK/repo"
-  # Deploy payload: site + functions + wrangler + registry
-  # + workflow file (GitHub loads workflows FROM the branch that receives the push)
-  GIT checkout --orphan "cf-deploy-build-$$" >/dev/null 2>&1
-  GIT reset -q
-  GIT add -f site functions wrangler.toml registry \
-    .github/workflows/deploy-pages.yml 2>/dev/null || {
-    GIT add site functions wrangler.toml
-    [ -d registry ] && GIT add registry
-    [ -f .github/workflows/deploy-pages.yml ] && GIT add .github/workflows/deploy-pages.yml
-  }
-  if GIT diff --cached --quiet 2>/dev/null; then
-    info "rien à déployer (payload identique?)"
-    return 1
+  [ -d site ] || die "site/ manquant dans le clone engine"
+  [ -f wrangler.toml ] || die "wrangler.toml manquant"
+  info "wrangler pages deploy site → ${project} (${acct:0:8}…)"
+  local -a wr
+  if command -v wrangler >/dev/null 2>&1; then
+    wr=(wrangler)
+  elif command -v npx >/dev/null 2>&1; then
+    wr=(npx --yes wrangler)
+  else
+    die "wrangler / npx manquant"
   fi
-  GIT -c user.email="$(whoami_id)" -c user.name="silex-forge" commit -q -m "$msg"
-  local i
-  for i in 1 2 3 4 5; do
-    if GIT push --force --quiet origin "HEAD:${DEPLOY_BRANCH}" 2>/dev/null; then
-      ok "push ${DEPLOY_BRANCH}"
-      # Trigger deploy from main (loads workflow reliably; overlays site from cf-deploy).
-      # Push-to-cf-deploy alone may not run Actions if branch filters/orphan edge cases.
-      if command -v gh >/dev/null 2>&1; then
-        if gh workflow run "Deploy Pages" --repo go-silex/silex-forge --ref main 2>/dev/null; then
-          ok "GH workflow_dispatch Deploy Pages (main + overlay cf-deploy)"
-        else
-          warn "gh workflow_dispatch failed — open Actions tab or: gh workflow run 'Deploy Pages' --ref main"
-        fi
-      else
-        warn "install gh CLI to auto-trigger deploy, or run: gh workflow run 'Deploy Pages' --ref main"
-      fi
-      return 0
-    fi
-    warn "push ${DEPLOY_BRANCH} rejeté — retry $i/5"
-    sleep 2
-  done
-  die "push ${DEPLOY_BRANCH} rejeté 5×"
+  "${wr[@]}" pages deploy site \
+    --project-name="$project" \
+    --branch=main \
+    --commit-dirty=true \
+    || die "wrangler pages deploy failed"
+  ok "live https://${PUBLIC_HOST}/"
 }
 
 write_hub_meta() {
@@ -415,7 +431,7 @@ cmd_remove() {
   ok "retiré du hub SSOT: $slug"
   clone_engine
   build_from_hub
-  if push_cf_deploy "chore(forge): remove $slug"; then
+  if deploy_pages; then
     hub_index_update
   fi
 }
@@ -437,7 +453,7 @@ cmd_unshare() {
     python3 "$(SCRIPTS)/inject-share-bar.py" "$html" --slug "$slug" || true
     [ -n "${ARTIFACTS_ROOT:-}" ] && cp -f "$html" "${ARTIFACTS_ROOT}/${slug}/index.html" || true
   fi
-  push_cf_deploy "chore(forge): unshare $slug" || true
+  deploy_pages || true
   ok "share révoqué pour $slug"
 }
 
@@ -454,7 +470,7 @@ cmd_share_only() {
     python3 "$(SCRIPTS)/inject-share-bar.py" "$html" --slug "$slug" || true
     cp -f "$html" "${ARTIFACTS_ROOT}/${slug}/index.html" || true
   fi
-  if push_cf_deploy "feat(forge): share $slug"; then
+  if deploy_pages; then
     ok "share mint"
     echo "  URL:   $url"
     hub_index_update "$slug"
@@ -477,8 +493,8 @@ cmd_rebuild_index() {
     done
   fi
   build_from_hub
-  if push_cf_deploy "chore(forge): rebuild index from hub"; then
-    ok "index regénéré + cf-deploy"
+  if deploy_pages; then
+    ok "index régénéré + live Pages"
     hub_index_update
   fi
 }
@@ -562,8 +578,8 @@ cmd_publish() {
       "$WORK/repo/site/${INTERNAL_PREFIX}/${slug}/index.html" --slug "$slug" || true
   fi
 
-  if push_cf_deploy "feat(forge): publish $slug$($do_share && echo ' +share')"; then
-    ok "publié (hub SSOT + ${DEPLOY_BRANCH})"
+  if deploy_pages; then
+    ok "publié (hub SSOT + wrangler Pages)"
     echo "  Interne: https://${PUBLIC_HOST}${path_url}  (Access)"
     if [ -n "$share_url" ]; then
       echo "  Share:   $share_url  (public, unlisted)"
@@ -571,6 +587,8 @@ cmd_publish() {
     hub_index_update "$slug"
   fi
 }
+
+source_cf_credentials
 
 case "${1-}" in
   ""|-h|--help) usage; exit 0 ;;

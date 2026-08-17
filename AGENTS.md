@@ -8,7 +8,7 @@ Voir **`CLAUDE.md`** (chim opérationnel complet).
 | **Job** | Artefacts HTML équipe + share à clé |
 | **Publish** | `plugins/silex-forge/scripts/publish.sh` |
 | **Config** | `~/.config/silex/forge.config.json` · example + doctor · skill `forge-setup` |
-| **Plugin** | `silex-forge@silex-forge` (publish + setup + slides + onepager) · Rocky → `rocky@rocky` |
+| **Plugin** | `silex-forge@silex-forge` (publish + setup + slides + onepager + cheatsheet) · Rocky → `rocky@rocky` |
 
 ## Paths
 

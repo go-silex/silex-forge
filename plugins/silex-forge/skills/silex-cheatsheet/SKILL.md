@@ -117,7 +117,7 @@ sont blancs sur transparent et disparaissent. Si un logo est douteux ou sous 96 
 La hauteur n'est **jamais** choisie à la main.
 
 ```bash
-scripts/render.sh <fiche.html> <sortie.png> --measure   # hauteur naturelle du contenu
+scripts/render.sh <fiche.html> --measure              # hauteur naturelle du contenu
 ```
 
 Reporter la valeur dans `height:` du `.canvas`, puis rendre normalement.

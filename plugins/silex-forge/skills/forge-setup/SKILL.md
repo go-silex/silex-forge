@@ -150,7 +150,7 @@ Rapport :
 **doctor**     : ✅|✗
 
 **Suite**
-- Générer un deck : silex-slides / frontend-slides / silex-onepager
+- Générer un deck : silex-slides / frontend-slides / silex-onepager / silex-cheatsheet
   → écrire sous $artifacts/<slug>/
 - Publier : forge-publish (hub → wrangler Pages)
 ```

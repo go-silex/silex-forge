@@ -110,7 +110,7 @@ Loader : local → example. Hook SessionStart : config KO → **forge-setup**.
 
 | Plugin | Contenu |
 |---|---|
-| **`silex-forge`** | `forge-publish` · `forge-setup` · `silex-slides` · `frontend-slides` · `silex-onepager` |
+| **`silex-forge`** | `forge-publish` · `forge-setup` · `silex-slides` · `frontend-slides` · `silex-onepager` · `silex-cheatsheet` |
 
 Ancien plugin `silex-craft` **fusionné** ici.  
 **Rocky** : `rocky@rocky` (`go-silex/rocky`) — hors de ce repo.

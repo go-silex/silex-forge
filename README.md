@@ -2,7 +2,7 @@
 
 **Host d’artefacts HTML d’équipe** — `https://forge.gosilex.com`
 
-Access team + share unlisted `/s/<slug>/<key>/`. Voir `CLAUDE.md`.
+Access team + share unlisted `/s/<slug>/<key>/`. Voir `AGENTS.md`.
 
 | | |
 |---|---|

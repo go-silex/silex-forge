@@ -177,7 +177,7 @@ https://forge.gosilex.com/a/{slug}/
 https://forge.gosilex.com/a/metalyde-roadmap-performance-blocks/
 ```
 
-Voir aussi `~/projects/gosilex/silex-forge/CLAUDE.md` (modèle `/a/` vs `/s/`).
+Voir aussi `~/projects/gosilex/silex-forge/AGENTS.md` (modèle `/a/` vs `/s/`).
 
 ### Pièges deploy
 

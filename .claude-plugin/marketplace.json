@@ -1,7 +1,7 @@
 {
   "name": "silex-forge",
-  "version": "1.4.0",
-  "description": "Host forge.gosilex.com + plugin silex-forge (publish, setup/doctor, slides, onepager).",
+  "version": "1.5.0",
+  "description": "Host forge.gosilex.com + plugin silex-forge (publish, setup/doctor, slides, onepager, cheat sheets).",
   "owner": {
     "name": "Silex",
     "url": "https://github.com/go-silex"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "silex-forge",
-      "description": "Publier sur forge.gosilex.com + générer slides / onepagers brand Silex.",
+      "description": "Publier sur forge.gosilex.com + générer slides / onepagers / cheat sheets brand Silex.",
       "source": "./plugins/silex-forge",
       "category": "productivity"
     }

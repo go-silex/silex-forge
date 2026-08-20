@@ -24,27 +24,23 @@
   var css = document.createElement("style");
   css.textContent =
     "[data-forge-share-bar]{position:fixed;top:12px;right:12px;z-index:2147483646;" +
-    "display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:min(96vw,420px);" +
-    "font-family:system-ui,-apple-system,sans-serif;font-size:13px;" +
+    "display:flex;gap:6px;align-items:center;" +
+    "font-family:system-ui,-apple-system,sans-serif;" +
     "background:rgba(254,254,254,.92);backdrop-filter:blur(10px);" +
-    "border:1px solid rgba(3,22,53,.12);padding:6px;box-shadow:0 8px 28px rgba(3,22,53,.12)}" +
-    "[data-forge-share-bar] button{cursor:pointer;border:1px solid #031635;padding:7px 11px;" +
-    "background:#FEFEFE;color:#031635;border-radius:0;font-weight:600;font-size:12.5px;" +
-    "font-family:inherit;line-height:1.2;transition:background .12s,color .12s,opacity .12s}" +
-    "[data-forge-share-bar] button:hover:not(:disabled){background:#eef2f7}" +
-    "[data-forge-share-bar] button:disabled{opacity:.55;cursor:wait}" +
-    "[data-forge-share-bar] button.primary{background:#031635;color:#FEFEFE}" +
-    "[data-forge-share-bar] button.primary:hover:not(:disabled){background:#1a2b4b}" +
-    "[data-forge-share-bar] button.danger{border-color:#c43c3c;color:#c43c3c}" +
-    "[data-forge-share-bar] button.danger:hover:not(:disabled){background:rgba(196,60,60,.08)}" +
-    "[data-forge-share-bar] .fsb-shared{display:none;align-items:center;gap:6px;" +
-    "font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;" +
-    "color:#0d7a5f;background:rgba(13,122,95,.1);border:1px solid rgba(13,122,95,.35);" +
-    "padding:5px 9px}" +
-    "[data-forge-share-bar] .fsb-shared.on{display:inline-flex}" +
-    "[data-forge-share-bar] .fsb-shared-dot{width:6px;height:6px;border-radius:50%;" +
-    "background:#0d7a5f;box-shadow:0 0 0 3px rgba(13,122,95,.2)}" +
-    "[data-forge-share-bar] .fsb-hint{font-size:10.5px;opacity:.5;color:#031635;padding:0 4px}" +
+    "border:1px solid rgba(3,22,53,.12);padding:4px;box-shadow:0 8px 28px rgba(3,22,53,.12)}" +
+    "[data-forge-share-bar] .fsb-switch{display:flex;border:1px solid rgba(3,22,53,.14);overflow:hidden;border-radius:6px}" +
+    "[data-forge-share-bar] .fsb-switch button{cursor:pointer;border:none;border-right:1px solid rgba(3,22,53,.12);" +
+    "background:transparent;color:#6b7a90;padding:6px 10px;font-weight:600;font-size:11.5px;" +
+    "font-family:inherit;line-height:1.2;letter-spacing:.02em;transition:background .12s,color .12s}" +
+    "[data-forge-share-bar] .fsb-switch button:last-child{border-right:none}" +
+    "[data-forge-share-bar] .fsb-switch button:hover:not(:disabled):not(.on){background:#eef2f7;color:#031635}" +
+    "[data-forge-share-bar] .fsb-switch button.on{background:#031635;color:#FEFEFE}" +
+    "[data-forge-share-bar] .fsb-switch button:disabled{opacity:.55;cursor:wait}" +
+    "[data-forge-share-bar] .fsb-copy{cursor:pointer;border:none;background:transparent;color:#6b7a90;" +
+    "width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;padding:0;border-radius:6px}" +
+    "[data-forge-share-bar] .fsb-copy:hover:not(:disabled){background:#eef2f7;color:#031635}" +
+    "[data-forge-share-bar] .fsb-copy:disabled{opacity:.55;cursor:wait}" +
+    "[data-forge-share-bar] .fsb-copy svg{display:block}" +
     "[data-forge-toast]{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(12px);" +
     "z-index:2147483647;background:#031635;color:#FEFEFE;padding:12px 18px;font:600 13px system-ui,sans-serif;" +
     "box-shadow:0 10px 32px rgba(3,22,53,.28);opacity:0;pointer-events:none;" +
@@ -78,33 +74,36 @@
   bar.setAttribute("aria-label", "Visibilité forge");
   bar.style.display = "none";
 
-  var visBadge = document.createElement("span");
-  visBadge.className = "fsb-shared";
-  visBadge.innerHTML = '<span class="fsb-shared-dot" aria-hidden="true"></span>';
-  visBadge.appendChild(document.createTextNode("Privée"));
-
-  function mkBtn(label, cls) {
+  function mkSeg(label, vis, title) {
     var b = document.createElement("button");
     b.type = "button";
     b.textContent = label;
-    if (cls) b.className = cls;
+    b.dataset.vis = vis;
+    b.title = title;
     return b;
   }
 
-  var copyBtn = mkBtn("Copier le lien");
-  copyBtn.title = "Copier l’URL adaptée à la visibilité actuelle";
+  var sw = document.createElement("div");
+  sw.className = "fsb-switch";
+  sw.setAttribute("role", "radiogroup");
+  sw.setAttribute("aria-label", "Visibilité");
 
-  var privateBtn = mkBtn("Privée");
-  privateBtn.title = "Catalogue équipe + Access seulement";
-  var sharedBtn = mkBtn("Partagée");
-  sharedBtn.title = "Lien /s/…/clé uniquement — pas sur le catalogue public";
-  var publicBtn = mkBtn("Publique");
-  publicBtn.title = "Listée sur le catalogue public — /a/… sans login";
+  var privateBtn = mkSeg("Privé", "private", "Équipe seulement");
+  var sharedBtn = mkSeg("Partagé", "shared", "Lien secret — pas au catalogue public");
+  var publicBtn = mkSeg("Public", "public", "Listée au catalogue public");
+  sw.appendChild(privateBtn);
+  sw.appendChild(sharedBtn);
+  sw.appendChild(publicBtn);
 
-  bar.appendChild(visBadge);
-  bar.appendChild(privateBtn);
-  bar.appendChild(sharedBtn);
-  bar.appendChild(publicBtn);
+  var copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "fsb-copy";
+  copyBtn.title = "Copier le lien";
+  copyBtn.setAttribute("aria-label", "Copier le lien");
+  copyBtn.innerHTML =
+    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+  bar.appendChild(sw);
   bar.appendChild(copyBtn);
   document.documentElement.appendChild(bar);
 
@@ -115,18 +114,13 @@
     copyBtn.disabled = on;
   }
 
-  function visLabel(v) {
-    if (v === "public") return "Publique";
-    if (v === "shared") return "Partagée";
-    return "Privée";
-  }
-
   function renderState() {
-    visBadge.classList.add("on");
-    visBadge.lastChild.textContent = visLabel(state.visibility);
-    privateBtn.className = state.visibility === "private" ? "primary" : "";
-    sharedBtn.className = state.visibility === "shared" ? "primary" : "";
-    publicBtn.className = state.visibility === "public" ? "primary" : "";
+    [privateBtn, sharedBtn, publicBtn].forEach(function (b) {
+      var on = b.dataset.vis === state.visibility;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-checked", on ? "true" : "false");
+      b.setAttribute("role", "radio");
+    });
   }
 
   function copyText(url) {
@@ -212,14 +206,18 @@
       });
   }
 
+  function onSeg(vis, copyAfter) {
+    if (state.visibility === vis) return;
+    setVis(vis, copyAfter);
+  }
   privateBtn.addEventListener("click", function () {
-    setVis("private", false);
+    onSeg("private", false);
   });
   sharedBtn.addEventListener("click", function () {
-    setVis("shared", true);
+    onSeg("shared", true);
   });
   publicBtn.addEventListener("click", function () {
-    setVis("public", true);
+    onSeg("public", true);
   });
   copyBtn.addEventListener("click", function () {
     var url = currentCopyUrl();

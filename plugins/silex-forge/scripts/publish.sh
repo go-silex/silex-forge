@@ -478,23 +478,31 @@ cmd_share_only() {
 }
 
 inject_share_bars() {
-  # Use the running script's dir — clone of origin/main may not have this yet.
+  # Overlay on the deploy tree only (hub stays craft SSOT).
+  # SCRIPT_DIR = this file — clone of origin/main may not have the inject yet.
   local inj="$SCRIPT_DIR/inject-share-bar.py"
   [ -f "$inj" ] || inj="$(SCRIPTS)/inject-share-bar.py"
-  [ -f "$inj" ] || { warn "inject-share-bar.py manquant"; return 0; }
-  local s slug html
+  [ -f "$inj" ] || die "inject-share-bar.py manquant"
+  local s slug html missing=0
   for s in "$WORK/repo/site/${INTERNAL_PREFIX}"/*/; do
     [ -d "$s" ] || continue
     slug=$(basename "$s")
     html="${s}index.html"
     [ -f "$html" ] || continue
-    if python3 "$inj" "$html" --slug "$slug"; then
-      [ -n "${ARTIFACTS_ROOT:-}" ] && [ -d "${ARTIFACTS_ROOT}/${slug}" ] \
-        && cp -f "$html" "${ARTIFACTS_ROOT}/${slug}/index.html" || true
-    else
-      warn "share-bar skip $slug"
-    fi
+    python3 "$inj" "$html" --slug "$slug" || warn "share-bar inject failed $slug"
   done
+  for s in "$WORK/repo/site/${INTERNAL_PREFIX}"/*/; do
+    [ -d "$s" ] || continue
+    slug=$(basename "$s")
+    html="${s}index.html"
+    [ -f "$html" ] || continue
+    if grep -qF '<!-- forge-share-bar -->' "$html"; then
+      continue
+    fi
+    warn "share-bar missing after inject: $slug"
+    missing=$((missing + 1))
+  done
+  [ "$missing" -eq 0 ] || die "share-bar missing on $missing page(s) — abort deploy"
 }
 
 cmd_rebuild_index() {

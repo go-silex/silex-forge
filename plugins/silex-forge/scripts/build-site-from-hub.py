@@ -167,12 +167,8 @@ def build(
                 shutil.copy2(item, target)
         html_dest = dest / "index.html"
         if html_dest.is_file():
+            # Overlay on the deploy tree only — hub remains craft SSOT.
             _inject_share_bar(html_dest, slug)
-            hub_html = src / "index.html"
-            try:
-                shutil.copy2(html_dest, hub_html)
-            except OSError as e:
-                print(f"warn: persist share-bar hub {slug}: {e}", file=sys.stderr)
         reg_path = reg_dir / f"{slug}.json"
         reg_path.write_text(
             json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

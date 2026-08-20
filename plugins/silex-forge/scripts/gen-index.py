@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""gen-index.py — génère site/index.html (+ manifest.json) depuis registry/*.json
+"""gen-index.py — génère site/index.html (shell) + manifest.json (worker-only).
 
-Landing interactive façon roxabi-forge :
-  search · group (★ / type / date / none) · sort · cards|list · favorites · theme
-
-Share = badge live (KV /s/). Le catalogue reste derrière Cloudflare Access.
-Pas de path /p/ (purgé).
+Landing façon roxabi-forge. DATA cards come from GET /api/catalogue
+(anonymous = public only; Access JWT = all). manifest.json is blocked
+from clients; the Function reads it via ASSETS.
 """
 from __future__ import annotations
 
@@ -154,17 +152,15 @@ def to_manifest(items: list[dict]) -> list[dict]:
 
 
 def render(manifest: list[dict]) -> str:
-    data_json = json.dumps(manifest, ensure_ascii=False, separators=(",", ":"))
-    n = len(manifest)
-    n_shared = sum(1 for m in manifest if "share" in m.get("b", []))
     today = date.today().isoformat()
+    _ = manifest  # written separately to manifest.json for the worker
     return f"""<!DOCTYPE html>
 <html lang="fr" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silex Forge — artefacts internes</title>
-<meta name="description" content="Host d'artefacts HTML Silex (interne). Cloudflare Access par défaut ; partage non listé via /s/…">
+<title>Silex Forge</title>
+<meta name="description" content="Catalogue d’artefacts HTML Silex. Pages publiques ici ; le reste derrière Cloudflare Access.">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="theme-color" content="#031635">
 <link rel="icon" type="image/png" href="/images/favicon.png">
@@ -372,18 +368,20 @@ footer a:hover{{color:var(--blue)}}
 
 <header class="header">
   <div class="header-brand">
-    <span class="header-kicker"><span class="header-kicker-dot" aria-hidden="true"></span>Interne · Cloudflare Access</span>
+    <span class="header-kicker" id="headerKicker"><span class="header-kicker-dot" aria-hidden="true"></span>Catalogue public</span>
     <div class="header-title">Forge <em>Silex</em></div>
-    <div class="header-sub">Artefacts HTML d’équipe — decks, talks, guides. Catalogue équipe only ; un lien Partager crée une URL non listée sous <code style="font-family:var(--mono);font-size:.85em">/s/…</code>.</div>
+    <div class="header-sub" id="headerSub">Pages publiques. Connexion équipe pour le reste.</div>
   </div>
   <div class="header-actions">
+    <a class="theme-btn" id="loginLink" href="/login" style="text-decoration:none;display:inline-block">Connexion</a>
     <button class="theme-btn" id="themeBtn" title="Basculer le thème" aria-label="Basculer le thème">☀️</button>
   </div>
 </header>
 
 <div class="stats">
-  <span><b id="statTotal">{n}</b> au catalogue</span>
-  <span><b id="statShared">{n_shared}</b> avec share</span>
+  <span><b id="statTotal">0</b> au catalogue</span>
+  <span><b id="statPublic">0</b> publiques</span>
+  <span><b id="statShared">0</b> partagées</span>
   <span>index {today}</span>
   <span id="shareSync" class="share-sync" title="État share synchronisé depuis KV (live)"></span>
 </div>
@@ -400,8 +398,9 @@ footer a:hover{{color:var(--blue)}}
       <span class="ctrl-label">Accès</span>
       <div class="segs">
         <button type="button" class="seg" data-k="access" data-v="all">Tous</button>
-        <button type="button" class="seg" data-k="access" data-v="internal">Interne</button>
-        <button type="button" class="seg" data-k="access" data-v="shared">Partagé</button>
+        <button type="button" class="seg" data-k="access" data-v="public">Publiques</button>
+        <button type="button" class="seg" data-k="access" data-v="shared">Partagées</button>
+        <button type="button" class="seg" data-k="access" data-v="private">Privées</button>
       </div>
     </div>
     <div class="ctrl-group">
@@ -447,8 +446,9 @@ footer a:hover{{color:var(--blue)}}
 </div>
 
 <script>
-// ── Data (embedded at build time from registry/*.json) ────────────
-const DATA = {data_json};
+// ── Data from GET /api/catalogue (never embed private titles) ────
+let DATA = [];
+let TEAM = false;
 
 // ── State ─────────────────────────────────────────────────────────
 const LS = {{
@@ -506,11 +506,10 @@ function setShared(d, active) {{
 }}
 
 function accessBadges(d) {{
-  const tags = [];
-  // internal always (catalogue is Access-only); share = live KV /s/ link
-  tags.push('internal');
-  if (d.shared) tags.push('share');
-  return badges(tags);
+  const vis = d.visibility || (d.shared ? 'shared' : 'private');
+  if (vis === 'public') return badges(['public']);
+  if (vis === 'shared') return badges(['share']);
+  return badges(['private']);
 }}
 
 function thumbSrc(d) {{
@@ -605,17 +604,22 @@ function mkSection(label, color, items, showCat) {{
   return sec;
 }}
 
+function visOf(d) {{
+  return d.visibility || (d.shared ? 'shared' : 'private');
+}}
+
 function matchesAccess(d) {{
   if (S.access === 'all') return true;
-  // Interne = pas de lien /s/ actif ; Partagé = share KV live
-  if (S.access === 'internal') return !d.shared;
-  if (S.access === 'shared') return !!d.shared;
-  return true;
+  return visOf(d) === S.access;
 }}
 
 function updateShareStats() {{
-  const el = document.getElementById('statShared');
-  if (el) el.textContent = String(DATA.filter(d => d.shared).length);
+  const tot = document.getElementById('statTotal');
+  const pub = document.getElementById('statPublic');
+  const sh = document.getElementById('statShared');
+  if (tot) tot.textContent = String(DATA.length);
+  if (pub) pub.textContent = String(DATA.filter(d => visOf(d) === 'public').length);
+  if (sh) sh.textContent = String(DATA.filter(d => visOf(d) === 'shared').length);
 }}
 
 function setShareSync(msg, cls) {{
@@ -625,41 +629,38 @@ function setShareSync(msg, cls) {{
   el.className = 'share-sync' + (cls ? ' ' + cls : '');
 }}
 
-/** Live share status from KV (POST/DELETE /api/share) — overrides registry snapshot. */
-let _shareSyncInflight = null;
-let _shareSyncLast = 0;
-async function refreshShareStatus(force) {{
-  if (!DATA.length) return;
-  const now = Date.now();
-  if (!force && now - _shareSyncLast < 1500) return;
-  if (_shareSyncInflight) return _shareSyncInflight;
-  _shareSyncLast = now;
-  setShareSync('sync share…', 'loading');
-  _shareSyncInflight = (async () => {{
-    let ok = 0, fail = 0;
-    await Promise.all(DATA.map(async (d) => {{
-      if (!d.slug) return;
-      try {{
-        const r = await fetch('/api/share?slug=' + encodeURIComponent(d.slug), {{
-          credentials: 'same-origin',
-          headers: {{ 'accept': 'application/json' }},
-          cache: 'no-store',
-        }});
-        if (!r.ok) {{ fail++; return; }}
-        const data = await r.json();
-        setShared(d, !!data.active);
-        ok++;
-      }} catch (_) {{
-        fail++;
-      }}
-    }}));
+async function loadCatalogue() {{
+  setShareSync('catalogue…', 'loading');
+  try {{
+    const r = await fetch('/api/catalogue', {{
+      credentials: 'same-origin',
+      headers: {{ accept: 'application/json' }},
+      cache: 'no-store',
+    }});
+    if (!r.ok) throw new Error('http_' + r.status);
+    const data = await r.json();
+    DATA = Array.isArray(data.items) ? data.items : [];
+    TEAM = !!data.team;
+    const login = document.getElementById('loginLink');
+    const kicker = document.getElementById('headerKicker');
+    const sub = document.getElementById('headerSub');
+    if (TEAM) {{
+      if (login) login.style.display = 'none';
+      if (kicker) kicker.innerHTML = '<span class="header-kicker-dot" aria-hidden="true"></span>Équipe · Cloudflare Access';
+      if (sub) sub.textContent = 'Toutes les pages. Publique = catalogue anonyme ; partagée = lien /s/… ; privée = Access.';
+    }} else {{
+      document.querySelectorAll('[data-k="access"][data-v="shared"],[data-k="access"][data-v="private"]').forEach(el => {{
+        el.style.display = 'none';
+      }});
+    }}
     updateShareStats();
     render();
-    if (ok && !fail) setShareSync('share live', 'ok');
-    else if (ok && fail) setShareSync('share partiel', 'err');
-    else setShareSync('share offline', 'err');
-  }})().finally(() => {{ _shareSyncInflight = null; }});
-  return _shareSyncInflight;
+    setShareSync(TEAM ? 'équipe' : 'public', 'ok');
+  }} catch (e) {{
+    DATA = [];
+    render();
+    setShareSync('catalogue offline', 'err');
+  }}
 }}
 
 function render() {{
@@ -756,13 +757,11 @@ applyTheme(S.theme);
 ['group','sort','view','access'].forEach(k => {{
   document.querySelectorAll(`[data-k="${{k}}"]`).forEach(b => b.classList.toggle('on', b.dataset.v === S[k]));
 }});
-// Snapshot registry first, then override share flags from live KV
-render();
-refreshShareStatus();
+loadCatalogue();
 document.addEventListener('visibilitychange', () => {{
-  if (document.visibilityState === 'visible') refreshShareStatus();
+  if (document.visibilityState === 'visible') loadCatalogue();
 }});
-window.addEventListener('focus', () => {{ refreshShareStatus(); }});
+window.addEventListener('focus', () => {{ loadCatalogue(); }});
 </script>
 </body>
 </html>

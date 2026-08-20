@@ -19,38 +19,34 @@
 
 | Zone | Comportement |
 |---|---|
-| `/` catalogue + `/a/*` | **Cloudflare Access** — emails `@gosilex.com` (+ mickael@bouly.io) · OTP |
-| `/s/*` | **Bypass Access** — liens share publics (clé dans le path) |
+| `/` + `/api/catalogue` | Shell public ; liste = Worker (public vs tout si JWT) |
+| `/a/<slug>/*` | Worker vis (private/shared/public) · HTML **et** og.jpg |
+| `/s/*` | Bypass + clé KV |
+| `/login` | Access Allow équipe (cookie JWT) |
 
-Sans cookie Access → **302** vers `gosilex.cloudflareaccess.com`.
+**Bypass host `/` et `/a` seulement APRÈS deploy Functions** (`x-forge-acl: vis-v4`). Avant : Access Allow sur le host. Inverser = fuit.
 
-## Interne vs share (modèle v3)
+## Visibilité (modèle v4)
 
-**`/p/` purgé** — pas de path public sans clé. Uniquement `/a/` + `/s/`.
+Une URL de contenu : `/a/<slug>/`. Catalogue `GET /` = shell ; **liste = `GET /api/catalogue`** (Worker).
 
-### Interne (défaut)
+| vis KV `vis:<slug>` | Catalogue anonyme | Catalogue Access | Ouvrir |
+|---|---|---|---|
+| **private** (défaut) | non | oui | JWT / `/login` |
+| **shared** | non | oui | `/s/<slug>/<key>/` anonyme ; `/a/` si JWT |
+| **public** | oui | oui | `/a/<slug>/` sans login (HTML **et** `og.jpg`) |
 
-- URL : `https://forge.gosilex.com/a/<slug>/`
-- Listé sur la landing (catalogue)
-- Protégé Access
+Fail-closed : pas de `vis:` = private. `manifest.json` n’est **pas** servi aux clients.
 
-### Share (opt-in)
+### Access Zero Trust (après deploy Functions)
 
-- URL : `https://forge.gosilex.com/s/<slug>/<key>/`
-  - `<key>` = secret haute entropie
-  - équivalent conceptuel de `?k=` (1page) — clé dans le **path** (Bypass Access sur `/s/`)
-- **Pas** listé sur la landing
-- Bypass Access → ouvre en navigation privée
-- Shortlink auto si `SHLINK_API_KEY` Pages : `s.gosilex.com/f-<slug>`
+1. Functions fail-closed en prod
+2. **Puis** Bypass `/`, `/a/*`, `/s/*`, `/api/*` ; **Allow team** sur `/login` (cookie JWT lu par les Functions)
+3. `pages.dev` : 403 hors `/s/` (middleware)
 
-### UX share (barre sur `/a/<slug>/`)
+### UX barre (équipe, sur `/a/<slug>/`)
 
-1. **Interne** → copie `/a/<slug>/` (Access équipe, **pas** de shlink) + toast
-2. **Externe** (Access) → `POST /api/share` → clé **KV** → copie shortlink ou `/s/…` + toast
-3. Share actif → badge **Partagé** + **Révoquer** (`DELETE /api/share`)
-4. **⇧+Externe** = régénère la clé (ancien lien mort)
-5. Landing : sync live `GET /api/share` (filtre Interne / Partagé)
-6. CLI : `publish.sh --share` / `--unshare`
+**Privée** | **Partagée** | **Publique** → `POST /api/visibility`. Partagée mint KV `share:<slug>`.
 
 ## Commandes
 

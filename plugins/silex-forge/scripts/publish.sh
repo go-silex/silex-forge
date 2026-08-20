@@ -477,6 +477,34 @@ cmd_share_only() {
   fi
 }
 
+inject_share_bars() {
+  # Overlay on the deploy tree only (hub stays craft SSOT).
+  # SCRIPT_DIR = this file — clone of origin/main may not have the inject yet.
+  local inj="$SCRIPT_DIR/inject-share-bar.py"
+  [ -f "$inj" ] || inj="$(SCRIPTS)/inject-share-bar.py"
+  [ -f "$inj" ] || die "inject-share-bar.py manquant"
+  local s slug html missing=0
+  for s in "$WORK/repo/site/${INTERNAL_PREFIX}"/*/; do
+    [ -d "$s" ] || continue
+    slug=$(basename "$s")
+    html="${s}index.html"
+    [ -f "$html" ] || continue
+    python3 "$inj" "$html" --slug "$slug" || warn "share-bar inject failed $slug"
+  done
+  for s in "$WORK/repo/site/${INTERNAL_PREFIX}"/*/; do
+    [ -d "$s" ] || continue
+    slug=$(basename "$s")
+    html="${s}index.html"
+    [ -f "$html" ] || continue
+    if grep -qF '<!-- forge-share-bar -->' "$html"; then
+      continue
+    fi
+    warn "share-bar missing after inject: $slug"
+    missing=$((missing + 1))
+  done
+  [ "$missing" -eq 0 ] || die "share-bar missing on $missing page(s) — abort deploy"
+}
+
 cmd_rebuild_index() {
   require_forge_config
   clone_engine
@@ -493,6 +521,7 @@ cmd_rebuild_index() {
     done
   fi
   build_from_hub
+  inject_share_bars
   if deploy_pages; then
     ok "index régénéré + live Pages"
     hub_index_update

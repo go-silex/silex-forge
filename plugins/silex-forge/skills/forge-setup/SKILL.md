@@ -192,20 +192,26 @@ Scope : Pages Write + Read, Account Settings Read, Workers KV Storage Edit (pour
 
 ## Étape 6 — Plugins craft recommandés (externes)
 
-Pas dans `silex-forge` ni `silex-craft`. **Recommander** (scope user) — ne pas bloquer le doctor si absents.
+Pas dans `silex-forge`. **Installer** (scope user) — le doctor hub reste OK sans eux, mais **Halo est mort** tant que `silex-craft` + `frontend-slides` manquent.
+
+Land `silex-craft@silex-plugins` **avant** (ou en même temps que) cette version forge. `marketplace update silex-forge` seul retire les anciennes skills craft du cache.
 
 | Repo | Install |
 |---|---|
-| [diagram-design](https://github.com/cathrynlavery/diagram-design) | marketplace + plugin Claude |
-| [huashu-design](https://github.com/alchaincyf/huashu-design) | skill (`npx skills add`) — pas un marketplace Claude |
-| [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | marketplace + plugin Claude · **requis** par `silex-slides` |
+| `silex-craft@silex-plugins` | **requis** — `silex-slides` / onepager / cheatsheet |
+| [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | **requis** par `silex-slides` (moteur) · live host = `forge-publish`, **jamais Vercel** |
+| [diagram-design](https://github.com/cathrynlavery/diagram-design) | optionnel |
+| [huashu-design](https://github.com/alchaincyf/huashu-design) | optionnel — skill (`npx skills add`) |
 
 ```text
-/plugin marketplace add https://github.com/cathrynlavery/diagram-design
-/plugin install diagram-design@diagram-design --scope user
+/plugin marketplace add go-silex/silex-plugins
+/plugin install silex-craft@silex-plugins --scope user
 
 /plugin marketplace add https://github.com/zarazhangrui/frontend-slides
 /plugin install frontend-slides@frontend-slides --scope user
+
+/plugin marketplace add https://github.com/cathrynlavery/diagram-design
+/plugin install diagram-design@diagram-design --scope user
 ```
 
 ```bash
@@ -217,10 +223,12 @@ npx skills add alchaincyf/huashu-design
 CLI équivalent :
 
 ```bash
-claude plugin marketplace add https://github.com/cathrynlavery/diagram-design
-claude plugin install diagram-design@diagram-design --scope user
+claude plugin marketplace add go-silex/silex-plugins
+claude plugin install silex-craft@silex-plugins --scope user
 claude plugin marketplace add https://github.com/zarazhangrui/frontend-slides
 claude plugin install frontend-slides@frontend-slides --scope user
+claude plugin marketplace add https://github.com/cathrynlavery/diagram-design
+claude plugin install diagram-design@diagram-design --scope user
 npx skills add alchaincyf/huashu-design
 ```
 

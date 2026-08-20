@@ -12,8 +12,8 @@ id = "758e41aec6964f2b9ef590c296ff7e20"
 # Access JWT verification (public ids — not secrets)
 [vars]
 CF_ACCESS_TEAM_DOMAIN = "gosilex.cloudflareaccess.com"
-# forge.gosilex.com AUD + silex-forge-6mm.pages.dev AUD
-CF_ACCESS_AUD = "f6b214db7bed212ec2119e23b17c79ea7ec58a6aea5e491dd7113af7a88b070f,bc255e9a407833987f0052d9a11971fc374cf71b3c61562083b017b61a0d460d"
+# forge host + pages.dev + /login app (JWT after Bypass)
+CF_ACCESS_AUD = "f6b214db7bed212ec2119e23b17c79ea7ec58a6aea5e491dd7113af7a88b070f,bc255e9a407833987f0052d9a11971fc374cf71b3c61562083b017b61a0d460d,7eebf2b0f26a614e25f73d44afefdfe0f952355e69e09615cfec11b91f4f472c"
 
 # Secrets (Pages project — not committed):
 #   SHLINK_API_KEY       — ~/.config/silex/shlink-api-key

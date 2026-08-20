@@ -10,6 +10,8 @@ description: >-
 
 Publie un **HTML autonome** (ou un dossier avec `index.html`) sur le host d’artefacts internes Silex.
 
+Générer le HTML = **`silex-craft@silex-plugins`** (`silex-slides` · `silex-onepager` · `silex-cheatsheet`). Ce skill = **upload only**.
+
 | | |
 |---|---|
 | Host | `https://forge.gosilex.com` |

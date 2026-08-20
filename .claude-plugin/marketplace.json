@@ -1,7 +1,7 @@
 {
   "name": "silex-forge",
-  "version": "1.5.0",
-  "description": "Host forge.gosilex.com + plugin silex-forge (publish, setup/doctor, slides, onepager, cheat sheets).",
+  "version": "1.6.0",
+  "description": "Host forge.gosilex.com + plugin silex-forge (upload Cloudflare Pages, Access, share). Craft HTML = silex-craft@silex-plugins.",
   "owner": {
     "name": "Silex",
     "url": "https://github.com/go-silex"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "silex-forge",
-      "description": "Publier sur forge.gosilex.com + générer slides / onepagers / cheat sheets brand Silex.",
+      "description": "Upload Cloudflare Pages pour forge.gosilex.com — publish + setup/doctor. Craft HTML = silex-craft@silex-plugins.",
       "source": "./plugins/silex-forge",
       "category": "productivity"
     }

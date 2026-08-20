@@ -19,10 +19,10 @@ Repo **public** (engine) + HTML d’équipe dans git = fuite.
 | **Live** | projet Pages `silex-forge` | **non** — `wrangler pages deploy` |
 
 ```
-silex-slides / onepager / …
+silex-craft (silex-slides / onepager / cheatsheet)
         ↓ write
 hub artifacts/<slug>/{index.html, meta.json}
-        ↓ publish.sh
+        ↓ forge-publish / publish.sh
 build-site-from-hub.py  →  site/a + registry + catalogue  (temp, jamais commit)
         ↓ wrangler pages deploy site
 forge.gosilex.com

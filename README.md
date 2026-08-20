@@ -9,7 +9,7 @@ Access team + share unlisted `/s/<slug>/<key>/`. Voir `AGENTS.md`.
 | **Audience** | Équipe Silex (Access) + liens share à clé (unlisted) |
 | **≠** | `demo.gosilex.com` (funnel client) · `share.gosilex.com` / `silex-share` (**archived** 2026-07-30 — jamais livré) |
 | **Deploy** | Cloudflare Pages · Direct Upload (`wrangler`) depuis le laptop — HTML **hors git** |
-| **Plugin** | `silex-forge` — publish + slides + onepager + cheat sheets |
+| **Plugin** | `silex-forge` — upload Cloudflare only (`forge-publish` · `forge-setup`) |
 
 ## Pourquoi ce repo
 
@@ -31,10 +31,22 @@ Scope **user** (sinon skills invisibles hors du projet d’install) :
 /plugin install silex-forge@silex-forge
 ```
 
-Skills : `forge-publish` · `forge-setup` · `silex-slides` · `frontend-slides` · `silex-onepager` · `silex-cheatsheet`.  
-Illustrations Rocky (autre marketplace) :
+Skills : `forge-publish` · `forge-setup`.  
+Craft Halo / onepager / cheatsheet = **`silex-craft@silex-plugins`**.  
+Craft générique (reco **forge-setup**) :
 
 ```text
+/plugin marketplace add go-silex/silex-plugins
+/plugin install silex-craft@silex-plugins
+
+/plugin marketplace add https://github.com/zarazhangrui/frontend-slides
+/plugin install frontend-slides@frontend-slides
+
+/plugin marketplace add https://github.com/cathrynlavery/diagram-design
+/plugin install diagram-design@diagram-design
+
+npx skills add alchaincyf/huashu-design
+
 /plugin marketplace add go-silex/rocky
 /plugin install rocky@rocky
 ```
@@ -93,10 +105,6 @@ plugins/silex-forge/
   skills/
     forge-publish/
     forge-setup/              # setup + doctor config machine
-    silex-slides/
-    frontend-slides/
-    silex-onepager/
-    silex-cheatsheet/         # infographies LinkedIn (poster 1260 × hauteur mesurée)
   scripts/publish.sh
   scripts/forge-doctor.sh
   scripts/lib/load_config.py

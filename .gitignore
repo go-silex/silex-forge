@@ -18,6 +18,7 @@ __pycache__/
 
 # HTML live = hub + wrangler Direct Upload — never commit artefacts.
 /site/a/
+/site/index.html
 /site/manifest.json
 /registry/*.json
 **/forge.env

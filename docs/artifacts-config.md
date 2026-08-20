@@ -59,6 +59,7 @@ plugins/silex-forge/scripts/publish.sh --list
 ## main ne contient pas
 
 - `site/a/**` (HTML live)
+- `site/index.html` (catalogue — généré par `gen-index.py` au publish)
 - `registry/*.json`
 - aucune branche payload
 

@@ -1,14 +1,22 @@
 /**
- * Defense-in-depth: block unauthenticated content on *.pages.dev.
+ * ACL + pages.dev lock.
  *
- * Cloudflare Access on the custom domain (forge.gosilex.com) does not
- * automatically cover the project.pages.dev origin. Until/unless Access
- * is enforced on that host, refuse non-share traffic so internal /a/*
- * and the catalogue cannot be scraped via the twin origin.
+ * forge.gosilex.com (after Access Bypass on / and /a):
+ *   /                    catalogue shell (no private titles in HTML)
+ *   /api/catalogue       public OK (filtered)
+ *   /a/<slug>/*          vis KV: public | shared | private  (+ JWT cookie)
+ *   /s/*                 KV key (existing Function)
+ *   /manifest.json       never to clients (worker reads via ASSETS)
  *
- * /s/* remains reachable so capability URLs still resolve if someone has
- * a key (canonical mint always uses forge.gosilex.com).
+ * Fail-closed: unknown vis = private.
+ * pages.dev: 403 except /s/* .
  */
+import {
+  type ForgeEnv,
+  extractSlugFromAPath,
+  getVisibility,
+  isTeamRequest,
+} from "./_lib/access"
 
 const SHARE_PREFIX = "/s/"
 
@@ -16,34 +24,91 @@ function isPagesDev(host: string): boolean {
   return host === "pages.dev" || host.endsWith(".pages.dev")
 }
 
-export const onRequest: PagesFunction = async (context) => {
-  const url = new URL(context.request.url)
-
-  if (!isPagesDev(url.hostname)) {
-    return context.next()
-  }
-
-  // Allow share capability path only (KV-gated in functions/s/[[path]].ts)
-  if (url.pathname === "/s" || url.pathname.startsWith(SHARE_PREFIX)) {
-    return context.next()
-  }
-
-  // Optional: real Access JWT already verified at edge — still allow team
-  // through pages.dev after Access app is live (they get a real assertion).
-  // Presence alone is NOT enough: require Access cookie flow via edge.
-  // If Access is not applied, this header is client-spoofable → still block
-  // static content unless we see CF-generated Access path (we cannot trust
-  // the header alone). Hard-block non-/s on pages.dev.
-  return new Response(
-    "Forbidden — use https://forge.gosilex.com (Access). This pages.dev origin does not serve team content.",
-    {
-      status: 403,
-      headers: {
-        "content-type": "text/plain; charset=utf-8",
-        "cache-control": "no-store",
-        "x-forge-origin-policy": "pages-dev-blocked",
-        "x-robots-tag": "noindex, nofollow",
-      },
+function plain404(): Response {
+  return new Response("Not found", {
+    status: 404,
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control": "no-store",
+      "x-robots-tag": "noindex, nofollow",
     },
+  })
+}
+
+function loginRedirect(): Response {
+  return new Response(null, {
+    status: 302,
+    headers: {
+      location: "/login",
+      "cache-control": "no-store",
+    },
+  })
+}
+
+function isPublicShell(pathname: string): boolean {
+  return (
+    pathname === "/" ||
+    pathname === "/index.html" ||
+    pathname === "/login" ||
+    pathname === "/login.html" ||
+    pathname === "/robots.txt" ||
+    pathname === "/favicon.ico" ||
+    pathname === "/images/favicon.png"
   )
+}
+
+export const onRequest: PagesFunction<ForgeEnv> = async (context) => {
+  const url = new URL(context.request.url)
+  const host = url.hostname
+  const path = url.pathname
+
+  if (isPagesDev(host)) {
+    if (path === "/s" || path.startsWith(SHARE_PREFIX)) {
+      return context.next()
+    }
+    return new Response(
+      "Forbidden — use https://forge.gosilex.com. This pages.dev origin does not serve team content.",
+      {
+        status: 403,
+        headers: {
+          "content-type": "text/plain; charset=utf-8",
+          "cache-control": "no-store",
+          "x-forge-origin-policy": "pages-dev-blocked",
+          "x-robots-tag": "noindex, nofollow",
+        },
+      },
+    )
+  }
+
+  // Full artefact index — worker-only (ASSETS.fetch bypasses this).
+  if (path === "/manifest.json" || path.startsWith("/registry/")) {
+    return plain404()
+  }
+
+  if (path.startsWith("/api/") || path.startsWith(SHARE_PREFIX) || path === "/s") {
+    return context.next()
+  }
+
+  if (isPublicShell(path)) {
+    return context.next()
+  }
+
+  if (path.startsWith("/a/") || path === "/a") {
+    const slug = extractSlugFromAPath(path)
+    if (!slug) return plain404()
+
+    const team = await isTeamRequest(context.request, context.env)
+    if (team) return context.next()
+
+    const vis = await getVisibility(context.env.SHARES, slug)
+    if (vis === "public") return context.next()
+    if (vis === "shared") return plain404()
+    return loginRedirect()
+  }
+
+  // Other static (css leftover, random files): team or 404
+  if (await isTeamRequest(context.request, context.env)) {
+    return context.next()
+  }
+  return plain404()
 }

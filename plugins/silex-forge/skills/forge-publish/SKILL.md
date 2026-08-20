@@ -15,8 +15,10 @@ Générer le HTML = **`silex-craft@silex-plugins`** (`silex-slides` · `silex-on
 | | |
 |---|---|
 | Host | `https://forge.gosilex.com` |
-| Défaut | `/a/<slug>/` — **Cloudflare Access** (équipe) |
-| Share | `/s/<slug>/<key>/` — Bypass Access, **clé**, non listé |
+| Défaut | `/a/<slug>/` — vis **private** (Access) |
+| Visibilité | barre **Privée / Partagée / Publique** (KV `vis:<slug>`) |
+| Partagée | `/s/<slug>/<key>/` — lien only, pas au catalogue anonyme |
+| Publique | `/a/<slug>/` listée sur `GET /` anonyme (Worker `/api/catalogue`) |
 | SSOT | **hub** `$artifacts/<slug>/` (path via forge.config locale) |
 | Deploy | hub → `wrangler pages deploy` (token `~/.config/silex/forge.env`) |
 

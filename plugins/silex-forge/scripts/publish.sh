@@ -477,6 +477,26 @@ cmd_share_only() {
   fi
 }
 
+inject_share_bars() {
+  # Use the running script's dir — clone of origin/main may not have this yet.
+  local inj="$SCRIPT_DIR/inject-share-bar.py"
+  [ -f "$inj" ] || inj="$(SCRIPTS)/inject-share-bar.py"
+  [ -f "$inj" ] || { warn "inject-share-bar.py manquant"; return 0; }
+  local s slug html
+  for s in "$WORK/repo/site/${INTERNAL_PREFIX}"/*/; do
+    [ -d "$s" ] || continue
+    slug=$(basename "$s")
+    html="${s}index.html"
+    [ -f "$html" ] || continue
+    if python3 "$inj" "$html" --slug "$slug"; then
+      [ -n "${ARTIFACTS_ROOT:-}" ] && [ -d "${ARTIFACTS_ROOT}/${slug}" ] \
+        && cp -f "$html" "${ARTIFACTS_ROOT}/${slug}/index.html" || true
+    else
+      warn "share-bar skip $slug"
+    fi
+  done
+}
+
 cmd_rebuild_index() {
   require_forge_config
   clone_engine
@@ -493,6 +513,7 @@ cmd_rebuild_index() {
     done
   fi
   build_from_hub
+  inject_share_bars
   if deploy_pages; then
     ok "index régénéré + live Pages"
     hub_index_update

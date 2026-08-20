@@ -31,6 +31,24 @@ from load_config import artifacts_root, load_config  # noqa: E402
 SKIP_NAMES = {".DS_Store", "Thumbs.db", "__pycache__"}
 
 
+def _inject_share_bar(html_path: Path, slug: str) -> None:
+    """Overlay Interne/Externe bar on /a/<slug>/ — strip+reinject, no share keys."""
+    inj = Path(__file__).resolve().parent / "inject-share-bar.py"
+    if not inj.is_file():
+        print(f"warn: inject-share-bar.py missing — skip {slug}", file=sys.stderr)
+        return
+    r = subprocess.run(
+        [sys.executable, str(inj), str(html_path), "--slug", slug],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if r.returncode != 0:
+        print(f"warn: share-bar inject failed {slug}: {r.stderr.strip()}", file=sys.stderr)
+        return
+    print(f"  share-bar → {slug}")
+
+
 def _load_meta(slug_dir: Path, slug: str) -> dict:
     meta_path = slug_dir / "meta.json"
     if meta_path.is_file():
@@ -147,6 +165,14 @@ def build(
                 shutil.copytree(item, target, dirs_exist_ok=True)
             else:
                 shutil.copy2(item, target)
+        html_dest = dest / "index.html"
+        if html_dest.is_file():
+            _inject_share_bar(html_dest, slug)
+            hub_html = src / "index.html"
+            try:
+                shutil.copy2(html_dest, hub_html)
+            except OSError as e:
+                print(f"warn: persist share-bar hub {slug}: {e}", file=sys.stderr)
         reg_path = reg_dir / f"{slug}.json"
         reg_path.write_text(
             json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

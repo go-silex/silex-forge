@@ -235,6 +235,13 @@ body::before{{
 .header-actions{{display:flex;align-items:center;gap:8px;flex-shrink:0}}
 .theme-btn{{background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text-dim);cursor:pointer;font-size:.85rem;padding:5px 10px;transition:border-color .15s,color .15s;line-height:1}}
 .theme-btn:hover{{border-color:var(--accent);color:var(--accent)}}
+.ghost-btn{{
+  background:transparent;border:1px solid color-mix(in srgb,var(--text) 16%,transparent);
+  color:var(--text-xdim);cursor:pointer;font-size:.68rem;font-weight:500;letter-spacing:.06em;
+  padding:4px 9px;border-radius:6px;text-decoration:none;opacity:.65;
+  transition:opacity .15s,border-color .15s,color .15s;line-height:1.2;
+}}
+.ghost-btn:hover{{opacity:1;color:var(--text-dim);border-color:color-mix(in srgb,var(--text) 32%,transparent)}}
 
 /* ── Stats strip ── */
 .stats{{display:flex;flex-wrap:wrap;gap:10px 18px;margin-bottom:8px;font-family:var(--mono);font-size:.72rem;color:var(--text-xdim)}}
@@ -373,7 +380,7 @@ footer a:hover{{color:var(--blue)}}
     <div class="header-sub" id="headerSub">Pages publiques. Connexion équipe pour le reste.</div>
   </div>
   <div class="header-actions">
-    <a class="theme-btn" id="loginLink" href="/login" style="text-decoration:none;display:inline-block">Connexion</a>
+    <a class="ghost-btn" id="loginLink" href="/login" title="Connexion équipe">Équipe</a>
     <button class="theme-btn" id="themeBtn" title="Basculer le thème" aria-label="Basculer le thème">☀️</button>
   </div>
 </header>

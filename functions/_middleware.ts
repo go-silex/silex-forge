@@ -45,6 +45,13 @@ function loginRedirect(): Response {
   })
 }
 
+function withAcl(res: Response): Response {
+  const headers = new Headers(res.headers)
+  headers.set("x-forge-acl", "vis-v4")
+  headers.set("cache-control", "no-store")
+  return new Response(res.body, { status: res.status, headers })
+}
+
 function isPublicShell(pathname: string): boolean {
   return (
     pathname === "/" ||
@@ -90,7 +97,8 @@ export const onRequest: PagesFunction<ForgeEnv> = async (context) => {
   }
 
   if (isPublicShell(path)) {
-    return context.next()
+    const res = await context.next()
+    return withAcl(res)
   }
 
   if (path.startsWith("/a/") || path === "/a") {
@@ -98,17 +106,24 @@ export const onRequest: PagesFunction<ForgeEnv> = async (context) => {
     if (!slug) return plain404()
 
     const team = await isTeamRequest(context.request, context.env)
-    if (team) return context.next()
+    if (team) {
+      const res = await context.next()
+      return withAcl(res)
+    }
 
     const vis = await getVisibility(context.env.SHARES, slug)
-    if (vis === "public") return context.next()
+    if (vis === "public") {
+      const res = await context.next()
+      return withAcl(res)
+    }
     if (vis === "shared") return plain404()
     return loginRedirect()
   }
 
   // Other static (css leftover, random files): team or 404
   if (await isTeamRequest(context.request, context.env)) {
-    return context.next()
+    const res = await context.next()
+    return withAcl(res)
   }
   return plain404()
 }

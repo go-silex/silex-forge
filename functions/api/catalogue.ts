@@ -42,11 +42,20 @@ export const onRequestGet: PagesFunction<ForgeEnv> = async (context) => {
     raw = []
   }
 
+  const visBySlug = await Promise.all(
+    raw.map(async (it) => {
+      const slug = String(it.slug || "")
+      if (!slug) return ["", "private"] as const
+      return [slug, await getVisibility(context.env.SHARES, slug)] as const
+    }),
+  )
+  const visMap = new Map(visBySlug.filter(([s]) => s))
+
   const items = []
   for (const it of raw) {
     const slug = String(it.slug || "")
     if (!slug) continue
-    const vis = await getVisibility(context.env.SHARES, slug)
+    const vis = visMap.get(slug) || "private"
     if (!team && vis !== "public") continue
 
     const badges = Array.isArray(it.b) ? [...it.b] : []

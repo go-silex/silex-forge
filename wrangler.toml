@@ -12,7 +12,7 @@ id = "YOUR_KV_NAMESPACE_ID"
 # Access JWT verification (public ids — not secrets)
 [vars]
 CF_ACCESS_TEAM_DOMAIN = "REDACTED"
-# forge.gosilex.com AUD + silex-forge-6mm.pages.dev AUD
+# forge host + pages.dev + /login app (JWT after Bypass)
 CF_ACCESS_AUD = "REDACTED"
 
 # Secrets (Pages project — not committed):

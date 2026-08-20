@@ -15,7 +15,7 @@
   if (!slug || location.pathname.indexOf("/a/") !== 0) return;
 
   var state = {
-    active: false,
+    visibility: "private",
     shareUrl: "",
     shortUrl: "",
   };
@@ -71,17 +71,17 @@
     }, 2400);
   }
 
-  /* ── bar ──────────────────────────────────────────────── */
+  /* ── bar (équipe only — hidden until GET /api/visibility 200) ── */
   var bar = document.createElement("div");
   bar.setAttribute("data-forge-share-bar", "1");
   bar.setAttribute("role", "toolbar");
-  bar.setAttribute("aria-label", "Partage forge");
+  bar.setAttribute("aria-label", "Visibilité forge");
+  bar.style.display = "none";
 
-  var sharedBadge = document.createElement("span");
-  sharedBadge.className = "fsb-shared";
-  sharedBadge.innerHTML =
-    '<span class="fsb-shared-dot" aria-hidden="true"></span>Partagé';
-  sharedBadge.title = "Lien externe actif (/s/… clé) — accessible hors équipe";
+  var visBadge = document.createElement("span");
+  visBadge.className = "fsb-shared";
+  visBadge.innerHTML = '<span class="fsb-shared-dot" aria-hidden="true"></span>';
+  visBadge.appendChild(document.createTextNode("Privée"));
 
   function mkBtn(label, cls) {
     var b = document.createElement("button");
@@ -91,37 +91,42 @@
     return b;
   }
 
-  var internalBtn = mkBtn("Interne");
-  internalBtn.title = "Copier le lien équipe (Access) — sans shortlink";
+  var copyBtn = mkBtn("Copier le lien");
+  copyBtn.title = "Copier l’URL adaptée à la visibilité actuelle";
 
-  var externalBtn = mkBtn("Externe", "primary");
-  externalBtn.title = "Créer / copier le lien public (/s/…, shortlink si dispo). ⇧+clic = nouvelle clé";
+  var privateBtn = mkBtn("Privée");
+  privateBtn.title = "Catalogue équipe + Access seulement";
+  var sharedBtn = mkBtn("Partagée");
+  sharedBtn.title = "Lien /s/…/clé uniquement — pas sur le catalogue public";
+  var publicBtn = mkBtn("Publique");
+  publicBtn.title = "Listée sur le catalogue public — /a/… sans login";
 
-  var revokeBtn = mkBtn("Révoquer", "danger");
-  revokeBtn.title = "Annuler le partage externe — le lien public cesse de fonctionner";
-  revokeBtn.hidden = true;
-
-  var hint = document.createElement("span");
-  hint.className = "fsb-hint";
-  hint.textContent = "⇧+Externe = régénérer";
-
-  bar.appendChild(sharedBadge);
-  bar.appendChild(internalBtn);
-  bar.appendChild(externalBtn);
-  bar.appendChild(revokeBtn);
-  bar.appendChild(hint);
+  bar.appendChild(visBadge);
+  bar.appendChild(privateBtn);
+  bar.appendChild(sharedBtn);
+  bar.appendChild(publicBtn);
+  bar.appendChild(copyBtn);
   document.documentElement.appendChild(bar);
 
   function setBusy(on) {
-    internalBtn.disabled = on;
-    externalBtn.disabled = on;
-    revokeBtn.disabled = on;
+    privateBtn.disabled = on;
+    sharedBtn.disabled = on;
+    publicBtn.disabled = on;
+    copyBtn.disabled = on;
+  }
+
+  function visLabel(v) {
+    if (v === "public") return "Publique";
+    if (v === "shared") return "Partagée";
+    return "Privée";
   }
 
   function renderState() {
-    sharedBadge.classList.toggle("on", state.active);
-    revokeBtn.hidden = !state.active;
-    externalBtn.textContent = state.active ? "Copier externe" : "Externe";
+    visBadge.classList.add("on");
+    visBadge.lastChild.textContent = visLabel(state.visibility);
+    privateBtn.className = state.visibility === "private" ? "primary" : "";
+    sharedBtn.className = state.visibility === "shared" ? "primary" : "";
+    publicBtn.className = state.visibility === "public" ? "primary" : "";
   }
 
   function copyText(url) {
@@ -146,52 +151,82 @@
     });
   }
 
-  function internalUrl() {
-    return location.origin + "/a/" + slug + "/";
+  function pageUrl() {
+    return "https://forge.gosilex.com/a/" + slug + "/";
   }
 
-  /* ── API ──────────────────────────────────────────────── */
-  function apiShare(method, body) {
+  function currentCopyUrl() {
+    if (state.visibility === "shared") return state.shortUrl || state.shareUrl || pageUrl();
+    return pageUrl();
+  }
+
+  function apiVis(method, body) {
+    var q = method === "GET" ? "?slug=" + encodeURIComponent(slug) : "";
     var opts = {
       method: method,
       credentials: "same-origin",
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", accept: "application/json" },
     };
     if (body) opts.body = JSON.stringify(body);
-    return fetch("/api/share" + (method === "GET" ? "?slug=" + encodeURIComponent(slug) : ""), opts).then(
-      function (r) {
-        return r.json().then(function (data) {
-          if (!r.ok) throw new Error(data.error || "error_" + r.status);
-          return data;
-        });
-      }
-    );
+    return fetch("/api/visibility" + q, opts).then(function (r) {
+      return r.json().then(function (data) {
+        if (r.status === 401) throw new Error("unauthorized");
+        if (!r.ok) throw new Error(data.error || "error_" + r.status);
+        return data;
+      });
+    });
   }
 
-  function refreshState() {
-    return apiShare("GET")
+  function applyVis(data) {
+    state.visibility = data.visibility || "private";
+    state.shareUrl = data.shareUrl || "";
+    state.shortUrl = data.shortUrl || "";
+    renderState();
+  }
+
+  function setVis(vis, copyAfter) {
+    setBusy(true);
+    apiVis("POST", { slug: slug, visibility: vis })
       .then(function (data) {
-        // GET returns { active } only — never a key
-        state.active = !!data.active;
-        if (!state.active) {
-          state.shareUrl = "";
-          state.shortUrl = "";
+        applyVis(data);
+        var msg =
+          vis === "public"
+            ? "Page publique — listée au catalogue"
+            : vis === "shared"
+              ? "Lien partagé (pas au catalogue public)"
+              : "Page privée — équipe seulement";
+        if (copyAfter) {
+          var url = currentCopyUrl();
+          return copyText(url).then(function () {
+            toast(msg + " · lien copié");
+          });
         }
-        renderState();
+        toast(msg);
       })
-      .catch(function () {
-        /* offline / unauthorized — assume inactive */
-        renderState();
+      .catch(function (err) {
+        console.error("[forge vis]", err);
+        toast("Échec — connecte-toi (Access)", true);
+      })
+      .finally(function () {
+        setBusy(false);
       });
   }
 
-  /* ── actions ──────────────────────────────────────────── */
-  internalBtn.addEventListener("click", function () {
+  privateBtn.addEventListener("click", function () {
+    setVis("private", false);
+  });
+  sharedBtn.addEventListener("click", function () {
+    setVis("shared", true);
+  });
+  publicBtn.addEventListener("click", function () {
+    setVis("public", true);
+  });
+  copyBtn.addEventListener("click", function () {
+    var url = currentCopyUrl();
     setBusy(true);
-    var url = internalUrl();
     copyText(url)
       .then(function () {
-        toast("Lien interne copié");
+        toast("Lien copié");
       })
       .catch(function () {
         toast("Impossible de copier — " + url, true);
@@ -201,62 +236,13 @@
       });
   });
 
-  externalBtn.addEventListener("click", function (ev) {
-    var rotate = !!ev.shiftKey;
-    setBusy(true);
-    apiShare("POST", { slug: slug, rotate: rotate })
-      .then(function (data) {
-        state.active = true;
-        state.shareUrl = data.shareUrl || "";
-        state.shortUrl = data.shortUrl || "";
-        cfg.shareUrl = state.shareUrl;
-        cfg.shortUrl = state.shortUrl;
-        renderState();
-        var url = data.shortUrl || data.shareUrl;
-        return copyText(url).then(function () {
-          toast(
-            rotate
-              ? "Nouveau lien externe copié"
-              : data.shortUrl
-                ? "Lien externe copié (shortlink)"
-                : "Lien externe copié"
-          );
-        });
-      })
-      .catch(function (err) {
-        console.error("[forge share]", err);
-        toast("Échec — connecte-toi (Access)", true);
-      })
-      .finally(function () {
-        setBusy(false);
-      });
-  });
-
-  revokeBtn.addEventListener("click", function () {
-    if (!state.active) return;
-    if (!confirm("Révoquer le partage externe ?\nLe lien public cessera de fonctionner immédiatement.")) {
-      return;
-    }
-    setBusy(true);
-    apiShare("DELETE", { slug: slug })
-      .then(function () {
-        state.active = false;
-        state.shareUrl = "";
-        state.shortUrl = "";
-        cfg.shareUrl = "";
-        cfg.shortUrl = "";
-        renderState();
-        toast("Partage externe révoqué");
-      })
-      .catch(function (err) {
-        console.error("[forge share revoke]", err);
-        toast("Échec de la révocation", true);
-      })
-      .finally(function () {
-        setBusy(false);
-      });
-  });
-
-  renderState();
-  refreshState();
+  apiVis("GET")
+    .then(function (data) {
+      bar.style.display = "";
+      applyVis(data);
+    })
+    .catch(function () {
+      /* anonymous on a public page — no toolbar */
+      if (bar.parentNode) bar.parentNode.removeChild(bar);
+    });
 })();

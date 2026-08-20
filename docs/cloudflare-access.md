@@ -1,35 +1,42 @@
 # Cloudflare Access — forge.gosilex.com
 
-**But :** tout le host est **interne par défaut**.  
-Seul le préfixe **`/s/*`** (liens share à clé) est en Bypass Access.
+**v4 :** le Worker est l’ACL. Access sert à **poser le cookie équipe** (`/login`).
+
+Séquence : **deploy Functions fail-closed d’abord**, *puis* Bypass. Inverser = tous les decks ouverts.
 
 ## Modèle d’URL
 
-| Préfixe | Visibilité | Access |
+| Préfixe | Anonyme | Access JWT (cookie) |
 |---|---|---|
-| `/` (catalogue) | Interne | **Protégé** |
-| `/a/<slug>/` | Interne (défaut publish) | **Protégé** |
-| `/s/<slug>/<key>/` | Share (opt-in) | **Bypass** — clé dans le path, **non listé** |
-| `/images/…` | Assets équipe | Protégé |
+| `/` catalogue shell | OK — DATA via `/api/catalogue` (public only) | toutes les pages |
+| `/api/catalogue` | public only | tout |
+| `/a/<slug>/*` (HTML **et** `og.jpg`) | public → 200 ; shared → 404 ; private → 302 `/login` | 200 |
+| `/s/<slug>/<key>/` | Bypass + clé KV | idem |
+| `/login` | **Access Allow team** (OTP) puis redirect `/` | — |
+| `/manifest.json` | 404 client | 404 client (Function lit via ASSETS) |
 
-> **`/p/` purgé** — plus de path « public sans clé ». Utiliser **Externe** / `--share` → `/s/…`.
+Pas de `/p/`. Une URL de contenu : `/a/`.
 
-Apps Zero Trust (créées 2026-07-17, pages.dev 2026-07-17) :
+### Apps Zero Trust (cible v4)
 
-| App | Domain | Policy |
+| App | Path | Policy |
 |---|---|---|
-| **Silex Forge** | `forge.gosilex.com` | Allow `@gosilex.com` + `mickael@bouly.io` |
-| **Silex Forge · share public** | `forge.gosilex.com/s` | Bypass everyone |
-| **Silex Forge · pages.dev** | `silex-forge-6mm.pages.dev` | Allow team (même policy) |
+| **Silex Forge · login** | `forge.gosilex.com/login` | Allow `@gosilex.com` + `mickael@bouly.io` |
+| **Silex Forge · public** | `forge.gosilex.com` (host, **Bypass**) | Bypass everyone — Functions filtrent |
+| **Silex Forge · pages.dev** | `silex-forge-6mm.pages.dev` | Allow team + middleware 403 hors `/s/` |
+
+Ajouter l’AUD de l’app `/login` dans `wrangler.toml` `CF_ACCESS_AUD` (liste comma).
+
+**Avant v4 (actuel jusqu’au Bypass dashboard) :** app host Allow team + Bypass `/s` seulement. Le catalogue public n’est pas visible tant que le Bypass host n’est pas posé.
 
 ### Invariant hostnames
 
 Access sur le **custom domain seul ne suffit pas**. Le projet Pages expose aussi `*.pages.dev` avec les **mêmes ASSETS**.
 
-| Host | Contenu équipe (`/`, `/a/*`) | Share `/s/*` |
+| Host | Catalogue `/` · `/a/*` | Share `/s/*` |
 |---|---|---|
-| `forge.gosilex.com` | Access Allow | Bypass + clé KV |
-| `silex-forge-6mm.pages.dev` | Access **+** middleware 403 (defense-in-depth) | Function KV only |
+| `forge.gosilex.com` | Worker vis + JWT cookie | Bypass + clé KV |
+| `silex-forge-6mm.pages.dev` | middleware 403 | Function KV only |
 
 **Ne jamais** utiliser pages.dev comme sonde OG « sans Access ». Vérifier en local (`verify-og.py --file`).
 

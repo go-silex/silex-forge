@@ -70,8 +70,8 @@ Deploy : `publish.sh` → `wrangler pages deploy` (token local `~/.config/silex/
 ## Structure
 
 ```
-# main = ENGINE only
-plugins/silex-forge/     # publish + slides + onepager + setup
+# main = ENGINE only (upload CF)
+plugins/silex-forge/     # publish + setup — PAS le craft HTML
   forge.config.example.json
   hooks/                 # SessionStart → doctor
   scripts/publish.sh · build-site-from-hub.py · forge-doctor.sh
@@ -82,6 +82,8 @@ site/                    # skeleton only (404, _headers, …) — PAS les HTML
 # hors git
 # hub  $artifacts/<slug>/{index.html,meta.json}  = SSOT
 # live = wrangler Direct Upload (pas de branche payload)
+
+# craft (slides / onepager / cheatsheet) = silex-craft@silex-plugins
 ```
 
 ## Config machine (artefacts dans silex-hub)
@@ -108,9 +110,10 @@ Loader : local → example. Hook SessionStart : config KO → **forge-setup**.
 
 | Plugin | Contenu |
 |---|---|
-| **`silex-forge`** | `forge-publish` · `forge-setup` · `silex-slides` · `frontend-slides` · `silex-onepager` · `silex-cheatsheet` |
+| **`silex-forge`** | `forge-publish` · `forge-setup` — **upload Cloudflare only** |
 
-Ancien plugin `silex-craft` **fusionné** ici.  
+Craft HTML Halo / onepager / cheatsheet → **`silex-craft@silex-plugins`**.  
+Moteur slides générique + diagrammes → plugins externes (reco **forge-setup**).  
 **Rocky** : `rocky@rocky` (`go-silex/rocky`) — hors de ce repo.
 
 Install (scope **user**) :
@@ -119,17 +122,28 @@ Install (scope **user**) :
 /plugin marketplace add go-silex/silex-forge
 /plugin install silex-forge@silex-forge
 
-# Rocky (illustrations) — autre marketplace
+/plugin marketplace add go-silex/silex-plugins
+/plugin install silex-craft@silex-plugins
+
+/plugin marketplace add https://github.com/zarazhangrui/frontend-slides
+/plugin install frontend-slides@frontend-slides
+
+/plugin marketplace add https://github.com/cathrynlavery/diagram-design
+/plugin install diagram-design@diagram-design
+
+npx skills add alchaincyf/huashu-design
+
 /plugin marketplace add go-silex/rocky
 /plugin install rocky@rocky
 ```
 
-### Ce qui reste dans `silex-plugins`
+### `silex-plugins`
 
 | Plugin | Pourquoi |
 |---|---|
-| `silex-ops` | Vault, session, HPFO, onboarding — pas des artefacts HTML |
-| `silex-delivery` | ERP, digests, brain-factory, use-cases — delivery client |
+| `silex-ops` | Vault, session, HPFO, onboarding |
+| `silex-delivery` | ERP, digests, brain-factory, cas clients |
+| `silex-craft` | `silex-slides` · `silex-onepager` · `silex-cheatsheet` |
 
 ## Docs
 

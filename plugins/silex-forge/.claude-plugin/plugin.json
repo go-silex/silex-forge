@@ -1,9 +1,9 @@
 {
   "name": "silex-forge",
-  "description": "Publier sur forge.gosilex.com + générer slides / onepagers / cheat sheets brand Silex. Artefacts SSOT dans silex-hub (config locale).",
+  "description": "Upload Cloudflare Pages pour forge.gosilex.com — publish + setup/doctor. Craft HTML = silex-craft@silex-plugins.",
   "author": {
     "name": "Silex",
     "url": "https://github.com/go-silex"
   },
-  "version": "1.5.0"
+  "version": "1.6.0"
 }

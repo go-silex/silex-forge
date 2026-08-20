@@ -33,6 +33,7 @@ toujours un **absolu** dans la config locale.
 ✅ $hub_root/$artifacts_dir existe
 ✅ ~/.config/silex/forge.env (token Pages, chmod 600) — requis pour publish
 ✅ forge-doctor exit 0 (token absent = warning, pas KO hub)
+⚠️ plugins craft externes recommandés (diagram-design, huashu-design, frontend-slides)
 ```
 
 ## Étape 0 — Doctor
@@ -45,7 +46,7 @@ bash "$S"
 bash "$S" --json   # si besoin machine-readable
 ```
 
-- **OK** → afficher hub + artifacts, stop (rien à faire sauf si l’user veut override).
+- **OK** → afficher hub + artifacts. Token + **Étape 6** (plugins craft) quand même si manquants. Stop le reste sauf override demandé.
 - **KO** → enchaîner setup (ne pas inventer de path).
 
 ## Étape 1 — Résoudre hub_root
@@ -150,9 +151,10 @@ Rapport :
 **doctor**     : ✅|✗
 
 **Suite**
-- Générer un deck : silex-slides / frontend-slides / silex-onepager / silex-cheatsheet
+- Générer : `silex-craft@silex-plugins` (`silex-slides` · `silex-onepager` · `silex-cheatsheet`)
   → écrire sous $artifacts/<slug>/
 - Publier : forge-publish (hub → wrangler Pages)
+- Craft générique (hors charte Silex) : plugins externes ci-dessous
 ```
 
 ## Étape 5 — Token Cloudflare (publish)
@@ -187,6 +189,50 @@ chmod 600 ~/.config/silex/forge.env
 3. Sinon **demander le token** (une question) et l’écrire pareil. Ne pas l’écho dans le chat.
 
 Scope : Pages Write + Read, Account Settings Read, Workers KV Storage Edit (pour `--share` CLI).
+
+## Étape 6 — Plugins craft recommandés (externes)
+
+Pas dans `silex-forge`. **Installer** (scope user) — le doctor hub reste OK sans eux, mais **Halo est mort** tant que `silex-craft` + `frontend-slides` manquent.
+
+Land `silex-craft@silex-plugins` **avant** (ou en même temps que) cette version forge. `marketplace update silex-forge` seul retire les anciennes skills craft du cache.
+
+| Repo | Install |
+|---|---|
+| `silex-craft@silex-plugins` | **requis** — `silex-slides` / onepager / cheatsheet |
+| [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | **requis** par `silex-slides` (moteur) · live host = `forge-publish`, **jamais Vercel** |
+| [diagram-design](https://github.com/cathrynlavery/diagram-design) | optionnel |
+| [huashu-design](https://github.com/alchaincyf/huashu-design) | optionnel — skill (`npx skills add`) |
+
+```text
+/plugin marketplace add go-silex/silex-plugins
+/plugin install silex-craft@silex-plugins --scope user
+
+/plugin marketplace add https://github.com/zarazhangrui/frontend-slides
+/plugin install frontend-slides@frontend-slides --scope user
+
+/plugin marketplace add https://github.com/cathrynlavery/diagram-design
+/plugin install diagram-design@diagram-design --scope user
+```
+
+```bash
+npx skills add alchaincyf/huashu-design
+# fallback :
+# git clone https://github.com/alchaincyf/huashu-design.git ~/.claude/skills/huashu-design
+```
+
+CLI équivalent :
+
+```bash
+claude plugin marketplace add go-silex/silex-plugins
+claude plugin install silex-craft@silex-plugins --scope user
+claude plugin marketplace add https://github.com/zarazhangrui/frontend-slides
+claude plugin install frontend-slides@frontend-slides --scope user
+claude plugin marketplace add https://github.com/cathrynlavery/diagram-design
+claude plugin install diagram-design@diagram-design --scope user
+npx skills add alchaincyf/huashu-design
+```
+
+`silex-slides` (charte Halo) réutilise le moteur `frontend-slides` — sans ce plugin, le wrapper Silex ne peut pas générer.
 
 ## Fallback code (rappel)
 

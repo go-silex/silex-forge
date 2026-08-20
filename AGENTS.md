@@ -19,10 +19,12 @@
 
 | Zone | Comportement |
 |---|---|
-| `/` catalogue + `/a/*` | **Cloudflare Access** — emails `@gosilex.com` (+ mickael@bouly.io) · OTP |
-| `/s/*` | **Bypass Access** — liens share publics (clé dans le path) |
+| `/` + `/api/catalogue` | Shell public ; liste = Worker (public vs tout si JWT) |
+| `/a/<slug>/*` | Worker vis (private/shared/public) · HTML **et** og.jpg |
+| `/s/*` | Bypass + clé KV |
+| `/login` | Access Allow équipe (cookie JWT) |
 
-Sans cookie Access → **302** vers `gosilex.cloudflareaccess.com`.
+**Bypass host `/` et `/a` seulement APRÈS deploy Functions** (`x-forge-acl: vis-v4`). Avant : Access Allow sur le host. Inverser = fuit.
 
 ## Visibilité (modèle v4)
 

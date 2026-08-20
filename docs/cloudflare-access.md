@@ -104,10 +104,38 @@ Au minimum un IdP configuré dans Zero Trust :
 
 ## Vérifications
 
+**Avant Bypass** (Functions v4 live, Access host encore Allow) : anonyme voit encore 302 Access sur `/` — normal.
+
+**Gate Bypass** — ne Bypass `/` `/a` que si :
+
 ```bash
-# Sans cookie Access → doit rediriger vers login CF
-curl -sI "https://forge.gosilex.com/" | head -5
-curl -sI "https://forge.gosilex.com/a/github-claude-ops/" | head -5
+# Functions live (après wrangler deploy de ce code)
+curl -sI "https://forge.gosilex.com/a/github-claude-ops/" | grep -i x-forge-acl
+# → vis-v4  (si absent = ancien middleware, NE PAS Bypass)
+
+# Body catalogue : aucun titre privé dans le HTML
+curl -s "https://forge.gosilex.com/" | grep -E 'DATA|unkillable|github-claude' || true
+# shell : `let DATA = []` — pas de titres embarqués
+
+# manifest jamais aux clients
+curl -sI "https://forge.gosilex.com/manifest.json"   # 404
+```
+
+**Après Bypass** (anonyme) :
+
+```bash
+curl -s "https://forge.gosilex.com/api/catalogue" | head   # items public only, team:false
+curl -sI "https://forge.gosilex.com/a/<private-slug>/"     # 302 Location: /login
+curl -sI "https://forge.gosilex.com/a/<private-slug>/og.jpg"  # 302 /login
+curl -sI "https://forge.gosilex.com/login"                 # 302 cloudflareaccess.com (Allow)
+```
+
+Ne **jamais** Bypass `/login`. Cookie Path Attribute **off**. AUD de l’app `/login` dans `CF_ACCESS_AUD`.
+
+```bash
+# pages.dev ne doit PAS servir le catalogue /a en clair (403 middleware et/ou Access)
+curl -sI "https://silex-forge-6mm.pages.dev/" | head -5
+curl -sI "https://silex-forge-6mm.pages.dev/a/github-claude-ops/" | head -5
 
 # pages.dev ne doit PAS servir le catalogue /a en clair (403 middleware et/ou Access)
 curl -sI "https://silex-forge-6mm.pages.dev/" | head -5

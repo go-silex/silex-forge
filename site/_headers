@@ -28,8 +28,8 @@
   Cache-Control: public, max-age=300
 /images/*
   Cache-Control: public, max-age=86400
-# OG thumbs (stable URL per publish)
+# OG thumbs follow vis (private revoke must not linger in caches)
 /*/og.jpg
-  Cache-Control: public, max-age=3600
+  Cache-Control: no-store
 /*/og.png
-  Cache-Control: public, max-age=3600
+  Cache-Control: no-store

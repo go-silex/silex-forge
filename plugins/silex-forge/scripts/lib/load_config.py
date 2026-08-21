@@ -52,6 +52,9 @@ _ENV_PUBLIC_KEYS = frozenset(
         "CLOUDFLARE_ACCOUNT_ID",
         "CLOUDFLARE_EMAIL",
         "FORGE_SHARES_KV_ID",
+        "CF_ACCESS_TEAM_DOMAIN",
+        "CF_ACCESS_AUD",
+        "SHLINK_API_URL",
     }
 )
 
@@ -258,6 +261,10 @@ def doctor(cfg: dict[str, Any] | None = None) -> dict[str, Any]:
             "FORGE_SHARES_KV_ID missing — CLI --share needs it "
             "(forge.env or shares_kv_namespace_id in forge.config)"
         )
+    public, _ = parse_forge_env()
+    for key in ("CF_ACCESS_TEAM_DOMAIN", "CF_ACCESS_AUD"):
+        if not (os.environ.get(key) or public.get(key) or "").strip():
+            warnings.append(f"{key} missing in forge.env — deploy would wipe Access JWT vars")
     has_token = token_present()
     if not has_token:
         warnings.append(

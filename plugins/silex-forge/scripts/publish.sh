@@ -138,29 +138,41 @@ source_cf_credentials() {
     val="${val#\'}"
     val="${val%\'}"
     case "$key" in
-      CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|CLOUDFLARE_API_KEY|CLOUDFLARE_EMAIL|FORGE_SHARES_KV_ID)
+      CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|CLOUDFLARE_API_KEY|CLOUDFLARE_EMAIL|FORGE_SHARES_KV_ID|CF_ACCESS_TEAM_DOMAIN|CF_ACCESS_AUD|SHLINK_API_URL)
         export "$key=$val"
         ;;
     esac
   done < "$f"
 }
 
-# Patch placeholder KV id in cloned wrangler.toml from forge.env / config
-patch_wrangler_kv() {
+# Patch cloned wrangler.toml: KV id + plain [vars] from forge.env
+# (wrangler pages deploy wipes dashboard plain vars if [vars] is absent)
+patch_wrangler_for_deploy() {
   local toml="$1"
   local kv="${FORGE_SHARES_KV_ID:-}"
+  local team="${CF_ACCESS_TEAM_DOMAIN:-}"
+  local aud="${CF_ACCESS_AUD:-}"
+  local shlink_url="${SHLINK_API_URL:-}"
   [ -n "$kv" ] || die \
     "FORGE_SHARES_KV_ID missing — set in ~/.config/silex/forge.env (see .env.example)"
+  [ -n "$team" ] || die \
+    "CF_ACCESS_TEAM_DOMAIN missing — set in ~/.config/silex/forge.env (see .env.example)"
+  [ -n "$aud" ] || die \
+    "CF_ACCESS_AUD missing — set in ~/.config/silex/forge.env (see .env.example)"
   [ -f "$toml" ] || die "wrangler.toml missing: $toml"
-  python3 - "$toml" "$kv" <<'PY'
+  python3 - "$toml" "$kv" "$team" "$aud" "$shlink_url" <<'PY'
+import re
 import sys
 from pathlib import Path
-p, kv = Path(sys.argv[1]), sys.argv[2]
+
+p = Path(sys.argv[1])
+kv, team, aud, shlink_url = sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]
 text = p.read_text(encoding="utf-8")
+
 needle = 'id = "YOUR_KV_NAMESPACE_ID"'
-if needle not in text and f'id = "{kv}"' not in text:
-    # still try replace any YOUR_ placeholder line under SHARES binding
-    import re
+if needle in text:
+    text = text.replace(needle, f'id = "{kv}"')
+elif f'id = "{kv}"' not in text:
     text2, n = re.subn(
         r'(binding\s*=\s*"SHARES"\s*\nid\s*=\s*")[^"]*(")',
         rf"\g<1>{kv}\2",
@@ -170,8 +182,20 @@ if needle not in text and f'id = "{kv}"' not in text:
     if n == 0:
         sys.exit("could not patch SHARES kv id in wrangler.toml")
     text = text2
-else:
-    text = text.replace(needle, f'id = "{kv}"')
+
+# Drop any existing [vars] block (committed file should have none)
+text = re.sub(r"\n\[vars\][\s\S]*?(?=\n\[|\Z)", "\n", text)
+
+vars_lines = [
+    "",
+    "[vars]",
+    f'CF_ACCESS_TEAM_DOMAIN = "REDACTED"',
+    f'CF_ACCESS_AUD = "REDACTED"',
+]
+if shlink_url:
+    vars_lines.append(f'SHLINK_API_URL = "{shlink_url}"')
+vars_lines.append("")
+text = text.rstrip() + "\n" + "\n".join(vars_lines)
 p.write_text(text, encoding="utf-8")
 PY
 }
@@ -189,7 +213,7 @@ deploy_pages() {
   cd "$WORK/repo"
   [ -d site ] || die "site/ missing in engine clone"
   [ -f wrangler.toml ] || die "wrangler.toml missing"
-  patch_wrangler_kv "$WORK/repo/wrangler.toml"
+  patch_wrangler_for_deploy "$WORK/repo/wrangler.toml"
   info "wrangler pages deploy site → ${project} (${acct:0:8}…)"
   local -a wr
   if command -v wrangler >/dev/null 2>&1; then

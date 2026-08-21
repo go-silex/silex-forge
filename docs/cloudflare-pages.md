@@ -51,7 +51,12 @@ plugins/silex-forge/scripts/publish.sh --rebuild-index
 
 No HTML `git push`. No GitHub Action deploy.
 
-`publish.sh` patches `wrangler.toml` KV placeholder `YOUR_KV_NAMESPACE_ID` from `FORGE_SHARES_KV_ID` before deploy.
+`publish.sh` patches the cloned `wrangler.toml` before deploy:
+
+- KV placeholder `YOUR_KV_NAMESPACE_ID` ← `FORGE_SHARES_KV_ID`
+- plain `[vars]` ← `CF_ACCESS_TEAM_DOMAIN`, `CF_ACCESS_AUD`, optional `SHLINK_API_URL`
+
+Without that inject, `wrangler pages deploy` can wipe dashboard **plain** vars (secrets are kept).
 
 ## Pages env (Functions)
 

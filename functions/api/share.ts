@@ -12,6 +12,7 @@ import {
   mintKey,
   setVisibility,
 } from "../_lib/access"
+import { maybeShortlink } from "../_lib/shlink"
 
 type Env = ForgeEnv
 
@@ -19,36 +20,6 @@ async function assetExists(env: Env, request: Request, slug: string): Promise<bo
   const url = new URL(`/a/${slug}/index.html`, request.url)
   const res = await env.ASSETS.fetch(new Request(url.toString()))
   return res.ok
-}
-
-async function maybeShortlink(
-  env: Env,
-  longUrl: string,
-  slug: string,
-): Promise<string | undefined> {
-  const apiKey = env.SHLINK_API_KEY
-  if (!apiKey) return undefined
-  const base = (env.SHLINK_BASE || "https://s.gosilex.com").replace(/\/$/, "")
-  const customSlug = `f-${slug}`.slice(0, 50)
-  try {
-    const res = await fetch(`${base}/rest/v3/short-urls`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Api-Key": apiKey,
-      },
-      body: JSON.stringify({
-        longUrl,
-        customSlug,
-        findIfExists: true,
-      }),
-    })
-    if (!res.ok) return undefined
-    const data = (await res.json()) as { shortUrl?: string }
-    return data.shortUrl
-  } catch {
-    return undefined
-  }
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {

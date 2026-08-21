@@ -4,7 +4,8 @@ export interface ForgeEnv {
   SHARES: KVNamespace
   ASSETS: Fetcher
   SHLINK_API_KEY?: string
-  SHLINK_BASE?: string
+  /** Full Shlink create URL, e.g. https://s.gosilex.com/rest/v3/short-urls — no default */
+  SHLINK_API_URL?: string
   FORGE_SHARE_SECRET?: string
   CF_ACCESS_TEAM_DOMAIN?: string
   CF_ACCESS_AUD?: string
@@ -14,7 +15,6 @@ export type Visibility = "private" | "shared" | "public"
 
 export const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 export const PUBLIC_ORIGIN = "https://forge.gosilex.com"
-const DEFAULT_TEAM = "gosilex.cloudflareaccess.com"
 
 export function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -118,14 +118,15 @@ export async function verifyAccessJwt(
   token: string,
   env: ForgeEnv,
 ): Promise<boolean> {
-  const team = (env.CF_ACCESS_TEAM_DOMAIN || DEFAULT_TEAM)
+  const team = (env.CF_ACCESS_TEAM_DOMAIN || "")
     .replace(/^https?:\/\//, "")
     .replace(/\/$/, "")
   const auds = (env.CF_ACCESS_AUD || "")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean)
-  if (auds.length === 0) return false
+  // Fail-closed: both must come from Pages env (no hardcoded defaults)
+  if (!team || auds.length === 0) return false
 
   const parsed = parseJwt(token)
   if (!parsed) return false

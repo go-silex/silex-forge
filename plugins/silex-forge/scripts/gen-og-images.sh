@@ -13,7 +13,7 @@
 #
 # Usage (repo root):
 #   plugins/silex-forge/scripts/gen-og-images.sh
-#   plugins/silex-forge/scripts/gen-og-images.sh --slug passation-2026-07 --force
+#   plugins/silex-forge/scripts/gen-og-images.sh --slug my-slug --force
 #   plugins/silex-forge/scripts/gen-og-images.sh --quality 4
 #
 # Idempotent: skip if og.jpg newer than index.html (unless --force).

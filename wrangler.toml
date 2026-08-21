@@ -1,6 +1,10 @@
 # Cloudflare Pages — silex-forge
-# Deploy: publish.sh → wrangler pages deploy site --project-name=silex-forge
-# HTML comes from the hub (silex-hub), never from git.
+# Deploy: publish.sh → wrangler pages deploy site --project-name=<pages_project>
+# HTML comes from the hub, never from git.
+#
+# Set real IDs via ~/.config/silex/forge.env (see .env.example).
+# publish.sh patches the KV id before deploy. Access / Shlink vars live only
+# on the Pages project (dashboard) — do not commit them here.
 name = "silex-forge"
 compatibility_date = "2026-01-01"
 pages_build_output_dir = "site"
@@ -9,13 +13,9 @@ pages_build_output_dir = "site"
 binding = "SHARES"
 id = "YOUR_KV_NAMESPACE_ID"
 
-# Access JWT verification (public ids — not secrets)
-[vars]
-CF_ACCESS_TEAM_DOMAIN = "REDACTED"
-# forge host + pages.dev + /login app (JWT after Bypass)
-CF_ACCESS_AUD = "REDACTED"
-
-# Secrets (Pages project — not committed):
-#   SHLINK_API_KEY       — ~/.config/silex/shlink-api-key
-#   SHLINK_BASE          — https://s.gosilex.com (or plain var)
-#   FORGE_SHARE_SECRET   — CLI/ops only; constant-time compare in /api/share
+# Pages production env (dashboard / API only — not in git):
+#   CF_ACCESS_TEAM_DOMAIN   plain
+#   CF_ACCESS_AUD           plain (comma-separated application AUDs)
+#   SHLINK_API_KEY          secret
+#   SHLINK_API_URL          plain (full create URL, no default)
+#   FORGE_SHARE_SECRET      secret

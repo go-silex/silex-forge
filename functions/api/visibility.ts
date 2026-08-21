@@ -15,37 +15,9 @@ import {
   mintKey,
   setVisibility,
 } from "../_lib/access"
+import { maybeShortlink } from "../_lib/shlink"
 
 const VIS: Visibility[] = ["private", "shared", "public"]
-
-async function maybeShortlink(
-  env: ForgeEnv,
-  longUrl: string,
-  slug: string,
-): Promise<string | undefined> {
-  const apiKey = env.SHLINK_API_KEY
-  if (!apiKey) return undefined
-  const base = (env.SHLINK_BASE || "https://s.gosilex.com").replace(/\/$/, "")
-  try {
-    const res = await fetch(`${base}/rest/v3/short-urls`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "X-Api-Key": apiKey,
-      },
-      body: JSON.stringify({
-        longUrl,
-        customSlug: `f-${slug}`,
-        findIfExists: true,
-      }),
-    })
-    if (!res.ok) return undefined
-    const data = (await res.json()) as { shortUrl?: string }
-    return data.shortUrl
-  } catch {
-    return undefined
-  }
-}
 
 export const onRequestGet: PagesFunction<ForgeEnv> = async (context) => {
   if (!(await isTeamRequest(context.request, context.env))) {

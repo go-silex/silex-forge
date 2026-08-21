@@ -1,175 +1,82 @@
 # Cloudflare Access — forge.gosilex.com
 
-**v4 :** le Worker est l’ACL. Access sert à **poser le cookie équipe** (`/login`).
+## Goal
 
-Séquence : **deploy Functions fail-closed d’abord**, *puis* Bypass. Inverser = tous les decks ouverts.
+| Path | Who |
+|---|---|
+| `/` catalogue shell · `/a/<slug>/` | Team (Access JWT) unless visibility is **public** |
+| `/s/<slug>/<key>/` | Anyone with the secret link (Access **Bypass**) |
+| `/login` | Access **Allow** team — issues the JWT cookie Functions read |
+| `*.pages.dev` | Team only + middleware 403 outside `/s/` |
 
-## Modèle d’URL
+Open `/p/` paths are **gone**. External share = keyed `/s/…` only.
 
-| Préfixe | Anonyme | Access JWT (cookie) |
+## Apps (Zero Trust)
+
+After Functions are live (`x-forge-acl: vis-v4`):
+
+| App | Domain path | Policy |
 |---|---|---|
-| `/` catalogue shell | OK — DATA via `/api/catalogue` (public only) | toutes les pages |
-| `/api/catalogue` | public only | tout |
-| `/a/<slug>/*` (HTML **et** `og.jpg`) | public → 200 ; shared → 404 ; private → 302 `/login` | 200 |
-| `/s/<slug>/<key>/` | Bypass + clé KV | idem |
-| `/login` | **Access Allow team** (OTP) puis redirect `/` | — |
-| `/manifest.json` | 404 client | 404 client (Function lit via ASSETS) |
+| **Silex Forge · login** | `forge.gosilex.com/login` | Allow team emails / IdP group |
+| **Silex Forge · public surface** | `forge.gosilex.com/`, `/a/*`, `/s/*`, `/api/*` | **Bypass** everyone (Functions enforce visibility) |
+| **Silex Forge · pages.dev** | `<project>.pages.dev` | Allow team + middleware 403 outside `/s/` |
 
-Pas de `/p/`. Une URL de contenu : `/a/`.
+**Order matters:** deploy fail-closed Functions **first**, then flip host Bypass. Bypass before Functions = public leak.
 
-### Apps Zero Trust (cible v4)
-
-| App | Path | Policy |
+| Origin | Catalogue + `/a` | Share `/s` |
 |---|---|---|
-| **Silex Forge · login** | `forge.gosilex.com/login` | Allow `@gosilex.com` + `mickael@bouly.io` |
-| **Silex Forge · public** | `forge.gosilex.com` (host, **Bypass**) | Bypass everyone — Functions filtrent |
-| **Silex Forge · pages.dev** | `silex-forge-6mm.pages.dev` | Allow team + middleware 403 hors `/s/` |
+| `forge.gosilex.com` | Worker visibility | Function + KV |
+| `<project>.pages.dev` | middleware 403 | Function + KV only |
 
-Ajouter l’AUD de l’app `/login` dans `wrangler.toml` `CF_ACCESS_AUD` (liste comma).
+## Setup checklist
 
-**Avant v4 (actuel jusqu’au Bypass dashboard) :** app host Allow team + Bypass `/s` seulement. Le catalogue public n’est pas visible tant que le Bypass host n’est pas posé.
+Cloudflare account that owns the zone · zone for your public host.
 
-### Invariant hostnames
-
-Access sur le **custom domain seul ne suffit pas**. Le projet Pages expose aussi `*.pages.dev` avec les **mêmes ASSETS**.
-
-| Host | Catalogue `/` · `/a/*` | Share `/s/*` |
-|---|---|---|
-| `forge.gosilex.com` | Worker vis + JWT cookie | Bypass + clé KV |
-| `silex-forge-6mm.pages.dev` | middleware 403 | Function KV only |
-
-**Ne jamais** utiliser pages.dev comme sonde OG « sans Access ». Vérifier en local (`verify-og.py --file`).
-
-## Setup Zero Trust (une fois)
-
-Compte CF **Tool@gosilex.com** · zone `gosilex.com`.
-
-### 1. Application self-hosted
+### 1. Self-hosted app (login)
 
 1. [Zero Trust](https://one.dash.cloudflare.com/) → **Access** → **Applications** → **Add**
-2. Type : **Self-hosted**
-3. Application name : `Silex Forge`
-4. Session duration : 24h (ou 30j)
-5. Application domain :
-   - Subdomain : `forge`
-   - Domain : `gosilex.com`
-   - Path : *(vide = tout le host)*  
-   → `forge.gosilex.com`
+2. Self-hosted · path `/login` on the forge host
+3. Policy **Allow** → emails ending in your team domain (or IdP group)
+4. Session duration as you prefer
 
-### 2. Policy A — Team only
+### 2. Bypass for Functions-gated paths
 
-| Champ | Valeur |
+Separate app(s) or paths: `/`, `/a/*`, `/s/*`, `/api/*` → policy **Bypass** → everyone.
+
+### 3. Protect pages.dev
+
+Self-hosted app on `*.pages.dev` for the Pages project → **Allow** team.  
+Functions middleware returns 403 for non-`/s/` on that host.
+
+### 4. Wire JWT env on Pages
+
+Set on the Pages project (dashboard — **not** in git):
+
+| Var | Type |
 |---|---|
-| Policy name | `team-gosilex` |
-| Action | **Allow** |
-| Include | **Emails ending in** → `@gosilex.com` |
+| `CF_ACCESS_TEAM_DOMAIN` | plain (`<team>.cloudflareaccess.com`) |
+| `CF_ACCESS_AUD` | plain (comma-separated Access application AUDs) |
 
-Variantes utiles :
+Functions fail closed if either is missing.
 
-- **Google Workspace** identity provider + group `team@gosilex.com`
-- Liste d’emails explicite (Pierre, Arman, Mickael…)
-- OTP one-time pin pour invités ponctuels (policy séparée, courte durée)
-
-### 3. Application Bypass pour `/s`
-
-App séparée (ou path policy) :
-
-| Champ | Valeur |
-|---|---|
-| Application name | `Silex Forge · share public` |
-| Domain | `forge.gosilex.com` path `/s` |
-| Policy | **Bypass** everyone |
-
-**Ops (2026-07-17) :** pas de policy Bypass `/p/` sur le compte — apps actives =  
-`Silex Forge` (Allow team) + `Silex Forge · share public` (`/s` Bypass). Rien à purger côté Access.
-
-### 4. Identity provider
-
-Au minimum un IdP configuré dans Zero Trust :
-
-- **One-time PIN** (email) — simple pour démarrer  
-- ou **Google** / **GitHub** org `go-silex`
-
-## Publier interne + share
+## Smoke tests
 
 ```bash
-# Interne (défaut) → /a/my-deck/  + Access
-./plugins/silex-forge/scripts/publish.sh my-deck ./deck.html \
-  --title "Mon deck" --type deck
+curl -sI "https://forge.gosilex.com/login"                 # 302 → Access
+curl -sI "https://forge.gosilex.com/a/<private-slug>/"      # 302 without cookie
+curl -sI "https://forge.gosilex.com/s/<slug>/<key>/"        # 200 without cookie if key valid
 
-# + lien share → /s/my-deck/<key>/  (Bypass, unlisted)
-./plugins/silex-forge/scripts/publish.sh my-deck ./deck.html \
-  --share --title "Mon deck" --type deck
+# pages.dev must not be an open origin
+curl -sI "https://<project>.pages.dev/" | head -5
 ```
 
-## Vérifications
+## Notes
 
-**Avant Bypass** (Functions v4 live, Access host encore Allow) : anonyme voit encore 302 Access sur `/` — normal.
+- A shortlink to `/a/…` stays blocked by Access for outsiders.
+- Share shortlinks should target `/s/<slug>/<key>/` (or Shlink → that URL).
+- See also [share-model.md](./share-model.md) and [cloudflare-pages.md](./cloudflare-pages.md).
 
-**Gate Bypass** — ne Bypass `/` `/a` que si :
-
-```bash
-# Functions live (après wrangler deploy de ce code)
-curl -sI "https://forge.gosilex.com/a/github-claude-ops/" | grep -i x-forge-acl
-# → vis-v4  (si absent = ancien middleware, NE PAS Bypass)
-
-# Body catalogue : aucun titre privé dans le HTML
-curl -s "https://forge.gosilex.com/" | grep -E 'DATA|unkillable|github-claude' || true
-# shell : `let DATA = []` — pas de titres embarqués
-
-# manifest jamais aux clients
-curl -sI "https://forge.gosilex.com/manifest.json"   # 404
-```
-
-**Après Bypass** (anonyme) :
-
-```bash
-curl -s "https://forge.gosilex.com/api/catalogue" | head   # items public only, team:false
-curl -sI "https://forge.gosilex.com/a/<private-slug>/"     # 302 Location: /login
-curl -sI "https://forge.gosilex.com/a/<private-slug>/og.jpg"  # 302 /login
-curl -sI "https://forge.gosilex.com/login"                 # 302 cloudflareaccess.com (Allow)
-```
-
-Ne **jamais** Bypass `/login`. Cookie Path Attribute **off**. AUD de l’app `/login` dans `CF_ACCESS_AUD`.
-
-```bash
-# pages.dev ne doit PAS servir le catalogue /a en clair (403 middleware et/ou Access)
-curl -sI "https://silex-forge-6mm.pages.dev/" | head -5
-curl -sI "https://silex-forge-6mm.pages.dev/a/github-claude-ops/" | head -5
-
-# pages.dev ne doit PAS servir le catalogue /a en clair (403 middleware et/ou Access)
-curl -sI "https://silex-forge-6mm.pages.dev/" | head -5
-curl -sI "https://silex-forge-6mm.pages.dev/a/github-claude-ops/" | head -5
-
-# Fake team headers morts
-curl -s "https://silex-forge-6mm.pages.dev/api/share?slug=x" \
-  -H "X-Forge-Share-Secret: 123456789"
-
-# Share (clé connue) → 200 sans cookie
-curl -sI "https://forge.gosilex.com/s/<slug>/<key>/" | head -5
-
-# Ancien /p/ ne doit plus servir de contenu
-curl -sI "https://forge.gosilex.com/p/" | head -5
-```
-
-## Ce que Access n’est pas
-
-- Pas un ACL fin par artefact (c’est le job de **silex-share** plus tard).
-- Bypass = **préfixe `/s/`** seulement — la vraie garde est la **clé** validée en KV par la Function.
-- Un shortlink `s.gosilex.com/x` vers `/a/…` restera bloqué par Access pour l’extérieur.
-
-## Runbook incident
-
-| Symptôme | Action |
-|---|---|
-| Équipe bloquée sur login | Vérifier policy Allow + IdP + emails |
-| Share demande login | App Bypass `/s` absente ou mal ordonnée |
-| Share 404 après Révoquer | Attendu — clé KV supprimée |
-| Ancien `/silex-talk-mcp/` 404 | Redirect 301 vers `/a/silex-talk-mcp/` (`site/_redirects`) |
-| Catalogue liste un mort | `publish.sh --remove <slug>` |
-
-## Références
+## References
 
 - [Cloudflare Access self-hosted](https://developers.cloudflare.com/cloudflare-one/applications/configure-apps/self-hosted-public-app/)
 - [Bypass policies](https://developers.cloudflare.com/cloudflare-one/policies/access/)
-- Produit long terme : `silex-share` → `share.gosilex.com` (ACL + R2)

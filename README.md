@@ -1,147 +1,157 @@
 # silex-forge
 
-**Host d’artefacts HTML d’équipe** — `https://forge.gosilex.com`
+**Team HTML artifact host** — [forge.gosilex.com](https://forge.gosilex.com)
 
-Access team + share unlisted `/s/<slug>/<key>/`. Voir `AGENTS.md`.
+Publish decks, talks, and guides behind Cloudflare Access. Share unlisted links with a path key. Optional shortlinks via Shlink. Engine in git; HTML stays in the shared hub.
 
 | | |
 |---|---|
-| **Audience** | Équipe Silex (Access) + liens share à clé (unlisted) |
-| **≠** | `demo.gosilex.com` (funnel client) · `share.gosilex.com` / `silex-share` (**archived** 2026-07-30 — jamais livré) |
-| **Deploy** | Cloudflare Pages · Direct Upload (`wrangler`) depuis le laptop — HTML **hors git** |
-| **Plugin** | `silex-forge` — upload Cloudflare only (`forge-publish` · `forge-setup`) |
+| **Live** | `https://forge.gosilex.com` |
+| **Audience** | Silex team (Access) · external = secret `/s/…` links |
+| **Not** | `demo.gosilex.com` (client funnel) · Vercel |
+| **Deploy** | Cloudflare Pages Direct Upload (`wrangler`) from your laptop |
+| **Plugin** | `silex-forge` — `forge-publish` · `forge-setup` |
 
-## Pourquoi ce repo
+---
 
-`forge.gosilex.com` existait en **Direct Upload** ad-hoc (`~/.roxabi/silex-forge`).  
-Modèle actuel = **`roxabi-forge`** :
+## Why this exists
 
-- **git** = engine (plugin, functions, skeleton) — destiné à être public
-- **disque partagé** = silex-hub `artifacts/` (SSOT HTML, hors git)
-- **live** = `wrangler pages deploy` (token local, compte Gosilex)
-- catalogue auto depuis le hub au publish
-- **Cloudflare Access** par défaut ; extérieur = **lien `/s/…` à clé** (pas de path `/p/` ouvert)
+```
+silex-hub / artifacts/<slug>/     SSOT HTML (shared vault, not git)
+        │
+        ▼  publish.sh
+temp tree (functions + site skeleton + hub HTML)
+        │
+        ▼  wrangler pages deploy
+forge.gosilex.com                 live
+```
 
-## Installer le plugin
+- **git** → plugin, Pages Functions, site skeleton  
+- **hub** → HTML source of truth  
+- **Pages** → runtime (Access, KV shares, optional Shlink)
 
-Scope **user** (sinon skills invisibles hors du projet d’install) :
+---
+
+## Visibility (v4)
+
+| KV `vis:<slug>` | Anonymous catalogue | Team catalogue | Open |
+|---|---|---|---|
+| **private** (default) | no | yes | JWT / `/login` |
+| **shared** | no | yes | `/s/<slug>/<key>/` anon · `/a/` if JWT |
+| **public** | yes | yes | `/a/<slug>/` without login |
+
+Fail-closed: missing `vis:` → private. Share keys live in **KV only** — never in HTML, registry, or git.
+
+Toolbar on `/a/<slug>/` (team): **Private** · **Shared** · **Public**.
+
+---
+
+## Quick start
+
+### 1. Install the plugin (user scope)
 
 ```text
 /plugin marketplace add go-silex/silex-forge
 /plugin install silex-forge@silex-forge
 ```
 
-Skills : `forge-publish` · `forge-setup`.  
-Craft Halo / onepager / cheatsheet = **`silex-craft@silex-plugins`**.  
-Craft générique (reco **forge-setup**) :
+Craft HTML separately: **`silex-craft@silex-plugins`**.
 
-```text
-/plugin marketplace add go-silex/silex-plugins
-/plugin install silex-craft@silex-plugins
-
-/plugin marketplace add https://github.com/zarazhangrui/frontend-slides
-/plugin install frontend-slides@frontend-slides
-
-/plugin marketplace add https://github.com/cathrynlavery/diagram-design
-/plugin install diagram-design@diagram-design
-
-npx skills add alchaincyf/huashu-design
-
-/plugin marketplace add go-silex/rocky
-/plugin install rocky@rocky
-```
-
-## Config machine (une fois / poste)
-
-Le path **silex-hub** diffère (Mickael / Pierre / Armand) → config **locale** :
+### 2. Machine setup
 
 ```bash
-# doctor
+# interactive skill → forge-setup
 plugins/silex-forge/scripts/forge-doctor.sh
 
-# ou skill interactif
-# → forge-setup
+cp .env.example ~/.config/silex/forge.env
+chmod 600 ~/.config/silex/forge.env
+# fill CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN, FORGE_SHARES_KV_ID
 ```
 
-| Fichier | Rôle |
+| File | Role |
 |---|---|
-| `~/.config/silex/forge.config.json` | hub_root + artifacts_dir (hors git) |
-| `~/.config/silex/forge.env` | token Pages (chmod 600, hors git) |
-| `plugins/silex-forge/forge.config.example.json` | defaults + fallback code |
+| `~/.config/silex/forge.config.json` | `hub_root`, … (local, not git) |
+| `~/.config/silex/forge.env` | CF credentials · `chmod 600` |
+| `.env.example` | committed placeholders |
+| `plugins/…/forge.config.example.json` | defaults / fallback |
 
-**SSOT artefacts** = `$hub_root/00_COCKPIT/Forge/artifacts/<slug>/`  
-**Deploy live** = `wrangler pages deploy` (Direct Upload)  
-**main** = engine only (plugins + functions — **pas** les HTML).
-
-Hook plugin `SessionStart` : si config KO → rappeler `forge-setup`.
-
-## Publier
+### 3. Publish
 
 ```bash
 S=plugins/silex-forge/scripts/publish.sh
 
-# Depuis hub SSOT (path omis si artifacts/<slug>/ existe)
-"$S" mon-deck --title "Mon deck" --type deck
-
-# Depuis un fichier → écrit hub d'abord, puis wrangler
-"$S" mon-deck ./mon-deck.html --title "Mon deck" --type deck
-
-"$S" --share mon-deck
-"$S" --unshare mon-deck
-"$S" --list
-"$S" --remove mon-deck
-"$S" --rebuild-index   # rebuild full site from hub → wrangler Pages
+"$S" my-deck --title "My deck" --type deck
+"$S" my-deck ./deck.html --title "My deck" --type deck
+"$S" --share my-deck
+"$S" --rebuild-index
 ```
 
-Le script : hub SSOT → `build-site-from-hub` → `wrangler pages deploy site`.
+Team URL: `https://forge.gosilex.com/a/<slug>/`  
+Share URL: `https://forge.gosilex.com/s/<slug>/<key>/`
 
-## Structure
+---
 
-```
-.claude-plugin/marketplace.json
-plugins/silex-forge/
-  forge.config.example.json
-  hooks/                      # SessionStart doctor
-  skills/
-    forge-publish/
-    forge-setup/              # setup + doctor config machine
-  scripts/publish.sh
-  scripts/forge-doctor.sh
-  scripts/lib/load_config.py
-  scripts/gen-index.py
-# registry/*.json + site/a/**  →  jamais git (hub + wrangler)
-site/                         # skeleton engine (404, headers) — pas les HTML
-functions/                    # Access + share
-docs/
-  cloudflare-access.md
-  cloudflare-pages.md
-  share-model.md
-  artifacts-config.md
-```
+## Shortlinks (Shlink)
 
-Aucun payload HTML dans git. Live = Direct Upload.
+Best-effort. Failures are silent — you still get the long `/s/…` URL.
 
-## Sécurité
-
-| Zone | Contrôle |
+| Path | Needs |
 |---|---|
-| Catalogue + `/a/*` | Cloudflare Access (emails `@gosilex.com`) |
-| `/s/*` | Bypass Access + **clé path** validée KV |
-| Repo | engine (HTML hors git — viser public) |
-| robots.txt | `Disallow: /` |
+| **UI / Functions** | Pages env: `SHLINK_API_KEY` + `SHLINK_API_URL` (full create URL, **no default**) |
+| **CLI** (`publish.sh --share`) | Local `shlink` CLI + `shlink_domain` in forge config |
 
-Voir [`docs/cloudflare-access.md`](docs/cloudflare-access.md).
+---
 
-## Artefacts seed
+## Security
 
-| Path | Contenu |
+| Zone | Control |
 |---|---|
-| `/a/silex-talk-mcp/` | Talk MCP / plugins / second cerveau |
-| `/a/github-claude-ops/` | Formation GitHub · secrets · branches · Claude |
-| `/a/passation-2026-07/` | Passation fondateurs |
+| `/` + `/a/*` | Access after Functions deploy · Bypass only once Functions are live |
+| `/s/*` | Access Bypass + KV key check |
+| `/login` | Access Allow team |
+| `*.pages.dev` | Access + middleware 403 outside `/s/` |
+| Repo | Engine only — **no** HTML, **no** share keys, **no** account/AUD/KV IDs, **no** API tokens |
 
-## Setup CF (ops)
+Never put secrets in `site/`. Never list share keys in the catalogue.
 
-1. Projet Pages **Direct Upload** + token local — [`docs/cloudflare-pages.md`](docs/cloudflare-pages.md)
-2. Domaine `forge.gosilex.com`
-3. Access team + Bypass `/s` — [`docs/cloudflare-access.md`](docs/cloudflare-access.md)
+---
+
+## Repo layout
+
+```
+.env.example                  # forge.env placeholders
+plugins/silex-forge/          # Claude plugin (publish + setup)
+functions/                    # Access middleware, /api/*, /s/*
+site/                         # skeleton only — no artifact HTML
+docs/                         # Access, Pages, share, hub config
+wrangler.toml                 # placeholder KV id (patched at deploy)
+```
+
+---
+
+## Docs
+
+| Doc | Topic |
+|---|---|
+| [docs/cloudflare-access.md](docs/cloudflare-access.md) | Access + Bypass |
+| [docs/cloudflare-pages.md](docs/cloudflare-pages.md) | Deploy + Pages env |
+| [docs/share-model.md](docs/share-model.md) | Share / key / Shlink |
+| [docs/artifacts-config.md](docs/artifacts-config.md) | Hub SSOT |
+| [AGENTS.md](AGENTS.md) | Agent rules |
+
+---
+
+## Related plugins
+
+| Plugin | Role |
+|---|---|
+| `silex-craft@silex-plugins` | Halo slides / onepager / cheatsheet |
+| `frontend-slides` | Slide engine used by `silex-slides` |
+| `diagram-design` · `huashu-design` | Optional craft |
+| `rocky@rocky` | Separate product |
+
+---
+
+## License / access
+
+Internal Silex engine, intended public-safe (no secrets, no HTML, no infrastructure IDs). Team content stays in the hub and behind Access.

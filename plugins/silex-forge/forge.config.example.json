@@ -10,5 +10,6 @@
   "internal_prefix": "a",
   "pages_project": "silex-forge",
   "cloudflare_account_id": "",
+  "shares_kv_namespace_id": "",
   "types": ["deck", "talk", "guide", "diagram", "gallery", "html", "other"]
 }

@@ -1,78 +1,80 @@
 ---
 name: forge-setup
 description: >-
-  Setup / doctor de la config machine silex-forge (hub_root + artifacts dans
-  silex-hub). Crée ~/.config/silex/forge.config.json depuis l'example si
-  manquant, valide le vault, crée le dossier artefacts. Triggers: "forge setup"
-  | "forge doctor" | "setup forge" | "config forge" | "forge config manquante".
+  Set up / doctor machine config for silex-forge (hub_root + artifacts in
+  silex-hub). Creates ~/.config/silex/forge.config.json from the example if
+  missing, validates the vault, creates the artifacts folder. Triggers:
+  "forge setup" | "forge doctor" | "setup forge" | "config forge" |
+  "forge config missing".
 ---
 
-# forge-setup — config machine silex-forge
+# forge-setup — machine config for silex-forge
 
-Configure le **path local silex-hub** (différent par personne) et le dossier
-central d’artefacts. Sans cette config, le hook SessionStart + les skills
-publish refusent d’improviser un path.
+Configure the **local silex-hub path** (differs per person) and the central
+artifacts folder. Without this config, the SessionStart hook and publish
+skills refuse to invent a path.
 
-## Modèle long terme
+## Long-term model
 
-| Couche | Où | Rôle |
+| Layer | Where | Role |
 |---|---|---|
-| **SSOT artefacts** | `$hub_root/$artifacts_dir/<slug>/` | HTML source dans le vault (Drive/rclone) |
-| **Deploy live** | `wrangler pages deploy` | Direct Upload (token `forge.env`) |
-| **Config machine** | `~/.config/silex/forge.config.json` | path hub perso (gitignore machine) |
-| **Defaults** | plugin `forge.config.example.json` | fallback si pas de local |
+| **SSOT artifacts** | `$hub_root/$artifacts_dir/<slug>/` | HTML source in the vault |
+| **Live deploy** | `wrangler pages deploy` | Direct Upload (token in `forge.env`) |
+| **Machine config** | `~/.config/silex/forge.config.json` | personal hub path (not git) |
+| **Defaults** | plugin `forge.config.example.json` | fallback if no local file |
 
-Le path `../silex-hub` n’est **pas** portable (Mickael ≠ Pierre ≠ Armand) →
-toujours un **absolu** dans la config locale.
+Relative paths like `../silex-hub` are **not** portable → always an **absolute**
+path in the local config.
 
-## Objectif de sortie
+## Exit criteria
 
 ```
-✅ ~/.config/silex/forge.config.json (merge depuis example)
-✅ hub_root = vault valide (00_COCKPIT + 01_COMPANY)
-✅ $hub_root/$artifacts_dir existe
-✅ ~/.config/silex/forge.env (token Pages, chmod 600) — requis pour publish
-✅ forge-doctor exit 0 (token absent = warning, pas KO hub)
-⚠️ plugins craft externes recommandés (diagram-design, huashu-design, frontend-slides)
+✅ ~/.config/silex/forge.config.json (merged from example)
+✅ hub_root = valid vault (00_COCKPIT + 01_COMPANY)
+✅ $hub_root/$artifacts_dir exists
+✅ ~/.config/silex/forge.env (Pages token + account + KV id, chmod 600)
+✅ forge-doctor exit 0 (missing token = warning, not hub KO)
+⚠️ optional Shlink shortlinks — Pages SHLINK_* + local CLI (step 5b)
+⚠️ recommended external craft plugins (diagram-design, huashu-design, frontend-slides)
 ```
 
-## Étape 0 — Doctor
+## Step 0 — Doctor
 
 ```bash
 S="${CLAUDE_PLUGIN_ROOT}/scripts/forge-doctor.sh"
 # in-repo:
 # S=plugins/silex-forge/scripts/forge-doctor.sh
 bash "$S"
-bash "$S" --json   # si besoin machine-readable
+bash "$S" --json   # machine-readable if needed
 ```
 
-- **OK** → afficher hub + artifacts. Token + **Étape 6** (plugins craft) quand même si manquants. Stop le reste sauf override demandé.
-- **KO** → enchaîner setup (ne pas inventer de path).
+- **OK** → print hub + artifacts. Still cover token + **step 6** (craft plugins) if missing. Stop unless override requested.
+- **KO** → continue setup (do not invent a path).
 
-## Étape 1 — Résoudre hub_root
+## Step 1 — Resolve hub_root
 
-Ordre de découverte (proposer, **confirmer** avec l’opérateur) :
+Discovery order (propose, **confirm** with the operator):
 
-1. Fichier existant `~/.config/silex/forge.config.json` → clé `hub_root`
-2. `~/.config/silex/hub-root` (config Silex partagée)
-3. Cwd / walk-up avec markers `00_COCKPIT` + `01_COMPANY`
-4. Chemins fréquents s’ils existent :
+1. Existing `~/.config/silex/forge.config.json` → `hub_root`
+2. `~/.config/silex/hub-root` (shared Silex config)
+3. Cwd / walk-up with markers `00_COCKPIT` + `01_COMPANY`
+4. Common paths if they exist:
    - `$HOME/projects/gosilex/silex-hub`
    - `$HOME/silex-hub`
    - `$HOME/projects/silex-hub`
-   - macOS Drive : lister `~/Library/CloudStorage/*/` si besoin
-5. Sinon **demander le path absolu** du vault (une question)
+   - macOS Drive: list `~/Library/CloudStorage/*/` if needed
+5. Otherwise **ask for the absolute vault path** (one question)
 
-Validation **obligatoire** avant écriture :
+**Required** validation before writing:
 
 ```bash
-HUB="<path absolu>"
+HUB="<absolute path>"
 test -d "$HUB/00_COCKPIT" && test -d "$HUB/01_COMPANY" && echo "hub OK: $HUB"
 ```
 
-Si KO → ne pas écrire. Expliquer que le vault est hors repo forge (Drive/rclone).
+If KO → do not write. Explain the vault lives outside the forge repo.
 
-## Étape 2 — Écrire la config locale
+## Step 2 — Write local config
 
 ```bash
 mkdir -p ~/.config/silex
@@ -95,7 +97,6 @@ if local.is_file():
     over = json.loads(local.read_text(encoding="utf-8"))
     base.update({k: v for k, v in over.items() if v not in ("", None)})
 base["hub_root"] = str(hub)
-# garder artifacts_dir de l'example sauf override déjà présent
 base.setdefault("artifacts_dir", "00_COCKPIT/Forge/artifacts")
 local.write_text(json.dumps(base, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(f"wrote {local}")
@@ -104,9 +105,9 @@ print(f"artifacts_dir={base['artifacts_dir']}")
 PY
 ```
 
-Ne **jamais** committer `forge.config.json` dans le repo silex-forge.
+Never commit `forge.config.json` into silex-forge.
 
-Optionnel : sync `hub-root` Silex si absent :
+Optional: sync Silex `hub-root` if absent:
 
 ```bash
 if [ ! -f ~/.config/silex/hub-root ]; then
@@ -114,94 +115,111 @@ if [ ! -f ~/.config/silex/hub-root ]; then
 fi
 ```
 
-## Étape 3 — Dossier artefacts
+## Step 3 — Artifacts folder
 
 ```bash
 ART="$(python3 "${CLAUDE_PLUGIN_ROOT}/scripts/lib/load_config.py" --print-artifacts)"
 mkdir -p "$ART"
 echo "artifacts: $ART"
-# README minimal si absent
 if [ ! -f "$ART/README.md" ]; then
   cat > "$ART/README.md" <<'EOF'
-# Forge artefacts (SSOT)
+# Forge artifacts (SSOT)
 
-HTML source par slug : `<slug>/index.html` (+ assets).
+HTML source per slug: `<slug>/index.html` (+ assets).
 
-- Publish live : skill `forge-publish` → wrangler Pages (pas git)
-- Ne pas y mettre de secrets / clés share
-- meta optionnelle : `<slug>/meta.json` (title, type, description)
+- Live publish: skill `forge-publish` → wrangler Pages (not git)
+- Do not store secrets / share keys here
+- Optional meta: `<slug>/meta.json` (title, type, description)
 EOF
 fi
 ```
 
-## Étape 4 — Doctor final
+## Step 4 — Final doctor
 
 ```bash
 bash "${CLAUDE_PLUGIN_ROOT}/scripts/forge-doctor.sh"
 ```
 
-Rapport :
+Report:
 
 ```
-## forge-setup — rapport
+## forge-setup — report
 
 **config**     : ~/.config/silex/forge.config.json
 **hub_root**   : [path OK]
-**artifacts**  : [path OK | créé]
+**artifacts**  : [path OK | created]
 **doctor**     : ✅|✗
 
-**Suite**
-- Générer : `silex-craft@silex-plugins` (`silex-slides` · `silex-onepager` · `silex-cheatsheet`)
-  → écrire sous $artifacts/<slug>/
-- Publier : forge-publish (hub → wrangler Pages)
-- Craft générique (hors charte Silex) : plugins externes ci-dessous
+**Next**
+- Generate: `silex-craft@silex-plugins` → write under $artifacts/<slug>/
+- Publish: forge-publish (hub → wrangler Pages)
+- Generic craft: external plugins below
 ```
 
-## Étape 5 — Token Cloudflare (publish)
+## Step 5 — Cloudflare token (publish)
 
-Sans token : on peut **écrire** le hub / générer un deck. On ne peut **pas** mettre en live.
+Without a token you can **write** the hub / generate a deck. You cannot go live.
 
-Fichier **jamais** dans git / jamais dumpé par doctor :
-
-```
-~/.config/silex/forge.env    chmod 600
-CLOUDFLARE_ACCOUNT_ID=YOUR_CLOUDFLARE_ACCOUNT_ID
-CLOUDFLARE_API_TOKEN=…
-```
-
-Compte **Gosilex** (`YOUR_CF…`) uniquement — pas `wrangler login` Mickael/Roxabi.
-
-Ordre :
-
-1. Fichier déjà là + doctor `cf token : OK` → skip
-2. `bw` dispo → proposer :
+File **never** in git / never dumped by doctor — copy from repo `.env.example`:
 
 ```bash
-umask 077
-mkdir -p ~/.config/silex
-{
-  echo "CLOUDFLARE_ACCOUNT_ID=YOUR_CLOUDFLARE_ACCOUNT_ID"
-  echo "CLOUDFLARE_API_TOKEN=$(bw get notes cloudflare/silex-forge-pages-deploy | tr -d '[:space:]')"
-} > ~/.config/silex/forge.env
+cp /path/to/silex-forge/.env.example ~/.config/silex/forge.env
 chmod 600 ~/.config/silex/forge.env
+# fill:
+#   CLOUDFLARE_ACCOUNT_ID=
+#   CLOUDFLARE_API_TOKEN=
+#   FORGE_SHARES_KV_ID=
 ```
 
-3. Sinon **demander le token** (une question) et l’écrire pareil. Ne pas l’écho dans le chat.
+Order:
 
-Scope : Pages Write + Read, Account Settings Read, Workers KV Storage Edit (pour `--share` CLI).
+1. File already present + doctor `cf token : OK` → skip
+2. Password manager available → fill from your ops vault (do **not** echo the token in chat)
+3. Otherwise **ask for the token** (one question) and write the same way
 
-## Étape 6 — Plugins craft recommandés (externes)
+Scopes: Pages Write + Read, Account Settings Read, Workers KV Storage Edit (CLI `--share`).
 
-Pas dans `silex-forge`. **Installer** (scope user) — le doctor hub reste OK sans eux, mais **Halo est mort** tant que `silex-craft` + `frontend-slides` manquent.
+## Step 5b — Shlink shortlinks (optional)
 
-Land `silex-craft@silex-plugins` **avant** (ou en même temps que) cette version forge. `marketplace update silex-forge` seul retire les anciennes skills craft du cache.
+Best-effort: without Shlink, share = long `/s/<slug>/<key>/` URL (silent fail OK).
+
+### Cloudflare Pages (ops, once — not the laptop skill alone)
+
+| Var | Type | Role |
+|---|---|---|
+| `SHLINK_API_KEY` | secret | Shlink API key |
+| `SHLINK_API_URL` | plain | **full** create URL — **no default** |
+
+Used by Functions (`POST /api/visibility`, `/api/share`) when the toolbar switches to **Shared**.  
+Local key file for syncing into Pages (optional): `~/.config/silex/shlink-api-key` (chmod 600).  
+Never commit the key or put it in `forge.config.json`.
+
+```bash
+set -a; source ~/.config/silex/forge.env; set +a
+npx wrangler pages secret list --project-name=silex-forge
+# should list SHLINK_API_KEY; SHLINK_API_URL is a plain Pages var
+```
+
+### Laptop (CLI `publish.sh --share`)
+
+| Need | Role |
+|---|---|
+| `shlink` CLI on PATH | mint shortlink on `--share` |
+| `shlink_domain` in forge config | host printed in the URL |
+
+Without the CLI → warning → long URL.  
+Laptop does not use `SHLINK_API_URL`; Pages Functions use Pages env only.
+
+## Step 6 — Recommended craft plugins (external)
+
+Not part of `silex-forge`. **Install** (user scope) — hub doctor stays OK without them, but Halo slides need `silex-craft` + `frontend-slides`.
 
 | Repo | Install |
 |---|---|
-| `silex-craft@silex-plugins` | **requis** — `silex-slides` / onepager / cheatsheet |
-| [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | **requis** par `silex-slides` (moteur) · live host = `forge-publish`, **jamais Vercel** |
-| [diagram-design](https://github.com/cathrynlavery/diagram-design) | optionnel |
-| [huashu-design](https://github.com/alchaincyf/huashu-design) | optionnel — skill (`npx skills add`) |
+| `silex-craft@silex-plugins` | **required** — slides / onepager / cheatsheet |
+| [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | **required** by `silex-slides` · live host = `forge-publish`, **never Vercel** |
+| [diagram-design](https://github.com/cathrynlavery/diagram-design) | optional |
+| [huashu-design](https://github.com/alchaincyf/huashu-design) | optional — `npx skills add` |
 
 ```text
 /plugin marketplace add go-silex/silex-plugins
@@ -216,38 +234,18 @@ Land `silex-craft@silex-plugins` **avant** (ou en même temps que) cette version
 
 ```bash
 npx skills add alchaincyf/huashu-design
-# fallback :
-# git clone https://github.com/alchaincyf/huashu-design.git ~/.claude/skills/huashu-design
 ```
 
-CLI équivalent :
+## Config load order (reminder)
 
-```bash
-claude plugin marketplace add go-silex/silex-plugins
-claude plugin install silex-craft@silex-plugins --scope user
-claude plugin marketplace add https://github.com/zarazhangrui/frontend-slides
-claude plugin install frontend-slides@frontend-slides --scope user
-claude plugin marketplace add https://github.com/cathrynlavery/diagram-design
-claude plugin install diagram-design@diagram-design --scope user
-npx skills add alchaincyf/huashu-design
-```
-
-`silex-slides` (charte Halo) réutilise le moteur `frontend-slides` — sans ce plugin, le wrapper Silex ne peut pas générer.
-
-## Fallback code (rappel)
-
-Tout script forge charge la config ainsi :
-
-1. `FORGE_CONFIG` env (path explicite)
+1. `FORGE_CONFIG` env (explicit path)
 2. `~/.config/silex/forge.config.json`
-3. sinon **`forge.config.example.json`** du plugin (defaults, `hub_root` vide → doctor KO)
+3. else plugin **`forge.config.example.json`** (defaults; empty `hub_root` → doctor KO)
 
-`hub_root` vide dans le fichier peut encore être bootstrappé depuis
-`HUB_ROOT` env ou `~/.config/silex/hub-root`, mais **doctor exige** un vault
-valide.
+Empty `hub_root` may still bootstrap from `HUB_ROOT` env or `~/.config/silex/hub-root`, but **doctor requires** a valid vault.
 
 ## Style
 
-- FR, tutoiement, une question à la fois
-- Ne jamais inventer le path hub d’un collègue
-- Pas de secrets dans la config
+- English, one question at a time
+- Never invent a colleague’s hub path
+- No secrets in config or chat

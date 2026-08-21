@@ -1,39 +1,43 @@
 ---
 name: forge-publish
 description: >-
-  Publie un artefact HTML sur forge.gosilex.com (interne Cloudflare Access ;
-  share optionnel via /s/<slug>/<key>/). Triggers: "publish forge", "forge publish",
-  "mettre sur forge", "forge.gosilex.com", "publier le deck", "artefact forge".
+  Publish a standalone HTML artifact to forge.gosilex.com (Cloudflare Access
+  internally; optional share via /s/<slug>/<key>/). Triggers: "publish forge",
+  "forge publish", "put on forge", "forge.gosilex.com", "publish the deck",
+  "forge artifact".
 ---
 
-# forge-publish — publier sur forge.gosilex.com
+# forge-publish — publish to forge.gosilex.com
 
-Publie un **HTML autonome** (ou un dossier avec `index.html`) sur le host d’artefacts internes Silex.
+Publishes a **self-contained HTML** file (or a folder with `index.html`) to the
+Silex internal artifact host.
 
-Générer le HTML = **`silex-craft@silex-plugins`** (`silex-slides` · `silex-onepager` · `silex-cheatsheet`). Ce skill = **upload only**.
+Generating HTML = **`silex-craft@silex-plugins`** (`silex-slides` · `silex-onepager` ·
+`silex-cheatsheet`). This skill = **upload only**.
 
 | | |
 |---|---|
 | Host | `https://forge.gosilex.com` |
-| Défaut | `/a/<slug>/` — vis **private** (Access) |
-| Visibilité | barre **Privée / Partagée / Publique** (KV `vis:<slug>`) |
-| Partagée | `/s/<slug>/<key>/` — lien only, pas au catalogue anonyme |
-| Publique | `/a/<slug>/` listée sur `GET /` anonyme (Worker `/api/catalogue`) |
-| SSOT | **hub** `$artifacts/<slug>/` (path via forge.config locale) |
+| Default | `/a/<slug>/` — **Cloudflare Access** (team) |
+| Share | `/s/<slug>/<key>/` — Access Bypass, **key**, unlisted |
+| SSOT | **hub** `$artifacts/<slug>/` (path via local forge.config) |
 | Deploy | hub → `wrangler pages deploy` (token `~/.config/silex/forge.env`) |
 
-**≠** `demo.gosilex.com` (démos client). **≠** Vercel.  
-**Pas de `/p/`** — purgé ; utiliser `--share` / barre **Externe**.
+**≠** `demo.gosilex.com` (client demos). **≠** Vercel.  
+**No `/p/`** — removed; use `--share` / toolbar **Shared**.
 
-## Prérequis config
+## Config prerequisites
 
 ```bash
 bash "${CLAUDE_PLUGIN_ROOT}/scripts/forge-doctor.sh"
 ```
 
-Si **KO** → skill **`forge-setup`** (ne pas inventer `hub_root`).  
-Publish exige aussi `~/.config/silex/forge.env` (token Pages Gosilex). Doctor warn si absent.  
-Config locale : `~/.config/silex/forge.config.json` (fallback plugin `forge.config.example.json`).
+If **KO** → skill **`forge-setup`** (do not invent `hub_root`).  
+Publish also needs `~/.config/silex/forge.env` (Pages token + account + KV id).  
+Doctor warns if absent. See repo `.env.example`.
+
+Local config: `~/.config/silex/forge.config.json` (fallback plugin
+`forge.config.example.json`).
 
 ## Usage
 
@@ -41,19 +45,19 @@ Config locale : `~/.config/silex/forge.config.json` (fallback plugin `forge.conf
 S="${CLAUDE_PLUGIN_ROOT}/scripts/publish.sh"
 # in-repo: S=plugins/silex-forge/scripts/publish.sh
 
-# Depuis le hub SSOT (path omis si $artifacts/<slug>/index.html existe)
+# From hub SSOT (path omitted if $artifacts/<slug>/index.html exists)
 "$S" <slug> --title "…" --type deck
 
-# Depuis un fichier/dossier (copie aussi vers hub SSOT, puis wrangler)
-"$S" <slug> <fichier.html|dossier> --title "…" --type deck
+# From a file/folder (also copies to hub SSOT, then wrangler)
+"$S" <slug> <file.html|folder> --title "…" --type deck
 
-# Interne + mint share
+# Internal + mint share
 "$S" <slug> [path] --share --title "…" --type deck
 ```
 
-Types utiles : `deck` · `talk` · `guide` · `diagram` · `gallery` · `html`.
+Useful types: `deck` · `talk` · `guide` · `diagram` · `gallery` · `html`.
 
-Autres :
+Other:
 
 ```bash
 "$S" --share <slug>
@@ -63,27 +67,29 @@ Autres :
 "$S" --rebuild-index
 ```
 
-## Règles
+## Rules
 
-1. **Slug** kebab : `^[a-z0-9]+(-[a-z0-9]+)*$`
-2. HTML **self-contained** (images en data-URI) — surtout pour les liens share
-3. **Ne pas** publier de secrets / données clients en clair
-4. Share = secret dans l’URL — ne pas coller la clé dans le catalogue / Slack public
-5. Préférer **interne** pour formations équipe (ex. decks Pierre/Arman)
-6. Générer les decks **dans le hub** (`artifacts/<slug>/`) puis publish
+1. **Slug** kebab: `^[a-z0-9]+(-[a-z0-9]+)*$`
+2. HTML **self-contained** (images as data-URIs) — especially for share links
+3. Do **not** publish secrets / cleartext client data
+4. Share = secret in the URL — do not paste the key into the catalogue / public Slack
+5. Prefer **private** for internal team training decks
+6. Generate decks **in the hub** (`artifacts/<slug>/`) then publish
 
-## Après publish
+## After publish
 
-- URL équipe : `https://forge.gosilex.com/a/<slug>/`
-- Share : barre **Externe** sur la page, ou `publish.sh --share <slug>`
-- Index catalogue (Access) : `https://forge.gosilex.com/`
-- Hub SSOT mis à jour sous `$artifacts/<slug>/`
-- Access : voir `docs/cloudflare-access.md` du repo
+- Team URL: `https://forge.gosilex.com/a/<slug>/`
+- Share: toolbar **Shared**, or `publish.sh --share <slug>`
+- Catalogue (Access): `https://forge.gosilex.com/`
+- Hub SSOT updated under `$artifacts/<slug>/`
+- Access: see `docs/cloudflare-access.md`
+
+Optional shortlink (`s.gosilex.com/f-<slug>`): Pages `SHLINK_*` and/or local `shlink` CLI — best-effort.
 
 ## Env / config
 
-| Source | Clés |
+| Source | Keys |
 |---|---|
 | `~/.config/silex/forge.config.json` | `hub_root`, `artifacts_dir`, `public_host`, `pages_project`… |
-| `~/.config/silex/forge.env` | `CLOUDFLARE_API_TOKEN` (+ `CLOUDFLARE_ACCOUNT_ID`) |
+| `~/.config/silex/forge.env` | `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `FORGE_SHARES_KV_ID` |
 | Env override | `FORGE_REPO`, `PUBLIC_HOST`, `FORGE_CONFIG`, `FORGE_ENV` |

@@ -15,7 +15,6 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIB_DIR="$SCRIPT_DIR/lib"
-GOSILEX_ACCOUNT_ID="YOUR_CLOUDFLARE_ACCOUNT_ID"
 
 _ENV_FORGE_REPO="${FORGE_REPO-}"
 _ENV_PUBLIC_HOST="${PUBLIC_HOST-}"
@@ -52,7 +51,7 @@ require_forge_config() {
     return 0
   fi
   warn "forge config incomplete — run skill forge-setup"
-  [ -n "${ARTIFACTS_ROOT:-}" ] || die "hub/artifacts non configurés. Lance forge-setup (doctor KO)."
+  [ -n "${ARTIFACTS_ROOT:-}" ] || die "hub/artifacts not configured. Run forge-setup (doctor KO)."
 }
 
 usage() {
@@ -65,9 +64,9 @@ Usage:
 
   SSOT   : \$ARTIFACTS_ROOT/<slug>/  (hub, forge.config)
   Deploy : wrangler pages deploy (token ~/.config/silex/forge.env)
-  Engine : main (plugins/functions — pas les HTML, pas de branche payload)
+  Engine : main (plugins/functions — no HTML, no payload branch)
 
-  Interne : https://${PUBLIC_HOST}/${INTERNAL_PREFIX}/<slug>/
+  Team    : https://${PUBLIC_HOST}/${INTERNAL_PREFIX}/<slug>/
   Share   : https://${PUBLIC_HOST}/s/<slug>/<key>/
 EOF
 }
@@ -75,16 +74,16 @@ EOF
 validate_slug() {
   local s="${1-}"
   case "$s" in
-    '' )            die "slug vide" ;;
-    */*|*..*|.|.. ) die "slug invalide (path): '$s'" ;;
+    '' )            die "empty slug" ;;
+    */*|*..*|.|.. ) die "invalid slug (path): '$s'" ;;
   esac
-  [[ "$s" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || die "slug invalide: '$s'"
+  [[ "$s" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || die "invalid slug: '$s'"
   case "$s" in
-    index|404|robots|registry|site|a|p|s|images|public|_headers) die "slug réservé: '$s'" ;;
+    index|404|robots|registry|site|a|p|s|images|public|_headers) die "reserved slug: '$s'" ;;
   esac
 }
 
-whoami_id() { git config user.email 2>/dev/null || echo "${USER:-inconnu}@$(hostname)"; }
+whoami_id() { git config user.email 2>/dev/null || echo "${USER:-unknown}@$(hostname)"; }
 
 clone_engine() {
   WORK="$(mktemp -d)"
@@ -92,7 +91,7 @@ clone_engine() {
   GIT clone --depth 1 --branch main --quiet "$FORGE_REPO" "$WORK/repo" \
     || die "clone impossible — branche main ? accès GitHub ?"
   [ -d "$WORK/repo/site" ] || die "repo sans site/ skeleton"
-  [ -f "$WORK/repo/site/404.html" ] || die "site/404.html manquant"
+  [ -f "$WORK/repo/site/404.html" ] || die "site/404.html missing"
 }
 
 SCRIPTS() {
@@ -109,7 +108,7 @@ build_from_hub() {
   local build_py
   build_py="$(SCRIPTS)/build-site-from-hub.py"
   [ -f "$build_py" ] || build_py="$SCRIPT_DIR/build-site-from-hub.py"
-  [ -f "$build_py" ] || die "build-site-from-hub.py manquant"
+  [ -f "$build_py" ] || die "build-site-from-hub.py missing"
   info "build site from hub SSOT → $WORK/repo"
   PYTHONPATH="$(dirname "$build_py")/lib${PYTHONPATH:+:$PYTHONPATH}" \
     python3 "$build_py" --repo-root "$WORK/repo" \
@@ -139,24 +138,58 @@ source_cf_credentials() {
     val="${val#\'}"
     val="${val%\'}"
     case "$key" in
-      CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|CLOUDFLARE_API_KEY|CLOUDFLARE_EMAIL)
+      CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|CLOUDFLARE_API_KEY|CLOUDFLARE_EMAIL|FORGE_SHARES_KV_ID)
         export "$key=$val"
         ;;
     esac
   done < "$f"
 }
 
-# Direct Upload — HTML never touches git (roxabi-forge shape)
+# Patch placeholder KV id in cloned wrangler.toml from forge.env / config
+patch_wrangler_kv() {
+  local toml="$1"
+  local kv="${FORGE_SHARES_KV_ID:-}"
+  [ -n "$kv" ] || die \
+    "FORGE_SHARES_KV_ID missing — set in ~/.config/silex/forge.env (see .env.example)"
+  [ -f "$toml" ] || die "wrangler.toml missing: $toml"
+  python3 - "$toml" "$kv" <<'PY'
+import sys
+from pathlib import Path
+p, kv = Path(sys.argv[1]), sys.argv[2]
+text = p.read_text(encoding="utf-8")
+needle = 'id = "YOUR_KV_NAMESPACE_ID"'
+if needle not in text and f'id = "{kv}"' not in text:
+    # still try replace any YOUR_ placeholder line under SHARES binding
+    import re
+    text2, n = re.subn(
+        r'(binding\s*=\s*"SHARES"\s*\nid\s*=\s*")[^"]*(")',
+        rf"\g<1>{kv}\2",
+        text,
+        count=1,
+    )
+    if n == 0:
+        sys.exit("could not patch SHARES kv id in wrangler.toml")
+    text = text2
+else:
+    text = text.replace(needle, f'id = "{kv}"')
+p.write_text(text, encoding="utf-8")
+PY
+}
+
+# Direct Upload — HTML never touches git
 deploy_pages() {
   source_cf_credentials
   [ -n "${CLOUDFLARE_API_TOKEN:-}" ] || die \
-    "CLOUDFLARE_API_TOKEN manquant — forge-setup (écrire ~/.config/silex/forge.env, chmod 600)"
-  local acct="${CLOUDFLARE_ACCOUNT_ID:-$GOSILEX_ACCOUNT_ID}"
+    "CLOUDFLARE_API_TOKEN missing — forge-setup (~/.config/silex/forge.env, chmod 600)"
+  local acct="${CLOUDFLARE_ACCOUNT_ID:-}"
+  [ -n "$acct" ] || die \
+    "CLOUDFLARE_ACCOUNT_ID missing — set in ~/.config/silex/forge.env (see .env.example)"
   local project="${FORGE_PAGES_PROJECT:-silex-forge}"
   export CLOUDFLARE_ACCOUNT_ID="$acct"
   cd "$WORK/repo"
-  [ -d site ] || die "site/ manquant dans le clone engine"
-  [ -f wrangler.toml ] || die "wrangler.toml manquant"
+  [ -d site ] || die "site/ missing in engine clone"
+  [ -f wrangler.toml ] || die "wrangler.toml missing"
+  patch_wrangler_kv "$WORK/repo/wrangler.toml"
   info "wrangler pages deploy site → ${project} (${acct:0:8}…)"
   local -a wr
   if command -v wrangler >/dev/null 2>&1; then
@@ -164,7 +197,7 @@ deploy_pages() {
   elif command -v npx >/dev/null 2>&1; then
     wr=(npx --yes wrangler)
   else
-    die "wrangler / npx manquant"
+    die "wrangler / npx missing"
   fi
   "${wr[@]}" pages deploy site \
     --project-name="$project" \
@@ -300,8 +333,10 @@ kv_auth_ok() {
 kv_curl() {
   local method="$1" path="$2"
   shift 2
-  local acct="${CLOUDFLARE_ACCOUNT_ID:-YOUR_CLOUDFLARE_ACCOUNT_ID}"
-  local ns="${FORGE_SHARES_KV_ID:-YOUR_KV_NAMESPACE_ID}"
+  local acct="${CLOUDFLARE_ACCOUNT_ID:-}"
+  local ns="${FORGE_SHARES_KV_ID:-}"
+  [ -n "$acct" ] || die "CLOUDFLARE_ACCOUNT_ID missing for KV"
+  [ -n "$ns" ] || die "FORGE_SHARES_KV_ID missing for KV"
   local url="https://api.cloudflare.com/client/v4/accounts/${acct}/storage/kv/namespaces/${ns}${path}"
   if [ -n "${CLOUDFLARE_API_TOKEN:-}" ]; then
     curl -sS -X "$method" "$url" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" "$@"
@@ -371,7 +406,7 @@ create_share_kv() {
   key=$(mint_key)
   share_path="/s/${slug}/${key}/"
   share_url="https://${PUBLIC_HOST}${share_path}"
-  [ -d "${ARTIFACTS_ROOT}/${slug}" ] || die "artefact hub absent: $slug"
+  [ -d "${ARTIFACTS_ROOT}/${slug}" ] || die "hub artifact missing: $slug"
 
   if kv_put_share "$slug" "$key"; then
     info "KV share:${slug} seed OK"
@@ -392,9 +427,9 @@ create_share_kv() {
 
 cmd_list() {
   require_forge_config
-  info "artefacts hub SSOT ($PUBLIC_HOST)"
+  info "hub artifacts SSOT ($PUBLIC_HOST)"
   if [ -z "${ARTIFACTS_ROOT:-}" ] || [ ! -d "$ARTIFACTS_ROOT" ]; then
-    die "ARTIFACTS_ROOT manquant — forge-setup"
+    die "ARTIFACTS_ROOT missing — forge-setup"
   fi
   local d
   for d in "$ARTIFACTS_ROOT"/*/; do
@@ -426,7 +461,7 @@ cmd_remove() {
   local slug="$1"
   validate_slug "$slug"
   require_forge_config
-  [ -n "${ARTIFACTS_ROOT:-}" ] || die "ARTIFACTS_ROOT manquant"
+  [ -n "${ARTIFACTS_ROOT:-}" ] || die "ARTIFACTS_ROOT missing"
   rm -rf "${ARTIFACTS_ROOT}/${slug}"
   ok "retiré du hub SSOT: $slug"
   clone_engine
@@ -482,7 +517,7 @@ inject_share_bars() {
   # SCRIPT_DIR = this file — clone of origin/main may not have the inject yet.
   local inj="$SCRIPT_DIR/inject-share-bar.py"
   [ -f "$inj" ] || inj="$(SCRIPTS)/inject-share-bar.py"
-  [ -f "$inj" ] || die "inject-share-bar.py manquant"
+  [ -f "$inj" ] || die "inject-share-bar.py missing"
   local s slug html missing=0
   for s in "$WORK/repo/site/${INTERNAL_PREFIX}"/*/; do
     [ -d "$s" ] || continue
@@ -557,7 +592,7 @@ cmd_publish() {
       source="${ARTIFACTS_ROOT}/${slug}"
       info "source hub SSOT: $source"
     else
-      die "path manquant et pas de ${ARTIFACTS_ROOT:-<artifacts>}/${slug}/index.html"
+      die "path missing and no ${ARTIFACTS_ROOT:-<artifacts>}/${slug}/index.html"
     fi
   fi
 
@@ -582,14 +617,14 @@ cmd_publish() {
   GIT clone --depth 1 --branch main --quiet "$FORGE_REPO" "$saved_work/repo" \
     || die "clone impossible"
   WORK="$saved_work"
-  [ -f "$WORK/repo/site/404.html" ] || die "site/404.html manquant"
+  [ -f "$WORK/repo/site/404.html" ] || die "site/404.html missing"
 
   build_from_hub
 
   local dest path_url
   path_url="/${INTERNAL_PREFIX}/${slug}/"
   dest="$WORK/repo/site/${INTERNAL_PREFIX}/${slug}"
-  [ -f "$dest/index.html" ] || die "build manquant index pour $slug"
+  [ -f "$dest/index.html" ] || die "build missing index for $slug"
 
   gen_og_images "$slug"
   inject_og_for_slug "$slug" "$title" "$desc" "$path_url"
@@ -608,8 +643,8 @@ cmd_publish() {
   fi
 
   if deploy_pages; then
-    ok "publié (hub SSOT + wrangler Pages)"
-    echo "  Interne: https://${PUBLIC_HOST}${path_url}  (Access)"
+    ok "published (hub SSOT + wrangler Pages)"
+    echo "  Team: https://${PUBLIC_HOST}${path_url}  (Access)"
     if [ -n "$share_url" ]; then
       echo "  Share:   $share_url  (public, unlisted)"
     fi

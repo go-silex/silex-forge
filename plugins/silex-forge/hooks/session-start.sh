@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# SessionStart — injecte un rappel si forge.config locale absente/incomplète.
-# Sortie: JSON hookSpecificOutput.additionalContext (jamais bloquant).
+# SessionStart — remind if local forge.config is missing/incomplete.
+# Output: JSON hookSpecificOutput.additionalContext (never blocking).
 set -euo pipefail
 
 ROOT="${CLAUDE_PLUGIN_ROOT:-}"
@@ -16,7 +16,7 @@ if ! command -v python3 >/dev/null 2>&1; then
 {
   "hookSpecificOutput": {
     "hookEventName": "SessionStart",
-    "additionalContext": "silex-forge: python3 manquant — impossible de vérifier forge.config. Installe python3 puis relance, ou run skill forge-setup."
+    "additionalContext": "silex-forge: python3 missing — cannot verify forge.config. Install python3, or run skill forge-setup."
   }
 }
 EOF
@@ -36,22 +36,21 @@ if d.get("ok"):
         f"- hub_root: {hub}\n"
         f"- artifacts: {art}\n"
         f"- config: {d.get('config_source')}\n"
-        "SSOT artefacts HTML = hub (artifacts/). "
-        "Deploy live = wrangler pages deploy (forge.env), HTML hors git."
+        "SSOT HTML = hub artifacts/. "
+        "Live deploy = wrangler pages deploy (forge.env); HTML is not in git."
     )
     if d.get("warnings"):
         msg += "\nWarnings: " + "; ".join(d["warnings"])
 else:
     issues = "; ".join(d.get("issues") or ["config incomplete"])
     msg = (
-        "silex-forge config MANQUANTE ou INCOMPLÈTE.\n"
+        "silex-forge config MISSING or INCOMPLETE.\n"
         f"Issues: {issues}\n"
-        f"Local attendu: {LOCAL_PATH}\n"
+        f"Expected local file: {LOCAL_PATH}\n"
         f"Example: {d.get('example_path')}\n"
-        "ACTION OBLIGATOIRE avant publish / write artefact: lancer le skill "
-        "**forge-setup** (setup + doctor). Ne pas inventer un hub_root — "
-        "demander le path absolu silex-hub de l'opérateur "
-        "(diffère entre Mickael / Pierre / Armand)."
+        "REQUIRED before publish / writing an artifact: run skill "
+        "**forge-setup**. Do not invent hub_root — ask the operator "
+        "for their absolute silex-hub path (varies per machine)."
     )
 
 print(json.dumps({
@@ -59,5 +58,5 @@ print(json.dumps({
         "hookEventName": "SessionStart",
         "additionalContext": msg,
     }
-}, ensure_ascii=False))
+}))
 PY

@@ -1,100 +1,88 @@
-# Modèle share — forge.gosilex.com
+# Share model — forge.gosilex.com
 
-## Pourquoi pas un path public ouvert (`/p/` — purgé)
+## Why not an open public path (`/p/` — removed)
 
-| Approche | Problème |
+| Approach | Problem |
 |---|---|
-| `/p/<slug>/` sans clé | Enumération + surface publique large |
-| Toggle « public » sans secret | N’importe qui qui devine le slug lit le doc |
-| `?k=` pur static HTML | La clé dans le JS/HTML = **pas** une vraie porte |
-| Clé dans registry git / `__FORGE_SHARE__` | Secret durable hors KV — **interdit** |
+| `/p/<slug>/` without a key | Enumeration + large public surface |
+| “Public” toggle without a secret | Anyone who guesses the slug reads the doc |
+| `?k=` in pure static HTML | Key in JS/HTML is **not** a real gate |
+| Key in git registry / `__FORGE_SHARE__` | Durable secret outside KV — **forbidden** |
 
-**Canon :** `/a/` (Access) + `/s/<slug>/<key>/` (Bypass + KV).  
-**SSOT clé** = KV uniquement. Registry = snapshot `shared: bool` sans secret.
+**Canon:** `/a/` (Access) + `/s/<slug>/<key>/` (Bypass + KV).  
+**SSOT for keys** = KV only. Registry may snapshot `shared: bool` without the secret.
 
-## Modèle retenu (intermédiaire)
+## Model
 
 ```
-Équipe (Access)                    Extérieur
+Team (Access)                      Outside
 ─────────────────                  ─────────
-/  catalogue  ─────────────────►  302 login Access
-/a/<slug>/    ─────────────────►  302 login Access
+/  catalogue  ─────────────────►  302 Access login
+/a/<slug>/    ─────────────────►  302 Access login
                                     │
-publish --share                     │
+publish --share / toolbar Shared    │
     ▼                               ▼
-/s/<slug>/<key>/  ── Bypass ──►  200 si tu as le lien
-                                    (pas sur le catalogue)
+/s/<slug>/<key>/  ── Bypass ──►  200 if you have the link
+                                    (not on the catalogue)
 ```
 
-- **Clé** = segment de path haute entropie (`token_urlsafe(18)`)
-- **Non listée** : `list_on_index` reste sur la carte *interne* ; le share n’ajoute pas de carte
-- **Shortlink** : best-effort via `shlink` → `s.gosilex.com/f-<slug>`
-- **Barre partage** (injectée sur `/a/<slug>/`) :
-  - **Interne** — copie `https://forge.gosilex.com/a/<slug>/` (Access, pas de shlink)
-  - **Externe** — `POST /api/share` → `/s/<slug>/<key>/` (+ shortlink shlink si secret Pages)
-  - Badge **Partagé** + **Révoquer** quand un share externe est actif
-  - Toast « copié » à chaque copie réussie
-  - **`/p/` n’existe plus**
+- **Key** = high-entropy path segment (`token_urlsafe(18)`)
+- **Unlisted**: share does not add a catalogue card
+- **Shortlink** (best-effort → `f-<slug>` on your Shlink domain):
+  - **Functions**: Pages env `SHLINK_API_KEY` + `SHLINK_API_URL` (full create URL, **no default**) — silent fail OK
+  - **CLI** `publish.sh --share`: local `shlink` CLI + `shlink_domain` in forge config
+- **Toolbar** on `/a/<slug>/` (team):
+  - **Private / Public** — copy `/a/<slug>/`
+  - **Shared** — `POST /api/visibility` → `/s/<slug>/<key>/` (+ `shortUrl` if Shlink Pages OK)
 
-## Équivalence `?k=` (Roxabi 1page)
-
-| 1page | Forge v2 |
-|---|---|
-| Worker compare `k` en constant-time | Access bypass `/s/*` + clé dans le path |
-| Page absente du listing public | `list_on_index` / pas de carte share |
-| Révocation = rotate key | `--unshare` supprime `/s/<slug>/` |
-
-Cible long terme (**silex-share**) : même path, Worker + hash clé en D1/KV, ACL fine.
-
-## Commandes
+## Commands
 
 ```bash
-publish.sh mon-deck ./file.html --share
-publish.sh --share mon-deck
-publish.sh --unshare mon-deck
+publish.sh my-deck ./file.html --share
+publish.sh --share my-deck
+publish.sh --unshare my-deck
 ```
 
-## Access CF (déjà créé)
+## Access (summary)
 
-| App | Domain | Policy |
-|---|---|---|
-| Silex Forge | `forge.gosilex.com` | Allow `@gosilex.com` + mickael@bouly.io |
-| Silex Forge · share public | `forge.gosilex.com/s` | **Bypass** everyone |
-| Silex Forge · pages.dev | `silex-forge-6mm.pages.dev` | Allow team (+ middleware 403 sur non-`/s`) |
+| Surface | Policy |
+|---|---|
+| Forge host `/login` | Allow team |
+| Forge host `/`, `/a/*`, `/s/*`, `/api/*` | Bypass (Functions enforce) |
+| `*.pages.dev` | Allow team (+ middleware 403 outside `/s`) |
 
-## Mint au clic (v3 — 2026-07-17)
+Details: [cloudflare-access.md](./cloudflare-access.md).
 
-1. Barre **Externe** sur `/a/<slug>/` → `POST /api/share` `{ slug }` (interne = copie path Access sans API)
-2. **Révoquer** → `DELETE /api/share` `{ slug }` (invalide la clé KV immédiatement)
-3. API (Pages Function) écrit la clé en **KV** `SHARES`
-4. URL renvoyée : `/s/<slug>/<key>/` — **Function** valide KV puis sert `/a/<slug>/` via ASSETS
+## Mint on click
+
+1. Toolbar **Shared** on `/a/<slug>/` → `POST /api/visibility` `{ slug, visibility: "shared" }`
+2. Back to private → deletes KV share key
+3. Pages Function writes the key in KV `SHARES`
+4. Returned URL: `/s/<slug>/<key>/` — Function checks KV then serves `/a/<slug>/` via ASSETS
 5. Clipboard + toast
-6. **⇧+Externe** = `rotate: true` (nouvelle clé, ancien lien mort)
+6. Rotate via `POST /api/share` `{ slug, rotate: true }` when using the share API
 
-Prérequis : JWT **Cloudflare Access vérifié** (JWKS + `aud` + `exp`) sur `/api/share`.  
-Bypass ops : header `X-Forge-Share-Secret` **égal** à `FORGE_SHARE_SECRET` (secret Pages / BW `silex-forge/FORGE_SHARE_SECRET`) — **jamais** un simple `length > N`.
+Auth: verified Cloudflare Access JWT (JWKS + `aud` + `exp`) on `/api/*`.  
+Ops bypass: header `X-Forge-Share-Secret` must **equal** `FORGE_SHARE_SECRET` (Pages secret) — never a naive length check.
 
-- `GET /api/share` → `{ slug, active }` **uniquement** (pas de clé en clair)
-- `POST /api/share` → `{ shareUrl, shortUrl?, … }` une fois (origin canonique `https://forge.gosilex.com`)
-- URLs share **jamais** injectées dans le HTML `/a/`
+- `GET /api/share` → `{ slug, active }` only (no raw key)
+- `POST /api/share` → `{ shareUrl, shortUrl?, … }` once (canonical origin `https://forge.gosilex.com`)
+- Share URLs are **never** injected into `/a/` HTML
 
-## Landing = share live (KV)
+## Landing = live share state (KV)
 
-Le catalogue embarque un snapshot registry (`shared` boolean), puis au load (équipe Access) :
+Catalogue embeds a registry snapshot (`shared` boolean), then on load (team Access):
 
-- `GET /api/share?slug=…` pour **chaque** artefact
-- met à jour badge **share**, compteur « avec share », filtre **Partagé**
-- re-sync au `focus` / `visibilitychange` (ex. après révoquer une slide puis revenir sur `/`)
+- `GET /api/share?slug=…` per artifact
+- updates share badge, “with share” count, **Shared** filter
+- re-sync on `focus` / `visibilitychange`
 
-Source de vérité share **runtime** = KV. Le registry ne stocke **pas** `share_key`.
+Runtime source of truth for share = KV. Registry does **not** store `share_key`.
 
 ## `?k=` vs path key
 
-| Forme | Exemple | Statut |
+| Form | Example | Status |
 |---|---|---|
-| Path (canonique) | `/s/passation-2026-07/<key>/` | **Oui** — KV + Function |
-| Query (alias) | `/s/passation-2026-07/?k=<key>` | **Oui** — même clé KV |
-| Query sur `/a/…` | `/a/slug/?k=` | Non (Access équipe) |
-
-Ce n’est **pas** le modèle 1page (preview_key + Worker métier + Stripe).  
-C’est le même *esprit* « secret dans l’URL » pour le share, avec garde serveur KV.
+| Path (canonical) | `/s/my-slug/<key>/` | **Yes** — KV + Function |
+| Query (alias) | `/s/my-slug/?k=<key>` | **Yes** — same KV key |
+| Query on `/a/…` | `/a/slug/?k=` | No (team Access) |

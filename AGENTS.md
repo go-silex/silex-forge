@@ -2,117 +2,120 @@
 
 ## Mission
 
-**forge.gosilex.com** = host d’artefacts HTML **d’équipe** (decks, talks, guides).
+**forge.gosilex.com** = team HTML artifact host (decks, talks, guides).
 
 | Host | Job |
 |---|---|
-| `forge.gosilex.com` | Artefacts internes + liens share à clé |
-| `demo.gosilex.com` | Démos **client** (funnel) — autre repo |
-| `share.gosilex.com` | Cible produit ACL (silex-share) — pas encore le runtime |
-| Vercel | **Interdit** pour ce flux |
+| `forge.gosilex.com` | Internal artifacts + keyed share links |
+| `demo.gosilex.com` | Client demos (funnel) — other repo |
+| `share.gosilex.com` | Product ACL target (silex-share) — not this runtime |
+| Vercel | **Forbidden** for this flow |
 
-## Accès (pourquoi la nav privée voyait tout)
+## Access (why private nav used to see everything)
 
-**Avant 2026-07-17** : Access n’était **pas** branché → le site était public.
+**Before 2026-07-17**: Access was **not** wired → the site was public.
 
-**Maintenant** :
+**Now**:
 
-| Zone | Comportement |
+| Zone | Behavior |
 |---|---|
-| `/` + `/api/catalogue` | Shell public ; liste = Worker (public vs tout si JWT) |
-| `/a/<slug>/*` | Worker vis (private/shared/public) · HTML **et** og.jpg |
-| `/s/*` | Bypass + clé KV |
-| `/login` | Access Allow équipe (cookie JWT) |
+| `/` + `/api/catalogue` | Public shell; list = Worker (public vs all if JWT) |
+| `/a/<slug>/*` | Worker visibility (private/shared/public) · HTML **and** og.jpg |
+| `/s/*` | Bypass + KV key |
+| `/login` | Access Allow team (JWT cookie) |
 
-**Bypass host `/` et `/a` seulement APRÈS deploy Functions** (`x-forge-acl: vis-v4`). Avant : Access Allow sur le host. Inverser = fuit.
+Bypass host `/` and `/a` **only AFTER** Functions deploy (`x-forge-acl: vis-v4`). Before that: Access Allow on the host. Reverse order = leak.
 
-## Visibilité (modèle v4)
+## Visibility (model v4)
 
-Une URL de contenu : `/a/<slug>/`. Catalogue `GET /` = shell ; **liste = `GET /api/catalogue`** (Worker).
+Content URL: `/a/<slug>/`. Catalogue `GET /` = shell; **list = `GET /api/catalogue`** (Worker).
 
-| vis KV `vis:<slug>` | Catalogue anonyme | Catalogue Access | Ouvrir |
+| KV `vis:<slug>` | Anon catalogue | Access catalogue | Open |
 |---|---|---|---|
-| **private** (défaut) | non | oui | JWT / `/login` |
-| **shared** | non | oui | `/s/<slug>/<key>/` anonyme ; `/a/` si JWT |
-| **public** | oui | oui | `/a/<slug>/` sans login (HTML **et** `og.jpg`) |
+| **private** (default) | no | yes | JWT / `/login` |
+| **shared** | no | yes | `/s/<slug>/<key>/` anon; `/a/` if JWT |
+| **public** | yes | yes | `/a/<slug>/` without login (HTML **and** `og.jpg`) |
 
-Fail-closed : pas de `vis:` = private. `manifest.json` n’est **pas** servi aux clients.
+Fail-closed: no `vis:` = private. `manifest.json` is **not** served to clients.
 
-### Access Zero Trust (après deploy Functions)
+### Access Zero Trust (after Functions deploy)
 
-1. Functions fail-closed en prod
-2. **Puis** Bypass `/`, `/a/*`, `/s/*`, `/api/*` ; **Allow team** sur `/login` (cookie JWT lu par les Functions)
-3. `pages.dev` : 403 hors `/s/` (middleware)
+1. Functions fail-closed in prod
+2. **Then** Bypass `/`, `/a/*`, `/s/*`, `/api/*`; **Allow team** on `/login` (JWT cookie read by Functions)
+3. `pages.dev`: 403 outside `/s/` (middleware)
 
-### UX barre (équipe, sur `/a/<slug>/`)
+### Toolbar UX (team, on `/a/<slug>/`)
 
-**Privée** | **Partagée** | **Publique** → `POST /api/visibility`. Partagée mint KV `share:<slug>`.
+**Private** | **Shared** | **Public** → `POST /api/visibility`. Shared mints KV `share:<slug>`.
 
-## Commandes
+Optional shortlink via Pages env `SHLINK_API_KEY` + `SHLINK_API_URL` (no defaults; silent fail OK).
+
+## Commands
 
 ```bash
 S=plugins/silex-forge/scripts/publish.sh
 
-"$S" mon-deck ./deck.html --title "…" --type deck
-"$S" mon-deck ./deck.html --share --title "…"     # + lien share
-"$S" --share mon-deck                             # mint share seul
-"$S" --unshare mon-deck
+"$S" my-deck ./deck.html --title "…" --type deck
+"$S" my-deck ./deck.html --share --title "…" # + share link
+"$S" --share my-deck # mint share only
+"$S" --unshare my-deck
 "$S" --list
-"$S" --remove mon-deck
+"$S" --remove my-deck
 ```
 
-Deploy : `publish.sh` → `wrangler pages deploy` (token local `~/.config/silex/forge.env` · note BW `cloudflare/silex-forge-pages-deploy`). HTML **hors git**.
+Deploy: `publish.sh` → `wrangler pages deploy` (token in `~/.config/silex/forge.env`). HTML **not in git**.
 
 ## Structure
 
 ```
-# main = ENGINE only (upload CF)
-plugins/silex-forge/     # publish + setup — PAS le craft HTML
-  forge.config.example.json
-  hooks/                 # SessionStart → doctor
-  scripts/publish.sh · build-site-from-hub.py · forge-doctor.sh
-functions/               # Access middleware, /api/share, /s/*
-site/                    # skeleton only (404, _headers, …) — PAS les HTML
-# /s/* runtime           # Function + KV
+# main = ENGINE only (CF upload)
+plugins/silex-forge/ # publish + setup — NOT HTML craft
+ forge.config.example.json
+ hooks/ # SessionStart → doctor
+ scripts/publish.sh · build-site-from-hub.py · forge-doctor.sh
+functions/ # Access middleware, /api/*, /s/*
+site/ # skeleton only (404, _headers, …) — NOT artifact HTML
+# /s/* runtime # Function + KV
 
-# hors git
-# hub  $artifacts/<slug>/{index.html,meta.json}  = SSOT
-# live = wrangler Direct Upload (pas de branche payload)
+# not in git
+# hub $artifacts/<slug>/{index.html,meta.json} = SSOT
+# live = wrangler Direct Upload (no payload branch)
 
 # craft (slides / onepager / cheatsheet) = silex-craft@silex-plugins
 ```
 
-## Config machine (artefacts dans silex-hub)
+## Machine config (artifacts in silex-hub)
 
-**SSOT HTML** = vault silex-hub partagé (path **différent** par personne)  
-**Deploy** = `publish.sh` → build from hub → `wrangler pages deploy` (Direct Upload, comme roxabi-forge)  
-**main** = engine only (pas de HTML)
+**SSOT HTML** = shared silex-hub vault (path **differs** per person)  
+**Deploy** = `publish.sh` → build from hub → `wrangler pages deploy`  
+**main** = engine only (no HTML)
 
-| Fichier | Rôle |
+| File | Role |
 |---|---|
-| `~/.config/silex/forge.config.json` | local (hub_root) — **hors git** |
-| `~/.config/silex/forge.env` | token Pages (chmod 600) — **hors git** |
-| plugin `forge.config.example.json` | defaults + fallback si pas de local |
+| `~/.config/silex/forge.config.json` | local (hub_root, account/kv ids) — **not git** |
+| `~/.config/silex/forge.env` | Pages token + account + KV id (chmod 600) — **not git** |
+| `.env.example` | placeholders for forge.env |
+| plugin `forge.config.example.json` | defaults + fallback if no local config |
 
 ```bash
 plugins/silex-forge/scripts/forge-doctor.sh
-plugins/silex-forge/scripts/publish.sh --rebuild-index   # hub → wrangler Pages
-# setup interactif → skill forge-setup
+plugins/silex-forge/scripts/publish.sh --rebuild-index # hub → wrangler Pages
+# interactive setup → skill forge-setup
 ```
 
-Loader : local → example. Hook SessionStart : config KO → **forge-setup**.
+Loader: local → example. Hook SessionStart: config KO → **forge-setup**.
 
-## Plugin dans ce repo
+## Plugin in this repo
 
-| Plugin | Contenu |
+| Plugin | Contents |
 |---|---|
-| **`silex-forge`** | `forge-publish` · `forge-setup` — **upload Cloudflare only** |
+| **`silex-forge`** | `forge-publish` · `forge-setup` — **Cloudflare upload only** |
 
 Craft HTML Halo / onepager / cheatsheet → **`silex-craft@silex-plugins`**.  
-Moteur slides générique + diagrammes → plugins externes (reco **forge-setup**).  
-**Rocky** : `rocky@rocky` (`go-silex/rocky`) — hors de ce repo.
+Generic slide engine + diagrams → external plugins (see **forge-setup**).  
+**Rocky**: `rocky@rocky` (`go-silex/rocky`) — outside this repo.
 
-Install (scope **user**) :
+Install (user scope):
 
 ```
 /plugin marketplace add go-silex/silex-forge
@@ -135,39 +138,40 @@ npx skills add alchaincyf/huashu-design
 
 ### `silex-plugins`
 
-| Plugin | Pourquoi |
+| Plugin | Why |
 |---|---|
 | `silex-ops` | Vault, session, HPFO, onboarding |
-| `silex-delivery` | ERP, digests, brain-factory, cas clients |
+| `silex-delivery` | ERP, digests, brain-factory, client cases |
 | `silex-craft` | `silex-slides` · `silex-onepager` · `silex-cheatsheet` |
 
 ## Docs
 
 - `docs/cloudflare-access.md` — Access + Bypass `/s`
-- `docs/cloudflare-pages.md` — deploy Pages + secrets
-- `docs/share-model.md` — détail share / clé / shortlink
-- `docs/artifacts-config.md` — SSOT hub + forge.config locale / example
+- `docs/cloudflare-pages.md` — Pages deploy + env vars
+- `docs/share-model.md` — share / key / shortlink
+- `docs/artifacts-config.md` — hub SSOT + local forge config
 
-## Miniatures OG (landing)
+## OG thumbnails (landing)
 
 ```bash
-# pure sh: Chrome headless + ffmpeg (pas de Python)
+# pure sh: Chrome headless + ffmpeg (no Python)
 plugins/silex-forge/scripts/gen-og-images.sh
-plugins/silex-forge/scripts/gen-og-images.sh --slug mon-slug --force --quality 4
+plugins/silex-forge/scripts/gen-og-images.sh --slug my-slug --force --quality 4
 ```
 
-Deps : `google-chrome`|`chromium`, `ffmpeg`, `jq`.  
-Écrit `site/a/<slug>/og.jpg` (1200×630). Branché dans `publish.sh` + `--rebuild-index`.
+Deps: `google-chrome`|`chromium`, `ffmpeg`, `jq`.  
+Writes `site/a/<slug>/og.jpg` (1200×630). Wired in `publish.sh` + `--rebuild-index`.
 
-## Règles agent
+## Agent rules
 
-1. Ne **jamais** déployer forge sur Vercel
-2. Ne **pas** mettre de secrets dans `site/`
-3. Ne **pas** lister les share keys dans le catalogue
-4. Publish = hub SSOT + `wrangler pages deploy` ; token CF = `~/.config/silex/forge.env` (compte **Gosilex** `YOUR_CF…`) — jamais dans git / GH
-5. **main** n’accueille **pas** les HTML (`site/a`, `registry/*.json`) — engine only
-6. Après gros publish : vérifier Access (302 sans cookie) et share (200 sans cookie sur `/s/.../key/`)
-7. **pages.dev** sous Access (+ middleware 403) — ne jamais sonder `*.pages.dev` comme origin ouverte
-8. Secrets share = **KV only** — jamais `share_key` dans meta/registry/HTML
-9. Config forge absente → **forge-setup** (ne pas inventer hub_root)
-10. Artefacts → hub `$artifacts_dir/<slug>/` ; live CF ← Direct Upload (hors git)
+1. Never deploy forge on Vercel
+2. Never put secrets in `site/`
+3. Never list share keys in the catalogue
+4. Publish = hub SSOT + `wrangler pages deploy`; CF token = `~/.config/silex/forge.env` — never in git / GH
+5. **main** does not hold HTML (`site/a`, `registry/*.json`) — engine only
+6. After a large publish: verify Access (302 without cookie) and share (200 without cookie on `/s/.../key/`)
+7. **pages.dev** under Access (+ middleware 403) — never probe `*.pages.dev` as an open origin
+8. Share secrets = **KV only** — never `share_key` in meta/registry/HTML
+9. Missing forge config → **forge-setup** (do not invent hub_root)
+10. Artifacts → hub `$artifacts_dir/<slug>/`; live CF ← Direct Upload (not git)
+11. No Cloudflare account / Access AUD / KV namespace IDs in git — `.env.example` placeholders only

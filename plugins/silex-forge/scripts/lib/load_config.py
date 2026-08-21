@@ -35,9 +35,6 @@ LOCAL_PATH = Path.home() / ".config/silex/forge.config.json"
 HUB_ROOT_FILE = Path.home() / ".config/silex/hub-root"
 FORGE_ENV_PATH = Path.home() / ".config/silex/forge.env"
 
-# Gosilex Pages (public id). Token never lives in JSON — ~/.config/silex/forge.env
-GOSILEX_ACCOUNT_ID = "YOUR_CLOUDFLARE_ACCOUNT_ID"
-
 REQUIRED_KEYS = (
     "version",
     "hub_root",
@@ -50,7 +47,13 @@ REQUIRED_KEYS = (
 )
 
 _ENV_SECRET_KEYS = frozenset({"CLOUDFLARE_API_TOKEN", "CLOUDFLARE_API_KEY"})
-_ENV_PUBLIC_KEYS = frozenset({"CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_EMAIL"})
+_ENV_PUBLIC_KEYS = frozenset(
+    {
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_EMAIL",
+        "FORGE_SHARES_KV_ID",
+    }
+)
 
 VAULT_MARKERS = ("00_COCKPIT", "01_COMPANY")
 
@@ -119,7 +122,8 @@ def load_config() -> dict[str, Any]:
     cfg.setdefault("shlink_domain", "s.gosilex.com")
     cfg.setdefault("types", ["deck", "talk", "guide", "diagram", "gallery", "html", "other"])
     cfg.setdefault("pages_project", "silex-forge")
-    cfg.setdefault("cloudflare_account_id", GOSILEX_ACCOUNT_ID)
+    cfg.setdefault("cloudflare_account_id", "")
+    cfg.setdefault("shares_kv_namespace_id", "")
     return cfg
 
 
@@ -174,7 +178,18 @@ def resolved_account_id(cfg: dict[str, Any] | None = None) -> str:
     if public.get("CLOUDFLARE_ACCOUNT_ID"):
         return public["CLOUDFLARE_ACCOUNT_ID"]
     cfg = cfg or load_config()
-    return str(cfg.get("cloudflare_account_id") or GOSILEX_ACCOUNT_ID).strip()
+    return str(cfg.get("cloudflare_account_id") or "").strip()
+
+
+def resolved_shares_kv_id(cfg: dict[str, Any] | None = None) -> str:
+    env = os.environ.get("FORGE_SHARES_KV_ID", "").strip()
+    if env:
+        return env
+    public, _ = parse_forge_env()
+    if public.get("FORGE_SHARES_KV_ID"):
+        return public["FORGE_SHARES_KV_ID"]
+    cfg = cfg or load_config()
+    return str(cfg.get("shares_kv_namespace_id") or "").strip()
 
 
 def artifacts_root(cfg: dict[str, Any] | None = None) -> Path | None:
@@ -198,51 +213,56 @@ def doctor(cfg: dict[str, Any] | None = None) -> dict[str, Any]:
 
     for k in REQUIRED_KEYS:
         if k not in cfg:
-            issues.append(f"clé manquante: {k}")
+            issues.append(f"missing key: {k}")
 
     if cfg.get("_config_fallback"):
         issues.append(
-            f"pas de config locale — copier depuis example vers {LOCAL_PATH}"
+            f"no local config — copy from example to {LOCAL_PATH}"
         )
 
     hub_s = (cfg.get("hub_root") or "").strip()
     if not hub_s:
-        issues.append("hub_root vide (path silex-hub différent par personne)")
+        issues.append("hub_root empty (absolute silex-hub path required)")
         hub = None
     else:
         hub = Path(hub_s)
         if not hub.is_dir():
-            issues.append(f"hub_root introuvable: {hub}")
+            issues.append(f"hub_root not found: {hub}")
         elif not vault_ok(hub):
             issues.append(
-                f"hub_root n'est pas un vault silex-hub "
+                f"hub_root is not a silex-hub vault "
                 f"(markers {', '.join(VAULT_MARKERS)}): {hub}"
             )
 
     art_rel = (cfg.get("artifacts_dir") or "").strip()
     if not art_rel:
-        issues.append("artifacts_dir vide")
+        issues.append("artifacts_dir empty")
     art = artifacts_root(cfg)
     if art is not None and hub is not None and hub.is_dir():
         if not art.is_dir():
-            warnings.append(f"artifacts_dir absent (sera créé au setup): {art}")
+            warnings.append(f"artifacts_dir missing (created at setup): {art}")
 
     for key in ("public_host", "forge_repo", "site_dir", "registry_dir", "internal_prefix"):
         if not str(cfg.get(key) or "").strip():
-            issues.append(f"{key} vide")
+            issues.append(f"{key} empty")
 
     acct = resolved_account_id(cfg)
-    host = str(cfg.get("public_host") or "")
-    if host == "forge.gosilex.com" and acct and not acct.startswith("YOUR_CF"):
+    if not acct:
         warnings.append(
-            f"CLOUDFLARE_ACCOUNT_ID {acct[:8]}… ≠ compte Gosilex — "
-            "risque deploy sur le mauvais compte (Mickael vs Tool@gosilex)"
+            "CLOUDFLARE_ACCOUNT_ID missing — set in ~/.config/silex/forge.env "
+            "(see .env.example)"
+        )
+    kv = resolved_shares_kv_id(cfg)
+    if not kv:
+        warnings.append(
+            "FORGE_SHARES_KV_ID missing — CLI --share needs it "
+            "(forge.env or shares_kv_namespace_id in forge.config)"
         )
     has_token = token_present()
     if not has_token:
         warnings.append(
-            f"token CF absent — generate OK, publish KO. "
-            f"Écrire {forge_env_path()} (chmod 600) via forge-setup"
+            f"CF token missing — generate OK, publish KO. "
+            f"Write {forge_env_path()} (chmod 600) via forge-setup"
         )
 
     return {
@@ -257,8 +277,9 @@ def doctor(cfg: dict[str, Any] | None = None) -> dict[str, Any]:
         "example_path": str(EXAMPLE_PATH),
         "forge_env": str(forge_env_path()),
         "has_token": has_token,
-        "deploy_ready": has_token and len(issues) == 0,
+        "deploy_ready": has_token and bool(acct) and len(issues) == 0,
         "cloudflare_account_id": acct or None,
+        "shares_kv_namespace_id": kv or None,
         "pages_project": cfg.get("pages_project") or "silex-forge",
         "skill": "forge-setup",
     }
@@ -280,6 +301,7 @@ def export_env(cfg: dict[str, Any] | None = None) -> str:
         "FORGE_INTERNAL_PREFIX": cfg.get("internal_prefix", "a"),
         "FORGE_PAGES_PROJECT": cfg.get("pages_project") or "silex-forge",
         "CLOUDFLARE_ACCOUNT_ID": resolved_account_id(cfg),
+        "FORGE_SHARES_KV_ID": resolved_shares_kv_id(cfg),
         "FORGE_ENV_FILE": str(forge_env_path()),
         "FORGE_CONFIG_SOURCE": cfg.get("_config_source", ""),
         "FORGE_CONFIG_FALLBACK": "1" if cfg.get("_config_fallback") else "0",

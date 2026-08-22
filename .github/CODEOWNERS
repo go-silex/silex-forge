@@ -1,0 +1,4 @@
+# Default reviewers for engine changes.
+# Update @go-silex/team when your GitHub org team exists.
+
+* @go-silex

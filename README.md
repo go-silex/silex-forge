@@ -1,5 +1,8 @@
 # silex-forge
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/go-silex/silex-forge/actions/workflows/ci.yml/badge.svg)](https://github.com/go-silex/silex-forge/actions/workflows/ci.yml)
+
 **Team HTML artifact host** — [forge.gosilex.com](https://forge.gosilex.com)
 
 Publish decks, talks, and guides behind Cloudflare Access. Share unlisted links with a path key. Optional shortlinks via Shlink. Engine in git; HTML stays in the shared hub.
@@ -138,6 +141,10 @@ wrangler.toml                 # placeholder KV id (patched at deploy)
 | [docs/share-model.md](docs/share-model.md) | Share / key / Shlink |
 | [docs/artifacts-config.md](docs/artifacts-config.md) | Hub SSOT |
 | [docs/public-release.md](docs/public-release.md) | Going public + history purge |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute (engine only) |
+| [CHANGELOG.md](CHANGELOG.md) | Plugin / engine releases |
+| [SECURITY.md](SECURITY.md) | Vulnerability reporting |
+| [SUPPORT.md](SUPPORT.md) | What we support on GitHub |
 | [AGENTS.md](AGENTS.md) | Agent rules |
 
 ---
@@ -153,6 +160,8 @@ wrangler.toml                 # placeholder KV id (patched at deploy)
 
 ---
 
-## License / access
+## License
 
-Internal Silex engine, intended public-safe (no secrets, no HTML, no infrastructure IDs). Team content stays in the hub and behind Access.
+[MIT](LICENSE) — engine and plugin. Team HTML artifacts are **not** licensed through this repository (hub / Access).
+
+Before making the repo public, run [docs/public-release.md](docs/public-release.md) (git history purge).

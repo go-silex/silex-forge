@@ -25,9 +25,12 @@ Requires [git-filter-repo](https://github.com/newren/git-filter-repo).
 
 ## After purge
 
-1. Fresh clone on a clean machine — grep history for `758e41ae`, `f6b214db`, client slug names
-2. Set repo visibility to public
-3. Confirm Pages env vars still set (deploy injects from `forge.env`)
+1. Fresh clone on a clean machine — grep history for known KV/Access id patterns and client slug names
+2. Set GitHub **License** field to MIT (matches [LICENSE](../LICENSE))
+3. Enable [security policy](https://github.com/go-silex/silex-forge/security/policy) and issue templates
+4. Set repo visibility to public
+5. Confirm Pages env vars still set (deploy injects from `forge.env`)
+6. Tag release `v1.7.0` (see [CHANGELOG.md](../CHANGELOG.md))
 
 ## Ops credentials (never in git)
 

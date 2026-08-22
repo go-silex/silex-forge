@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Shell syntax (publish.sh)
+        run: bash -n plugins/silex-forge/scripts/publish.sh
+
+      - name: Python compile
+        run: |
+          python3 -m py_compile plugins/silex-forge/scripts/lib/load_config.py
+          python3 -m py_compile plugins/silex-forge/scripts/lib/patch_wrangler.py
+
+      - name: patch_wrangler smoke (TOML escaping)
+        run: |
+          cp wrangler.toml /tmp/wrangler-ci.toml
+          python3 plugins/silex-forge/scripts/lib/patch_wrangler.py \
+            /tmp/wrangler-ci.toml \
+            "test-kv-id" \
+            'team.example.com' \
+            "aud-one,aud-two" \
+            "forge.example.com" \
+            "https://s.example.com/rest/v3/short-urls"
+          grep -q 'CF_ACCESS_TEAM_DOMAIN' /tmp/wrangler-ci.toml
+          grep -q 'PUBLIC_HOST' /tmp/wrangler-ci.toml
+
+      - name: Example config loads
+        run: |
+          PYTHONPATH=plugins/silex-forge/scripts/lib \
+            python3 -c "from load_config import load_config; c=load_config(); assert c.get('version')"
+
+      - name: No committed artifact HTML
+        run: |
+          test ! -d site/a || (echo "site/a must not be in git" && exit 1)
+          test ! -f site/index.html || (echo "site/index.html must not be in git" && exit 1)
+
+      - name: No hardcoded CF account id in tree
+        run: |
+          ! git grep -E 'YOUR_CF|YOUR_KV_NAMESPACE_ID' -- ':!CHANGELOG.md' ':!docs/public-release.md' ':!scripts/purge-git-history.sh' || \
+            (echo "found infra id in tracked files" && exit 1)

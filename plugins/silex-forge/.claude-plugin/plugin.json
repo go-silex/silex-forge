@@ -1,9 +1,9 @@
 {
   "name": "silex-forge",
-  "description": "Upload Cloudflare Pages pour forge.gosilex.com — publish + setup/doctor. Craft HTML = silex-craft@silex-plugins.",
+  "description": "Cloudflare Pages upload for team artifact hosts — forge-publish + forge-setup. Craft HTML = silex-craft@silex-plugins.",
   "author": {
     "name": "Silex",
     "url": "https://github.com/go-silex"
   },
-  "version": "1.6.0"
+  "version": "1.7.0"
 }

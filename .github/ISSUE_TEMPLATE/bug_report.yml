@@ -1,0 +1,65 @@
+name: Bug report
+description: Engine, plugin, Functions, or publish.sh issue
+title: "[bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. **Do not** paste share keys, API tokens, or full `forge.env` contents.
+
+        HTML craft issues → [silex-plugins](https://github.com/go-silex/silex-plugins).  
+        Production `forge.gosilex.com` → see [SUPPORT.md](../SUPPORT.md).
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. forge-doctor / publish.sh …
+        2. …
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - plugin / skills
+        - publish.sh / doctor
+        - Pages Functions (Access / share / catalogue)
+        - docs
+        - other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version (from plugin.json or marketplace.json)
+      placeholder: e.g. 1.7.0
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirm
+      options:
+        - label: I searched existing issues
+          required: true
+        - label: This is not a request to commit team HTML into this repo
+          required: true

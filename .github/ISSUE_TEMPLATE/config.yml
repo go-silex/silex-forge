@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Setup & publish docs
+    url: https://github.com/go-silex/silex-forge/blob/main/README.md
+    about: Install plugin, forge-setup, forge-publish
+  - name: HTML craft (silex-craft)
+    url: https://github.com/go-silex/silex-plugins
+    about: Slides, onepagers, cheatsheets — not this repo
+  - name: Security
+    url: https://github.com/go-silex/silex-forge/security/policy
+    about: Report vulnerabilities privately

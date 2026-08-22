@@ -39,10 +39,13 @@ git filter-repo --force \
 # Replace historical wrangler.toml blobs that contained real IDs with current placeholder
 git filter-repo --force \
   --replace-text <(cat <<'EOF'
-regex:CF_ACCESS_TEAM_DOMAIN = "REDACTED"
-regex:CF_ACCESS_AUD = "REDACTED"
+regex:CF_ACCESS_TEAM_DOMAIN = ".*"==>CF_ACCESS_TEAM_DOMAIN = "REDACTED"
+regex:CF_ACCESS_AUD = ".*"==>CF_ACCESS_AUD = "REDACTED"
 regex:id = "[0-9a-f]{32}"==>id = "YOUR_KV_NAMESPACE_ID"
 regex:cloudflare_account_id": "[0-9a-f]{32}"==>cloudflare_account_id": ""
+literal:f8026cffc9463a03e1a6a76af5301861==>YOUR_CLOUDFLARE_ACCOUNT_ID
+literal:758e41aec6964f2b9ef590c296ff7e20==>YOUR_KV_NAMESPACE_ID
+literal:f8026cff==>YOUR_CF
 EOF
 )
 

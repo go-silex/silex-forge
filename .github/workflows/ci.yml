@@ -44,8 +44,16 @@ jobs:
 
       - name: No committed artifact HTML
         run: |
-          test ! -d site/a || (echo "site/a must not be in git" && exit 1)
+          if [ -d site/a ]; then
+            extras=$(find site/a -type f ! -name '.gitkeep' | wc -l)
+            [ "$extras" -eq 0 ] || (echo "site/a must not contain artifact HTML" && find site/a -type f ! -name '.gitkeep' && exit 1)
+          fi
           test ! -f site/index.html || (echo "site/index.html must not be in git" && exit 1)
+          test ! -f site/manifest.json || (echo "site/manifest.json must not be in git" && exit 1)
+          if [ -d registry ]; then
+            extras=$(find registry -type f 2>/dev/null | wc -l)
+            [ "$extras" -eq 0 ] || (echo "registry must not contain JSON payloads" && exit 1)
+          fi
 
       - name: No hardcoded CF account id in tree
         run: |

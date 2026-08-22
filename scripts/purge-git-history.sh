@@ -16,15 +16,17 @@ if ! command -v git-filter-repo >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "This will rewrite git history to remove:"
-echo "  - site/a/** site/index.html site/manifest.json registry/**"
-echo "  - historical wrangler.toml with real KV/Access IDs"
-echo ""
-read -r -p "Continue? [y/N] " ans
-case "$ans" in
-  y|Y|yes|YES) ;;
-  *) echo "Aborted."; exit 1 ;;
-esac
+if [ "${1:-}" != "--yes" ]; then
+  echo "This will rewrite git history to remove:"
+  echo "  - site/a/** site/index.html site/manifest.json registry/**"
+  echo "  - historical wrangler.toml with real KV/Access IDs"
+  echo ""
+  read -r -p "Continue? [y/N] " ans
+  case "$ans" in
+    y|Y|yes|YES) ;;
+    *) echo "Aborted."; exit 1 ;;
+  esac
+fi
 
 # Paths that must not exist in public history
 git filter-repo --force \

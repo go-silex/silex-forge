@@ -54,7 +54,7 @@ No HTML `git push`. No GitHub Action deploy.
 `publish.sh` patches the cloned `wrangler.toml` before deploy:
 
 - KV placeholder `YOUR_KV_NAMESPACE_ID` ← `FORGE_SHARES_KV_ID`
-- plain `[vars]` ← `CF_ACCESS_TEAM_DOMAIN`, `CF_ACCESS_AUD`, optional `SHLINK_API_URL`
+- plain `[vars]` ← `CF_ACCESS_TEAM_DOMAIN`, `CF_ACCESS_AUD`, `PUBLIC_HOST`, optional `SHLINK_API_URL` (fetched from Pages if missing locally)
 
 Without that inject, `wrangler pages deploy` can wipe dashboard **plain** vars (secrets are kept).
 
@@ -66,9 +66,10 @@ Set in the Cloudflare dashboard / API — **never commit values**.
 |---|---|---|
 | `CF_ACCESS_TEAM_DOMAIN` | plain | Access team host |
 | `CF_ACCESS_AUD` | plain | comma-separated application AUDs |
+| `PUBLIC_HOST` | plain | canonical host for share URLs (e.g. `forge.gosilex.com`) |
 | `SHLINK_API_KEY` | secret | Shlink API key — shortlinks on share |
-| `SHLINK_API_URL` | plain | full create URL (e.g. `https://s.example.com/rest/v3/short-urls`) — **no default** |
-| `FORGE_SHARE_SECRET` | secret | ops bypass header for `/api/share` |
+| `SHLINK_API_URL` | plain | full create URL — **no default** |
+| `FORGE_SHARE_SECRET` | secret | ops bypass for **POST/DELETE `/api/share` only** |
 | KV `SHARES` | binding | share keys (`share:<slug>`) + visibility |
 
 Local key material for ops (not git): e.g. `~/.config/silex/shlink-api-key`.

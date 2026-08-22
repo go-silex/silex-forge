@@ -1,30 +1,26 @@
 /**
- * GET /s/<slug>/<key>/…  — share public (clé dans le path)
- * GET /s/<slug>/?k=<key> — même secret en query (alias type 1page)
+ * GET /s/<slug>/<key>/…  — share public (key in path)
+ * GET /s/<slug>/?k=<key> — same secret in query (alias)
  *
- * Valide KV `share:<slug>` puis sert /a/<slug>/… via ASSETS.
+ * Requires vis:shared + valid KV share:<slug> key, then serves /a/<slug>/… via ASSETS.
  */
-interface Env {
-  SHARES: KVNamespace
-  ASSETS: Fetcher
+import {
+  type ForgeEnv,
+  getVisibility,
+  timingSafeEqualStr,
+} from "../_lib/access"
+
+async function plain404(): Promise<Response> {
+  return new Response("Not found", {
+    status: 404,
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  })
 }
 
-function timingSafeEqualStr(a: string, b: string): boolean {
-  const enc = new TextEncoder()
-  const ab = enc.encode(a)
-  const bb = enc.encode(b)
-  if (ab.byteLength !== bb.byteLength) {
-    let diff = ab.byteLength ^ bb.byteLength
-    const n = Math.max(ab.byteLength, bb.byteLength)
-    for (let i = 0; i < n; i++) diff |= (ab[i] ?? 0) ^ (bb[i] ?? 0)
-    return false
-  }
-  let out = 0
-  for (let i = 0; i < ab.byteLength; i++) out |= ab[i] ^ bb[i]
-  return out === 0
-}
-
-export const onRequest: PagesFunction<Env> = async (context) => {
+export const onRequest: PagesFunction<ForgeEnv> = async (context) => {
   const url = new URL(context.request.url)
   const parts = url.pathname.replace(/^\/s\/?/, "").split("/").filter(Boolean)
   const qk = url.searchParams.get("k") || ""
@@ -34,16 +30,19 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   let rest: string[] = []
 
   if (parts.length >= 2 && !qk) {
-    // /s/slug/key/...
     slug = parts[0]
     key = parts[1]
     rest = parts.slice(2)
   } else if (parts.length >= 1 && qk) {
-    // /s/slug/?k=key  or /s/slug/assets/x?k=key
     slug = parts[0]
     key = qk
     rest = parts.slice(1)
   } else {
+    return plain404()
+  }
+
+  const vis = await getVisibility(context.env.SHARES, slug)
+  if (vis !== "shared") {
     return plain404()
   }
 
@@ -73,14 +72,4 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   headers.set("x-robots-tag", "noindex, nofollow, noarchive")
   headers.set("x-forge-share", "1")
   return new Response(res.body, { status: res.status, headers })
-}
-
-function plain404(): Response {
-  return new Response("Not found", {
-    status: 404,
-    headers: {
-      "content-type": "text/plain; charset=utf-8",
-      "cache-control": "no-store",
-    },
-  })
 }

@@ -137,6 +137,7 @@ wrangler.toml                 # placeholder KV id (patched at deploy)
 | [docs/cloudflare-pages.md](docs/cloudflare-pages.md) | Deploy + Pages env |
 | [docs/share-model.md](docs/share-model.md) | Share / key / Shlink |
 | [docs/artifacts-config.md](docs/artifacts-config.md) | Hub SSOT |
+| [docs/public-release.md](docs/public-release.md) | Going public + history purge |
 | [AGENTS.md](AGENTS.md) | Agent rules |
 
 ---

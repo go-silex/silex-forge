@@ -62,8 +62,8 @@ Details: [cloudflare-access.md](./cloudflare-access.md).
 5. Clipboard + toast
 6. Rotate via `POST /api/share` `{ slug, rotate: true }` when using the share API
 
-Auth: verified Cloudflare Access JWT (JWKS + `aud` + `exp`) on `/api/*`.  
-Ops bypass: header `X-Forge-Share-Secret` must **equal** `FORGE_SHARE_SECRET` (Pages secret) — never a naive length check.
+Auth: verified Cloudflare Access JWT on team APIs.  
+Ops bypass: header `X-Forge-Share-Secret` on **POST/DELETE `/api/share` only** (Pages secret) — not catalogue, `/a/*`, or `/api/visibility`.
 
 - `GET /api/share` → `{ slug, active }` only (no raw key)
 - `POST /api/share` → `{ shareUrl, shortUrl?, … }` once (canonical origin `https://forge.gosilex.com`)

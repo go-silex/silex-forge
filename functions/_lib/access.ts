@@ -4,17 +4,18 @@ export interface ForgeEnv {
   SHARES: KVNamespace
   ASSETS: Fetcher
   SHLINK_API_KEY?: string
-  /** Full Shlink create URL, e.g. https://s.gosilex.com/rest/v3/short-urls — no default */
+  /** Full Shlink create URL — no default */
   SHLINK_API_URL?: string
   FORGE_SHARE_SECRET?: string
   CF_ACCESS_TEAM_DOMAIN?: string
   CF_ACCESS_AUD?: string
+  /** Canonical public host (no scheme), e.g. forge.example.com */
+  PUBLIC_HOST?: string
 }
 
 export type Visibility = "private" | "shared" | "public"
 
 export const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
-export const PUBLIC_ORIGIN = "https://forge.gosilex.com"
 
 export function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -24,6 +25,22 @@ export function json(data: unknown, status = 200): Response {
       "cache-control": "no-store",
     },
   })
+}
+
+/** Canonical HTTPS origin for share URLs (env PUBLIC_HOST, else request host). */
+export function publicOrigin(env: ForgeEnv, request?: Request): string {
+  const configured = (env.PUBLIC_HOST || "").trim()
+  if (configured) {
+    const host = configured.replace(/^https?:\/\//, "").replace(/\/$/, "")
+    return `https://${host}`
+  }
+  if (request) {
+    const host = new URL(request.url).hostname
+    if (host && !host.endsWith(".pages.dev") && host !== "localhost") {
+      return `https://${host}`
+    }
+  }
+  throw new Error("PUBLIC_HOST not configured")
 }
 
 export function timingSafeEqualStr(a: string, b: string): boolean {
@@ -125,7 +142,6 @@ export async function verifyAccessJwt(
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean)
-  // Fail-closed: both must come from Pages env (no hardcoded defaults)
   if (!team || auds.length === 0) return false
 
   const parsed = parseJwt(token)
@@ -185,17 +201,18 @@ function jwtFromCookie(request: Request): string {
   }
 }
 
-/** Team = verified Access JWT (header or CF_Authorization cookie) or ops secret. */
+/** Ops bypass for POST/DELETE /api/share only — not global team auth. */
+export function isOpsShareBypass(request: Request, env: ForgeEnv): boolean {
+  const provided = request.headers.get("X-Forge-Share-Secret")
+  const expected = env.FORGE_SHARE_SECRET
+  return !!(provided && expected && timingSafeEqualStr(provided, expected))
+}
+
+/** Team = verified Access JWT (header or CF_Authorization cookie). */
 export async function isTeamRequest(
   request: Request,
   env: ForgeEnv,
 ): Promise<boolean> {
-  const provided = request.headers.get("X-Forge-Share-Secret")
-  const expected = env.FORGE_SHARE_SECRET
-  if (provided && expected && timingSafeEqualStr(provided, expected)) {
-    return true
-  }
-
   const headerJwt = request.headers.get("Cf-Access-Jwt-Assertion") || ""
   const cookieJwt = jwtFromCookie(request)
   for (const jwt of [headerJwt, cookieJwt]) {
@@ -203,6 +220,15 @@ export async function isTeamRequest(
     if (await verifyAccessJwt(jwt, env)) return true
   }
   return false
+}
+
+/** POST/DELETE /api/share: JWT team or ops header. */
+export async function isShareApiRequest(
+  request: Request,
+  env: ForgeEnv,
+): Promise<boolean> {
+  if (isOpsShareBypass(request, env)) return true
+  return isTeamRequest(request, env)
 }
 
 export async function getVisibility(
@@ -222,6 +248,31 @@ export async function setVisibility(
   vis: Visibility,
 ): Promise<void> {
   await kv.put(`vis:${slug}`, vis)
+}
+
+export async function activateShare(
+  kv: KVNamespace,
+  slug: string,
+  key: string,
+): Promise<void> {
+  await kv.put(`share:${slug}`, key)
+  await setVisibility(kv, slug, "shared")
+}
+
+export async function revokeShare(
+  kv: KVNamespace,
+  slug: string,
+): Promise<void> {
+  await kv.delete(`share:${slug}`)
+  await setVisibility(kv, slug, "private")
+}
+
+export async function clearArtifactAuth(
+  kv: KVNamespace,
+  slug: string,
+): Promise<void> {
+  await kv.delete(`share:${slug}`)
+  await kv.delete(`vis:${slug}`)
 }
 
 export function mintKey(): string {

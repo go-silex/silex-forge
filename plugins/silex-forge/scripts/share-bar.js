@@ -146,7 +146,7 @@
   }
 
   function pageUrl() {
-    return "https://forge.gosilex.com/a/" + slug + "/";
+    return location.origin + "/a/" + slug + "/";
   }
 
   function currentCopyUrl() {

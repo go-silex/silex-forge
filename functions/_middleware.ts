@@ -74,7 +74,7 @@ export const onRequest: PagesFunction<ForgeEnv> = async (context) => {
       return context.next()
     }
     return new Response(
-      "Forbidden — use https://forge.gosilex.com. This pages.dev origin does not serve team content.",
+      `Forbidden — use the production custom domain. This pages.dev origin does not serve team content.`,
       {
         status: 403,
         headers: {

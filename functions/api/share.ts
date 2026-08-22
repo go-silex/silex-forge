@@ -1,16 +1,18 @@
 /**
  * POST /api/share  { slug, rotate? }  → mint share URL (sets visibility=shared)
- * GET  /api/share?slug=…             → { active } only
- * DELETE /api/share { slug }         → révoque + visibility=private
+ * GET  /api/share?slug=…             → { active } only (team JWT)
+ * DELETE /api/share { slug }         → revoke + visibility=private
  */
 import {
   type ForgeEnv,
-  PUBLIC_ORIGIN,
   SLUG_RE,
+  activateShare,
+  isShareApiRequest,
   isTeamRequest,
   json,
   mintKey,
-  setVisibility,
+  publicOrigin,
+  revokeShare,
 } from "../_lib/access"
 import { maybeShortlink } from "../_lib/shlink"
 
@@ -31,14 +33,13 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   const key = await context.env.SHARES.get(`share:${slug}`)
-  // Never return raw key — catalogue / badge only need active
   if (!key) return json({ slug, active: false })
   return json({ slug, active: true })
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const request = context.request
-  if (!(await isTeamRequest(request, context.env))) {
+  if (!(await isShareApiRequest(request, context.env))) {
     return json({ error: "unauthorized" }, 401)
   }
 
@@ -58,12 +59,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   let key = await context.env.SHARES.get(`share:${slug}`)
   if (!key || body.rotate) {
     key = mintKey()
-    await context.env.SHARES.put(`share:${slug}`, key)
   }
-  await setVisibility(context.env.SHARES, slug, "shared")
+  await activateShare(context.env.SHARES, slug, key)
 
-  // Always forge.gosilex.com — never pages.dev origin from the request
-  const shareUrl = `${PUBLIC_ORIGIN}/s/${slug}/${key}/`
+  let origin: string
+  try {
+    origin = publicOrigin(context.env, request)
+  } catch {
+    return json({ error: "public_host_not_configured" }, 500)
+  }
+  const shareUrl = `${origin}/s/${slug}/${key}/`
   const shortUrl = await maybeShortlink(context.env, shareUrl, slug)
 
   return json({
@@ -71,13 +76,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     shareUrl,
     shortUrl: shortUrl || null,
     rotated: Boolean(body.rotate),
-    // key omitted intentionally — shareUrl is enough for clipboard
   })
 }
 
 export const onRequestDelete: PagesFunction<Env> = async (context) => {
   const request = context.request
-  if (!(await isTeamRequest(request, context.env))) {
+  if (!(await isShareApiRequest(request, context.env))) {
     return json({ error: "unauthorized" }, 401)
   }
 
@@ -90,7 +94,6 @@ export const onRequestDelete: PagesFunction<Env> = async (context) => {
   const slug = (body.slug || "").trim()
   if (!SLUG_RE.test(slug)) return json({ error: "invalid_slug" }, 400)
 
-  await context.env.SHARES.delete(`share:${slug}`)
-  await setVisibility(context.env.SHARES, slug, "private")
+  await revokeShare(context.env.SHARES, slug)
   return json({ slug, active: false })
 }

@@ -14,8 +14,9 @@ binding = "SHARES"
 id = "YOUR_KV_NAMESPACE_ID"
 
 # Pages production env (dashboard / API only — not in git):
-#   CF_ACCESS_TEAM_DOMAIN   plain
-#   CF_ACCESS_AUD           plain (comma-separated application AUDs)
+#   CF_ACCESS_TEAM_DOMAIN   plain  (also in forge.env — injected at deploy)
+#   CF_ACCESS_AUD           plain
+#   PUBLIC_HOST             plain  (canonical share/catalogue host)
 #   SHLINK_API_KEY          secret
-#   SHLINK_API_URL          plain (full create URL, no default)
-#   FORGE_SHARE_SECRET      secret
+#   SHLINK_API_URL          plain  (preserved from Pages if missing locally)
+#   FORGE_SHARE_SECRET      secret (POST/DELETE /api/share only)

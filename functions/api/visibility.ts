@@ -7,12 +7,14 @@
 import {
   type ForgeEnv,
   type Visibility,
-  PUBLIC_ORIGIN,
   SLUG_RE,
+  activateShare,
   getVisibility,
   isTeamRequest,
   json,
   mintKey,
+  publicOrigin,
+  revokeShare,
   setVisibility,
 } from "../_lib/access"
 import { maybeShortlink } from "../_lib/shlink"
@@ -27,11 +29,15 @@ export const onRequestGet: PagesFunction<ForgeEnv> = async (context) => {
   if (!SLUG_RE.test(slug)) return json({ error: "invalid_slug" }, 400)
   const vis = await getVisibility(context.env.SHARES, slug)
   const key = vis === "shared" ? await context.env.SHARES.get(`share:${slug}`) : null
-  return json({
-    slug,
-    visibility: vis,
-    shareUrl: key ? `${PUBLIC_ORIGIN}/s/${slug}/${key}/` : null,
-  })
+  let shareUrl: string | null = null
+  if (key) {
+    try {
+      shareUrl = `${publicOrigin(context.env, context.request)}/s/${slug}/${key}/`
+    } catch {
+      shareUrl = null
+    }
+  }
+  return json({ slug, visibility: vis, shareUrl })
 }
 
 export const onRequestPost: PagesFunction<ForgeEnv> = async (context) => {
@@ -49,20 +55,25 @@ export const onRequestPost: PagesFunction<ForgeEnv> = async (context) => {
   if (!SLUG_RE.test(slug)) return json({ error: "invalid_slug" }, 400)
   if (!VIS.includes(vis)) return json({ error: "invalid_visibility" }, 400)
 
-  await setVisibility(context.env.SHARES, slug, vis)
-
   let shareUrl: string | null = null
   let shortUrl: string | null = null
+
   if (vis === "shared") {
     let key = await context.env.SHARES.get(`share:${slug}`)
-    if (!key) {
-      key = mintKey()
-      await context.env.SHARES.put(`share:${slug}`, key)
+    if (!key) key = mintKey()
+    await activateShare(context.env.SHARES, slug, key)
+    try {
+      const origin = publicOrigin(context.env, context.request)
+      shareUrl = `${origin}/s/${slug}/${key}/`
+      shortUrl = (await maybeShortlink(context.env, shareUrl, slug)) || null
+    } catch {
+      return json({ error: "public_host_not_configured" }, 500)
     }
-    shareUrl = `${PUBLIC_ORIGIN}/s/${slug}/${key}/`
-    shortUrl = (await maybeShortlink(context.env, shareUrl, slug)) || null
-  } else {
+  } else if (vis === "public") {
     await context.env.SHARES.delete(`share:${slug}`)
+    await setVisibility(context.env.SHARES, slug, "public")
+  } else {
+    await revokeShare(context.env.SHARES, slug)
   }
 
   return json({ slug, visibility: vis, shareUrl, shortUrl })

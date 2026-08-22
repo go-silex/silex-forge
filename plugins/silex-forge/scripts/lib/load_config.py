@@ -55,6 +55,9 @@ _ENV_PUBLIC_KEYS = frozenset(
         "CF_ACCESS_TEAM_DOMAIN",
         "CF_ACCESS_AUD",
         "SHLINK_API_URL",
+        "PUBLIC_HOST",
+        "FORGE_PAGES_PROJECT",
+        "SHLINK_DOMAIN",
     }
 )
 
@@ -262,15 +265,34 @@ def doctor(cfg: dict[str, Any] | None = None) -> dict[str, Any]:
             "(forge.env or shares_kv_namespace_id in forge.config)"
         )
     public, _ = parse_forge_env()
-    for key in ("CF_ACCESS_TEAM_DOMAIN", "CF_ACCESS_AUD"):
-        if not (os.environ.get(key) or public.get(key) or "").strip():
-            warnings.append(f"{key} missing in forge.env — deploy would wipe Access JWT vars")
     has_token = token_present()
+    access_team = (os.environ.get("CF_ACCESS_TEAM_DOMAIN") or public.get("CF_ACCESS_TEAM_DOMAIN") or "").strip()
+    access_aud = (os.environ.get("CF_ACCESS_AUD") or public.get("CF_ACCESS_AUD") or "").strip()
+    for key, val in (
+        ("CF_ACCESS_TEAM_DOMAIN", access_team),
+        ("CF_ACCESS_AUD", access_aud),
+    ):
+        if not val:
+            warnings.append(f"{key} missing in forge.env — deploy would wipe Access JWT vars")
     if not has_token:
         warnings.append(
             f"CF token missing — generate OK, publish KO. "
             f"Write {forge_env_path()} (chmod 600) via forge-setup"
         )
+
+    deploy_blockers: list[str] = []
+    if not has_token:
+        deploy_blockers.append("token")
+    if not acct:
+        deploy_blockers.append("account_id")
+    if not kv:
+        deploy_blockers.append("kv_id")
+    if not access_team:
+        deploy_blockers.append("CF_ACCESS_TEAM_DOMAIN")
+    if not access_aud:
+        deploy_blockers.append("CF_ACCESS_AUD")
+    if not str(cfg.get("public_host") or "").strip():
+        deploy_blockers.append("public_host")
 
     return {
         "ok": len(issues) == 0,
@@ -284,7 +306,8 @@ def doctor(cfg: dict[str, Any] | None = None) -> dict[str, Any]:
         "example_path": str(EXAMPLE_PATH),
         "forge_env": str(forge_env_path()),
         "has_token": has_token,
-        "deploy_ready": has_token and bool(acct) and len(issues) == 0,
+        "deploy_ready": len(deploy_blockers) == 0 and len(issues) == 0,
+        "deploy_blockers": deploy_blockers,
         "cloudflare_account_id": acct or None,
         "shares_kv_namespace_id": kv or None,
         "pages_project": cfg.get("pages_project") or "silex-forge",

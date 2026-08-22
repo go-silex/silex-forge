@@ -30,6 +30,8 @@ PUBLIC_HOST="${_ENV_PUBLIC_HOST:-${FORGE_PUBLIC_HOST:-${PUBLIC_HOST:-forge.gosil
 SHLINK_DOMAIN="${_ENV_SHLINK_DOMAIN:-${FORGE_SHLINK_DOMAIN:-${SHLINK_DOMAIN:-s.gosilex.com}}}"
 ARTIFACTS_ROOT="${FORGE_ARTIFACTS_ROOT:-}"
 INTERNAL_PREFIX="${FORGE_INTERNAL_PREFIX:-a}"
+# Export PUBLIC_HOST for forge.env override after load_config
+export PUBLIC_HOST
 
 die()  { echo "✗ $*" >&2; exit 1; }
 info() { echo "▸ $*"; }
@@ -138,20 +140,43 @@ source_cf_credentials() {
     val="${val#\'}"
     val="${val%\'}"
     case "$key" in
-      CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|CLOUDFLARE_API_KEY|CLOUDFLARE_EMAIL|FORGE_SHARES_KV_ID|CF_ACCESS_TEAM_DOMAIN|CF_ACCESS_AUD|SHLINK_API_URL)
+      CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID|CLOUDFLARE_API_KEY|CLOUDFLARE_EMAIL|FORGE_SHARES_KV_ID|CF_ACCESS_TEAM_DOMAIN|CF_ACCESS_AUD|SHLINK_API_URL|PUBLIC_HOST|FORGE_PAGES_PROJECT|SHLINK_DOMAIN)
         export "$key=$val"
         ;;
     esac
   done < "$f"
 }
 
-# Patch cloned wrangler.toml: KV id + plain [vars] from forge.env
-# (wrangler pages deploy wipes dashboard plain vars if [vars] is absent)
+# Fetch a plain Pages production var (preserve SHLINK_API_URL when absent locally)
+fetch_pages_plain_var() {
+  local name="$1"
+  source_cf_credentials
+  local acct="${CLOUDFLARE_ACCOUNT_ID:-}"
+  local project="${FORGE_PAGES_PROJECT:-silex-forge}"
+  [ -n "$acct" ] && [ -n "${CLOUDFLARE_API_TOKEN:-}" ] || return 1
+  curl -sS -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+    "https://api.cloudflare.com/client/v4/accounts/${acct}/pages/projects/${project}" \
+    | python3 - "$name" <<'PY'
+import json, sys
+name = sys.argv[1]
+try:
+    d = json.load(sys.stdin)
+    ev = (d.get("result") or {}).get("deployment_configs", {}).get("production", {}).get("env_vars") or {}
+    v = ev.get(name) or {}
+    if v.get("type") == "plain_text" and v.get("value"):
+        print(v["value"])
+except Exception:
+    pass
+PY
+}
+
+# Patch cloned wrangler.toml: KV id + plain [vars] from forge.env (+ API fallback)
 patch_wrangler_for_deploy() {
   local toml="$1"
   local kv="${FORGE_SHARES_KV_ID:-}"
   local team="${CF_ACCESS_TEAM_DOMAIN:-}"
   local aud="${CF_ACCESS_AUD:-}"
+  local host="${PUBLIC_HOST:-}"
   local shlink_url="${SHLINK_API_URL:-}"
   [ -n "$kv" ] || die \
     "FORGE_SHARES_KV_ID missing — set in ~/.config/silex/forge.env (see .env.example)"
@@ -159,45 +184,13 @@ patch_wrangler_for_deploy() {
     "CF_ACCESS_TEAM_DOMAIN missing — set in ~/.config/silex/forge.env (see .env.example)"
   [ -n "$aud" ] || die \
     "CF_ACCESS_AUD missing — set in ~/.config/silex/forge.env (see .env.example)"
+  [ -n "$host" ] || die \
+    "PUBLIC_HOST missing — set in forge.config.json or ~/.config/silex/forge.env"
+  if [ -z "$shlink_url" ]; then
+    shlink_url="$(fetch_pages_plain_var SHLINK_API_URL 2>/dev/null || true)"
+  fi
   [ -f "$toml" ] || die "wrangler.toml missing: $toml"
-  python3 - "$toml" "$kv" "$team" "$aud" "$shlink_url" <<'PY'
-import re
-import sys
-from pathlib import Path
-
-p = Path(sys.argv[1])
-kv, team, aud, shlink_url = sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]
-text = p.read_text(encoding="utf-8")
-
-needle = 'id = "YOUR_KV_NAMESPACE_ID"'
-if needle in text:
-    text = text.replace(needle, f'id = "{kv}"')
-elif f'id = "{kv}"' not in text:
-    text2, n = re.subn(
-        r'(binding\s*=\s*"SHARES"\s*\nid\s*=\s*")[^"]*(")',
-        rf"\g<1>{kv}\2",
-        text,
-        count=1,
-    )
-    if n == 0:
-        sys.exit("could not patch SHARES kv id in wrangler.toml")
-    text = text2
-
-# Drop any existing [vars] block (committed file should have none)
-text = re.sub(r"\n\[vars\][\s\S]*?(?=\n\[|\Z)", "\n", text)
-
-vars_lines = [
-    "",
-    "[vars]",
-    f'CF_ACCESS_TEAM_DOMAIN = "REDACTED"',
-    f'CF_ACCESS_AUD = "REDACTED"',
-]
-if shlink_url:
-    vars_lines.append(f'SHLINK_API_URL = "{shlink_url}"')
-vars_lines.append("")
-text = text.rstrip() + "\n" + "\n".join(vars_lines)
-p.write_text(text, encoding="utf-8")
-PY
+  python3 "$LIB_DIR/patch_wrangler.py" "$toml" "$kv" "$team" "$aud" "$host" "$shlink_url"
 }
 
 # Direct Upload — HTML never touches git
@@ -370,18 +363,50 @@ kv_curl() {
   fi
 }
 
-kv_put_share() {
-  local slug="$1" key="$2"
+kv_put_value() {
+  local key="$1" val="$2"
   kv_auth_ok || return 1
-  kv_curl PUT "/values/share:${slug}" -H "Content-Type: text/plain" --data "$key" \
+  kv_curl PUT "/values/${key}" -H "Content-Type: text/plain" --data "$val" \
     | python3 -c 'import sys,json; d=json.load(sys.stdin); sys.exit(0 if d.get("success") else 1)'
 }
 
+kv_delete_key() {
+  local key="$1"
+  kv_auth_ok || return 1
+  kv_curl DELETE "/values/${key}" \
+    | python3 -c 'import sys,json; d=json.load(sys.stdin); sys.exit(0 if d.get("success") else 1)'
+}
+
+kv_put_share() {
+  kv_put_value "share:$1" "$2"
+}
+
 kv_delete_share() {
+  kv_delete_key "share:$1"
+}
+
+kv_set_visibility() {
+  kv_put_value "vis:$1" "$2"
+}
+
+kv_activate_share() {
+  local slug="$1" key="$2"
+  kv_put_share "$slug" "$key" || return 1
+  kv_set_visibility "$slug" "shared" || return 1
+}
+
+kv_revoke_share() {
+  local slug="$1"
+  kv_delete_share "$slug" || return 1
+  kv_set_visibility "$slug" "private" || return 1
+}
+
+kv_clear_artifact_auth() {
   local slug="$1"
   kv_auth_ok || return 1
-  kv_curl DELETE "/values/share:${slug}" \
-    | python3 -c 'import sys,json; d=json.load(sys.stdin); sys.exit(0 if d.get("success") else 1)'
+  kv_delete_key "share:${slug}" || true
+  kv_delete_key "vis:${slug}" || true
+  return 0
 }
 
 mint_key() {
@@ -392,7 +417,7 @@ maybe_shortlink() {
   local long_url="$1" slug="$2"
   local short_slug="f-${slug}"
   if ! command -v shlink &>/dev/null; then
-    warn "shlink CLI absent — pas de shortlink auto"
+    warn "shlink CLI missing — no auto shortlink"
     return 1
   fi
   if shlink short -- "$long_url" "$short_slug" 2>/dev/null; then
@@ -432,10 +457,10 @@ create_share_kv() {
   share_url="https://${PUBLIC_HOST}${share_path}"
   [ -d "${ARTIFACTS_ROOT}/${slug}" ] || die "hub artifact missing: $slug"
 
-  if kv_put_share "$slug" "$key"; then
-    info "KV share:${slug} seed OK"
+  if kv_activate_share "$slug" "$key"; then
+    info "KV share:${slug} + vis:shared OK"
   else
-    die "KV seed failed — set CLOUDFLARE_API_TOKEN (share key never goes to git/hub)"
+    die "KV share activation failed — set CLOUDFLARE_API_TOKEN (share key never goes to git/hub)"
   fi
   set_hub_shared "$slug" true
   short_url=""
@@ -486,8 +511,14 @@ cmd_remove() {
   validate_slug "$slug"
   require_forge_config
   [ -n "${ARTIFACTS_ROOT:-}" ] || die "ARTIFACTS_ROOT missing"
+  source_cf_credentials
+  if kv_clear_artifact_auth "$slug"; then
+    info "KV cleared for $slug (share + vis)"
+  else
+    warn "KV clear failed for $slug — old share/vis may survive slug reuse"
+  fi
   rm -rf "${ARTIFACTS_ROOT}/${slug}"
-  ok "retiré du hub SSOT: $slug"
+  ok "removed from hub SSOT: $slug"
   clone_engine
   build_from_hub
   if deploy_pages; then
@@ -499,10 +530,11 @@ cmd_unshare() {
   local slug="$1"
   validate_slug "$slug"
   require_forge_config
-  if kv_delete_share "$slug"; then
-    info "KV share:${slug} deleted"
+  source_cf_credentials
+  if kv_revoke_share "$slug"; then
+    info "KV share:${slug} revoked + vis:private"
   else
-    warn "KV delete failed — set CF credentials"
+    die "KV revoke failed — share link may still work; fix credentials and retry"
   fi
   set_hub_shared "$slug" false
   clone_engine
@@ -512,8 +544,8 @@ cmd_unshare() {
     python3 "$(SCRIPTS)/inject-share-bar.py" "$html" --slug "$slug" || true
     [ -n "${ARTIFACTS_ROOT:-}" ] && cp -f "$html" "${ARTIFACTS_ROOT}/${slug}/index.html" || true
   fi
-  deploy_pages || true
-  ok "share révoqué pour $slug"
+  deploy_pages || die "deploy failed after unshare"
+  ok "share revoked for $slug"
 }
 
 cmd_share_only() {

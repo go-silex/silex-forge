@@ -158,8 +158,8 @@ def render(manifest: list[dict], host: str) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silex Forge</title>
-<meta name="description" content="Catalogue d’artefacts HTML Silex. Pages publiques ici ; le reste derrière Cloudflare Access.">
+<title>Forge Unkillable Companies</title>
+<meta name="description" content="Catalogue d’artefacts HTML Unkillable Companies. Pages publiques ici ; le reste derrière Cloudflare Access.">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="theme-color" content="#031635">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -167,9 +167,9 @@ def render(manifest: list[dict], host: str) -> str:
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://{host}/">
-<meta property="og:title" content="Silex Forge">
+<meta property="og:title" content="Forge Unkillable Companies">
 <meta property="og:description" content="Artefacts HTML d'équipe — decks, talks, guides.">
-<meta property="og:site_name" content="Silex">
+<meta property="og:site_name" content="Unkillable Companies">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -377,7 +377,7 @@ footer a:hover{{color:var(--blue)}}
 <header class="header">
   <div class="header-brand">
     <span class="header-kicker" id="headerKicker"><span class="header-kicker-dot" aria-hidden="true"></span>Catalogue public</span>
-    <div class="header-title">Forge <em>Silex</em></div>
+    <div class="header-title">Forge <em>Unkillable Companies</em></div>
     <div class="header-sub" id="headerSub">Pages publiques. Connexion équipe pour le reste.</div>
   </div>
   <div class="header-actions">
@@ -442,13 +442,12 @@ footer a:hover{{color:var(--blue)}}
 <p class="note">
   Publier : skill <code>forge-publish</code> ou <code>plugins/silex-forge/scripts/publish.sh</code>.
   Doc Access : <code>docs/cloudflare-access.md</code>.
-  Cible long terme : <a href="https://share.gosilex.com">share.gosilex.com</a> (silex-share).
   ≠ démos client (<a href="https://demo.gosilex.com">demo.gosilex.com</a>).
 </p>
 
 <footer>
-  <span>© Silex · {host}</span>
-  <a href="https://gosilex.com">gosilex.com</a>
+  <span>© Unkillable Companies · {host}</span>
+  <a href="https://unkillablecompanies.com">unkillablecompanies.com</a>
 </footer>
 </div>
 

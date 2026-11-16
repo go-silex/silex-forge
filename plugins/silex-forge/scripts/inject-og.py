@@ -67,7 +67,7 @@ def build_block(
     title: str,
     description: str,
     url: str,
-    site_name: str = "Silex Forge",
+    site_name: str = "Forge Unkillable Companies",
     noindex: bool = True,
     image: str = "",
 ) -> str:

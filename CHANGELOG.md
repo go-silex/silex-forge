@@ -13,6 +13,10 @@ Versioning follows [Semantic Versioning](https://semver.org/) for the plugin sur
 
 - `forge-inventory.py` writes a read-only inventory of one forge instance: local hub files, the canonical Pages deployment file map, optional production history, and KV visibility, share presence, and the snapshot anchor. It does not publish, reanchor, or mutate Cloudflare. Share values are not stored. A listed KV 404 is absence, not presence. `layout` `tree` records HTML path page ids; the default layout keeps the first directory. The configured root is resolved once, then opened without following. Output is refused inside a git worktree, including when the output parent is swapped for a symlink. See `docs/forge-inventory.md`.
 
+### Changed
+
+- Visible brand is Unkillable Companies instead of Silex: catalogue title, header, meta description, `og:title` and `og:site_name`, footer (now links `unkillablecompanies.com`), and the `/login` and `404.html` titles. `inject-og.py` defaults `og:site_name` to `Forge Unkillable Companies`, so each artifact picks it up on its next publish. The stale `share.gosilex.com` note is removed from the catalogue. Technical identifiers are unchanged: plugin and Pages project `silex-forge`, `~/.config/silex/`, localStorage keys, slugs.
+
 ### Fixed
 
 - `forge-inventory.py` treats an empty KV list cursor as the end of the list and does not request `?cursor=`. Symlink classification stats the original link from the bound root before `Path.resolve(strict=True)`, so a loop is `cycle` and a path through a non-directory is `broken` on every Python version. A missing target is `broken` even when that target is outside the root. File bytes are still read without following symlinks.
